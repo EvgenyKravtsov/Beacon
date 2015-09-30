@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="kgk.beacon" >
+
+    <permission
+        android:name="kgk.beacon.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Required to show current location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Required OpenGL ES 2.0. for Maps V2 -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:name=".util.AppController" >
+
+        <activity
+            android:name=".view.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".view.DeviceListActivity"
+            android:label="@string/device_list_activity_action_bar_label"
+            android:screenOrientation="portrait" >
+        </activity>
+
+
+        <activity
+            android:name=".view.InformationActivity"
+            android:label="@string/information_action_bar_label"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.DeviceListActivity" />
+        </activity>
+
+        <activity
+            android:name=".view.HistoryActivity"
+            android:label="@string/history_action_bar_label"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.InformationActivity" />
+        </activity>
+
+        <activity
+            android:name=".view.PathActivity"
+            android:label="@string/path_action_bar_label"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.InformationActivity" />
+        </activity>
+
+        <activity
+            android:name=".view.DatePickerActivity"
+            android:label="@string/date_picker_action_bar_label"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+            android:name=".view.MapCustomActivity"
+            android:label="@string/map_custom_action_bar_label"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.InformationActivity" />
+        </activity>
+
+        <activity
+            android:name=".view.SettingsActivity"
+            android:label="@string/settings_action_bar_label"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.InformationActivity" />
+        </activity>
+
+        <uses-library android:name="com.google.android.maps"/>
+
+        <!-- Google API Key  TODO generate release key -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCOu4_JJCmkUeTw52GEazS419ARsq4HNxQ" />
+    </application>
+
+</manifest>

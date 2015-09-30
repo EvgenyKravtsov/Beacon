@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Beacon</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- Strings for action bars -->
+    <string name="device_list_activity_action_bar_label">Devices</string>
+    <string name="information_action_bar_label">Information</string>
+    <string name="history_action_bar_label">History</string>
+    <string name="path_action_bar_label">Path</string>
+    <string name="date_picker_action_bar_label">Period</string>
+    <string name="map_custom_action_bar_label">Map</string>
+    <string name="settings_action_bar_label">Settings</string>
+
+    <!-- Strings for LoginFragment -->
+    <string name="login_hint">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button_label">Log In</string>
+    <string name="remember_me_text">Remember Me</string>
+    <string name="try_demo_button_label">Try Demo</string>
+    <string name="wrong_login_or_password_label">Wrong login or password</string>
+    <string name="login_progress_dialog_title">Login…</string>
+    <string name="login_progress_dialog_message">Authentication in progress</string>
+
+    <!-- Strings for InformationFragment -->
+    <string name="detecting_mode_text">Message in detecting mode</string>
+    <string name="last_positioning_text">Last Positioning</string>
+    <string name="last_action_text">Last Action</string>
+    <string name="satellites_label">Satellites</string>
+    <string name="voltage_label">Voltage</string>
+    <string name="speed_label">Speed</string>
+    <string name="charge_label">Charge</string>
+    <string name="direction_label">Direction</string>
+    <string name="balance_label">Balance</string>
+    <string name="temperature_label">Temperature</string>
+    <string name="query_button_label">Query</string>
+    <string name="history_button_label">History</string>
+    <string name="search_on_button_label">On</string>
+    <string name="search_off_button_label">Off</string>
+    <string name="map_button_label">Map</string>
+    <string name="settings_button_label">Settings</string>
+    <string name="search_label">Search</string>
+
+    <!-- Strings for HistoryFragment -->
+    <string name="select_period_button_label">Period</string>
+    <string name="track_button_label">Track</string>
+
+    <!-- String for DatePickerFragment -->
+    <string name="action_bar_label">Period</string>
+    <string name="header_label">Displaying history</string>
+    <string name="from_label">From</string>
+    <string name="to_label">To</string>
+    <string name="date_button_label">Date</string>
+    <string name="time_button_label">Time</string>
+    <string name="date_picker_dialog_title">Select date</string>
+    <string name="time_picker_dialog_title">Select time</string>
+    <string name="wrong_period_message">Wrong period selected</string>
+    <string name="not_all_fields_selected_message">Select all fields, please</string>
+
+    <!-- Strings for SettingsFragment -->
+    <string name="timezone_label">Timezone</string>
+    <string name="time_of_signal_label">Time of signal</string>
+    <string name="on_command_send_toast">Command has been sent</string>
+    <string name="no_internet_connection_message">No internet connection</string>
+    <string name="balance_request_command_wrong_field_message">Balance request command too long</string>
+    <string name="connection_period_label">Connection period (min)</string>
+    <string name="number_of_sms_omissions_label">Number of SMS omissions</string>
+    <string name="gps_positioning_period_label">GPS positioning period (min)</string>
+    <string name="balance_control_limit_label">Balance control limit (rub.)</string>
+    <string name="balance_request_command_label">Balance request command</string>
+    <string name="gprs_label">GPRS</string>
+    <string name="send_button_label">Send</string>
+</resources>

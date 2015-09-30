@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="30dp"
+    android:paddingTop="30dp"
+    android:paddingRight="30dp"
+    android:paddingBottom="60dp"
+    android:background="@drawable/main_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#aaffffff"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <EditText
+            android:id="@+id/fragmentLogin_loginField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login_hint"
+            android:textSize="17sp"
+            android:layout_above="@+id/fragmentLogin_passwordField"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/text_field_background"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <EditText
+            android:id="@+id/fragmentLogin_passwordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password_hint"
+            android:textSize="17sp"
+            android:inputType="textPassword"
+            android:layout_above="@+id/fragmentLogin_rememberMeCheckBox"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/text_field_background"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <CheckBox
+            android:id="@+id/fragmentLogin_rememberMeCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/remember_me_text"
+            android:textSize="13sp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_above="@+id/fragmentLogin_loginField"
+            android:src="@drawable/kgk_logo"
+            android:layout_marginBottom="20dp"
+            android:layout_alignRight="@+id/fragmentLogin_loginField"
+            android:layout_alignEnd="@+id/fragmentLogin_loginField"
+            android:layout_alignLeft="@+id/fragmentLogin_loginField"
+            android:layout_alignStart="@+id/fragmentLogin_loginField"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragmentLogin_rememberMeCheckBox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:id="@+id/fragmentLogin_loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_button_label"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:background="@drawable/login_button_selector"
+                android:layout_marginRight="5dp"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/fragmentLogin_tryDemoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/try_demo_button_label"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:background="@drawable/demo_button_selector"
+                android:layout_marginLeft="5dp"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

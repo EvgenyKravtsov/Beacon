@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_period_button_label"
+            android:id="@+id/fragmentHistory_selectPeriodButton"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:background="@drawable/control_button_selector"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/track_button_label"
+            android:id="@+id/fragmentHistory_trackButton"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:background="@drawable/control_button_selector"
+            android:textAllCaps="false" />
+
+
+
+    </LinearLayout>
+
+    <ExpandableListView
+        android:id="@+id/fragmentHistory_historyListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true" >
+    </ExpandableListView>
+
+</LinearLayout>

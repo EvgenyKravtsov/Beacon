@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/fragmentInformation_controlButtons">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/map_button_label"
+            android:id="@+id/fragmentInformation_mapButton"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:textAllCaps="false"
+            android:background="@drawable/control_button_selector" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/history_button_label"
+            android:id="@+id/fragmentInformation_historyButton"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/control_button_selector" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_button_label"
+            android:id="@+id/fragmentInformation_settingsButton"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:textAllCaps="false"
+            android:background="@drawable/control_button_selector" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragmentInformation_modelInformation"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:background="@drawable/model_background"
+        android:paddingTop="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Brand"
+            android:id="@+id/fragmentInformation_brandTextView"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#FF000000" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Model"
+            android:id="@+id/fragmentInformation_modelTextView"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="#FF000000" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Number"
+            android:id="@+id/fragmentInformation_numberTextView"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textColor="#FF000000" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#FFeb9c53"
+        android:id="@+id/stripe1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragmentInformation_informationFieldRelativeLayout"
+        android:background="#ffcafdff"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_action_text"
+            android:id="@+id/fragmentInformation_lastActionTextView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="&lt;TimeStamp>"
+            android:id="@+id/fragmentInformation_lastActionTimeStamp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="15sp"
+            android:textColor="#FFeb9c53" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_positioning_text"
+            android:id="@+id/fragmentInformation_lastPositioningTextView"
+            android:layout_below="@+id/fragmentInformation_lastActionTextView"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="&lt;TimeStamp>"
+            android:id="@+id/fragmentInformation_lastPositioningTimeStamp"
+            android:layout_below="@+id/fragmentInformation_lastActionTimeStamp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="15sp"
+            android:textColor="#ffeb9c53" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/detecting_mode_text"
+            android:id="@+id/fragmentInformation_detectingModeTextView"
+            android:layout_below="@+id/fragmentInformation_lastPositioningTextView"
+            android:gravity="center_horizontal"
+            android:textSize="17sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="#FF000000" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/fragmentInformation_detectingModeTextView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/satellites_label"
+                    android:id="@+id/fragmentInformation_satellitesTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="0"
+                    android:id="@+id/fragmentInformation_satellitesCountTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:textColor="#ff215bb8" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/voltage_label"
+                    android:id="@+id/fragmentInformation_voltageTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="0 V"
+                    android:id="@+id/fragmentInformation_voltageCountTextView"
+                    android:layout_weight="1"
+                    android:textColor="#ff215bb8"
+                    android:textSize="13sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/speed_label"
+                    android:id="@+id/fragmentInformation_speedTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="0 km/h"
+                    android:id="@+id/fragmentInformation_speedCountTextView"
+                    android:layout_weight="1"
+                    android:textColor="#ff215bb8"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/charge_label"
+                    android:id="@+id/fragmentInformation_chargeTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="0"
+                    android:id="@+id/fragmentInformation_chargeCountTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:textColor="#ff215bb8" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/direction_label"
+                    android:id="@+id/fragmentInformation_directionTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="0"
+                    android:id="@+id/fragmentInformation_directionCountTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:textColor="#ff215bb8" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/balance_label"
+                    android:id="@+id/fragmentInformation_balanceTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="0 rub."
+                    android:id="@+id/fragmentInformation_balanceCountTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:textColor="#ff215bb8" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/temperature_label"
+                    android:id="@+id/fragmentInformation_temperatureTextView"
+                    android:layout_weight="1"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="0 C"
+                    android:id="@+id/fragmentInformation_temperatureCountTextView"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:textColor="#ff215bb8" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView15"
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView16"
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+            </TableRow>
+        </TableLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#FFeb9c53"
+        android:id="@+id/stripe2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_label"
+        android:layout_marginLeft="240dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="#ffcafdff"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/query_button_label"
+            android:id="@+id/fragmentInformation_queryButton"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:background="@drawable/query_button_selector"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragmentInformation_searchButton"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:background="@drawable/search_off_button"
+            android:gravity="center_vertical|right"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

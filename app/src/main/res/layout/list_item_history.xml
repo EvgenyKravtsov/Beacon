@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ff83b8da"
+    android:paddingLeft="10dp"
+    android:paddingRight="20dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listItemHistory_timeTextView"
+        android:textSize="15sp"
+        tools:text="00:00"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:textColor="#FF000000" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="&lt;Type>"
+        android:id="@+id/listItemHistory_typeTextView"
+        android:textSize="15sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/listItemHistory_timeTextView"
+        android:layout_toEndOf="@+id/listItemHistory_timeTextView"
+        android:textColor="#FF000000" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/listItemHistory_timeTextView"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 sats."
+            android:id="@+id/listItemHistory_satellitesCountTextView"
+            android:textSize="15sp"
+            android:textColor="#FF215cbb" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ff909090"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 km/h"
+            android:id="@+id/listItemHistory_speedCountTextView"
+            android:textSize="15sp"
+            android:textColor="#FF215cbb" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ff909090"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 C"
+            android:id="@+id/listItemHistory_temperatureCountTextView"
+            android:textSize="15sp"
+            android:textColor="#FF215cbb" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ff909090"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 rub."
+            android:id="@+id/listItemHistory_balanceTextView"
+            android:textSize="15sp"
+            android:singleLine="false"
+            android:textColor="#FF215cbb" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ff909090"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 V"
+            android:id="@+id/listItemHistory_voltageCountTextView"
+            android:textColor="#FF215cbb"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ff909090"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 sig."
+            android:id="@+id/listItemHistory_signalsCountTextView"
+            android:textSize="15sp"
+            android:textColor="#FF215cbb" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/list_arrow"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
