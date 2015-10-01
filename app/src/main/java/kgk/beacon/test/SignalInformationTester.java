@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
+import kgk.beacon.util.AppController;
 
 public class SignalInformationTester {
 
@@ -26,9 +27,10 @@ public class SignalInformationTester {
             public void run() {
                 try {
                     Signal signal = new Signal();
+                    long deviceId = AppController.getInstance().getActiveDeviceId();
 
                     Log.d(TAG, "First signal dispatched");
-                    signal.setDeviceId(11100015);
+                    signal.setDeviceId(deviceId);
                     signal.setMode(1);
                     signal.setLatitude(55.64331);
                     signal.setLongitude(37.47085);
@@ -44,7 +46,7 @@ public class SignalInformationTester {
                     TimeUnit.SECONDS.sleep(5);
 
                     Log.d(TAG, "Second signal dispatched");
-                    signal.setDeviceId(11100015);
+                    signal.setDeviceId(deviceId);
                     signal.setMode(1);
                     signal.setLatitude(55.65367);
                     signal.setLongitude(37.47437);
@@ -60,7 +62,7 @@ public class SignalInformationTester {
                     TimeUnit.SECONDS.sleep(5);
 
                     Log.d(TAG, "Third signal dispatched");
-                    signal.setDeviceId(11100015);
+                    signal.setDeviceId(deviceId);
                     signal.setMode(1);
                     signal.setLatitude(55.66422);
                     signal.setLongitude(37.48733);
@@ -76,7 +78,7 @@ public class SignalInformationTester {
                     TimeUnit.SECONDS.sleep(5);
 
                     Log.d(TAG, "Fourth signal dispatched");
-                    signal.setDeviceId(11100015);
+                    signal.setDeviceId(deviceId);
                     signal.setMode(1);
                     signal.setLatitude(55.66539);
                     signal.setLongitude(37.53453);
@@ -92,7 +94,7 @@ public class SignalInformationTester {
                     TimeUnit.SECONDS.sleep(5);
 
                     Log.d(TAG, "Fifth signal dispatched");
-                    signal.setDeviceId(11100015);
+                    signal.setDeviceId(deviceId);
                     signal.setMode(1);
                     signal.setLatitude(55.6572);
                     signal.setLongitude(37.562);

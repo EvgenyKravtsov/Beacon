@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Signal {
 
-    private int deviceId;
+    private long deviceId;
     private int mode;
     private double latitude;
     private double longitude;
-    private long date;
+    private long date; // Unix seconds
     private double voltage;  // Volts
     private double balance; // Russian roubles
     private int satellites;
@@ -19,11 +19,11 @@ public class Signal {
 
     public Signal() {}
 
-    public int getDeviceId() {
+    public long getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(int deviceId) {
+    public void setDeviceId(long deviceId) {
         this.deviceId = deviceId;
     }
 

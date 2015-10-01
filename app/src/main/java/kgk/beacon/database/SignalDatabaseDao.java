@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -65,6 +66,13 @@ public class SignalDatabaseDao {
     public void insertSignal(Signal signal) {
         try {
             open();
+
+            if (hasDuplicate(signal)) {
+                Log.d(TAG, "Duplicate ignored");
+                close();
+                return;
+            }
+
             ContentValues values = new ContentValues();
             values.put(SignalDatabaseHelper.COLUMN_DEVICE_ID, signal.getDeviceId());
             values.put(SignalDatabaseHelper.COLUMN_MODE, signal.getMode());
@@ -85,6 +93,14 @@ public class SignalDatabaseDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean hasDuplicate(Signal signal) {
+        Cursor cursor = database.rawQuery(String.format(SignalDatabaseHelper
+                .SignalDatabaseQuery.GET_SIGNALS_BY_DEVICE_ID_AND_DATE, signal.getDeviceId(), signal.getDate()), null);
+        int duplicateCount  = cursor.getCount();
+        cursor.close();
+        return duplicateCount != 0;
     }
 
     public List<Signal> getSignalsByPeriod(long dateFrom, long dateTo) {
@@ -145,7 +161,7 @@ public class SignalDatabaseDao {
 
     private Signal cursorToSignal(Cursor cursor) {
         Signal signal = new Signal();
-        signal.setDeviceId(cursor.getInt(1));
+        signal.setDeviceId(cursor.getLong(1));
         signal.setMode(cursor.getInt(2));
         signal.setLatitude(cursor.getDouble(3));
         signal.setLongitude(cursor.getDouble(4));

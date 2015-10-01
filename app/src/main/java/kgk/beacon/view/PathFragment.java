@@ -12,7 +12,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,8 +43,6 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
     private Marker currentMarker;
     private Paint paint;
 
-    //// Fragment methods
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +55,6 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         getMapAsync(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-
-    //// Map methods
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -94,9 +89,6 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         currentMarker.remove();
         return true;
     }
-
-
-    //// Private methods
 
     private void drawPath(GoogleMap googleMap) {
         ArrayList<LatLng> coordinates = new ArrayList<>();
@@ -145,7 +137,7 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         viewHolder.satellitesCountTextView.setText("0");
         viewHolder.voltageCountTextView.setText("0 V");
         viewHolder.speedCountTextView.setText("0 km/h");
-        viewHolder.numOfSignalsCountTextView.setText("0");
+        viewHolder.chargeCountTextView.setText("0");
         viewHolder.directionCountTextView.setText("0");
         viewHolder.balanceCountTextView.setText("0 rub.");
         viewHolder.temperatureCountTextView.setText(random.nextInt(50) + "");
@@ -165,8 +157,6 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         return bitmap;
     }
 
-    //// Inner classes
-
     static class ViewHolderPathFragment {
 
         @Bind(R.id.popupWindowPath_lastActionTimeStamp) TextView lastActionTimeStamp;
@@ -174,7 +164,7 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         @Bind(R.id.popupWindowPath_satellitesCountTextView) TextView satellitesCountTextView;
         @Bind(R.id.popupWindowPath_voltageCountTextView) TextView voltageCountTextView;
         @Bind(R.id.popupWindowPath_speedCountTextView) TextView speedCountTextView;
-        @Bind(R.id.popupWindowPath_numOfSignalsCountTextView) TextView numOfSignalsCountTextView;
+        @Bind(R.id.popupWindowPath_chargeCountTextView) TextView chargeCountTextView;
         @Bind(R.id.popupWindowPath_directionCountTextView) TextView directionCountTextView;
         @Bind(R.id.popupWindowPath_balanceCountTextView) TextView balanceCountTextView;
         @Bind(R.id.popupWindowPath_temperatureCountTextView) TextView temperatureCountTextView;

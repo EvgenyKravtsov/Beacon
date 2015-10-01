@@ -69,7 +69,6 @@ public class InformationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         dispatcher.register(this);
-        dispatcher.register(signalStore);
         updateUI();
 
         // TODO Delete test code
@@ -80,10 +79,6 @@ public class InformationFragment extends Fragment {
     public void onPause() {
         super.onPause();
         dispatcher.unregister(this);
-        dispatcher.unregister(signalStore);
-
-        // TODO Delete test code
-        SignalDatabaseDao.getInstance(AppController.getInstance()).deleteAllSignalsFromDatabase();
     }
 
     public void onEventMainThread(SignalStore.SignalStoreChangeEvent event) {
@@ -121,8 +116,8 @@ public class InformationFragment extends Fragment {
             Log.d(TAG, "Displaying default values");
             displayInfoFieldsParameters();
         } else {
-            lastActionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate())));
-            lastPositioningTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate())));
+            lastActionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
+            lastPositioningTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
             satellitesCountTextView.setText(signal.getCharge() + "");
             voltageCountTextView.setText(signal.getVoltage() + "");
             speedCountTextView.setText(signal.getSpeed() + "");
@@ -166,8 +161,12 @@ public class InformationFragment extends Fragment {
 
     @OnClick(R.id.fragmentInformation_mapButton)
     public void onPressMapButton(View view) {
-        Intent mapIntent = new Intent(getActivity(), MapCustomActivity.class);
-        startActivity(mapIntent);
+        if (signalStore.getSignal() != null) {
+            Intent mapIntent = new Intent(getActivity(), MapCustomActivity.class);
+            startActivity(mapIntent);
+        } else {
+            Toast.makeText(AppController.getInstance(), R.string.no_signals_toast, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.fragmentInformation_settingsButton)
@@ -187,6 +186,7 @@ public class InformationFragment extends Fragment {
             for (Signal signal : signals) {
                 Log.d(TAG, signal.toString());
             }
+            SignalDatabaseDao.getInstance(AppController.getInstance()).deleteAllSignalsFromDatabase();
         } else {
             Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
         }

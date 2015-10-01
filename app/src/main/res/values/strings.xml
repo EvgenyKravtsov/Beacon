@@ -40,6 +40,7 @@
     <string name="map_button_label">Map</string>
     <string name="settings_button_label">Settings</string>
     <string name="search_label">Search</string>
+    <string name="no_signals_toast">No signals</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Period</string>
