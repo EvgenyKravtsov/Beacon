@@ -36,8 +36,7 @@
     <ExpandableListView
         android:id="@+id/fragmentHistory_historyListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true" >
+        android:layout_height="wrap_content" >
     </ExpandableListView>
 
 </LinearLayout>

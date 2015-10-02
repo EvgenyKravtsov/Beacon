@@ -3,18 +3,16 @@ package kgk.beacon.stores;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import kgk.beacon.actions.Action;
 import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.actions.SignalActions;
 import kgk.beacon.database.SignalDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
-import kgk.beacon.test.DateBank;
 import kgk.beacon.util.AppController;
-import kgk.beacon.util.DateFormatter;
-import kgk.beacon.view.HistoryFragment;
 
 public class SignalStore extends Store {
 
@@ -22,14 +20,15 @@ public class SignalStore extends Store {
 
     private static SignalStore instance;
     private SignalDatabaseDao signalDatabaseDao;
+    private ActionCreator actionCreator;
 
-    private ArrayList<Signal> signalsDisplayed;
+    private List<Signal> signalsDisplayed;
     private Signal signal;
 
     protected SignalStore(Dispatcher dispatcher) {
         super(dispatcher);
+        actionCreator = ActionCreator.getInstance(Dispatcher.getInstance(EventBus.getDefault()));
         signalsDisplayed = new ArrayList<>();
-        getDefaultSignals(HistoryFragment.DEFAULT_NUMBER_OF_SIGNALS);
         signalDatabaseDao = SignalDatabaseDao.getInstance(AppController.getInstance());
     }
 
@@ -41,8 +40,12 @@ public class SignalStore extends Store {
         return instance;
     }
 
-    public ArrayList<Signal> getSignalsDisplayed() {
+    public List<Signal> getSignalsDisplayed() {
         return signalsDisplayed;
+    }
+
+    public void setSignalsDisplayed(List<Signal> signalsDisplayed) {
+        this.signalsDisplayed = signalsDisplayed;
     }
 
     public Signal getSignal() {
@@ -52,7 +55,6 @@ public class SignalStore extends Store {
     StoreChangeEvent changeEvent() {
         return new SignalStoreChangeEvent();
     }
-
 
     public void onEvent(Action action) {
         onAction(action);
@@ -68,40 +70,21 @@ public class SignalStore extends Store {
                 emitStoreChange();
                 break;
             case SignalActions.FILTER_SIGNALS_DISPLAYED:
-                filterSignalsDisplayed((Date) action.getData().get("FROM_DATE"), (Date) action.getData().get("TO_DATE"));
+                signalsDisplayed.clear();
+                signalsDisplayed = (List<Signal>) action.getData().get(ActionCreator.KEY_SIGNALS);
+
+                for (Signal signal : signalsDisplayed) {
+                    Log.d(TAG, signal.toString());
+                }
+
                 emitStoreChange();
                 break;
-        }
-    }
-
-
-    private void getDefaultSignals(int numberOfSignals) {
-        ArrayList<Signal> signals = DateBank.getInstance().getSignals();
-        for (int i = 0; i < numberOfSignals; i++) {
-            signalsDisplayed.add(signals.get(signals.size() - (i + 1)));
         }
     }
 
     private void updateLastSignal(Signal signal) {
         this.signal = signal;
         Log.d(TAG, "Store changes emitted");
-    }
-
-    private void filterSignalsDisplayed(Date fromDate, Date toDate) {
-        signalsDisplayed.clear();
-
-        ArrayList<Signal> signals = DateBank.getInstance().getSignals();
-
-        for (Signal signal : signals) {
-            Date signalDate = new Date(signal.getDate());
-            if (signalDate.compareTo(fromDate) >= 0 && signalDate.compareTo(toDate) <= 0) {
-                signalsDisplayed.add(signal);
-            }
-        }
-
-        for (Signal signal : signalsDisplayed) {
-            Log.d(TAG, DateFormatter.formatDateAndTime(new Date(signal.getDate())));
-        }
     }
 
     public class SignalStoreChangeEvent implements StoreChangeEvent {}

@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
 import kgk.beacon.actions.Action;
@@ -22,10 +24,13 @@ import kgk.beacon.actions.HttpActions;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.util.AppController;
+import kgk.beacon.util.LastActionDateStorage;
 import kgk.beacon.util.StartActivityEvent;
 import kgk.beacon.view.DeviceListActivity;
 
 public class VolleyHttpClient implements Response.ErrorListener {
+
+    // TODO Move last action data save commands to successful response block
 
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
     private static final String AUTHENTICATION_URL = "http://dev.trezub.ru/api2/beacon/authorize";
@@ -130,6 +135,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void queryBeaconRequest() {
+        LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
         QueryBeaconRequest request = new QueryBeaconRequest(Request.Method.GET,
                 QueryBeaconRequest.makeUrl(""),
                 new Response.Listener<String>() {
@@ -160,6 +166,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void toggleSearchModeRequest(boolean searchModeStatus) {
+        LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
         ToggleSearchModeRequest request = new ToggleSearchModeRequest(Request.Method.GET,
                 ToggleSearchModeRequest.makeUrl("", searchModeStatus),
                 new Response.Listener<String>() {
@@ -175,6 +182,8 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void settingsRequest(JSONObject settingsJson) {
+        LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
+
         try {
             settingsJson.put("id", AppController.getInstance().getActiveDeviceId());
         } catch (JSONException e) {

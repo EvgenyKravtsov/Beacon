@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -16,6 +17,8 @@ import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.actions.SignalActions;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
+import kgk.beacon.stores.SignalStore;
+import kgk.beacon.util.AppController;
 
 public class SignalDatabaseDao {
 
@@ -109,7 +112,7 @@ public class SignalDatabaseDao {
         try {
             open();
             Cursor cursor = database.rawQuery(String.format(SignalDatabaseHelper
-                    .SignalDatabaseQuery.GET_SIGNALS_BY_PERIOD, dateFrom, dateTo), null);
+                    .SignalDatabaseQuery.GET_SIGNALS_BY_PERIOD, dateFrom, dateTo, AppController.getInstance().getActiveDeviceId()), null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Signal signal = cursorToSignal(cursor);
@@ -118,12 +121,48 @@ public class SignalDatabaseDao {
             }
             cursor.close();
             close();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        actionCreator.filterSignalsDisplayed(signals);
+        return signals;
+    }
+
+    public List<Signal> getLastSignalsByDeviceId(int numberOfSignals) {
+        List<Signal> signals = new ArrayList<>();
+
+        try {
+            open();
+            Cursor cursor = database.rawQuery(String.format(SignalDatabaseHelper
+                            .SignalDatabaseQuery.GET_SIGNALS_BY_DEVICE_ID,
+                    AppController.getInstance().getActiveDeviceId()), null);
+
+            if (numberOfSignals >= cursor.getCount()) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    Signal signal = cursorToSignal(cursor);
+                    signals.add(signal);
+                    cursor.moveToNext();
+                }
+            } else {
+                cursor.moveToLast();
+                while (numberOfSignals != 0) {
+                    Log.d(TAG, "" + numberOfSignals);
+                    Signal signal = cursorToSignal(cursor);
+                    signals.add(0, signal);
+                    cursor.moveToPrevious();
+                    numberOfSignals--;
+                }
+            }
+
+            cursor.close();
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        SignalStore.getInstance(Dispatcher.getInstance(EventBus.getDefault())).setSignalsDisplayed(signals);
         return signals;
     }
 
@@ -185,6 +224,15 @@ public class SignalDatabaseDao {
             case SignalActions.INSERT_SIGNAL_TO_DATABASE:
                 Signal signal = (Signal) action.getData().get(ActionCreator.KEY_SIGNAL);
                 insertSignal(signal);
+                break;
+            case SignalActions.GET_LAST_SIGNALS_BY_DEVICE_ID_FROM_DATABASE:
+                int numberOfSignals = (int) action.getData().get(ActionCreator.KEY_NUMBER_OF_SIGNALS);
+                getLastSignalsByDeviceId(numberOfSignals);
+                break;
+            case SignalActions.GET_SIGNALS_BY_PERIOD:
+                long fromDate = ((Date) action.getData().get(ActionCreator.KEY_FROM_DATE)).getTime() / 1000;
+                long toDate = ((Date) action.getData().get(ActionCreator.KEY_TO_DATE)).getTime() / 1000;
+                getSignalsByPeriod(fromDate, toDate);
                 break;
         }
     }

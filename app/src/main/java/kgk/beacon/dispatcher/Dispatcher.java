@@ -12,8 +12,6 @@ public class Dispatcher {
 
     private final EventBus bus;
 
-    //// Constructors
-
     private Dispatcher(EventBus bus) {
         this.bus = bus;
     }
@@ -26,8 +24,6 @@ public class Dispatcher {
         return instance;
     }
 
-    //// Public methods
-
     public void register(final Object cls) {
         bus.register(cls);
     }
@@ -36,9 +32,6 @@ public class Dispatcher {
         bus.unregister(cls);
     }
 
-    /**
-     * Creates an Action object and put it into event bus
-     */
     public void dispatch(String type, Object... data) {
         if (isEmpty(type)) {
             throw new IllegalArgumentException("Type must not be empty");
@@ -59,14 +52,9 @@ public class Dispatcher {
         post(actionBuilder.build());
     }
 
-    /**
-     * Posting a unified event, when state of store is changed and associated view should also change
-     */
     public void emitChange(Store.StoreChangeEvent event) {
         post(event);
     }
-
-    //// Private methods
 
     private void post(final Object event) {
         bus.post(event);

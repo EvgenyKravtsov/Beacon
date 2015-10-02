@@ -58,10 +58,7 @@ public class InformationActivity extends AppCompatActivity implements OnMapReady
     @Override
     protected void onResume() {
         super.onResume();
-
         dispatcher.register(this);
-        dispatcher.register(signalStore);
-
         initializeMap();
     }
 
@@ -80,7 +77,6 @@ public class InformationActivity extends AppCompatActivity implements OnMapReady
     public void onPause() {
         super.onPause();
         dispatcher.unregister(this);
-        dispatcher.unregister(signalStore);
     }
 
     private void setInformationFragment() {

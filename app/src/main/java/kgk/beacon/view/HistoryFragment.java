@@ -12,13 +12,11 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -30,15 +28,18 @@ import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.SignalStore;
+import kgk.beacon.util.AppController;
 import kgk.beacon.util.DateFormatter;
 
 
 public class HistoryFragment extends Fragment {
 
+    // TODO Link Map and list item
+
     public static final String TAG = HistoryFragment.class.getSimpleName();
 
     public static final int REQUEST_DATE_PICKER = 5;
-    public static final int DEFAULT_NUMBER_OF_SIGNALS = 30;
+    public static final int DEFAULT_NUMBER_OF_SIGNALS = 10;
 
     private HistoryExpandableListViewAdapter adapter;
 
@@ -66,8 +67,6 @@ public class HistoryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         dispatcher.register(this);
-        dispatcher.register(signalStore);
-
         actionCreator.refreshSignalsDisplayed();
     }
 
@@ -75,15 +74,14 @@ public class HistoryFragment extends Fragment {
     public void onPause() {
         super.onPause();
         dispatcher.unregister(this);
-        dispatcher.unregister(signalStore);
     }
 
-    public void onEvent(SignalStore.SignalStoreChangeEvent event) {
+    public void onEventMainThread(SignalStore.SignalStoreChangeEvent event) {
         updateExpandableListViewAdapter();
     }
 
     private void updateExpandableListViewAdapter() {
-        Map<String, Object> dataForAdapter = sortForExpandableList(signalStore.getSignalsDisplayed());
+        Map<String, Object> dataForAdapter = sortForExpandableList((ArrayList<Signal>) signalStore.getSignalsDisplayed());
 
         ArrayList<Map<String, String>> groupDataList = (ArrayList<Map<String, String>>) dataForAdapter.get("groupDataList");
         String[] groupFrom = (String[]) dataForAdapter.get("groupFrom");
@@ -110,7 +108,7 @@ public class HistoryFragment extends Fragment {
     private Map<String, Object> sortForExpandableList(ArrayList<Signal> signals) {
         ArrayList<Date> datesFromSignals = new ArrayList<>();
         for (Signal signal : signals) {
-            datesFromSignals.add(new Date(signal.getDate()));
+            datesFromSignals.add(new Date(signal.getDate() * 1000));
         }
 
         Date[] groupsArray = DateFormatter.filterForUniqueDays(datesFromSignals);
@@ -170,7 +168,7 @@ public class HistoryFragment extends Fragment {
         int targetDay = targetDate.get(Calendar.DAY_OF_MONTH);
 
         for (Signal signal : signals) {
-            signalDate.setTime(new Date(signal.getDate()));
+            signalDate.setTime(new Date(signal.getDate() * 1000));
 
             int signalYear = signalDate.get(Calendar.YEAR);
             int signalMonth = signalDate.get(Calendar.MONTH);
@@ -194,7 +192,8 @@ public class HistoryFragment extends Fragment {
 
     @OnClick(R.id.fragmentHistory_trackButton)
     public void onPressTrackButton(View view) {
-        // Starting path activity
+        // TODO Check for enough point to make track
+
         Intent intent = new Intent(getActivity(), PathActivity.class);
         startActivity(intent);
     }
@@ -237,18 +236,15 @@ public class HistoryFragment extends Fragment {
                 viewHolder = (ViewHolderHistoryFragment) convertView.getTag();
             }
 
-            Date eventDate = new Date(getChild(groupPosition, childPosition).getDate());
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.ROOT);
-            String time = simpleDateFormat.format(eventDate);
-            viewHolder.time.setText(time);
-
-            viewHolder.satellites.setText("0 sats.");
-            viewHolder.voltage.setText("0 V");
-            viewHolder.signals.setText("0 sig.");
-            viewHolder.speed.setText("0 km/h");
-            viewHolder.temperature.setText("0 C");
-            viewHolder.balance.setText("0 rub.");
+            Signal signal = getChild(groupPosition, childPosition);
+            viewHolder.time.setText(DateFormatter.formatTime(new Date(signal.getDate() * 1000)));
+            viewHolder.type.setText(String.valueOf(AppController.getInstance().getActiveDeviceId()));
+            viewHolder.satellites.setText(String.valueOf(signal.getSatellites()));
+            viewHolder.voltage.setText(String.valueOf(signal.getVoltage()));
+            viewHolder.charge.setText(String.valueOf(signal.getCharge()));
+            viewHolder.speed.setText(String.valueOf(signal.getSpeed()));
+            viewHolder.temperature.setText(String.valueOf(signal.getTemperature()));
+            viewHolder.balance.setText(String.valueOf(signal.getBalance()));
 
             return convertView;
         }
@@ -265,9 +261,10 @@ public class HistoryFragment extends Fragment {
     static class ViewHolderHistoryFragment {
 
         @Bind(R.id.listItemHistory_timeTextView) TextView time;
+        @Bind(R.id.listItemHistory_typeTextView) TextView type;
         @Bind(R.id.listItemHistory_satellitesCountTextView) TextView satellites;
         @Bind(R.id.listItemHistory_voltageCountTextView) TextView voltage;
-        @Bind(R.id.listItemHistory_signalsCountTextView) TextView signals;
+        @Bind(R.id.listItemHistory_chargeCountTextView) TextView charge;
         @Bind(R.id.listItemHistory_speedCountTextView) TextView speed;
         @Bind(R.id.listItemHistory_temperatureCountTextView) TextView temperature;
         @Bind(R.id.listItemHistory_balanceTextView) TextView balance;

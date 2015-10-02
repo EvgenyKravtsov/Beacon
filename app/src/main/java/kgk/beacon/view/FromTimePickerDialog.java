@@ -21,8 +21,6 @@ public class FromTimePickerDialog extends DialogFragment {
 
     @Bind(R.id.pickerFromTime_timePicker) TimePicker timePicker;
 
-    //// DialogFragment methods
-
     @Override @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.picker_from_time, null);
@@ -40,8 +38,6 @@ public class FromTimePickerDialog extends DialogFragment {
                 })
                 .create();
     }
-
-    //// Private methods
 
     private void sendResult(int resultCode) {
         if (getTargetFragment() == null) {

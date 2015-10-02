@@ -81,4 +81,14 @@ public class DateFormatter {
             this.day = day;
         }
     }
+
+    public static String loadLastActionDateString() {
+        Date date = LastActionDateStorage.getInstance().load();
+
+        if (date.compareTo(new Date(0)) == 0) {
+            return  "No actions";
+        } else {
+            return DateFormatter.formatDateAndTime(date);
+        }
+    }
 }

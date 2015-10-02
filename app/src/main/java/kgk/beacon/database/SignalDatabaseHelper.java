@@ -71,12 +71,16 @@ public class SignalDatabaseHelper extends SQLiteOpenHelper {
 
         public static final String GET_SIGNALS_BY_PERIOD = "SELECT * FROM " + TABLE_SIGNAL
                 + " WHERE " + COLUMN_DATE + " >= %d AND "
-                + COLUMN_DATE + " <= %d";
+                + COLUMN_DATE + " <= %d AND "
+                + COLUMN_DEVICE_ID + " = %d";
 
         public static final String DELETE_ALL_SIGNALS = "DELETE FROM " + TABLE_SIGNAL;
 
         public static final String GET_SIGNALS_BY_DEVICE_ID_AND_DATE = "SELECT * FROM " + TABLE_SIGNAL
                 + " WHERE " + COLUMN_DEVICE_ID + " = %d AND "
                 + COLUMN_DATE + " = %d";
+
+        public static final String GET_SIGNALS_BY_DEVICE_ID = "SELECT * FROM " + TABLE_SIGNAL
+                + " WHERE " + COLUMN_DEVICE_ID + " = %d";
     }
 }

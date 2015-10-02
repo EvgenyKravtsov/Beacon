@@ -48,8 +48,6 @@ public class DatePickerFragment extends Fragment {
     private ActionCreator actionCreator;
     private SignalStore signalStore;
 
-    //// Fragment methods
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_date_picker, container, false);
@@ -65,15 +63,11 @@ public class DatePickerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //dispatcher.register(this);
-        dispatcher.register(signalStore);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        //dispatcher.unregister(this);
-        dispatcher.unregister(signalStore);
     }
 
     @Override
@@ -112,15 +106,11 @@ public class DatePickerFragment extends Fragment {
         }
     }
 
-    //// Private methods
-
     private void initFluxDependencies() {
         dispatcher = Dispatcher.getInstance(EventBus.getDefault());
         actionCreator = ActionCreator.getInstance(dispatcher);
         signalStore = SignalStore.getInstance(dispatcher);
     }
-
-    //// Button callbacks
 
     @OnClick(R.id.fragmentDatePicker_fromDateButton)
     public void onPressFromDateButton(View view) {
@@ -166,7 +156,7 @@ public class DatePickerFragment extends Fragment {
         } else if (fromDate.getTime().getTime() >= toDate.getTime().getTime()) {
             Toast.makeText(getActivity(), getString(R.string.wrong_period_message), Toast.LENGTH_LONG).show();
         } else {
-            actionCreator.filterSignalsDisplayed(fromDate.getTime(), toDate.getTime());
+            actionCreator.getSignalsByPeriod(fromDate.getTime(), toDate.getTime());
             getActivity().finish();
         }
     }

@@ -12,8 +12,6 @@ public class PathActivity extends SingleFragmentActivity {
         return new PathFragment();
     }
 
-    //// Activity Methods
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

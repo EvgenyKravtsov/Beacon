@@ -30,7 +30,11 @@ import kgk.beacon.util.DateFormatter;
 
 public class InformationFragment extends Fragment {
 
+    // TODO Set proper last signal loading on information fragment start;
+
     public static final String TAG = InformationFragment.class.getSimpleName();
+
+    private static final String KEY_SEARCH_SWITCH = "key_search_switch";
 
     @Bind(R.id.fragmentInformation_brandTextView) TextView brandTextView;
     @Bind(R.id.fragmentInformation_modelTextView) TextView modelTextView;
@@ -44,6 +48,7 @@ public class InformationFragment extends Fragment {
     @Bind(R.id.fragmentInformation_directionCountTextView) TextView directionCountTextView;
     @Bind(R.id.fragmentInformation_balanceCountTextView) TextView balanceCountTextView;
     @Bind(R.id.fragmentInformation_temperatureCountTextView) TextView temperatureCountTextView;
+    @Bind(R.id.fragmentInformation_searchButton) Button searchButton;
 
     private Dispatcher dispatcher;
     private ActionCreator actionCreator;
@@ -58,9 +63,7 @@ public class InformationFragment extends Fragment {
         initFluxDependencies();
 
         displayGeneralInformation("Brand", "Model", "Number");
-
-        // TODO Make search mode flag global through shared preferences
-        searchSwitch = false;
+        searchSwitch = AppController.loadBooleanValueFromSharedPreferences(KEY_SEARCH_SWITCH);
 
         return view;
     }
@@ -116,7 +119,7 @@ public class InformationFragment extends Fragment {
             Log.d(TAG, "Displaying default values");
             displayInfoFieldsParameters();
         } else {
-            lastActionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
+            lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
             lastPositioningTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
             satellitesCountTextView.setText(signal.getCharge() + "");
             voltageCountTextView.setText(signal.getVoltage() + "");
@@ -125,6 +128,12 @@ public class InformationFragment extends Fragment {
             directionCountTextView.setText(signal.getDirection() + "");
             balanceCountTextView.setText(signal.getBalance() + "");
             temperatureCountTextView.setText(signal.getTemperature() + "");
+        }
+
+        if (searchSwitch) {
+            searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_on_button));
+        } else {
+            searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_off_button));
         }
     }
 
@@ -135,6 +144,7 @@ public class InformationFragment extends Fragment {
         if (searchSwitch) {
             if (AppController.getInstance().isNetworkAvailable()) {
                 searchSwitch = false;
+                AppController.saveBooleanValueToSharedPreferences(KEY_SEARCH_SWITCH, false);
                 searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_off_button));
                 actionCreator.sendToggleSearchModeRequest(false);
             } else {
@@ -143,6 +153,7 @@ public class InformationFragment extends Fragment {
         } else {
             if (AppController.getInstance().isNetworkAvailable()) {
                 searchSwitch = true;
+                AppController.saveBooleanValueToSharedPreferences(KEY_SEARCH_SWITCH, true);
                 searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_on_button));
                 actionCreator.sendToggleSearchModeRequest(true);
             } else {
@@ -153,8 +164,8 @@ public class InformationFragment extends Fragment {
 
     @OnClick(R.id.fragmentInformation_historyButton)
     public void onPressHistoryButton(View view) {
+        actionCreator.getLastSignalsByDeviceIdFromDatabase(HistoryFragment.DEFAULT_NUMBER_OF_SIGNALS);
 
-        // Starting information activity
         Intent intent = new Intent(getActivity(), HistoryActivity.class);
         startActivity(intent);
     }

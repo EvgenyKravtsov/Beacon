@@ -26,15 +26,24 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
+import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.model.Signal;
+import kgk.beacon.stores.SignalStore;
+import kgk.beacon.util.DateFormatter;
 
 public class PathFragment extends SupportMapFragment implements OnMapReadyCallback,
                                                 GoogleMap.OnMapClickListener,
                                                 GoogleMap.OnMarkerClickListener {
+
+    // TODO Add basic markers to track points
 
     public static final String TAG = PathFragment.class.getSimpleName();
 
@@ -42,6 +51,7 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
     private PolylineOptions path;
     private Marker currentMarker;
     private Paint paint;
+    private List<Signal> signals;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,8 +87,16 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
                 if (currentMarker != null) {
                     currentMarker.remove();
                 }
-                //currentMarker = googleMap.addMarker(new MarkerOptions().position(new LatLng(pathCoordinates.latitude, pathCoordinates.longitude)));
-                currentMarker = addCustomMarker(new LatLng(pathCoordinates.latitude, pathCoordinates.longitude));
+
+                Signal currentSignal = null;
+                for (Signal signal : signals) {
+                    if (signal.getLatitude() == pathCoordinates.latitude &&
+                            signal.getLongitude() == pathCoordinates.longitude) {
+                        currentSignal = signal;
+                    }
+                }
+
+                currentMarker = addCustomMarker(currentSignal);
             }
         }
     }
@@ -92,12 +110,12 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
 
     private void drawPath(GoogleMap googleMap) {
         ArrayList<LatLng> coordinates = new ArrayList<>();
-
-        coordinates.add(new LatLng(55.64331, 37.47085));
-        coordinates.add(new LatLng(55.65367, 37.47437));
-        coordinates.add(new LatLng(55.66422, 37.48733));
-        coordinates.add(new LatLng(55.66539, 37.53453));
-        coordinates.add(new LatLng(55.6572, 37.562));
+        signals = SignalStore.getInstance(Dispatcher.getInstance(EventBus.getDefault())).getSignalsDisplayed();
+        for (Signal signal : signals) {
+            double latitude = signal.getLatitude();
+            double longitude = signal.getLongitude();
+            coordinates.add(new LatLng(latitude, longitude));
+        }
 
         path = new PolylineOptions();
         path.addAll(coordinates);
@@ -107,13 +125,13 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
 
         googleMap.addPolyline(path);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates.get(2), 13));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates.get(0), 13));
     }
 
-    private Marker addCustomMarker(LatLng coordinates) {
+    private Marker addCustomMarker(Signal signal) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.map_custom_marker, null);
-        updateMarkerContent(layout);
+        updateMarkerContent(layout, signal);
 
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
@@ -121,26 +139,26 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         Bitmap markerBitmap = bitmapFromView(layout, width, height);
 
         MarkerOptions markerOptions = new MarkerOptions()
-                .position(coordinates)
+                .position(new LatLng(signal.getLatitude(), signal.getLongitude()))
                 .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap))
                 .anchor(0.5f, 1);
         return googleMap.addMarker(markerOptions);
     }
 
-    private void updateMarkerContent(View layout) {
+    private void updateMarkerContent(View layout, Signal signal) {
         Random random = new Random();
 
         ViewHolderPathFragment viewHolder = new ViewHolderPathFragment(layout);
 
-        viewHolder.lastActionTimeStamp.setText("DD.MM.YY 00:00");
-        viewHolder.lastPositionTimeStamp.setText("DD.MM.YY 00:00");
-        viewHolder.satellitesCountTextView.setText("0");
-        viewHolder.voltageCountTextView.setText("0 V");
-        viewHolder.speedCountTextView.setText("0 km/h");
-        viewHolder.chargeCountTextView.setText("0");
-        viewHolder.directionCountTextView.setText("0");
-        viewHolder.balanceCountTextView.setText("0 rub.");
-        viewHolder.temperatureCountTextView.setText(random.nextInt(50) + "");
+        viewHolder.lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
+        viewHolder.lastPositionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
+        viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
+        viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage()));
+        viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed()));
+        viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()));
+        viewHolder.directionCountTextView.setText(String.valueOf(signal.getDirection()));
+        viewHolder.balanceCountTextView.setText(String.valueOf(signal.getBalance()));
+        viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature()));
     }
 
     private Bitmap bitmapFromView(View layout, int width, int height) {

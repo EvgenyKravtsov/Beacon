@@ -128,7 +128,7 @@ public class MapCustomFragment extends SupportMapFragment implements OnMapReadyC
 
     private void updateMarkerContent(View layout) {
         ViewHolderMapCustomFragment viewHolder = new ViewHolderMapCustomFragment(layout);
-        viewHolder.lastActionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
+        viewHolder.lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
         viewHolder.lastPositionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
         viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
         viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage()));

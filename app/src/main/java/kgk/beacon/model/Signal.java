@@ -117,7 +117,7 @@ public class Signal {
 
     @Override
     public String toString() {
-        String date = new Date(this.date).toString();
+        String date = new Date(this.date * 1000).toString();
         return "Signal:  "
                 + "deviceId - " + deviceId + " | "
                 + "mode - " + mode + " | "
