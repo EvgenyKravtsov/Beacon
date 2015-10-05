@@ -208,8 +208,8 @@ public class SignalDatabaseDao {
         signal.setVoltage(cursor.getInt(6));
         signal.setBalance(cursor.getInt(7));
         signal.setSatellites(cursor.getInt(8));
-        signal.setCharge(cursor.getInt(9));
-        signal.setSpeed(cursor.getInt(10));
+        signal.setSpeed(cursor.getInt(9));
+        signal.setCharge(cursor.getInt(10));
         signal.setDirection(cursor.getInt(11));
         signal.setTemperature(cursor.getInt(12));
         return signal;

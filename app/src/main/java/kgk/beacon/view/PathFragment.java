@@ -28,7 +28,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,8 +41,6 @@ import kgk.beacon.util.DateFormatter;
 public class PathFragment extends SupportMapFragment implements OnMapReadyCallback,
                                                 GoogleMap.OnMapClickListener,
                                                 GoogleMap.OnMarkerClickListener {
-
-    // TODO Add basic markers to track points
 
     public static final String TAG = PathFragment.class.getSimpleName();
 
@@ -93,6 +90,7 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
                     if (signal.getLatitude() == pathCoordinates.latitude &&
                             signal.getLongitude() == pathCoordinates.longitude) {
                         currentSignal = signal;
+                        Log.d(TAG, signal.getCharge() + "");
                     }
                 }
 
@@ -104,7 +102,12 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
     @Override
     public boolean onMarkerClick(final Marker marker) {
         Log.d("Marker", "clicked");
-        currentMarker.remove();
+
+        if (currentMarker != null) {
+            currentMarker.remove();
+        }
+        onMapClick(marker.getPosition());
+
         return true;
     }
 
@@ -119,13 +122,19 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
 
         path = new PolylineOptions();
         path.addAll(coordinates);
-        path.width(5);
+        path.width(3);
         path.color(Color.RED);
         path.geodesic(false);
 
         googleMap.addPolyline(path);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates.get(0), 13));
+
+        for (LatLng latLng : coordinates) {
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng);
+            googleMap.addMarker(markerOptions);
+        }
     }
 
     private Marker addCustomMarker(Signal signal) {
@@ -133,8 +142,8 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         View layout = inflater.inflate(R.layout.map_custom_marker, null);
         updateMarkerContent(layout, signal);
 
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 280, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 185, getResources().getDisplayMetrics());
 
         Bitmap markerBitmap = bitmapFromView(layout, width, height);
 
@@ -146,8 +155,6 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
     }
 
     private void updateMarkerContent(View layout, Signal signal) {
-        Random random = new Random();
-
         ViewHolderPathFragment viewHolder = new ViewHolderPathFragment(layout);
 
         viewHolder.lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
@@ -155,7 +162,8 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
         viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage()));
         viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed()));
-        viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()));
+        Log.d(TAG, signal.getCharge() + "");
+        viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()) + "%");
         viewHolder.directionCountTextView.setText(String.valueOf(signal.getDirection()));
         viewHolder.balanceCountTextView.setText(String.valueOf(signal.getBalance()));
         viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature()));

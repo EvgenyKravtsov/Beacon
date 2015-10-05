@@ -24,8 +24,8 @@
 
     <!-- Strings for InformationFragment -->
     <string name="detecting_mode_text">Message in detecting mode</string>
-    <string name="last_positioning_text">Last Positioning</string>
-    <string name="last_action_text">Last Action</string>
+    <string name="last_positioning_text">Last Positioning:</string>
+    <string name="last_action_text">Last Action:</string>
     <string name="satellites_label">Satellites</string>
     <string name="voltage_label">Voltage</string>
     <string name="speed_label">Speed</string>
@@ -71,4 +71,13 @@
     <string name="balance_request_command_label">Balance request command</string>
     <string name="gprs_label">GPRS</string>
     <string name="send_button_label">Send</string>
+    <string name="settings_gprs_spinner_on">On</string>
+    <string name="settings_gprs_spinner_off">Off</string>
+
+    <!-- Strings for Language Settings -->
+    <string name="login_menu_language_setting_label">Language</string>
+    <string name="english_language_label">English</string>
+    <string name="russian_language_label">Russian</string>
+    <string name="ukrainian_language_label">Ukrainian</string>
+    <string name="language_picker_dialog_title">Choose language</string>
 </resources>

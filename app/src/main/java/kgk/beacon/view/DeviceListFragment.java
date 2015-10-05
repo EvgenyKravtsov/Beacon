@@ -19,14 +19,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
+import kgk.beacon.database.SignalDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Device;
 import kgk.beacon.stores.DeviceStore;
+import kgk.beacon.stores.SignalStore;
 import kgk.beacon.util.AppController;
 
 public class DeviceListFragment extends ListFragment {
-
-    // TODO Set up a proper unregister of dispatcher due to fragments lifecycle
 
     private static final String TAG = DeviceListFragment.class.getSimpleName();
 
@@ -72,6 +72,7 @@ public class DeviceListFragment extends ListFragment {
         long activeDevice = Long.parseLong(deviceStore.getDevices().get(position).getId());
         Log.d(TAG, activeDevice + "");
         AppController.getInstance().setActiveDeviceId(activeDevice);
+        updateLastSignalFromDatabase();
 
         Intent startInformationActivityIntent = new Intent(getActivity(), InformationActivity.class);
         startActivity(startInformationActivityIntent);
@@ -109,6 +110,14 @@ public class DeviceListFragment extends ListFragment {
 
         public ViewHolderDeviceListFragment(View view) {
             ButterKnife.bind(this, view);
+        }
+    }
+
+    private void updateLastSignalFromDatabase() {
+        SignalStore signalStore = SignalStore.getInstance(Dispatcher.getInstance(EventBus.getDefault()));
+
+        if (SignalDatabaseDao.getInstance(AppController.getInstance()).getLastSignalsByDeviceId(1).size() > 0) {
+            signalStore.setSignal(SignalDatabaseDao.getInstance(AppController.getInstance()).getLastSignalsByDeviceId(1).get(0));
         }
     }
 }

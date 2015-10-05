@@ -79,4 +79,17 @@ public class AppController extends Application {
         SharedPreferences sharedPreferences = instance.getSharedPreferences(APPLICATION_PREFERENCES, MODE_PRIVATE);
         return sharedPreferences.getLong(key, 0);
     }
+
+    public static void saveStringValueToSharedPreferences(String key, String value) {
+        SharedPreferences sharedPreferences = instance.getSharedPreferences(APPLICATION_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String loadStringValueFromSharedPreferences(String key) {
+        SharedPreferences sharedPreferences = instance.getSharedPreferences(APPLICATION_PREFERENCES, MODE_PRIVATE);
+        return sharedPreferences.getString(key, "default");
+    }
 }

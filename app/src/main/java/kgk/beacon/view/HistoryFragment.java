@@ -241,7 +241,7 @@ public class HistoryFragment extends Fragment {
             viewHolder.type.setText(String.valueOf(AppController.getInstance().getActiveDeviceId()));
             viewHolder.satellites.setText(String.valueOf(signal.getSatellites()));
             viewHolder.voltage.setText(String.valueOf(signal.getVoltage()));
-            viewHolder.charge.setText(String.valueOf(signal.getCharge()));
+            viewHolder.charge.setText(String.valueOf(signal.getCharge()) + "%");
             viewHolder.speed.setText(String.valueOf(signal.getSpeed()));
             viewHolder.temperature.setText(String.valueOf(signal.getTemperature()));
             viewHolder.balance.setText(String.valueOf(signal.getBalance()));

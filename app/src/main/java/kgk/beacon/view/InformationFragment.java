@@ -30,7 +30,7 @@ import kgk.beacon.util.DateFormatter;
 
 public class InformationFragment extends Fragment {
 
-    // TODO Set proper last signal loading on information fragment start;
+    // TODO Upgrade search button
 
     public static final String TAG = InformationFragment.class.getSimpleName();
 
@@ -119,16 +119,17 @@ public class InformationFragment extends Fragment {
             Log.d(TAG, "Displaying default values");
             displayInfoFieldsParameters();
         } else {
-            lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
             lastPositioningTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
-            satellitesCountTextView.setText(signal.getCharge() + "");
-            voltageCountTextView.setText(signal.getVoltage() + "");
-            speedCountTextView.setText(signal.getSpeed() + "");
-            chargeCountTextView.setText(signal.getCharge() + "");
-            directionCountTextView.setText(signal.getDirection() + "");
-            balanceCountTextView.setText(signal.getBalance() + "");
-            temperatureCountTextView.setText(signal.getTemperature() + "");
+            satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
+            voltageCountTextView.setText(String.valueOf(signal.getVoltage()));
+            speedCountTextView.setText(String.valueOf(signal.getSpeed()));
+            chargeCountTextView.setText(String.valueOf(signal.getCharge()) + "%");
+            directionCountTextView.setText(String.valueOf(signal.getDirection()));
+            balanceCountTextView.setText(String.valueOf(signal.getBalance()));
+            temperatureCountTextView.setText(String.valueOf(signal.getTemperature()));
         }
+
+        lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
 
         if (searchSwitch) {
             searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_on_button));

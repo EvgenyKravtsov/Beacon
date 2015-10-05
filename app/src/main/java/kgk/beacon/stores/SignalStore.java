@@ -52,6 +52,10 @@ public class SignalStore extends Store {
         return signal;
     }
 
+    public void setSignal(Signal signal) {
+        this.signal = signal;
+    }
+
     StoreChangeEvent changeEvent() {
         return new SignalStoreChangeEvent();
     }

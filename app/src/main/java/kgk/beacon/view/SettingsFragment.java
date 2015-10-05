@@ -30,8 +30,6 @@ import kgk.beacon.util.AppController;
 
 public class SettingsFragment extends Fragment {
 
-    // TODO Proper UI
-
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
     private static final String APPLICATION_PREFERENCES = "application-preferences";
@@ -79,8 +77,8 @@ public class SettingsFragment extends Fragment {
     private List<String> generateGprsSpinnerOptions() {
         if (gprsSpinnerOptions == null) {
             gprsSpinnerOptions = new ArrayList<>();
-            gprsSpinnerOptions.add("On");
-            gprsSpinnerOptions.add("Off");
+            gprsSpinnerOptions.add(getString(R.string.settings_gprs_spinner_on));
+            gprsSpinnerOptions.add(getString(R.string.settings_gprs_spinner_off));
         }
 
         return gprsSpinnerOptions;

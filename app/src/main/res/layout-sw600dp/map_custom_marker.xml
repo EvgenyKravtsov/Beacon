@@ -16,27 +16,25 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="15sp" />
+        android:textSize="13sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="&lt;TimeStamp>"
         android:id="@+id/popupWindowPath_lastActionTimeStamp"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:textColor="#ffeb9c53"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginLeft="10dp" />
+        android:layout_below="@+id/popupWindowPath_lastActionTextView"
+        android:layout_marginLeft="100dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/last_positioning_text"
         android:id="@+id/popupWindowPath_lastPositioningTextView"
-        android:textSize="15sp"
-        android:layout_below="@+id/popupWindowPath_lastActionTextView"
+        android:textSize="13sp"
+        android:layout_below="@+id/popupWindowPath_lastActionTimeStamp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -45,9 +43,9 @@
         android:layout_height="wrap_content"
         tools:text="&lt;TimeStamp>"
         android:id="@+id/popupWindowPath_lastPositioningTimeStamp"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:textColor="#ffeb9c53"
-        android:layout_below="@+id/popupWindowPath_lastActionTimeStamp"
+        android:layout_below="@+id/popupWindowPath_lastPositioningTextView"
         android:layout_alignLeft="@+id/popupWindowPath_lastActionTimeStamp"
         android:layout_alignStart="@+id/popupWindowPath_lastActionTimeStamp" />
 
@@ -59,7 +57,8 @@
         android:layout_below="@+id/popupWindowPath_lastPositioningTextView"
         android:paddingTop="20dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="20dp">
 
         <TableRow
             android:layout_width="match_parent"

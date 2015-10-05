@@ -115,8 +115,8 @@ public class MapCustomFragment extends SupportMapFragment implements OnMapReadyC
         View layout = inflater.inflate(R.layout.map_custom_marker, null);
         updateMarkerContent(layout);
 
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 280, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 185, getResources().getDisplayMetrics());
         Bitmap markerBitmap = bitmapFromView(layout, width, height);
 
         MarkerOptions markerOptions = new MarkerOptions()
@@ -133,7 +133,7 @@ public class MapCustomFragment extends SupportMapFragment implements OnMapReadyC
         viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
         viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage()));
         viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed()));
-        viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()));
+        viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()) + "%");
         viewHolder.directionCountTextView.setText(String.valueOf(signal.getDirection()));
         viewHolder.balanceCountTextView.setText(String.valueOf(signal.getBalance()));
         viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature()));
