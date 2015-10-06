@@ -42,6 +42,8 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
                                                 GoogleMap.OnMapClickListener,
                                                 GoogleMap.OnMarkerClickListener {
 
+    // TODO Proper deleting marker on outside click
+
     public static final String TAG = PathFragment.class.getSimpleName();
 
     private GoogleMap googleMap;

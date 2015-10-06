@@ -1,8 +1,11 @@
 package kgk.beacon.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Signal {
+public class Signal implements Parcelable {
 
     private long deviceId;
     private int mode;
@@ -131,5 +134,53 @@ public class Signal {
                 + "speed - " + speed + " | "
                 + "direction - " + direction + " | "
                 + "temperature - " + temperature;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(deviceId);
+        dest.writeInt(mode);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeLong(date);
+        dest.writeDouble(voltage);
+        dest.writeDouble(balance);
+        dest.writeInt(satellites);
+        dest.writeInt(charge);
+        dest.writeInt(speed);
+        dest.writeInt(direction);
+        dest.writeInt(temperature);
+    }
+
+    public static final Parcelable.Creator<Signal> CREATOR =
+            new Parcelable.Creator<Signal>() {
+
+                public Signal createFromParcel(Parcel in) {
+                    return new Signal(in);
+                }
+
+                public Signal[] newArray(int size) {
+                    return new Signal[size];
+                }
+            };
+
+    private Signal(Parcel in) {
+        deviceId = in.readLong();
+        mode = in.readInt();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        date = in.readLong();
+        voltage = in.readDouble();
+        balance = in.readDouble();
+        satellites = in.readInt();
+        charge = in.readInt();
+        speed = in.readInt();
+        direction = in.readInt();
+        temperature = in.readInt();
     }
 }

@@ -41,7 +41,10 @@
         <activity
             android:name=".view.DeviceListActivity"
             android:label="@string/device_list_activity_action_bar_label"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.LoginActivity" />
         </activity>
 
 

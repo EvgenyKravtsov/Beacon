@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,8 @@ import kgk.beacon.util.DateFormatter;
 public class MapCustomFragment extends SupportMapFragment implements OnMapReadyCallback,
                                                                 GoogleMap.OnMarkerClickListener {
 
+    public static final String EXTRA_SIGNAL = "extra_signal";
+
     private static final String TAG = MapCustomFragment.class.getSimpleName();
 
     private Signal signal;
@@ -43,11 +44,28 @@ public class MapCustomFragment extends SupportMapFragment implements OnMapReadyC
     private Paint paint;
     private Marker marker;
 
+    public static MapCustomFragment newInstance(Signal signal) {
+        Bundle args = new Bundle();
+        args.putParcelable(EXTRA_SIGNAL, signal);
+
+        MapCustomFragment fragment = new MapCustomFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paint = new Paint();
-        signal = cloneSignal(SignalStore.getInstance(Dispatcher.getInstance(EventBus.getDefault())).getSignal());
+
+        Signal receivedSignalFromHistoryFragment = getArguments().getParcelable(EXTRA_SIGNAL);
+
+        if (receivedSignalFromHistoryFragment == null) {
+            signal = cloneSignal(SignalStore.getInstance(Dispatcher.getInstance(EventBus.getDefault())).getSignal());
+        } else {
+            signal = receivedSignalFromHistoryFragment;
+        }
     }
 
     private Signal cloneSignal(Signal signal) {
@@ -89,7 +107,6 @@ public class MapCustomFragment extends SupportMapFragment implements OnMapReadyC
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        Log.d(TAG, "MapCustomFragment onMarkerClick");
         LatLng coordinates = new LatLng(signal.getLatitude(), signal.getLongitude());
 
         if (this.marker != null) {

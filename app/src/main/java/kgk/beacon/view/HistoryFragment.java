@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,8 +35,6 @@ import kgk.beacon.util.DateFormatter;
 
 
 public class HistoryFragment extends Fragment {
-
-    // TODO Link Map and list item
 
     public static final String TAG = HistoryFragment.class.getSimpleName();
 
@@ -97,6 +97,7 @@ public class HistoryFragment extends Fragment {
                 childFrom, childTo);
 
         historyListView.setAdapter(adapter);
+        historyListView.setOnChildClickListener(adapter);
     }
 
     private void initFluxDependencies() {
@@ -192,13 +193,16 @@ public class HistoryFragment extends Fragment {
 
     @OnClick(R.id.fragmentHistory_trackButton)
     public void onPressTrackButton(View view) {
-        // TODO Check for enough point to make track
-
-        Intent intent = new Intent(getActivity(), PathActivity.class);
-        startActivity(intent);
+        if (signalStore.getSignalsDisplayed().size() > 0) {
+            Intent intent = new Intent(getActivity(), PathActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), R.string.no_signals_toast, Toast.LENGTH_SHORT).show();
+        }
     }
 
-    class HistoryExpandableListViewAdapter extends SimpleExpandableListAdapter {
+    class HistoryExpandableListViewAdapter extends SimpleExpandableListAdapter
+            implements ExpandableListView.OnChildClickListener {
 
         private ArrayList<Map<String, String>> groupData;
         private ArrayList<ArrayList<Map<String, Signal>>> childData;
@@ -249,12 +253,26 @@ public class HistoryFragment extends Fragment {
             return convertView;
         }
 
+        @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                                  ViewGroup parent) {
             View groupView = super.getGroupView(groupPosition, isExpanded,
                     convertView, parent);
             groupView.setBackgroundColor(Color.parseColor("#aafdffff"));
             return groupView;
+        }
+
+        @Override
+        public boolean onChildClick(ExpandableListView parent, View view,
+                                    int groupPosition, int childPosition, long id) {
+
+            Signal signal = getChild(groupPosition, childPosition);
+            Log.d(TAG, signal.toString());
+            Intent mapIntent = new Intent(getActivity(), MapCustomActivity.class);
+            mapIntent.putExtra(MapCustomFragment.EXTRA_SIGNAL, signal);
+            startActivity(mapIntent);
+
+            return true;
         }
     }
 
