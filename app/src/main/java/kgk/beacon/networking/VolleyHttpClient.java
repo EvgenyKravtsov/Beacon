@@ -31,6 +31,7 @@ import kgk.beacon.view.DeviceListActivity;
 public class VolleyHttpClient implements Response.ErrorListener {
 
     // TODO Move last action data save commands to successful response block
+    // TODO Make constants for URL strings
 
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
     private static final String AUTHENTICATION_URL = "http://dev.trezub.ru/api2/beacon/authorize";
@@ -137,7 +138,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private void queryBeaconRequest() {
         LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
         QueryBeaconRequest request = new QueryBeaconRequest(Request.Method.GET,
-                QueryBeaconRequest.makeUrl(""),
+                QueryBeaconRequest.makeUrl("http://dev.trezub.ru/api2/beacon/cmdrequestinfo"),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -168,10 +169,11 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private void toggleSearchModeRequest(boolean searchModeStatus) {
         LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
         ToggleSearchModeRequest request = new ToggleSearchModeRequest(Request.Method.GET,
-                ToggleSearchModeRequest.makeUrl("", searchModeStatus),
+                ToggleSearchModeRequest.makeUrl("http://dev.trezub.ru/api2/beacon/cmdtogglefind", searchModeStatus),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d(TAG, response);
                         Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -190,17 +192,19 @@ public class VolleyHttpClient implements Response.ErrorListener {
             e.printStackTrace();
         }
 
-        SettingsRequest request = new SettingsRequest("",
+        SettingsRequest request = new SettingsRequest("http://dev.trezub.ru/api2/beacon/cmdsetsettings",
                 settingsJson,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
                         Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
                     }
                 },
                 this);
 
         request.setPhpSessId(phpSessId);
+        Log.d(TAG, settingsJson.toString());
         requestQueue.add(request);
     }
 

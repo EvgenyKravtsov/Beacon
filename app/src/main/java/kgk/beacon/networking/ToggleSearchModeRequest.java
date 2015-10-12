@@ -30,7 +30,7 @@ public class ToggleSearchModeRequest extends StringRequest {
 
     public static String makeUrl(String baseUrl, boolean searchModeStatus) {
         return baseUrl + "?"
-                + "id" + "=" + AppController.getInstance().getActiveDeviceId() + "&"
+                + "device" + "=" + AppController.getInstance().getActiveDeviceId() + "&"
                 + "search" + "=" + searchModeStatus;
     }
 

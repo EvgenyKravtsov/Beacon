@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,10 +84,6 @@ public class LoginFragment extends Fragment {
 
     @OnClick(R.id.fragmentLogin_loginButton)
     public void onPressLoginButton(View view) {
-        Log.d(TAG, loginField.getText().toString());
-        Log.d(TAG, passwordField.getText().toString());
-        Log.d(TAG, rememberMeCheckBox.isChecked() + "");
-
         if (!AppController.getInstance().isNetworkAvailable()) {
             Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
             return;
