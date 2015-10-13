@@ -44,8 +44,6 @@ public class ActionCreator {
         return instance;
     }
 
-    //// Signal actions
-
     public void updateLastSignal(Signal signal) {
         dispatcher.dispatch(SignalActions.UPDATE_LAST_SIGNAL,
                                         KEY_LAST_SIGNAL, signal);
@@ -77,7 +75,15 @@ public class ActionCreator {
                KEY_TO_DATE, toDate);
     }
 
-    //// Http Actions
+    public void getLastSignalDateFromDatabase() {
+        dispatcher.dispatch(SignalActions.GET_LAST_SIGNAL_DATE_FROM_DATABASE);
+    }
+
+    public void getLastSignalsRequest(long fromDate, long toDate) {
+        dispatcher.dispatch(HttpActions.GET_LAST_SIGNALS_REQUEST,
+                KEY_FROM_DATE, fromDate,
+                KEY_TO_DATE, toDate);
+    }
 
     public void sendAuthenticationRequest(String login, String password) {
         dispatcher.dispatch(HttpActions.AUTHENTICATION_REQUEST,

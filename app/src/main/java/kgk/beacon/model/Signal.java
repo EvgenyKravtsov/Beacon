@@ -2,10 +2,18 @@ package kgk.beacon.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
+import kgk.beacon.util.AppController;
+
 public class Signal implements Parcelable {
+
+    private static final String TAG = Signal.class.getSimpleName();
 
     private long deviceId;
     private int mode;
@@ -116,6 +124,33 @@ public class Signal implements Parcelable {
 
     public void setTemperature(int temperature) {
         this.temperature = temperature;
+    }
+
+    public static Signal signalFromJson(JSONObject signalJson) {
+        Signal signal = new Signal();
+
+        try {
+            String params = signalJson.getString("params_json");
+            JSONObject rawParamsJson = new JSONObject(params);
+            Log.d(TAG, "rawParamsJson  -  " + rawParamsJson.toString());
+            JSONObject paramsJson = rawParamsJson.getJSONObject("0");
+            signal.setDeviceId(AppController.getInstance().getActiveDeviceId());
+            signal.setMode(0);
+            signal.setLatitude(signalJson.getDouble("lat"));
+            signal.setLongitude(signalJson.getDouble("lng"));
+            signal.setDate(signalJson.getLong("packet_date"));
+            signal.setVoltage(666);
+            signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
+            signal.setSatellites(signalJson.getInt("sat"));
+            signal.setCharge(paramsJson.getInt("BAT") / 3);
+            signal.setSpeed((int) signalJson.getDouble("speed"));
+            signal.setDirection(signalJson.getInt("az"));
+            signal.setTemperature(paramsJson.getInt("TEMP"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return signal;
     }
 
     @Override

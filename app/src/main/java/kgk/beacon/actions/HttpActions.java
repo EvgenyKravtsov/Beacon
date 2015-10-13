@@ -13,4 +13,6 @@ public interface HttpActions {
     String SEND_SETTINGS_REQUEST = "send_settings_request";
 
     String GET_LAST_STATE_REQUEST = "get_last_state_request";
+
+    String GET_LAST_SIGNALS_REQUEST = "get_last_signals_request";
 }

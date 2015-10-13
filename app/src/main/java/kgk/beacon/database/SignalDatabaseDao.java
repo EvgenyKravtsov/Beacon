@@ -3,11 +3,13 @@ package kgk.beacon.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -148,7 +150,7 @@ public class SignalDatabaseDao {
             } else {
                 cursor.moveToLast();
                 while (numberOfSignals != 0) {
-                    Log.d(TAG, "" + numberOfSignals);
+                    Log.d(TAG, numberOfSignals + " getLastSignalsByDeviceId");
                     Signal signal = cursorToSignal(cursor);
                     signals.add(0, signal);
                     cursor.moveToPrevious();
@@ -198,6 +200,28 @@ public class SignalDatabaseDao {
         }
     }
 
+    public long getLastSignalDate() {
+        long lastSignalDate = 0;
+
+        try {
+            open();
+            Cursor cursor = database.query(SignalDatabaseHelper.TABLE_SIGNAL, allColumns,
+                    null, null, null, null, null);
+            cursor.moveToLast();
+            Signal signal = cursorToSignal(cursor);
+            lastSignalDate = signal.getDate();
+            Log.d(TAG, lastSignalDate + " getLastSignalDate()");
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (CursorIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            lastSignalDate = 1444435200;
+        }
+
+        return lastSignalDate;
+    }
+
     private Signal cursorToSignal(Cursor cursor) {
         Signal signal = new Signal();
         signal.setDeviceId(cursor.getLong(1));
@@ -234,6 +258,10 @@ public class SignalDatabaseDao {
                 long toDate = ((Date) action.getData().get(ActionCreator.KEY_TO_DATE)).getTime() / 1000;
                 getSignalsByPeriod(fromDate, toDate);
                 break;
+            case SignalActions.GET_LAST_SIGNAL_DATE_FROM_DATABASE:
+                long lastSignalDate = getLastSignalDate();
+                long now = Calendar.getInstance().getTimeInMillis() / 1000;
+                actionCreator.getLastSignalsRequest(lastSignalDate, now);
         }
     }
 }

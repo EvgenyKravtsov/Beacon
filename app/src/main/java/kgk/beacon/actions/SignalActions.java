@@ -12,4 +12,6 @@ public interface SignalActions {
     String GET_LAST_SIGNALS_BY_DEVICE_ID_FROM_DATABASE = "get_last_signals_by_device_id_from_database";
 
     String GET_SIGNALS_BY_PERIOD = "get_signals_by_period";
+
+    String GET_LAST_SIGNAL_DATE_FROM_DATABASE = "get_last_signal_date_from_database";
 }

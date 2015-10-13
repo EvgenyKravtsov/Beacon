@@ -82,7 +82,7 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
             Location.distanceBetween(clickCoordinates.latitude, clickCoordinates.longitude,
                     pathCoordinates.latitude, pathCoordinates.longitude, results);
 
-            if (results[0] < (40 * (22 - googleMap.getCameraPosition().zoom))) {
+            if (results[0] < (20 * (22 - googleMap.getCameraPosition().zoom))) {
                 if (currentMarker != null) {
                     currentMarker.remove();
                 }

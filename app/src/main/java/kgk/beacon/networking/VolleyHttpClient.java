@@ -21,7 +21,9 @@ import kgk.beacon.R;
 import kgk.beacon.actions.Action;
 import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.actions.HttpActions;
+import kgk.beacon.database.SignalDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.model.Signal;
 import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.LastActionDateStorage;
@@ -30,13 +32,14 @@ import kgk.beacon.view.DeviceListActivity;
 
 public class VolleyHttpClient implements Response.ErrorListener {
 
-    // TODO Move last action data save commands to successful response block
-    // TODO Make constants for URL strings
-
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
     private static final String AUTHENTICATION_URL = "http://dev.trezub.ru/api2/beacon/authorize";
     private static final String DEVICE_LIST_URL = "http://dev.trezub.ru/api2/beacon/getdeviceslist";
     private static final String GET_LAST_STATE_URL = "http://dev.trezub.ru/api2/beacon/getdeviceinfo";
+    private static final String GET_LAST_SIGNALS_URL = "http://dev.trezub.ru/api2/beacon/getpackets";
+    private static final String QUERY_BEACON_REQUEST_URL = "http://dev.trezub.ru/api2/beacon/cmdrequestinfo";
+    private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://dev.trezub.ru/api2/beacon/cmdtogglefind";
+    private static final String SETTINGS_REQUEST_URL = "http://dev.trezub.ru/api2/beacon/cmdsetsettings";
 
     private static VolleyHttpClient instance;
     private Context context;
@@ -86,6 +89,11 @@ public class VolleyHttpClient implements Response.ErrorListener {
             case HttpActions.GET_LAST_STATE_REQUEST:
                 getLastStateRequest();
                 break;
+            case HttpActions.GET_LAST_SIGNALS_REQUEST:
+                long fromDate = (long) action.getData().get(ActionCreator.KEY_FROM_DATE);
+                long toDate = (long) action.getData().get(ActionCreator.KEY_TO_DATE);
+                getLastSignalsRequest(fromDate, toDate);
+                break;
         }
     }
 
@@ -95,8 +103,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "Response: " + response);
-
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             processAuthenticationResponseJson(responseJson);
@@ -138,11 +144,20 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private void queryBeaconRequest() {
         LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
         QueryBeaconRequest request = new QueryBeaconRequest(Request.Method.GET,
-                QueryBeaconRequest.makeUrl("http://dev.trezub.ru/api2/beacon/cmdrequestinfo"),
+                QueryBeaconRequest.makeUrl(QUERY_BEACON_REQUEST_URL),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject responseJson = new JSONObject(response);
+                            if (responseJson.getBoolean("status")) {
+                                Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 this);
@@ -157,7 +172,8 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, response);
+                        Log.d(TAG, "getLastStateRequest: " + response);
+                        processLastStateResponse(response);
                     }
                 },
                 this);
@@ -169,12 +185,20 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private void toggleSearchModeRequest(boolean searchModeStatus) {
         LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
         ToggleSearchModeRequest request = new ToggleSearchModeRequest(Request.Method.GET,
-                ToggleSearchModeRequest.makeUrl("http://dev.trezub.ru/api2/beacon/cmdtogglefind", searchModeStatus),
+                ToggleSearchModeRequest.makeUrl(TOGGLE_SEARCH_MODE_REQUEST_URL, searchModeStatus),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, response);
-                        Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject responseJson = new JSONObject(response);
+                            if (responseJson.getBoolean("status")) {
+                                Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 this);
@@ -192,19 +216,41 @@ public class VolleyHttpClient implements Response.ErrorListener {
             e.printStackTrace();
         }
 
-        SettingsRequest request = new SettingsRequest("http://dev.trezub.ru/api2/beacon/cmdsetsettings",
+        SettingsRequest request = new SettingsRequest(SETTINGS_REQUEST_URL,
                 settingsJson,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
-                        Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                        try {
+                            if (response.getBoolean("status")) {
+                                Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 this);
 
         request.setPhpSessId(phpSessId);
         Log.d(TAG, settingsJson.toString());
+        requestQueue.add(request);
+    }
+
+    private void getLastSignalsRequest(long fromDate, long toDate) {
+        GetLastSignalsRequest request = new GetLastSignalsRequest(Request.Method.POST,
+                GetLastSignalsRequest.makeUrl(GET_LAST_SIGNALS_URL, fromDate, toDate),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        processLastSignalsResponse(response);
+                    }
+                },
+                this);
+
+        request.setPhpSessId(phpSessId);
         requestQueue.add(request);
     }
 
@@ -235,8 +281,42 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    private void processLastSignalsResponse(String response) {
+        try {
+            JSONObject responseJson = new JSONObject(response);
+            if (responseJson.getBoolean("status")) {
+                JSONArray responseDataJson = responseJson.getJSONArray("data");
+
+                for (int i = 0; i < responseDataJson.length(); i++) {
+                    JSONObject signalJson = responseDataJson.getJSONObject(i);
+                    Log.d(TAG, signalJson.toString());
+                    Signal signal = Signal.signalFromJson(signalJson);
+                    SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void processLastStateResponse(String response) {
+        try {
+            JSONObject responseJson = new JSONObject(response);
+            if (responseJson.getBoolean("status")) {
+                Log.d(TAG, "responseJson  -  " + responseJson.toString());
+                JSONObject signalJson = responseJson.getJSONObject("data");
+                Log.d(TAG, "signalJson  -  " + signalJson.toString());
+                Signal signal = Signal.signalFromJson(signalJson);
+                SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.d(TAG, "Request didn't work\n" + error.getMessage());
+        Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
     }
 }

@@ -98,7 +98,7 @@ public class DeviceListFragment extends ListFragment {
                 viewHolder = (ViewHolderDeviceListFragment) convertView.getTag();
             }
 
-            viewHolder.deviceTextView.setText(getItem(position));
+            viewHolder.deviceTextView.setText("Aktis  " + getItem(position));
 
             return convertView;
         }

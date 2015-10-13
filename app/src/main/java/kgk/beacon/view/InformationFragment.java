@@ -3,7 +3,6 @@ package kgk.beacon.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,11 +18,9 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
 import kgk.beacon.actions.ActionCreator;
-import kgk.beacon.database.SignalDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.SignalStore;
-import kgk.beacon.test.SignalInformationTester;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.DateFormatter;
 
@@ -61,10 +57,9 @@ public class InformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
         ButterKnife.bind(this, view);
         initFluxDependencies();
-
+        actionCreator.getLastSignalDateFromDatabase();
         displayGeneralInformation("Brand", "Model", "Number");
         searchSwitch = AppController.loadBooleanValueFromSharedPreferences(KEY_SEARCH_SWITCH);
-
         return view;
     }
 
@@ -73,9 +68,6 @@ public class InformationFragment extends Fragment {
         super.onResume();
         dispatcher.register(this);
         updateUI();
-
-        // TODO Delete test code
-        new SignalInformationTester(dispatcher, actionCreator).executeTestingRoutine();
     }
 
     @Override
@@ -116,7 +108,6 @@ public class InformationFragment extends Fragment {
         Signal signal = signalStore.getSignal();
 
         if (signal == null) {
-            Log.d(TAG, "Displaying default values");
             displayInfoFieldsParameters();
         } else {
             lastPositioningTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
@@ -192,13 +183,6 @@ public class InformationFragment extends Fragment {
         if (AppController.getInstance().isNetworkAvailable()) {
             actionCreator.sendQueryBeaconRequest();
             actionCreator.sendGetLastStateRequest();
-
-            // TODO Delete test code
-            List<Signal> signals = SignalDatabaseDao.getInstance(AppController.getInstance()).getAllSignals();
-            for (Signal signal : signals) {
-                Log.d(TAG, signal.toString());
-            }
-            SignalDatabaseDao.getInstance(AppController.getInstance()).deleteAllSignalsFromDatabase();
         } else {
             Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
         }
