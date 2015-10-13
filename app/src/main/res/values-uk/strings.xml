@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">Beacon</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- Strings for action bars -->
+    <string name="device_list_activity_action_bar_label">Пристрої</string>
+    <string name="information_action_bar_label">Інформація</string>
+    <string name="history_action_bar_label">Історія</string>
+    <string name="path_action_bar_label">Трек</string>
+    <string name="date_picker_action_bar_label">Період</string>
+    <string name="map_custom_action_bar_label">Мапа</string>
+    <string name="settings_action_bar_label">Налаштування</string>
+
+    <!-- Strings for LoginFragment -->
+    <string name="login_hint">Користувач</string>
+    <string name="password_hint">Пароль</string>
+    <string name="login_button_label">Вхід</string>
+    <string name="remember_me_text">Запам’ятати користувача</string>
+    <string name="try_demo_button_label">Демо</string>
+    <string name="wrong_login_or_password_label">Неправильне ім\'я користувача або пароль</string>
+    <string name="login_progress_dialog_title">Вхід…</string>
+    <string name="login_progress_dialog_message">Аутентифікація</string>
+
+    <!-- Strings for InformationFragment -->
+    <string name="detecting_mode_text">Періодичне повідомлення через заданий інтервал</string>
+    <string name="last_positioning_text">Позиціювання:</string>
+    <string name="last_action_text">Остання команда:</string>
+    <string name="satellites_label">Супутники</string>
+    <string name="voltage_label">Напруга</string>
+    <string name="speed_label">Швидкість</string>
+    <string name="charge_label">Батарея</string>
+    <string name="direction_label">Напрямок</string>
+    <string name="balance_label">Баланс</string>
+    <string name="temperature_label">Температура</string>
+    <string name="query_button_label">Опитати</string>
+    <string name="history_button_label">Історія</string>
+    <string name="search_on_button_label">Вкл</string>
+    <string name="search_off_button_label">Викл</string>
+    <string name="map_button_label">Мапа</string>
+    <string name="settings_button_label">Налаштування</string>
+    <string name="search_label">Пошук</string>
+    <string name="no_signals_toast">Немає сигналів</string>
+
+    <!-- Strings for HistoryFragment -->
+    <string name="select_period_button_label">Період</string>
+    <string name="track_button_label">Трек</string>
+
+    <!-- String for DatePickerFragment -->
+    <string name="action_bar_label">Період</string>
+    <string name="header_label">Відображати сигнали</string>
+    <string name="from_label">З</string>
+    <string name="to_label">По</string>
+    <string name="date_button_label">Дата</string>
+    <string name="time_button_label">Час</string>
+    <string name="date_picker_dialog_title">Вкажіть дату</string>
+    <string name="time_picker_dialog_title">Вкажіть час</string>
+    <string name="wrong_period_message">Вказаний некоректний період</string>
+    <string name="not_all_fields_selected_message">Заповніть усі поля</string>
+
+    <!-- Strings for SettingsFragment -->
+    <string name="timezone_label">Часовий пояс</string>
+    <string name="time_of_signal_label">Час сигналу</string>
+    <string name="on_command_send_toast">Команда відправлена</string>
+    <string name="on_command_send_error_toast">Помилка відправки комманди</string>
+    <string name="no_internet_connection_message">Відсутнє інтернет-з\'єднання</string>
+    <string name="balance_request_command_wrong_field_message">Занадто довга команда запиту балансу</string>
+    <string name="connection_period_label">Період виходу на зв\'язок (хв.)</string>
+    <string name="number_of_sms_omissions_label">К-ть пропусків відправки СМС</string>
+    <string name="gps_positioning_period_label">Час визначення GPS (хв.)</string>
+    <string name="balance_control_limit_label">Поріг контролю балансу (руб.)</string>
+    <string name="balance_request_command_label">Команда запиту балансу</string>
+    <string name="gprs_label">GPRS</string>
+    <string name="send_button_label">Відправити</string>
+    <string name="settings_gprs_spinner_on">Вкл</string>
+    <string name="settings_gprs_spinner_off">Викл</string>
+
+    <!-- Strings for Language Settings -->
+    <string name="login_menu_language_setting_label">Мова інтерфейсу</string>
+    <string name="english_language_label">Англійська</string>
+    <string name="russian_language_label">Русский</string>
+    <string name="ukrainian_language_label">Український</string>
+    <string name="language_picker_dialog_title">Оберіть мову</string>
+</resources>
