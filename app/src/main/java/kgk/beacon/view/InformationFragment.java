@@ -129,7 +129,7 @@ public class InformationFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.fragmentInformation_searchButton)
+    @OnClick(R.id.fragmentInformation_searchButton) // TODO Button status refresh in accordance with http response
     public void onPressSearchButton(View view) {
         Button searchButton = (Button) view;
 
@@ -182,7 +182,8 @@ public class InformationFragment extends Fragment {
     public void onPressQueryButton(View view) {
         if (AppController.getInstance().isNetworkAvailable()) {
             actionCreator.sendQueryBeaconRequest();
-            actionCreator.sendGetLastStateRequest();
+            actionCreator.getLastSignalDateFromDatabase();
+            // actionCreator.sendGetLastStateRequest();
         } else {
             Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
         }

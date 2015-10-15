@@ -126,6 +126,36 @@ public class Signal implements Parcelable {
         this.temperature = temperature;
     }
 
+    public static Signal signalFromJsonForLastState(JSONObject signalJson) {
+        Signal signal = new Signal();
+
+        try {
+            String params = signalJson.getString("params_json");
+            JSONObject rawParamsJson = new JSONObject(params);
+            Log.d(TAG, "rawParamsJson  -  " + rawParamsJson.toString());
+            JSONObject rawParamsJsonKey769 = rawParamsJson.getJSONObject("769");
+            Log.d(TAG, "rawParamsJsonKey769  -  " + rawParamsJsonKey769.toString());
+            JSONObject paramsJson = rawParamsJsonKey769.getJSONObject("0");
+            Log.d(TAG, "paramsJson  -  " + paramsJson.toString());
+            signal.setDeviceId(AppController.getInstance().getActiveDeviceId());
+            signal.setMode(0);
+            signal.setLatitude(signalJson.getDouble("lat"));
+            signal.setLongitude(signalJson.getDouble("lng"));
+            signal.setDate(signalJson.getLong("packet_date"));
+            signal.setVoltage(666);
+            signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
+            signal.setSatellites(signalJson.getInt("sat"));
+            signal.setCharge(paramsJson.getInt("BAT") / 3);
+            signal.setSpeed((int) signalJson.getDouble("speed"));
+            signal.setDirection(signalJson.getInt("az"));
+            signal.setTemperature(paramsJson.getInt("TEMP"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return signal;
+    }
+
     public static Signal signalFromJson(JSONObject signalJson) {
         Signal signal = new Signal();
 
@@ -134,6 +164,7 @@ public class Signal implements Parcelable {
             JSONObject rawParamsJson = new JSONObject(params);
             Log.d(TAG, "rawParamsJson  -  " + rawParamsJson.toString());
             JSONObject paramsJson = rawParamsJson.getJSONObject("0");
+            Log.d(TAG, "paramsJson  -  " + paramsJson.toString());
             signal.setDeviceId(AppController.getInstance().getActiveDeviceId());
             signal.setMode(0);
             signal.setLatitude(signalJson.getDouble("lat"));

@@ -88,22 +88,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="0 rub."
-            android:id="@+id/listItemHistory_balanceTextView"
-            android:textSize="15sp"
-            android:singleLine="false"
-            android:textColor="#FF215cbb" />
-
-        <TextView
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#ff909090"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             tools:text="0 V"
             android:id="@+id/listItemHistory_voltageCountTextView"
             android:textColor="#FF215cbb"
@@ -119,10 +103,26 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            tools:text="0 rub."
+            android:id="@+id/listItemHistory_balanceTextView"
+            android:textSize="15sp"
+            android:singleLine="false"
+            android:textColor="#FF215cbb" />
+
+        <!-- <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ff909090"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             tools:text="0 sig."
             android:id="@+id/listItemHistory_signalsCountTextView"
             android:textSize="15sp"
-            android:textColor="#FF215cbb" />
+            android:textColor="#FF215cbb" /> -->
 
     </LinearLayout>
 

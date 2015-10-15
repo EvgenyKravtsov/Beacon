@@ -219,6 +219,10 @@ public class SignalDatabaseDao {
             lastSignalDate = 1444435200;
         }
 
+        if (lastSignalDate == 0) {
+            lastSignalDate = 1444435200;
+        }
+
         return lastSignalDate;
     }
 

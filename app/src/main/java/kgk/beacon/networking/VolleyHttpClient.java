@@ -148,6 +148,8 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d(TAG, response);
+
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             if (responseJson.getBoolean("status")) {
@@ -306,7 +308,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 Log.d(TAG, "responseJson  -  " + responseJson.toString());
                 JSONObject signalJson = responseJson.getJSONObject("data");
                 Log.d(TAG, "signalJson  -  " + signalJson.toString());
-                Signal signal = Signal.signalFromJson(signalJson);
+                Signal signal = Signal.signalFromJsonForLastState(signalJson);
                 SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
             }
         } catch (JSONException e) {

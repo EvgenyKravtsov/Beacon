@@ -243,12 +243,17 @@ public class HistoryFragment extends Fragment {
             Signal signal = getChild(groupPosition, childPosition);
             viewHolder.time.setText(DateFormatter.formatTime(new Date(signal.getDate() * 1000)));
             viewHolder.type.setText(String.valueOf(AppController.getInstance().getActiveDeviceId()));
-            viewHolder.satellites.setText(String.valueOf(signal.getSatellites()));
-            viewHolder.voltage.setText(String.valueOf(signal.getVoltage()));
-            viewHolder.charge.setText(String.valueOf(signal.getCharge()) + "%");
-            viewHolder.speed.setText(String.valueOf(signal.getSpeed()));
-            viewHolder.temperature.setText(String.valueOf(signal.getTemperature()));
-            viewHolder.balance.setText(String.valueOf(signal.getBalance()));
+            viewHolder.satellites.setText(String.valueOf(signal.getSatellites())
+                    + R.string.list_item_satellites_sign);
+            viewHolder.voltage.setText(String.valueOf(signal.getVoltage())
+                    + R.string.list_item_voltage_sign);
+            // viewHolder.charge.setText(String.valueOf(signal.getCharge()) + "%");
+            viewHolder.speed.setText(String.valueOf(signal.getSpeed())
+                    + R.string.list_item_speed_sign);
+            viewHolder.temperature.setText(String.valueOf(signal.getTemperature())
+                    + R.string.list_item_temperature_sign);
+            viewHolder.balance.setText(String.valueOf(signal.getBalance())
+                    + R.string.list_item_balance_sign);
 
             return convertView;
         }
@@ -282,7 +287,7 @@ public class HistoryFragment extends Fragment {
         @Bind(R.id.listItemHistory_typeTextView) TextView type;
         @Bind(R.id.listItemHistory_satellitesCountTextView) TextView satellites;
         @Bind(R.id.listItemHistory_voltageCountTextView) TextView voltage;
-        @Bind(R.id.listItemHistory_chargeCountTextView) TextView charge;
+        // @Bind(R.id.listItemHistory_chargeCountTextView) TextView charge;
         @Bind(R.id.listItemHistory_speedCountTextView) TextView speed;
         @Bind(R.id.listItemHistory_temperatureCountTextView) TextView temperature;
         @Bind(R.id.listItemHistory_balanceTextView) TextView balance;

@@ -45,6 +45,11 @@
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Period</string>
     <string name="track_button_label">Track</string>
+    <string name="list_item_satellites_sign">st</string>
+    <string name="list_item_speed_sign">km/h</string>
+    <string name="list_item_temperature_sign">°C</string>
+    <string name="list_item_voltage_sign">V</string>
+    <string name="list_item_balance_sign">rub</string>
 
     <!-- String for DatePickerFragment -->
     <string name="action_bar_label">Period</string>
