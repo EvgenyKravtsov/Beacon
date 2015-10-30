@@ -18,7 +18,7 @@
             android:text="@string/map_button_label"
             android:id="@+id/fragmentInformation_mapButton"
             android:layout_weight="1"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textAllCaps="false"
             android:background="@drawable/control_button_selector" />
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="@string/history_button_label"
             android:id="@+id/fragmentInformation_historyButton"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:textAllCaps="false"
             android:background="@drawable/control_button_selector" />
@@ -38,7 +38,7 @@
             android:text="@string/settings_button_label"
             android:id="@+id/fragmentInformation_settingsButton"
             android:layout_weight="1"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textAllCaps="false"
             android:background="@drawable/control_button_selector" />
 
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             tools:text="Brand"
             android:id="@+id/fragmentInformation_brandTextView"
-            android:textSize="17sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="right"
             android:textColor="#FF000000" />
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             tools:text="Model"
             android:id="@+id/fragmentInformation_modelTextView"
-            android:textSize="17sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#FF000000" />
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             tools:text="Number"
             android:id="@+id/fragmentInformation_numberTextView"
-            android:textSize="17sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:gravity="left"
             android:textColor="#FF000000" />
@@ -169,7 +169,7 @@
                     android:text="@string/satellites_label"
                     android:id="@+id/fragmentInformation_satellitesTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -177,7 +177,7 @@
                     tools:text="0"
                     android:id="@+id/fragmentInformation_satellitesCountTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textColor="#ff215bb8" />
 
                 <TextView
@@ -186,7 +186,7 @@
                     android:text="@string/voltage_label"
                     android:id="@+id/fragmentInformation_voltageTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -195,7 +195,7 @@
                     android:id="@+id/fragmentInformation_voltageCountTextView"
                     android:layout_weight="1"
                     android:textColor="#ff215bb8"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
             </TableRow>
 
             <TableRow
@@ -208,7 +208,7 @@
                     android:text="@string/speed_label"
                     android:id="@+id/fragmentInformation_speedTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -217,7 +217,7 @@
                     android:id="@+id/fragmentInformation_speedCountTextView"
                     android:layout_weight="1"
                     android:textColor="#ff215bb8"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
                     android:text="@string/charge_label"
                     android:id="@+id/fragmentInformation_chargeTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -233,7 +233,7 @@
                     tools:text="0"
                     android:id="@+id/fragmentInformation_chargeCountTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textColor="#ff215bb8" />
             </TableRow>
 
@@ -247,7 +247,7 @@
                     android:text="@string/direction_label"
                     android:id="@+id/fragmentInformation_directionTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -255,7 +255,7 @@
                     tools:text="0"
                     android:id="@+id/fragmentInformation_directionCountTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textColor="#ff215bb8" />
 
                 <TextView
@@ -264,7 +264,7 @@
                     android:text="@string/balance_label"
                     android:id="@+id/fragmentInformation_balanceTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -272,7 +272,7 @@
                     tools:text="0 rub."
                     android:id="@+id/fragmentInformation_balanceCountTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textColor="#ff215bb8" />
             </TableRow>
 
@@ -286,7 +286,7 @@
                     android:text="@string/temperature_label"
                     android:id="@+id/fragmentInformation_temperatureTextView"
                     android:layout_weight="1"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -295,7 +295,7 @@
                     android:id="@+id/fragmentInformation_temperatureCountTextView"
                     android:layout_column="1"
                     android:layout_weight="1"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textColor="#ff215bb8" />
 
                 <TextView
@@ -324,40 +324,35 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:orientation="horizontal"
         android:background="#ffcafdff"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/query_button_label"
             android:id="@+id/fragmentInformation_queryButton"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:layout_weight="1"
-            android:background="@drawable/query_button_selector" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_label"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="10dp" />
+            android:background="@drawable/demo_button_selector"
+            android:textAllCaps="false"
+            android:layout_marginRight="20dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/fragmentInformation_searchButton"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:background="@drawable/search_off_button"
-            android:gravity="center_vertical|right"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp" />
+            android:textAllCaps="false"
+            android:text="@string/query_button_label"
+            android:layout_marginLeft="20dp" />
 
     </LinearLayout>
 

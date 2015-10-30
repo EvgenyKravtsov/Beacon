@@ -1,7 +1,13 @@
 <resources>
-    <string name="app_name">Beacon</string>
+    <string name="app_name">КГК Мониторинг</string>
     <string name="action_settings">Settings</string>
 
+
+    <!-- Strings for utility purpose -->
+    <string name="crash_toast_text">Додаток зупинено</string>
+    <string name="updating_label">Оновлення</string>
+    <string name="new_version_available_label">Доступна нова версія додатка</string>
+    <string name="download_label">Завантажити</string>
 
     <!-- Strings for action bars -->
     <string name="device_list_activity_action_bar_label">Пристрої</string>
@@ -35,12 +41,15 @@
     <string name="temperature_label">Температура</string>
     <string name="query_button_label">Опитати</string>
     <string name="history_button_label">Історія</string>
-    <string name="search_on_button_label">Вкл</string>
-    <string name="search_off_button_label">Викл</string>
+    <string name="search_on_button_label">Пошук: Вкл</string>
+    <string name="search_off_button_label">Пошук: Викл</string>
     <string name="map_button_label">Мапа</string>
     <string name="settings_button_label">Налаштування</string>
     <string name="search_label">Пошук</string>
     <string name="no_signals_toast">Немає сигналів</string>
+    <string name="search_mode_dialog_title">Режим пошуку</string>
+    <string name="search_mode_dialog_on">Ви впевнені, що хочете включити режим пошуку?</string>
+    <string name="search_mode_dialog_off">Ви впевнені, що хочете вимкнути режим пошуку?</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Період</string>
@@ -86,4 +95,14 @@
     <string name="russian_language_label">Русский</string>
     <string name="ukrainian_language_label">Український</string>
     <string name="language_picker_dialog_title">Оберіть мову</string>
+
+    <!-- Strings for direction -->
+    <string name="direction_north">С</string>
+    <string name="direction_north_east">СВ</string>
+    <string name="direction_east">В</string>
+    <string name="direction_south_east">ЮВ</string>
+    <string name="direction_south">Ю</string>
+    <string name="direction_south_west">ЮЗ</string>
+    <string name="direction_west">З</string>
+    <string name="direction_north_west">СЗ</string>
 </resources>

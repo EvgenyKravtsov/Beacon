@@ -1,7 +1,13 @@
 <resources>
-    <string name="app_name">Beacon</string>
+    <string name="app_name">KGK Monitoring</string>
     <string name="action_settings">Settings</string>
 
+
+    <!-- Strings for utility purpose -->
+    <string name="crash_toast_text">Application terminated</string>
+    <string name="updating_label">Update</string>
+    <string name="new_version_available_label">New version available</string>
+    <string name="download_label">Download</string>
 
     <!-- Strings for action bars -->
     <string name="device_list_activity_action_bar_label">Devices</string>
@@ -35,12 +41,15 @@
     <string name="temperature_label">Temperature</string>
     <string name="query_button_label">Query</string>
     <string name="history_button_label">History</string>
-    <string name="search_on_button_label">On</string>
-    <string name="search_off_button_label">Off</string>
+    <string name="search_on_button_label">Search: On</string>
+    <string name="search_off_button_label">Search: Off</string>
     <string name="map_button_label">Map</string>
     <string name="settings_button_label">Settings</string>
     <string name="search_label">Search</string>
     <string name="no_signals_toast">No signals</string>
+    <string name="search_mode_dialog_title">Search mode</string>
+    <string name="search_mode_dialog_on">Do you want to activate search mode?</string>
+    <string name="search_mode_dialog_off">Do you want to deactivate search mode?</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Period</string>
@@ -86,4 +95,14 @@
     <string name="russian_language_label">Russian</string>
     <string name="ukrainian_language_label">Ukrainian</string>
     <string name="language_picker_dialog_title">Choose language</string>
+
+    <!-- Strings for direction -->
+    <string name="direction_north">N</string>
+    <string name="direction_north_east">NE</string>
+    <string name="direction_east">E</string>
+    <string name="direction_south_east">SE</string>
+    <string name="direction_south">S</string>
+    <string name="direction_south_west">SW</string>
+    <string name="direction_west">W</string>
+    <string name="direction_north_west">NW</string>
 </resources>

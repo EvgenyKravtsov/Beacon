@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,6 +31,7 @@ import kgk.beacon.R;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.SignalStore;
+import kgk.beacon.util.AppController;
 import kgk.beacon.util.DateFormatter;
 
 public class MapCustomFragment extends SupportMapFragment implements OnMapReadyCallback,
@@ -113,11 +115,11 @@ public class MapCustomFragment extends SupportMapFragment implements OnMapReadyC
             marker.remove();
             this.marker = null;
 
-            coordinates = new LatLng(signal.getLatitude(), signal.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(coordinates);
+//            coordinates = new LatLng(signal.getLatitude(), signal.getLongitude());
+//            MarkerOptions markerOptions = new MarkerOptions()
+//                    .position(coordinates);
 
-            googleMap.addMarker(markerOptions);
+            googleMap.addMarker(addCustomMarkerPoint());
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 13));
         } else {
             marker.remove();
@@ -143,17 +145,40 @@ public class MapCustomFragment extends SupportMapFragment implements OnMapReadyC
         return googleMap.addMarker(markerOptions);
     }
 
+    private MarkerOptions addCustomMarkerPoint() {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
+
+        ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
+        arrow.setRotation((float) signal.getDirection());
+
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+
+        Bitmap markerBitmap = bitmapFromView(layout, width, height);
+
+        return new MarkerOptions()
+                .position(new LatLng(signal.getLatitude(), signal.getLongitude()))
+                .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap));
+    }
+
     private void updateMarkerContent(View layout) {
         ViewHolderMapCustomFragment viewHolder = new ViewHolderMapCustomFragment(layout);
         viewHolder.lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
         viewHolder.lastPositionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
-        viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
-        viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage()));
-        viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed()));
+        viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites())
+                + getString(R.string.list_item_satellites_sign));
+        viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage())
+                + getString(R.string.list_item_voltage_sign));
+        viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed())
+                + getString(R.string.list_item_speed_sign));
         viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()) + "%");
-        viewHolder.directionCountTextView.setText(String.valueOf(signal.getDirection()));
-        viewHolder.balanceCountTextView.setText(String.valueOf(signal.getBalance()));
-        viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature()));
+        viewHolder.directionCountTextView.setText(AppController
+                .getDirectionLetterFromDegrees(signal.getDirection()));
+        viewHolder.balanceCountTextView.setText(String.valueOf(signal.getBalance())
+                + getString(R.string.list_item_balance_sign));
+        viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature())
+                + getString(R.string.list_item_temperature_sign));
     }
 
     private Bitmap bitmapFromView(View layout, int width, int height) {

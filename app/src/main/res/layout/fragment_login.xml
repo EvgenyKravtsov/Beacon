@@ -74,11 +74,13 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragmentLogin_rememberMeCheckBox"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
 
             <Button
                 android:id="@+id/fragmentLogin_loginButton"
@@ -91,16 +93,6 @@
                 android:layout_marginRight="5dp"
                 android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/fragmentLogin_tryDemoButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/try_demo_button_label"
-                android:textSize="15sp"
-                android:layout_weight="1"
-                android:background="@drawable/demo_button_selector"
-                android:layout_marginLeft="5dp"
-                android:textAllCaps="false" />
         </LinearLayout>
 
     </RelativeLayout>

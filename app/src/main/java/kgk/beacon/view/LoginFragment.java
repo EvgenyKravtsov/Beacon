@@ -44,11 +44,13 @@ public class LoginFragment extends Fragment {
     @Bind(R.id.fragmentLogin_rememberMeCheckBox) CheckBox rememberMeCheckBox;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         initFluxDependencies();
         loadLoginParametersFromSharedPreferences();
+
         return view;
     }
 

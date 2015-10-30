@@ -324,7 +324,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="55dp"
         android:orientation="horizontal"
         android:background="#ffcafdff"
         android:paddingLeft="50dp"
@@ -334,30 +334,25 @@
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/query_button_label"
             android:id="@+id/fragmentInformation_queryButton"
             android:textSize="15sp"
             android:layout_weight="1"
-            android:background="@drawable/query_button_selector" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search_label"
-            android:layout_marginLeft="30dp"
+            android:background="@drawable/demo_button_selector"
+            android:textAllCaps="false"
             android:layout_marginRight="10dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/fragmentInformation_searchButton"
             android:textSize="15sp"
             android:layout_weight="1"
             android:background="@drawable/search_off_button"
-            android:gravity="center_vertical|right"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp" />
+            android:text="@string/query_button_label"
+            android:textAllCaps="false"
+            android:layout_marginLeft="10dp" />
 
     </LinearLayout>
 

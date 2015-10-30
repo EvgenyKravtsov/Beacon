@@ -244,16 +244,16 @@ public class HistoryFragment extends Fragment {
             viewHolder.time.setText(DateFormatter.formatTime(new Date(signal.getDate() * 1000)));
             viewHolder.type.setText(String.valueOf(AppController.getInstance().getActiveDeviceId()));
             viewHolder.satellites.setText(String.valueOf(signal.getSatellites())
-                    + R.string.list_item_satellites_sign);
+                    + getString(R.string.list_item_satellites_sign));
             viewHolder.voltage.setText(String.valueOf(signal.getVoltage())
-                    + R.string.list_item_voltage_sign);
+                    + getString(R.string.list_item_voltage_sign));
             // viewHolder.charge.setText(String.valueOf(signal.getCharge()) + "%");
             viewHolder.speed.setText(String.valueOf(signal.getSpeed())
-                    + R.string.list_item_speed_sign);
+                    + getString(R.string.list_item_speed_sign));
             viewHolder.temperature.setText(String.valueOf(signal.getTemperature())
-                    + R.string.list_item_temperature_sign);
+                    + getString(R.string.list_item_temperature_sign));
             viewHolder.balance.setText(String.valueOf(signal.getBalance())
-                    + R.string.list_item_balance_sign);
+                    + getString(R.string.list_item_balance_sign));
 
             return convertView;
         }

@@ -149,7 +149,9 @@ public class Updater {
                 case "last version":
                     break;
                 default:
-                    EventBus.getDefault().post(new DownloadUrlReceivedEvent(result));
+                    if (result.contains(".apk")) {
+                        EventBus.getDefault().post(new DownloadUrlReceivedEvent(result));
+                    }
                     break;
             }
         }

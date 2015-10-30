@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
@@ -28,6 +29,7 @@ import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.LastActionDateStorage;
 import kgk.beacon.util.StartActivityEvent;
+import kgk.beacon.util.ToggleSearchModeEvent;
 import kgk.beacon.view.DeviceListActivity;
 
 public class VolleyHttpClient implements Response.ErrorListener {
@@ -195,6 +197,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                             JSONObject responseJson = new JSONObject(response);
                             if (responseJson.getBoolean("status")) {
                                 Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                                EventBus.getDefault().post(new ToggleSearchModeEvent());
                             } else {
                                 Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
                             }
@@ -253,6 +256,8 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
+        Log.d(TAG, "FROM: " + new Date(fromDate * 1000)
+                + " TO: " + new Date(toDate * 1000));
         requestQueue.add(request);
     }
 

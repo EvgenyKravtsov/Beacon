@@ -142,10 +142,16 @@ public class Signal implements Parcelable {
             signal.setLatitude(signalJson.getDouble("lat"));
             signal.setLongitude(signalJson.getDouble("lng"));
             signal.setDate(signalJson.getLong("packet_date"));
-            signal.setVoltage(666);
+            signal.setVoltage(5);
             signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
             signal.setSatellites(signalJson.getInt("sat"));
-            signal.setCharge(paramsJson.getInt("BAT") / 3);
+
+            if (paramsJson.getInt("BAT") < 200) {
+                signal.setCharge(0);
+            } else {
+                signal.setCharge(300 - paramsJson.getInt("BAT"));
+            }
+
             signal.setSpeed((int) signalJson.getDouble("speed"));
             signal.setDirection(signalJson.getInt("az"));
             signal.setTemperature(paramsJson.getInt("TEMP"));
@@ -170,10 +176,16 @@ public class Signal implements Parcelable {
             signal.setLatitude(signalJson.getDouble("lat"));
             signal.setLongitude(signalJson.getDouble("lng"));
             signal.setDate(signalJson.getLong("packet_date"));
-            signal.setVoltage(666);
+            signal.setVoltage(5);
             signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
             signal.setSatellites(signalJson.getInt("sat"));
-            signal.setCharge(paramsJson.getInt("BAT") / 3);
+
+            if (paramsJson.getInt("BAT") < 200) {
+                signal.setCharge(0);
+            } else {
+                signal.setCharge(300 - paramsJson.getInt("BAT"));
+            }
+
             signal.setSpeed((int) signalJson.getDouble("speed"));
             signal.setDirection(signalJson.getInt("az"));
             signal.setTemperature(paramsJson.getInt("TEMP"));

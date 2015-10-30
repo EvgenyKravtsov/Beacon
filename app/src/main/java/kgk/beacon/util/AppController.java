@@ -7,21 +7,24 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.acra.ACRA;
 import org.acra.ReportField;
+import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
 import de.greenrobot.event.EventBus;
+import kgk.beacon.R;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.networking.VolleyHttpClient;
 import kgk.beacon.stores.SignalStore;
 
 @ReportsCrashes(
-        formUri = "https://evgenykravtsov.cloudant.com/acra-kgkmobile/_design/acra-storage/_update/report",
+        formUri = "https://evgenykravtsov.cloudant.com/acra-beacon/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
         httpMethod = HttpSender.Method.POST,
-        formUriBasicAuthLogin = "ingiverfulderturrelsecte",
-        formUriBasicAuthPassword = "mYtaBMsFpB8t8e03jMLhKBFH",
+        formUriBasicAuthLogin = "tagondshatingstrienewhos",
+        formUriBasicAuthPassword = "72915071fb6bc423b41fe3cafdb8ca29b95607e0",
         formKey = "", // This is required for backward compatibility but not used
         customReportContent = {
                 ReportField.APP_VERSION_CODE,
@@ -31,7 +34,9 @@ import kgk.beacon.stores.SignalStore;
                 ReportField.REPORT_ID,
                 ReportField.BUILD,
                 ReportField.STACK_TRACE
-        }
+        },
+        mode = ReportingInteractionMode.TOAST,
+        resToastText = R.string.crash_toast_text
 )
 
 public class AppController extends Application {
@@ -46,6 +51,7 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ACRA.init(this);
         instance = this;
         VolleyHttpClient.getInstance(this);
         registerSignalStore();
@@ -113,5 +119,27 @@ public class AppController extends Application {
     public static String loadStringValueFromSharedPreferences(String key) {
         SharedPreferences sharedPreferences = instance.getSharedPreferences(APPLICATION_PREFERENCES, MODE_PRIVATE);
         return sharedPreferences.getString(key, "default");
+    }
+
+    public static String getDirectionLetterFromDegrees(int degrees) {
+        if (degrees > 337 && degrees <= 22) {
+            return AppController.getInstance().getString(R.string.direction_north);
+        } else if (degrees > 22 && degrees <= 67) {
+            return AppController.getInstance().getString(R.string.direction_north_east);
+        } else if (degrees > 67 && degrees <= 112) {
+            return AppController.getInstance().getString(R.string.direction_east);
+        } else if (degrees > 112 && degrees <= 157) {
+            return AppController.getInstance().getString(R.string.direction_south_east);
+        } else if (degrees > 157 && degrees <= 202) {
+            return AppController.getInstance().getString(R.string.direction_south);
+        } else if (degrees > 202 && degrees <= 247) {
+            return AppController.getInstance().getString(R.string.direction_south_west);
+        } else if (degrees > 247 && degrees <= 292) {
+            return AppController.getInstance().getString(R.string.direction_west);
+        } else if (degrees > 292 && degrees <= 337) {
+            return AppController.getInstance().getString(R.string.direction_north_west);
+        }
+
+        return AppController.getInstance().getString(R.string.direction_north);
     }
 }

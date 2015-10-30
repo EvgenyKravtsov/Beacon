@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,13 +36,12 @@ import kgk.beacon.R;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.SignalStore;
+import kgk.beacon.util.AppController;
 import kgk.beacon.util.DateFormatter;
 
 public class PathFragment extends SupportMapFragment implements OnMapReadyCallback,
                                                 GoogleMap.OnMapClickListener,
                                                 GoogleMap.OnMarkerClickListener {
-
-    // TODO Proper deleting marker on outside click
 
     public static final String TAG = PathFragment.class.getSimpleName();
 
@@ -77,39 +76,25 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
 
     @Override
     public void onMapClick(LatLng clickCoordinates) {
-        for (LatLng pathCoordinates : path.getPoints()) {
-            float[] results = new float[1];
-            Location.distanceBetween(clickCoordinates.latitude, clickCoordinates.longitude,
-                    pathCoordinates.latitude, pathCoordinates.longitude, results);
-
-            if (results[0] < (20 * (22 - googleMap.getCameraPosition().zoom))) {
-                if (currentMarker != null) {
-                    currentMarker.remove();
-                }
-
-                Signal currentSignal = null;
-                for (Signal signal : signals) {
-                    if (signal.getLatitude() == pathCoordinates.latitude &&
-                            signal.getLongitude() == pathCoordinates.longitude) {
-                        currentSignal = signal;
-                        Log.d(TAG, signal.getCharge() + "");
-                    }
-                }
-
-                currentMarker = addCustomMarker(currentSignal);
-            }
-        }
+        currentMarker.remove();
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        Log.d("Marker", "clicked");
-
         if (currentMarker != null) {
             currentMarker.remove();
         }
-        onMapClick(marker.getPosition());
 
+        Signal currentSignal = null;
+        for (Signal signal : signals) {
+            if (signal.getLatitude() == marker.getPosition().latitude &&
+                    signal.getLongitude() == marker.getPosition().longitude) {
+                currentSignal = signal;
+                Log.d(TAG, signal.getCharge() + "");
+            }
+        }
+
+        currentMarker = addCustomMarker(currentSignal);
         return true;
     }
 
@@ -132,11 +117,26 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates.get(0), 13));
 
-        for (LatLng latLng : coordinates) {
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(latLng);
-            googleMap.addMarker(markerOptions);
+        for (Signal signal : signals) {
+            googleMap.addMarker(addCustomMarkerPoint(signal));
         }
+    }
+
+    private MarkerOptions addCustomMarkerPoint(Signal signal) {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
+
+        ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
+        arrow.setRotation((float) signal.getDirection());
+
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+
+        Bitmap markerBitmap = bitmapFromView(layout, width, height);
+
+        return new MarkerOptions()
+                .position(new LatLng(signal.getLatitude(), signal.getLongitude()))
+                .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap));
     }
 
     private Marker addCustomMarker(Signal signal) {
@@ -161,14 +161,19 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
 
         viewHolder.lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
         viewHolder.lastPositionTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
-        viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
-        viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage()));
-        viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed()));
-        Log.d(TAG, signal.getCharge() + "");
+        viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites())
+                + getString(R.string.list_item_satellites_sign));
+        viewHolder.voltageCountTextView.setText(String.valueOf(signal.getVoltage())
+                + getString(R.string.list_item_voltage_sign));
+        viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed())
+                + getString(R.string.list_item_speed_sign));
         viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()) + "%");
-        viewHolder.directionCountTextView.setText(String.valueOf(signal.getDirection()));
-        viewHolder.balanceCountTextView.setText(String.valueOf(signal.getBalance()));
-        viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature()));
+        viewHolder.directionCountTextView.setText(AppController
+                .getDirectionLetterFromDegrees(signal.getDirection()));
+        viewHolder.balanceCountTextView.setText(String.valueOf(signal.getBalance())
+                + getString(R.string.list_item_balance_sign));
+        viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature())
+                + getString(R.string.list_item_temperature_sign));
     }
 
     private Bitmap bitmapFromView(View layout, int width, int height) {

@@ -1,8 +1,10 @@
 package kgk.beacon.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,9 @@ import kgk.beacon.model.Signal;
 import kgk.beacon.stores.SignalStore;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.DateFormatter;
+import kgk.beacon.util.ToggleSearchModeEvent;
 
-public class InformationFragment extends Fragment {
-
-    // TODO Upgrade search button
+public class InformationFragment extends Fragment implements DialogInterface.OnClickListener {
 
     public static final String TAG = InformationFragment.class.getSimpleName();
 
@@ -58,8 +59,11 @@ public class InformationFragment extends Fragment {
         ButterKnife.bind(this, view);
         initFluxDependencies();
         actionCreator.getLastSignalDateFromDatabase();
-        displayGeneralInformation("Brand", "Model", "Number");
-        searchSwitch = AppController.loadBooleanValueFromSharedPreferences(KEY_SEARCH_SWITCH);
+        displayGeneralInformation("KGK", "Actis", Long.toString(AppController.getInstance().getActiveDeviceId()));
+
+        String deviceId = Long.toString(AppController.getInstance().getActiveDeviceId());
+        searchSwitch = AppController.loadBooleanValueFromSharedPreferences(KEY_SEARCH_SWITCH + deviceId);
+
         return view;
     }
 
@@ -80,6 +84,22 @@ public class InformationFragment extends Fragment {
         updateUI();
     }
 
+    public void onEventMainThread(ToggleSearchModeEvent event) {
+        String deviceId = Long.toString(AppController.getInstance().getActiveDeviceId());
+
+        if (searchSwitch) {
+            searchSwitch = false;
+            AppController.saveBooleanValueToSharedPreferences(KEY_SEARCH_SWITCH + deviceId, false);
+            searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_off_button));
+            searchButton.setText(getString(R.string.search_off_button_label));
+        } else {
+            searchSwitch = true;
+            AppController.saveBooleanValueToSharedPreferences(KEY_SEARCH_SWITCH + deviceId, true);
+            searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_on_button));
+            searchButton.setText(getString(R.string.search_on_button_label));
+        }
+    }
+
     private void displayGeneralInformation(String brand, String model, String number) {
         brandTextView.setText(brand);
         modelTextView.setText(model);
@@ -89,13 +109,13 @@ public class InformationFragment extends Fragment {
     private void displayInfoFieldsParameters() {
         lastActionTimeStamp.setText("DD.MM.YY 00:00");
         lastPositioningTimeStamp.setText("DD.MM.YY 00:00");
-        satellitesCountTextView.setText("0");
-        voltageCountTextView.setText("0 V");
-        speedCountTextView.setText("0 km/h");
-        chargeCountTextView.setText("0");
+        satellitesCountTextView.setText("0" + getString(R.string.list_item_satellites_sign));
+        voltageCountTextView.setText("0 " + getString(R.string.list_item_voltage_sign));
+        speedCountTextView.setText("0 " + getString(R.string.list_item_speed_sign));
+        chargeCountTextView.setText("0%");
         directionCountTextView.setText("0");
-        balanceCountTextView.setText("0 rub.");
-        temperatureCountTextView.setText("0 C");
+        balanceCountTextView.setText("0 " + getString(R.string.list_item_balance_sign));
+        temperatureCountTextView.setText("0 " + getString(R.string.list_item_temperature_sign));
     }
 
     private void initFluxDependencies() {
@@ -111,43 +131,58 @@ public class InformationFragment extends Fragment {
             displayInfoFieldsParameters();
         } else {
             lastPositioningTimeStamp.setText(DateFormatter.formatDateAndTime(new Date(signal.getDate() * 1000)));
-            satellitesCountTextView.setText(String.valueOf(signal.getSatellites()));
-            voltageCountTextView.setText(String.valueOf(signal.getVoltage()));
-            speedCountTextView.setText(String.valueOf(signal.getSpeed()));
+            satellitesCountTextView.setText(String.valueOf(signal.getSatellites())
+                + getString(R.string.list_item_satellites_sign));
+            voltageCountTextView.setText(String.valueOf(signal.getVoltage())
+                    + getString(R.string.list_item_voltage_sign));
+            speedCountTextView.setText(String.valueOf(signal.getSpeed())
+                    + getString(R.string.list_item_speed_sign));
             chargeCountTextView.setText(String.valueOf(signal.getCharge()) + "%");
-            directionCountTextView.setText(String.valueOf(signal.getDirection()));
-            balanceCountTextView.setText(String.valueOf(signal.getBalance()));
-            temperatureCountTextView.setText(String.valueOf(signal.getTemperature()));
+            directionCountTextView.setText(AppController.getDirectionLetterFromDegrees(signal.getDirection()));
+            balanceCountTextView.setText(String.valueOf(signal.getBalance())
+                    + getString(R.string.list_item_balance_sign));
+            temperatureCountTextView.setText(String.valueOf(signal.getTemperature())
+                    + getString(R.string.list_item_temperature_sign));
         }
 
         lastActionTimeStamp.setText(DateFormatter.loadLastActionDateString());
 
         if (searchSwitch) {
             searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_on_button));
+            searchButton.setText(getString(R.string.search_on_button_label));
         } else {
             searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_off_button));
+            searchButton.setText(getString(R.string.search_off_button_label));
         }
     }
 
-    @OnClick(R.id.fragmentInformation_searchButton) // TODO Button status refresh in accordance with http response
+    @OnClick(R.id.fragmentInformation_searchButton)
     public void onPressSearchButton(View view) {
+        // TODO Format for voltage and balance
+
         Button searchButton = (Button) view;
 
-        if (searchSwitch) {
+        if (!searchSwitch) {
             if (AppController.getInstance().isNetworkAvailable()) {
-                searchSwitch = false;
-                AppController.saveBooleanValueToSharedPreferences(KEY_SEARCH_SWITCH, false);
-                searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_off_button));
-                actionCreator.sendToggleSearchModeRequest(false);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getString(R.string.search_mode_dialog_title))
+                        .setMessage(getString(R.string.search_mode_dialog_on))
+                        .setPositiveButton(android.R.string.ok, this)
+                        .setNegativeButton(android.R.string.cancel, null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
             } else {
                 Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
             }
         } else {
             if (AppController.getInstance().isNetworkAvailable()) {
-                searchSwitch = true;
-                AppController.saveBooleanValueToSharedPreferences(KEY_SEARCH_SWITCH, true);
-                searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_on_button));
-                actionCreator.sendToggleSearchModeRequest(true);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getString(R.string.search_mode_dialog_title))
+                        .setMessage(getString(R.string.search_mode_dialog_off))
+                        .setPositiveButton(android.R.string.ok, this)
+                        .setNegativeButton(android.R.string.cancel, null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
             } else {
                 Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
             }
@@ -186,6 +221,15 @@ public class InformationFragment extends Fragment {
             // actionCreator.sendGetLastStateRequest();
         } else {
             Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (searchSwitch) {
+            actionCreator.sendToggleSearchModeRequest(false);
+        } else {
+            actionCreator.sendToggleSearchModeRequest(true);
         }
     }
 }

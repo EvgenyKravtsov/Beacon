@@ -1,7 +1,13 @@
 <resources>
-    <string name="app_name">Beacon</string>
+    <string name="app_name">КГК Мониторинг</string>
     <string name="action_settings">Settings</string>
 
+
+    <!-- Strings for utility purpose -->
+    <string name="crash_toast_text">Приложение остановлено</string>
+    <string name="updating_label">Обновление</string>
+    <string name="new_version_available_label">Доступна новая версия приложения</string>
+    <string name="download_label">Скачать</string>
 
     <!-- Strings for action bars -->
     <string name="device_list_activity_action_bar_label">Устройства</string>
@@ -35,12 +41,15 @@
     <string name="temperature_label">Температура</string>
     <string name="query_button_label">Опросить</string>
     <string name="history_button_label">История</string>
-    <string name="search_on_button_label">Вкл</string>
-    <string name="search_off_button_label">Выкл</string>
+    <string name="search_on_button_label">Поиск: Вкл</string>
+    <string name="search_off_button_label">Поиск: Выкл</string>
     <string name="map_button_label">Карта</string>
     <string name="settings_button_label">Настройки</string>
     <string name="search_label">Поиск</string>
     <string name="no_signals_toast">Нет сигналов</string>
+    <string name="search_mode_dialog_title">Режим поиска</string>
+    <string name="search_mode_dialog_on">Вы уверены, что хотите включить режим поиска?</string>
+    <string name="search_mode_dialog_off">Вы уверены, что хотите выключить режим поиска?</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Период</string>
@@ -86,4 +95,14 @@
     <string name="russian_language_label">Русский</string>
     <string name="ukrainian_language_label">Украинский</string>
     <string name="language_picker_dialog_title">Выберите язык</string>
+
+    <!-- Strings for direction -->
+    <string name="direction_north">С</string>
+    <string name="direction_north_east">СВ</string>
+    <string name="direction_east">В</string>
+    <string name="direction_south_east">ЮВ</string>
+    <string name="direction_south">Ю</string>
+    <string name="direction_south_west">ЮЗ</string>
+    <string name="direction_west">З</string>
+    <string name="direction_north_west">СЗ</string>
 </resources>
