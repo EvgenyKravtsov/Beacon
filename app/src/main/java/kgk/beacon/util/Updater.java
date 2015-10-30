@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,7 +46,7 @@ public class Updater {
     }
 
     private String makeRequestUrl() {
-        String result = SERVER_URL +
+        return SERVER_URL +
                 "?" +
                 "name" +
                 "=" +
@@ -56,8 +55,6 @@ public class Updater {
                 "code" +
                 "=" +
                 getVersionCode();
-        Log.d(TAG, result);
-        return result;
     }
 
     private int getVersionCode() {
@@ -120,11 +117,6 @@ public class Updater {
     private String readInputStream(InputStream stream, int length) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> jsonMap = mapper.readValue(stream, Map.class);
-
-        for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
-            Log.d("JSON PARSING", entry.getKey() + " | " + entry.getValue());
-        }
-
         return (String) jsonMap.get("response");
     }
 

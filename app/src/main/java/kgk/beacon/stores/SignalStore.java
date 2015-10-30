@@ -1,7 +1,5 @@
 package kgk.beacon.stores;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,11 +74,6 @@ public class SignalStore extends Store {
             case SignalActions.FILTER_SIGNALS_DISPLAYED:
                 signalsDisplayed.clear();
                 signalsDisplayed = (List<Signal>) action.getData().get(ActionCreator.KEY_SIGNALS);
-
-                for (Signal signal : signalsDisplayed) {
-                    Log.d(TAG, signal.toString());
-                }
-
                 emitStoreChange();
                 break;
         }
@@ -88,7 +81,6 @@ public class SignalStore extends Store {
 
     private void updateLastSignal(Signal signal) {
         this.signal = signal;
-        Log.d(TAG, "Store changes emitted");
     }
 
     public class SignalStoreChangeEvent implements StoreChangeEvent {}

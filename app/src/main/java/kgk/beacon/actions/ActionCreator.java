@@ -1,7 +1,5 @@
 package kgk.beacon.actions;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -47,7 +45,6 @@ public class ActionCreator {
     public void updateLastSignal(Signal signal) {
         dispatcher.dispatch(SignalActions.UPDATE_LAST_SIGNAL,
                                         KEY_LAST_SIGNAL, signal);
-        Log.d(TAG, "dispatched");
     }
 
     public void refreshSignalsDisplayed() {

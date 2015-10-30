@@ -1,7 +1,6 @@
 package kgk.beacon.networking;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -15,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
@@ -110,7 +108,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                             processAuthenticationResponseJson(responseJson);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.d(TAG, "Can't parse authentication response");
                         }
                     }
                 },
@@ -133,7 +130,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                             processDeviceListResponseJson(responseJson);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.d(TAG, "Can't parse device list response");
                         }
                     }
                 },
@@ -150,8 +146,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, response);
-
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             if (responseJson.getBoolean("status")) {
@@ -176,7 +170,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "getLastStateRequest: " + response);
                         processLastStateResponse(response);
                     }
                 },
@@ -240,7 +233,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
-        Log.d(TAG, settingsJson.toString());
         requestQueue.add(request);
     }
 
@@ -256,8 +248,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
-        Log.d(TAG, "FROM: " + new Date(fromDate * 1000)
-                + " TO: " + new Date(toDate * 1000));
         requestQueue.add(request);
     }
 
@@ -283,7 +273,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
             event.setLoginSuccessful(true);
             EventBus.getDefault().post(event);
         } else {
-            Log.d(TAG, "Can't get device list");
             deviceListRequest(phpSessId);
         }
     }
@@ -296,7 +285,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
                 for (int i = 0; i < responseDataJson.length(); i++) {
                     JSONObject signalJson = responseDataJson.getJSONObject(i);
-                    Log.d(TAG, signalJson.toString());
                     Signal signal = Signal.signalFromJson(signalJson);
                     SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
                 }
@@ -310,9 +298,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         try {
             JSONObject responseJson = new JSONObject(response);
             if (responseJson.getBoolean("status")) {
-                Log.d(TAG, "responseJson  -  " + responseJson.toString());
                 JSONObject signalJson = responseJson.getJSONObject("data");
-                Log.d(TAG, "signalJson  -  " + signalJson.toString());
                 Signal signal = Signal.signalFromJsonForLastState(signalJson);
                 SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
             }
@@ -323,7 +309,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.d(TAG, "Request didn't work\n" + error.getMessage());
         Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
     }
 }

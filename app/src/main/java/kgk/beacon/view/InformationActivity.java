@@ -125,7 +125,6 @@ public class InformationActivity extends AppCompatActivity implements OnMapReady
     }
 
     public void onEventMainThread(SignalStore.SignalStoreChangeEvent event) {
-        Log.d(TAG, "InformationActivity onEvent");
         updateMap();
     }
 
@@ -151,7 +150,6 @@ public class InformationActivity extends AppCompatActivity implements OnMapReady
         View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
 
         ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
-        Log.d("DIRECTION", signal.getDirection() + "");
         arrow.setRotation((float) signal.getDirection());
 
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());

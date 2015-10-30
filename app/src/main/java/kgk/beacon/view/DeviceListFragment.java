@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,6 @@ public class DeviceListFragment extends ListFragment {
         super.onListItemClick(listView, view, position, id);
 
         long activeDevice = Long.parseLong(deviceStore.getDevices().get(position).getId());
-        Log.d(TAG, activeDevice + "");
         AppController.getInstance().setActiveDeviceId(activeDevice);
         updateLastSignalFromDatabase();
 

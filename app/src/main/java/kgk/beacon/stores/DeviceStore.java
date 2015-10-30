@@ -47,11 +47,6 @@ public class DeviceStore extends Store {
             case HttpActions.DEVICE_LIST_RESPONSE:
                 JSONArray devicesJson = (JSONArray) action.getData().get(ActionCreator.KEY_DEVICES);
                 devices = generateDeviceList(devicesJson);
-
-                for (Device device : devices) {
-                    Log.d(TAG, device.toString());
-                }
-
                 break;
         }
     }
@@ -65,7 +60,6 @@ public class DeviceStore extends Store {
                 devices.add(serializeDeviceFromJson((JSONObject) devicesJson.get(i)));
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.d(TAG, "Error parsing from JSON array of devices");
             }
         }
 
@@ -80,7 +74,6 @@ public class DeviceStore extends Store {
             device.setModel(deviceJson.getString("model"));
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "Error serializing device from JSON");
         }
 
         return device;

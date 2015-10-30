@@ -90,7 +90,6 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
             if (signal.getLatitude() == marker.getPosition().latitude &&
                     signal.getLongitude() == marker.getPosition().longitude) {
                 currentSignal = signal;
-                Log.d(TAG, signal.getCharge() + "");
             }
         }
 

@@ -2,7 +2,6 @@ package kgk.beacon.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,11 +131,8 @@ public class Signal implements Parcelable {
         try {
             String params = signalJson.getString("params_json");
             JSONObject rawParamsJson = new JSONObject(params);
-            Log.d(TAG, "rawParamsJson  -  " + rawParamsJson.toString());
             JSONObject rawParamsJsonKey769 = rawParamsJson.getJSONObject("769");
-            Log.d(TAG, "rawParamsJsonKey769  -  " + rawParamsJsonKey769.toString());
             JSONObject paramsJson = rawParamsJsonKey769.getJSONObject("0");
-            Log.d(TAG, "paramsJson  -  " + paramsJson.toString());
             signal.setDeviceId(AppController.getInstance().getActiveDeviceId());
             signal.setMode(0);
             signal.setLatitude(signalJson.getDouble("lat"));
@@ -168,9 +164,7 @@ public class Signal implements Parcelable {
         try {
             String params = signalJson.getString("params_json");
             JSONObject rawParamsJson = new JSONObject(params);
-            Log.d(TAG, "rawParamsJson  -  " + rawParamsJson.toString());
             JSONObject paramsJson = rawParamsJson.getJSONObject("0");
-            Log.d(TAG, "paramsJson  -  " + paramsJson.toString());
             signal.setDeviceId(AppController.getInstance().getActiveDeviceId());
             signal.setMode(0);
             signal.setLatitude(signalJson.getDouble("lat"));

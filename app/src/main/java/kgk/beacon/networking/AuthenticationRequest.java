@@ -54,7 +54,6 @@ public class AuthenticationRequest extends StringRequest {
             responseData = responseJson.toString();
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "Can't parse authentication response data");
         }
 
         return Response.success(responseData, HttpHeaderParser.parseCacheHeaders(response));

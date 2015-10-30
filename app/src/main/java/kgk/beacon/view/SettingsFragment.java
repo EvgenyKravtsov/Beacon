@@ -153,7 +153,6 @@ public class SettingsFragment extends Fragment {
                     gprsStatusSpinner.getSelectedItem().toString().equals("On"));
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "Error serializing settings to JSON");
         }
 
         return settingsJson;

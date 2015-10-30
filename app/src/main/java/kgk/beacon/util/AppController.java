@@ -41,6 +41,8 @@ import kgk.beacon.stores.SignalStore;
 
 public class AppController extends Application {
 
+    // TODO Delete all Log.d calls
+
     private static final String TAG = AppController.class.getSimpleName();
     private static final String APPLICATION_PREFERENCES = "application_preferences";
 

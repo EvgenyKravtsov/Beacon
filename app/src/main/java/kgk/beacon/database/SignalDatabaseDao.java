@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -73,7 +72,6 @@ public class SignalDatabaseDao {
             open();
 
             if (hasDuplicate(signal)) {
-                Log.d(TAG, "Duplicate ignored");
                 close();
                 return;
             }
@@ -150,7 +148,6 @@ public class SignalDatabaseDao {
             } else {
                 cursor.moveToLast();
                 while (numberOfSignals != 0) {
-                    Log.d(TAG, numberOfSignals + " getLastSignalsByDeviceId");
                     Signal signal = cursorToSignal(cursor);
                     signals.add(0, signal);
                     cursor.moveToPrevious();
@@ -210,7 +207,6 @@ public class SignalDatabaseDao {
             cursor.moveToLast();
             Signal signal = cursorToSignal(cursor);
             lastSignalDate = signal.getDate();
-            Log.d(TAG, lastSignalDate + " getLastSignalDate()");
             close();
         } catch (SQLException e) {
             e.printStackTrace();
