@@ -113,8 +113,8 @@
             android:layout_weight="1"
             android:background="@drawable/control_button_selector"
             android:textStyle="bold"
-            android:layout_marginLeft="160dp"
-            android:layout_marginRight="160dp" />
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp" />
 
     </LinearLayout>
 

@@ -1,10 +1,12 @@
 package kgk.beacon.view;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import kgk.beacon.model.Signal;
 import kgk.beacon.stores.SignalStore;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.DateFormatter;
+import kgk.beacon.util.DownloadDataInProgressEvent;
 import kgk.beacon.util.ToggleSearchModeEvent;
 
 public class InformationFragment extends Fragment implements DialogInterface.OnClickListener {
@@ -47,6 +50,8 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
     @Bind(R.id.fragmentInformation_temperatureCountTextView) TextView temperatureCountTextView;
     @Bind(R.id.fragmentInformation_searchButton) Button searchButton;
 
+    private ProgressDialog downloadDataProgressDialog;
+
     private Dispatcher dispatcher;
     private ActionCreator actionCreator;
     private SignalStore signalStore;
@@ -58,7 +63,7 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         View view = inflater.inflate(R.layout.fragment_information, container, false);
         ButterKnife.bind(this, view);
         initFluxDependencies();
-        actionCreator.getLastSignalDateFromDatabase();
+        // actionCreator.getLastSignalDateFromDatabase();
         displayGeneralInformation("KGK", "Actis", Long.toString(AppController.getInstance().getActiveDeviceId()));
 
         String deviceId = Long.toString(AppController.getInstance().getActiveDeviceId());
@@ -97,6 +102,21 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             AppController.saveBooleanValueToSharedPreferences(KEY_SEARCH_SWITCH + deviceId, true);
             searchButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.search_on_button));
             searchButton.setText(getString(R.string.search_on_button_label));
+        }
+    }
+
+    public void onEventMainThread(DownloadDataInProgressEvent event) {
+        switch (event.getStatus()) {
+            case Started:
+                showDownloadDataProgressDialog();
+                break;
+            case Success:
+                downloadDataProgressDialog.dismiss();
+                break;
+            case Error:
+                downloadDataProgressDialog.dismiss();
+                Toast.makeText(getActivity(), R.string.download_error_toast, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -156,9 +176,15 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         }
     }
 
+    private void showDownloadDataProgressDialog() {
+        downloadDataProgressDialog = new ProgressDialog(getActivity());
+        downloadDataProgressDialog.setTitle(getString(R.string.download_data_progress_dialog_title));
+        downloadDataProgressDialog.setMessage(getString(R.string.download_data_progress_dialog_message));
+        downloadDataProgressDialog.show();
+    }
+
     @OnClick(R.id.fragmentInformation_searchButton)
     public void onPressSearchButton(View view) {
-        // TODO Format for voltage and balance
 
         Button searchButton = (Button) view;
 
@@ -219,6 +245,9 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             actionCreator.sendQueryBeaconRequest();
             actionCreator.getLastSignalDateFromDatabase();
             // actionCreator.sendGetLastStateRequest();
+
+            // TODO Delete test code
+            sendSms();
         } else {
             Toast.makeText(getActivity(), getString(R.string.no_internet_connection_message), Toast.LENGTH_SHORT).show();
         }
@@ -230,6 +259,19 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             actionCreator.sendToggleSearchModeRequest(false);
         } else {
             actionCreator.sendToggleSearchModeRequest(true);
+        }
+    }
+
+    private void sendSms() {
+        String phoneNo = "89680240490";
+        String message = "Hello, World";
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, message, null, null);
+
+            Toast.makeText(getActivity(), "Message send", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

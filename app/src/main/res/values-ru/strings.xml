@@ -27,6 +27,8 @@
     <string name="wrong_login_or_password_label">Неправильное имя пользователя или пароль</string>
     <string name="login_progress_dialog_title">Вход…</string>
     <string name="login_progress_dialog_message">Аутентификация</string>
+    <string name="no_registered_devices_toast">У вас нет зарегистрированных устройств</string>
+    <string name="server_error">Ошибка сервера</string>
 
     <!-- Strings for InformationFragment -->
     <string name="detecting_mode_text">Периодическое сообщение через заданный интервал</string>
@@ -50,6 +52,9 @@
     <string name="search_mode_dialog_title">Режим поиска</string>
     <string name="search_mode_dialog_on">Вы уверены, что хотите включить режим поиска?</string>
     <string name="search_mode_dialog_off">Вы уверены, что хотите выключить режим поиска?</string>
+    <string name="download_data_progress_dialog_title">Загрузка…</string>
+    <string name="download_data_progress_dialog_message">Загрузка данных с сервера</string>
+    <string name="download_error_toast">Ошибка загрузки данных</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Период</string>

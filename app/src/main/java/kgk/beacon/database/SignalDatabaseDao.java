@@ -212,11 +212,11 @@ public class SignalDatabaseDao {
             e.printStackTrace();
         } catch (CursorIndexOutOfBoundsException e) {
             e.printStackTrace();
-            lastSignalDate = 1444435200;
+            lastSignalDate = 1444435200; // 10 October 2015
         }
 
         if (lastSignalDate == 0) {
-            lastSignalDate = 1444435200;
+            lastSignalDate = 1444435200; // 10 October 2015
         }
 
         return lastSignalDate;

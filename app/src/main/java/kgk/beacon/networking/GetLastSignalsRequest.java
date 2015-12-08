@@ -30,7 +30,7 @@ public class GetLastSignalsRequest extends StringRequest {
         return baseUrl + "?"
                 + "device" + "=" + AppController.getInstance().getActiveDeviceId() + "&"
                 + "from" + "=" + fromDate + "&"
-                + "to" + "=" + toDate + "&";
+                + "to" + "=" + toDate;
     }
 
     @Override

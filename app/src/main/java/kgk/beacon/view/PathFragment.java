@@ -109,7 +109,7 @@ public class PathFragment extends SupportMapFragment implements OnMapReadyCallba
         path = new PolylineOptions();
         path.addAll(coordinates);
         path.width(3);
-        path.color(Color.RED);
+        path.color(Color.BLUE);
         path.geodesic(false);
 
         googleMap.addPolyline(path);

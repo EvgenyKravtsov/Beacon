@@ -1,6 +1,7 @@
 package kgk.beacon.networking;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,6 +26,7 @@ import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.util.AppController;
+import kgk.beacon.util.DownloadDataInProgressEvent;
 import kgk.beacon.util.LastActionDateStorage;
 import kgk.beacon.util.StartActivityEvent;
 import kgk.beacon.util.ToggleSearchModeEvent;
@@ -111,7 +113,16 @@ public class VolleyHttpClient implements Response.ErrorListener {
                         }
                     }
                 },
-                this);
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
+                        event.setLoginSuccessful(false);
+                        EventBus.getDefault().post(event);
+                        Toast.makeText(context, context.getString(R.string.on_command_send_error_toast),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         request.setLogin(login);
         request.setPassword(password);
@@ -219,11 +230,14 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        // TODO Delete test code
+                        Log.d(TAG, response.toString());
                         try {
                             if (response.getBoolean("status")) {
                                 Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, response.toString());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -237,6 +251,13 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void getLastSignalsRequest(long fromDate, long toDate) {
+        if (!AppController.getInstance().isNetworkAvailable()) {
+            DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
+            event.setStatus(DownloadDataStatus.noInternetConnection);
+            EventBus.getDefault().post(event);
+            return;
+        }
+
         GetLastSignalsRequest request = new GetLastSignalsRequest(Request.Method.POST,
                 GetLastSignalsRequest.makeUrl(GET_LAST_SIGNALS_URL, fromDate, toDate),
                 new Response.Listener<String>() {
@@ -249,6 +270,12 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
         request.setPhpSessId(phpSessId);
         requestQueue.add(request);
+        // TODO Delete test code
+        Log.d(TAG, request.toString());
+
+        DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
+        event.setStatus(DownloadDataStatus.Started);
+        EventBus.getDefault().post(event);
     }
 
     private void processAuthenticationResponseJson(JSONObject responseJson) throws JSONException {
@@ -266,18 +293,34 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void processDeviceListResponseJson(JSONObject responseJson) throws JSONException {
+        // TODO Delete test code
+        Log.d(TAG, responseJson.toString());
+
         if (responseJson.getBoolean("status")) {
-            JSONArray devices = responseJson.getJSONArray("data");
-            ActionCreator.getInstance(dispatcher).receiveDeviceListResponse(devices);
-            StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
-            event.setLoginSuccessful(true);
-            EventBus.getDefault().post(event);
+            try {
+                JSONArray devices = responseJson.getJSONArray("data");
+                ActionCreator.getInstance(dispatcher).receiveDeviceListResponse(devices);
+                StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
+                event.setLoginSuccessful(true);
+                EventBus.getDefault().post(event);
+            } catch (JSONException e) {
+                Toast.makeText(AppController.getInstance().getApplicationContext(), R.string.no_registered_devices_toast, Toast.LENGTH_LONG).show();
+                StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
+                event.setLoginSuccessful(false);
+                EventBus.getDefault().post(event);
+            }
         } else {
-            deviceListRequest(phpSessId);
+            Toast.makeText(AppController.getInstance().getApplicationContext(), R.string.server_error, Toast.LENGTH_LONG).show();
+            StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
+            event.setLoginSuccessful(false);
+            EventBus.getDefault().post(event);
         }
     }
 
     private void processLastSignalsResponse(String response) {
+        Log.d(TAG, response);
+
+        DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
         try {
             JSONObject responseJson = new JSONObject(response);
             if (responseJson.getBoolean("status")) {
@@ -288,6 +331,12 @@ public class VolleyHttpClient implements Response.ErrorListener {
                     Signal signal = Signal.signalFromJson(signalJson);
                     SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
                 }
+
+                event.setStatus(DownloadDataStatus.Success);
+                EventBus.getDefault().post(event);
+            } else {
+                event.setStatus(DownloadDataStatus.Error);
+                EventBus.getDefault().post(event);
             }
         } catch (JSONException e) {
             e.printStackTrace();

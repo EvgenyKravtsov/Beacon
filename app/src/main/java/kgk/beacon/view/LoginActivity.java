@@ -17,6 +17,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import java.io.File;
@@ -174,5 +178,27 @@ public class LoginActivity extends SingleFragmentActivity {
         apkNameForUpdate = Updater.getApkName(url);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, apkNameForUpdate);
         enqueue = downloadManager.enqueue(request);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+
+        View v = getCurrentFocus();
+        boolean ret = super.dispatchTouchEvent(event);
+
+        if (v instanceof EditText) {
+            View w = getCurrentFocus();
+            int scrCoordinates[] = new int[2];
+            w.getLocationOnScreen(scrCoordinates);
+            float x = event.getRawX() + w.getLeft() - scrCoordinates[0];
+            float y = event.getRawY() + w.getTop() - scrCoordinates[1];
+
+            if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom()) ) {
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+            }
+        }
+        return ret;
     }
 }

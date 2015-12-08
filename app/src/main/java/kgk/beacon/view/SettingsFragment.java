@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,26 +86,28 @@ public class SettingsFragment extends Fragment {
     private void saveSettingsToSharedPreferences() {
         SharedPreferences settings = getActivity().getSharedPreferences(APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
+        String deviceId = String.valueOf(AppController.getInstance().getActiveDeviceId());
 
-        editor.putInt(KEY_CONNECTION_PERIOD, Integer.parseInt(connectionPeriodEditText.getText().toString()));
-        editor.putInt(KEY_NUMBER_SMS_OMISSIONS, Integer.parseInt(numberSmsOmissionsEditText.getText().toString()));
-        editor.putInt(KEY_GPS_POSITIONING_PERIOD, Integer.parseInt(gpsPositioningPeriodEditText.getText().toString()));
-        editor.putInt(KEY_BALANCE_CONTROL_LIMIT, Integer.parseInt(balanceControlLimitEditText.getText().toString()));
-        editor.putString(KEY_BALANCE_REQUEST_COMMAND, balanceRequestCommandEditText.getText().toString());
-        editor.putBoolean(KEY_GPRS_STATUS, gprsStatusSpinner.getSelectedItem().toString().equals("On"));
+        editor.putInt(deviceId + KEY_CONNECTION_PERIOD, Integer.parseInt(connectionPeriodEditText.getText().toString()));
+        editor.putInt(deviceId + KEY_NUMBER_SMS_OMISSIONS, Integer.parseInt(numberSmsOmissionsEditText.getText().toString()));
+        editor.putInt(deviceId + KEY_GPS_POSITIONING_PERIOD, Integer.parseInt(gpsPositioningPeriodEditText.getText().toString()));
+        editor.putInt(deviceId + KEY_BALANCE_CONTROL_LIMIT, Integer.parseInt(balanceControlLimitEditText.getText().toString()));
+        editor.putString(deviceId + KEY_BALANCE_REQUEST_COMMAND, balanceRequestCommandEditText.getText().toString());
+        editor.putBoolean(deviceId + KEY_GPRS_STATUS, gprsStatusSpinner.getSelectedItem().toString().equals("On"));
         editor.apply();
     }
 
     private void loadSettingsFromSharedPreferences() {
         SharedPreferences settings = getActivity().getSharedPreferences(APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
+        String deviceId = String.valueOf(AppController.getInstance().getActiveDeviceId());
 
-        connectionPeriodEditText.setText(String.valueOf(settings.getInt(KEY_CONNECTION_PERIOD, 1440)));
-        numberSmsOmissionsEditText.setText(String.valueOf(settings.getInt(KEY_NUMBER_SMS_OMISSIONS, 0)));
-        gpsPositioningPeriodEditText.setText(String.valueOf(settings.getInt(KEY_GPS_POSITIONING_PERIOD, 5)));
-        balanceControlLimitEditText.setText(String.valueOf(settings.getInt(KEY_BALANCE_CONTROL_LIMIT, 100)));
-        balanceRequestCommandEditText.setText(settings.getString(KEY_BALANCE_REQUEST_COMMAND, "*100#"));
+        connectionPeriodEditText.setText(String.valueOf(settings.getInt(deviceId + KEY_CONNECTION_PERIOD, 1440)));
+        numberSmsOmissionsEditText.setText(String.valueOf(settings.getInt(deviceId + KEY_NUMBER_SMS_OMISSIONS, 0)));
+        gpsPositioningPeriodEditText.setText(String.valueOf(settings.getInt(deviceId + KEY_GPS_POSITIONING_PERIOD, 5)));
+        balanceControlLimitEditText.setText(String.valueOf(settings.getInt(deviceId + KEY_BALANCE_CONTROL_LIMIT, 100)));
+        balanceRequestCommandEditText.setText(settings.getString(deviceId + KEY_BALANCE_REQUEST_COMMAND, "*100#"));
 
-        boolean gprsStatus = settings.getBoolean(KEY_GPRS_STATUS, false);
+        boolean gprsStatus = settings.getBoolean(deviceId + KEY_GPRS_STATUS, false);
         gprsStatusSpinner.setSelection(gprsStatus ? 0 : 1);
     }
 

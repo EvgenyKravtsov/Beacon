@@ -12,6 +12,8 @@ import kgk.beacon.util.AppController;
 
 public class Signal implements Parcelable {
 
+    // TODO Months names instead numbers
+
     private static final String TAG = Signal.class.getSimpleName();
 
     private long deviceId;
@@ -170,14 +172,14 @@ public class Signal implements Parcelable {
             signal.setLatitude(signalJson.getDouble("lat"));
             signal.setLongitude(signalJson.getDouble("lng"));
             signal.setDate(signalJson.getLong("packet_date"));
-            signal.setVoltage(5);
+            signal.setVoltage(paramsJson.getInt("BAT") / 100.0);
             signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
             signal.setSatellites(signalJson.getInt("sat"));
 
             if (paramsJson.getInt("BAT") < 200) {
                 signal.setCharge(0);
             } else {
-                signal.setCharge(300 - paramsJson.getInt("BAT"));
+                signal.setCharge(paramsJson.getInt("BAT") - 200);
             }
 
             signal.setSpeed((int) signalJson.getDouble("speed"));
