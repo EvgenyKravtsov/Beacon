@@ -30,9 +30,15 @@
     <string name="no_registered_devices_toast">У вас нет зарегистрированных устройств</string>
     <string name="server_error">Ошибка сервера</string>
 
+    <!-- Strings for DeviceListFragment -->
+    <string name="development_progress_dialog_title">Внимание!</string>
+    <string name="development_progress_dialog_message">Текущая версия приложения поддерживает только охранные маячки Actis</string>
+    <string name="ordering_by_type_label">По типам</string>
+    <string name="ordering_by_group_label">По группам</string>
+
     <!-- Strings for InformationFragment -->
     <string name="detecting_mode_text">Периодическое сообщение через заданный интервал</string>
-    <string name="last_positioning_text">Позиционирование:</string>
+    <string name="last_positioning_text">Последний сигнал:</string>
     <string name="last_action_text">Последняя команда:</string>
     <string name="satellites_label">Спутники</string>
     <string name="voltage_label">Напряжение</string>
@@ -41,10 +47,10 @@
     <string name="direction_label">Направление</string>
     <string name="balance_label">Баланс</string>
     <string name="temperature_label">Температура</string>
-    <string name="query_button_label">Опросить</string>
+    <string name="query_button_label">Запрос</string>
     <string name="history_button_label">История</string>
-    <string name="search_on_button_label">Поиск: Вкл</string>
-    <string name="search_off_button_label">Поиск: Выкл</string>
+    <string name="search_on_button_label">Поиск</string>
+    <string name="search_off_button_label">Поиск: Выкл.</string>
     <string name="map_button_label">Карта</string>
     <string name="settings_button_label">Настройки</string>
     <string name="search_label">Поиск</string>
@@ -55,15 +61,22 @@
     <string name="download_data_progress_dialog_title">Загрузка…</string>
     <string name="download_data_progress_dialog_message">Загрузка данных с сервера</string>
     <string name="download_error_toast">Ошибка загрузки данных</string>
+    <string name="query_too_early_dialog_message">Команда отправлена. Ожидание ответа от устройства Actis…</string>
+    <string name="demo_warning_dialog_message">Данная функция недоступна в демо режиме</string>
+    <string name="awaiting_confirmation_dialog_message">Настройки уже отправлены. Ожидание подтверждения на устройстве Actis…</string>
+
+    <!-- Strings for DeviceCurrentLocationActivity -->
+    <string name="device_current_location_activity_action_bar_title">Местоположение устройства</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Период</string>
     <string name="track_button_label">Трек</string>
-    <string name="list_item_satellites_sign">ст</string>
+    <string name="list_item_satellites_sign">сп</string>
     <string name="list_item_speed_sign">км/ч</string>
     <string name="list_item_temperature_sign">°C</string>
     <string name="list_item_voltage_sign">В</string>
     <string name="list_item_balance_sign">р</string>
+    <string name="track_drawing_in_progress_dialog_message">Подготовка трека…</string>
 
     <!-- String for DatePickerFragment -->
     <string name="action_bar_label">Период</string>
@@ -81,18 +94,56 @@
     <string name="timezone_label">Часовой пояс</string>
     <string name="time_of_signal_label">Время сигнала</string>
     <string name="on_command_send_toast">Команда отправлена</string>
-    <string name="on_command_send_error_toast">Ошибка отправки комманды</string>
+    <string name="on_command_send_error_toast">Ошибка отправки команды</string>
     <string name="no_internet_connection_message">Отсутствует интернет-соединение</string>
     <string name="balance_request_command_wrong_field_message">Слишком длинная команда запроса баланса</string>
-    <string name="connection_period_label">Период выхода на связь (мин)</string>
-    <string name="number_of_sms_omissions_label">Кол-во пропусков отправки СМС</string>
+    <string name="connection_period_label">Количество сигналов</string>
+    <string name="connection_per_day_label">в сутки</string>
+    <string name="connection_per_week_label">в неделю</string>
+    <string name="number_of_sms_omissions_label">Кол-во пропусков отправки SMS</string>
     <string name="gps_positioning_period_label">Время определения GPS (мин)</string>
     <string name="balance_control_limit_label">Порог контроля баланса (руб.)</string>
     <string name="balance_request_command_label">Команда запроса баланса</string>
     <string name="gprs_label">GPRS</string>
     <string name="send_button_label">Отправить</string>
-    <string name="settings_gprs_spinner_on">Вкл</string>
-    <string name="settings_gprs_spinner_off">Выкл</string>
+    <string name="settings_gprs_spinner_on">Вкл.</string>
+    <string name="settings_gprs_spinner_off">Выкл.</string>
+
+    <!-- Strings for DeviceCurrentLocationActivity -->
+    <string name="daily_track_button_label">Трек за день</string>
+    <string name="current_location_button_label">Местоположение</string>
+    <string name="report_button_label">Детальный Отчет</string>
+    <string name="location_button_label">Местоположение</string>
+    <string name="no_data_for_device_message">Нет данных по устройству</string>
+    <string name="device_current_location_menu_description">Меню</string>
+    <string name="select_map_dialog_title">Выберите карту</string>
+    <string name="kgk_map">OSM KGK</string>
+    <string name="osm_map">OSM</string>
+    <string name="satellite_map">Спутник</string>
+    <string name="hybrid_map">Гибрид</string>
+    <string name="google_map">Google</string>
+
+    <!-- Strings for HelpScreen -->
+    <string name="help_screen_title">Помощь</string>
+    <string name="query_function_description">Кнопка <b>Опросить</b> — позволяет отправлять устройству сообщения для получения текущих координат его местоположения.</string>
+    <string name="search_function_description">Кнопка <b>Поиск</b> — служит для включения/выключения режима <b>Поиск</b>.
+        После включения режима <b>Поиск</b> устройство каждые 20 минут выходит на связь и отправляет координаты своего местоположения.
+        Для выключения режима <b>Поиск</b> необходимо повторно нажать кнопку <b>Поиск</b>.</string>
+    <string name="history_screen_description">Окно <b>История</b> — содержит информацию о последних 10 сигналах, пришедших с устройства.
+        Эта информация отображается в виде составного списка дат. При выборе конкретной даты будут показаны все сигналы за эту дату.</string>
+    <string name="from_history_screen_navigation_description">Из окна истории можно перейти в окно выбора периода (кнопка <b>Период</b>) и окно отображения трека (кнопка <b>Трек</b>).</string>
+    <string name="period_screen_description">Окно <b>Период</b> — позволяет выбрать временной промежуток, за который необходимо просмотреть сигналы, поступившие от устройства.
+        Введите требуемую дату и время в соответствующие поля и нажмите <b>ОК</b>.</string>
+    <string name="track_screen_description">Окно <b>Трек</b> — это полноразмерная карта, на которой
+        отображается трек, состоящий из маркеров. Положение каждого из маркеров соответствует
+        последнему отправленному с устройства сигналу (хранятся в списке истории). Нажатие на
+        маркер приводит к появлению информации по соответствующему сигналу.</string>
+    <string name="auto_search_description_title">Включатель А режима Поиск</string>
+    <string name="auto_search_description">Включатель <b>А</b> предназначен для включения/выключения
+        режима <b>Автопоиск</b>. В режиме <b>Автопоиск</b> устройство выходит на связь и каждые 20 минут
+        отправляет координаты своего местоположения. Чтобы включить режим <b>Автопоиск</b>, удерживайте
+        и перемещайте включатель <b>А</b> вправо. Чтобы выключить режим <b>Автопоиск</b>,
+        удерживайте и перемещайте включатель <b>А</b> влево.</string>
 
     <!-- Strings for Language Settings -->
     <string name="login_menu_language_setting_label">Язык интерфейса</string>
@@ -110,4 +161,17 @@
     <string name="direction_south_west">ЮЗ</string>
     <string name="direction_west">З</string>
     <string name="direction_north_west">СЗ</string>
+
+    <!-- Generator strings -->
+    <string name="activity_generator_main_main_image_description">Генератор</string>
+    <string name="toolbar_generator_main_working_time_label">Время работы:</string>
+    <string name="toolbar_generator_main_history_button_label">История</string>
+    <string name="toolbar_generator_main_status_label_online">онлайн</string>
+    <string name="activity_generator_main_auto_button_label">Автоматическое</string>
+    <string name="activity_generator_main_manual_button_label">Ручное</string>
+    <string name="activity_generator_main_emergency_button_label">Аварийная остановка</string>
+    <string name="activity_generator_main_fuel_indicator_label">УРОВЕНЬ ТОПЛИВА</string>
+    <string name="activity_generator_main_oil_indicator_label">УРОВЕНЬ МАСЛА</string>
+    <string name="activity_generator_history_hours_label">часов</string>
+    <string name="activity_generator_history_minutes_label">минут</string>
 </resources>

@@ -1,9 +1,13 @@
 package kgk.beacon.model;
 
+import java.util.ArrayList;
+
 public class Device {
 
     private String id;
     private String model;
+    private String type;
+    private ArrayList<String> groups = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -21,9 +25,26 @@ public class Device {
         this.model = model;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public ArrayList<String> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(ArrayList<String> groups) {
+        this.groups = groups;
+    }
+
     @Override
     public String toString() {
         return  "id - " + id + "\n"
-                + "model - " + model;
+                + "model - " + model
+                + "type - " + type;
     }
 }

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffffff">
+
+    <include layout="@layout/toolbar_generator_main" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/linearLayout2"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:layout_width="310dp"
+                android:layout_height="match_parent"
+                android:text="@string/activity_generator_main_manual_button_label"
+                android:id="@+id/activityGeneratorMain_manualButton"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/generator_manual_button_off"
+                android:paddingLeft="80dp"
+                android:paddingStart="40dp"
+                tools:ignore="RtlSymmetry"
+                android:textColor="@color/text_gray"
+                android:textSize="30sp"/>
+
+            <Button
+                android:layout_width="430dp"
+                android:layout_height="match_parent"
+                android:text="@string/activity_generator_main_auto_button_label"
+                android:id="@+id/activityGeneratorMain_autoButton"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/generator_auto_button_off"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                tools:ignore="RtlSymmetry"
+                android:textColor="@color/text_gray"
+                android:textSize="30sp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="450dp"
+            android:layout_height="450dp"
+            android:id="@+id/activityGeneratorMain_mainImage"
+            android:contentDescription="@string/activity_generator_main_main_image_description"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/generator_main_image"
+            android:scaleType="centerInside" />
+
+        <Button
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/activityGeneratorMain_emergencyButton"
+            android:layout_below="@+id/activityGeneratorMain_mainImage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/generator_emergency_stop_button_off"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_generator_main_emergency_button_label"
+            android:id="@+id/activityGeneratorMain_emergencyLabel"
+            android:layout_below="@+id/activityGeneratorMain_emergencyButton"
+            android:layout_centerHorizontal="true"
+            android:textSize="25sp"/>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityGeneratorMain_switchButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/activityGeneratorMain_emergencyLabel"
+            android:scaleType="centerCrop"
+            android:src="@drawable/generator_switch_button_on"
+            android:background="@android:color/white"
+            android:contentDescription="@string/activity_generator_main_main_image_description" />
+
+        <!-- Fuel Indicator -->
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityGeneratorMain_fuelIndicator"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_above="@+id/activityGeneratorMain_switchButton"
+            android:layout_marginBottom="-70dp"
+            android:src="@drawable/generator_indicator_0"
+            android:contentDescription="@string/activity_generator_main_fuel_indicator_label" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_generator_main_fuel_indicator_label"
+            android:id="@+id/activityGeneratorMain_fuelIndicatorLabel"
+            android:layout_alignBottom="@+id/activityGeneratorMain_fuelIndicator"
+            android:layout_alignLeft="@+id/activityGeneratorMain_fuelIndicator"
+            android:layout_alignStart="@+id/activityGeneratorMain_fuelIndicator"
+            android:layout_marginBottom="-30dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="0"
+            android:id="@+id/activityGeneratorMain_fuelValue"
+            android:layout_toRightOf="@+id/activityGeneratorMain_fuelIndicator"
+            android:layout_toEndOf="@+id/activityGeneratorMain_fuelIndicator"
+            android:layout_above="@id/activityGeneratorMain_fuelIndicatorLabel"
+            android:background="@drawable/circle_stroke"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center_horizontal" />
+
+        <!-- Oil Indicator -->
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="0"
+            android:id="@+id/activityGeneratorMain_oilValue"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@id/activityGeneratorMain_fuelIndicatorLabel"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/circle_stroke"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center_horizontal" />
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityGeneratorMain_oilIndicator"
+            android:layout_toLeftOf="@+id/activityGeneratorMain_oilValue"
+            android:layout_toStartOf="@+id/activityGeneratorMain_oilValue"
+            android:layout_above="@+id/activityGeneratorMain_switchButton"
+            android:layout_marginBottom="-70dp"
+            android:src="@drawable/generator_indicator_0"
+            android:contentDescription="@string/activity_generator_main_fuel_indicator_label" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_generator_main_oil_indicator_label"
+            android:id="@+id/activityGeneratorMain_oilIndicatorLabel"
+            android:layout_alignBottom="@+id/activityGeneratorMain_oilIndicator"
+            android:layout_alignLeft="@+id/activityGeneratorMain_oilIndicator"
+            android:layout_alignStart="@+id/activityGeneratorMain_oilIndicator"
+            android:textSize="25sp"
+            android:layout_marginBottom="-30dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

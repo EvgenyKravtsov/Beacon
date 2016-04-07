@@ -1,9 +1,56 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
 
+    </style>
+
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/actis_app_toolbar_title_text</item>
+    </style>
+
+    <style name="LoginScreenEditText">
+        <item name="android:background">@drawable/text_field_background</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColorHint">@color/actis_app_text_color_hint</item>
+    </style>
+
+    <style name="LoginScreenCheckBox">
+        <item name="android:textColor">@color/actis_app_text_color_hint</item>
+        <item name="android:button">@drawable/login_screen_checkbox_selector</item>
+    </style>
+
+    <style name="LoginScreenButton">
+        <item name="android:background">@drawable/login_button_selector</item>
+        <item name="android:textColor">@drawable/login_button_text_selector</item>
+        <item name="android:textAllCaps" tools:ignore="NewApi">false</item>
+    </style>
+
+    <style name="ActisAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">#ff000000</item>
+        <!-- Used for the background -->
+        <item name="android:background">#ffffffff</item>
+    </style>
+
+    <style name="ActisProgressDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+    </style>
+
+    <style name="SearchSwitchTextAppearance" parent="TextAppearance.AppCompat.Widget.Switch">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/text_white</item>
     </style>
 
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    android:shape="oval"
+    android:visible="true"
+    android:dither="true"
+    android:useLevel="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/actis_app_yellow_accent" />
+    <size
+        android:width="45dp"
+        android:height="45dp" />
+
+</shape>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="kgk.beacon"
-    android:versionCode="3"
-    android:versionName="1.2" >
+    android:versionCode="15"
+    android:versionName="1.6.7" >
 
     <permission
         android:name="kgk.beacon.permission.MAPS_RECEIVE"
@@ -12,7 +13,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Google Cloud Messaging permissions -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <permission
+        android:name="kgk.beacon.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="kgk.beacon.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
 
     <!-- Required to show current location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -28,11 +39,12 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name=".util.AppController" >
+        android:name=".util.AppController"
+        tools:ignore="AllowBackup">
 
         <activity
-            android:name=".view.LoginActivity"
-            android:label="@string/app_name"
+            android:name=".view.general.LoginActivity"
+            android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,73 +54,127 @@
         </activity>
 
         <activity
-            android:name=".view.DeviceListActivity"
+            android:name=".view.general.DeviceListActivity"
+            android:theme="@style/NoActionBarTheme"
             android:label="@string/device_list_activity_action_bar_label"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.LoginActivity" />
+                android:value=".view.general.LoginActivity" />
         </activity>
 
 
         <activity
-            android:name=".view.InformationActivity"
-            android:label="@string/information_action_bar_label"
+            android:name=".view.actis.InformationActivity"
+            android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.DeviceListActivity" />
+                android:value=".view.general.DeviceListActivity" />
         </activity>
 
         <activity
-            android:name=".view.HistoryActivity"
+            android:name=".view.actis.HistoryActivity"
             android:label="@string/history_action_bar_label"
+            android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.InformationActivity" />
+                android:value=".view.actis.InformationActivity" />
         </activity>
 
         <activity
-            android:name=".view.PathActivity"
+            android:name=".view.actis.PathActivity"
             android:label="@string/path_action_bar_label"
+            android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.InformationActivity" />
+                android:value=".view.actis.InformationActivity" />
         </activity>
 
         <activity
-            android:name=".view.DatePickerActivity"
+            android:name=".view.actis.DatePickerActivity"
             android:label="@string/date_picker_action_bar_label"
+            android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" >
         </activity>
 
         <activity
-            android:name=".view.MapCustomActivity"
+            android:name=".view.actis.MapCustomActivity"
             android:label="@string/map_custom_action_bar_label"
+            android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.InformationActivity" />
+                android:value=".view.actis.InformationActivity" />
         </activity>
 
         <activity
-            android:name=".view.SettingsActivity"
-            android:label="@string/settings_action_bar_label"
-            android:screenOrientation="portrait" >
+            android:name=".view.devices.DeviceCurrentLocationActivity"
+            android:label="@string/device_current_location_activity_action_bar_title"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.InformationActivity" />
+                android:value=".view.general.LoginActivity" />
         </activity>
+
+        <activity
+            android:name=".view.actis.SettingsActivity"
+            android:label="@string/settings_action_bar_label"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.actis.InformationActivity" />
+        </activity>
+
+        <activity
+            android:name=".view.actis.HelpActivity"
+            android:label="@string/help_screen_title"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.actis.InformationActivity" />
+        </activity>
+
+        <activity
+            android:name=".view.generator.activity.MainActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.generator.activity.HistoryActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".networking.gcm.PushNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="kgk.beacon" />
+            </intent-filter>
+        </receiver>
 
         <uses-library android:name="com.google.android.maps"/>
 
-        <!-- Maps Debug Key - AIzaSyCOu4_JJCmkUeTw52GEazS419ARsq4HNxQ -->
-        <!-- Maps Release Key - AIzaSyD9sGjGWK5n6YcJQ5adw9eR2v8y_tnQbVk -->
+        <!-- Google Maps Debug Key - AIzaSyCOu4_JJCmkUeTw52GEazS419ARsq4HNxQ -->
+        <!-- Google Maps Release Key - AIzaSyD9sGjGWK5n6YcJQ5adw9eR2v8y_tnQbVk -->
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCOu4_JJCmkUeTw52GEazS419ARsq4HNxQ" />
+
     </application>
 
 </manifest>

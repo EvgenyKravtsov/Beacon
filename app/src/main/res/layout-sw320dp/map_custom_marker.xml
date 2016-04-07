@@ -1,131 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/popupWindowPath_popupPath"
+    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="@drawable/custom_marker_background">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/last_action_text"
-        android:id="@+id/popupWindowPath_lastActionTextView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="13sp" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_button_label"
+                android:textSize="13sp"
+                android:textColor="@color/actis_app_orange_accent"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/time_button_label"
+                android:textSize="13sp"
+                android:textColor="@color/actis_app_orange_accent"
+                android:layout_marginBottom="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:id="@+id/popupWindowPath_signalDate"
+                android:text="@string/date_button_label"
+                tools:text="06.03.2016"
+                android:textSize="13sp"
+                android:textColor="@color/actis_app_orange_accent"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:id="@+id/popupWindowPath_signalTime"
+                android:text="@string/time_button_label"
+                tools:text="13:17"
+                android:textSize="13sp"
+                android:textColor="@color/actis_app_orange_accent"
+                android:layout_marginBottom="10dp" />
+
+        </LinearLayout>
+
+        <!--
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_positioning_text"
+            android:id="@+id/popupWindowPath_lastPositioningTextView"
+            android:layout_gravity="center_horizontal"
+            android:textSize="13sp"
+            android:textColor="@color/actis_app_text_color_hint" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="&lt;TimeStamp>"
+            android:id="@+id/popupWindowPath_lastPositioningTimeStamp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="13sp"
+            android:textColor="@color/actis_app_orange_accent" /> -->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="&lt;TimeStamp>"
-        android:id="@+id/popupWindowPath_lastActionTimeStamp"
-        android:textSize="13sp"
-        android:textColor="#ffeb9c53"
-        android:layout_below="@+id/popupWindowPath_lastActionTextView"
-        android:layout_marginLeft="100dp" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/last_positioning_text"
-        android:id="@+id/popupWindowPath_lastPositioningTextView"
-        android:textSize="13sp"
-        android:layout_below="@+id/popupWindowPath_lastActionTimeStamp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="&lt;TimeStamp>"
-        android:id="@+id/popupWindowPath_lastPositioningTimeStamp"
-        android:textSize="13sp"
-        android:textColor="#ffeb9c53"
-        android:layout_below="@+id/popupWindowPath_lastPositioningTextView"
-        android:layout_alignLeft="@+id/popupWindowPath_lastActionTimeStamp"
-        android:layout_alignStart="@+id/popupWindowPath_lastActionTimeStamp" />
-
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/popupWindowPath_lastPositioningTextView"
-        android:paddingTop="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:paddingLeft="10dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/satellites_label"
                 android:id="@+id/popupWindowPath_satellitesTextView"
-                android:layout_weight="1"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="0"
-                android:id="@+id/popupWindowPath_satellitesCountTextView"
-                android:layout_weight="2"
                 android:textSize="13sp"
-                android:textColor="#ff215bb8" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/voltage_label"
-                android:id="@+id/popupWindowPath_voltageTextView"
-                android:layout_weight="1"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="0 V"
-                android:id="@+id/popupWindowPath_voltageCountTextView"
-                android:layout_weight="2"
-                android:textColor="#ff215bb8"
-                android:textSize="13sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:textColor="#ff000000" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/speed_label"
                 android:id="@+id/popupWindowPath_speedTextView"
-                android:layout_weight="1"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="0 km/h"
-                android:id="@+id/popupWindowPath_speedCountTextView"
-                android:layout_weight="2"
-                android:textColor="#ff215bb8"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:textColor="#ff000000" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/charge_label"
                 android:id="@+id/popupWindowPath_numOfSignalsTextView"
-                android:layout_weight="1"
+                android:textSize="13sp"
+                android:textColor="#ff000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/temperature_label"
+                android:id="@+id/popupWindowPath_temperatureTextView"
+                android:textSize="13sp"
+                android:textColor="#ff000000" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="0"
+                android:id="@+id/popupWindowPath_satellitesCountTextView"
+                android:textSize="13sp"
+                android:textColor="#ff000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="0 km/h"
+                android:id="@+id/popupWindowPath_speedCountTextView"
+                android:textColor="#ff000000"
                 android:textSize="13sp" />
 
             <TextView
@@ -133,87 +162,19 @@
                 android:layout_height="wrap_content"
                 tools:text="0"
                 android:id="@+id/popupWindowPath_chargeCountTextView"
-                android:layout_weight="2"
                 android:textSize="13sp"
-                android:textColor="#ff215bb8" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/direction_label"
-                android:id="@+id/popupWindowPath_directionTextView"
-                android:layout_weight="1"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="0"
-                android:id="@+id/popupWindowPath_directionCountTextView"
-                android:layout_weight="2"
-                android:textSize="13sp"
-                android:textColor="#ff215bb8" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/balance_label"
-                android:id="@+id/popupWindowPath_balanceTextView"
-                android:layout_weight="1"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="0 rub."
-                android:id="@+id/popupWindowPath_balanceCountTextView"
-                android:layout_weight="2"
-                android:textSize="13sp"
-                android:textColor="#ff215bb8" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/temperature_label"
-                android:id="@+id/popupWindowPath_temperatureTextView"
-                android:layout_weight="1"
-                android:textSize="13sp" />
+                android:textColor="#ff000000" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="0 C"
                 android:id="@+id/popupWindowPath_temperatureCountTextView"
-                android:layout_column="1"
-                android:layout_weight="2"
                 android:textSize="13sp"
-                android:textColor="#ff215bb8" />
+                android:textColor="#ff000000" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView15"
-                android:layout_weight="1"
-                android:visibility="invisible" />
+        </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView16"
-                android:layout_weight="2"
-                android:visibility="invisible" />
-        </TableRow>
-        
-    </TableLayout>
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

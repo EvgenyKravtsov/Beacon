@@ -17,7 +17,9 @@ import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.networking.VolleyHttpClient;
-import kgk.beacon.stores.SignalStore;
+import kgk.beacon.stores.ActisStore;
+import kgk.beacon.stores.T5Store;
+import kgk.beacon.stores.T6Store;
 
 @ReportsCrashes(
         formUri = "https://evgenykravtsov.cloudant.com/acra-beacon/_design/acra-storage/_update/report",
@@ -44,9 +46,21 @@ public class AppController extends Application {
     private static final String TAG = AppController.class.getSimpleName();
     private static final String APPLICATION_PREFERENCES = "application_preferences";
 
+    public static final String ACTIS_DEVICE_NAME = "Actis";
+    // TODO Delete test code
+    public static final String TEST_GENERATOR_DEVICE_NAME = "Test Generator";
+
+    public static final String ACTIS_DEVICE_TYPE = "Actis";
+    public static final String T6_DEVICE_TYPE = "T6";
+    public static final String T5_DEVICE_TYPE = "T5";
+
     private static AppController instance;
 
     private long activeDeviceId;
+    private String activeDeviceType;
+    private String activeDeviceModel;
+
+    private boolean demoMode;
 
     @Override
     public void onCreate() {
@@ -59,8 +73,14 @@ public class AppController extends Application {
 
     private void registerSignalStore() {
         Dispatcher dispatcher = Dispatcher.getInstance(EventBus.getDefault());
-        SignalStore signalStore = SignalStore.getInstance(dispatcher);
-        dispatcher.register(signalStore);
+
+        ActisStore actisStore = ActisStore.getInstance(dispatcher);
+        T6Store t6Store = T6Store.getInstance(dispatcher);
+        T5Store t5Store = T5Store.getInstance(dispatcher);
+
+        dispatcher.register(actisStore);
+        dispatcher.register(t6Store);
+        dispatcher.register(t5Store);
     }
 
     public static synchronized AppController getInstance() {
@@ -75,11 +95,35 @@ public class AppController extends Application {
         this.activeDeviceId = activeDeviceId;
     }
 
+    public String getActiveDeviceType() {
+        return activeDeviceType;
+    }
+
+    public void setActiveDeviceType(String activeDeviceType) {
+        this.activeDeviceType = activeDeviceType;
+    }
+
+    public String getActiveDeviceModel() {
+        return activeDeviceModel;
+    }
+
+    public void setActiveDeviceModel(String activeDeviceModel) {
+        this.activeDeviceModel = activeDeviceModel;
+    }
+
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    public boolean isDemoMode() {
+        return demoMode;
+    }
+
+    public void setDemoMode(boolean demoMode) {
+        this.demoMode = demoMode;
     }
 
     public static void saveBooleanValueToSharedPreferences(String key, boolean value) {

@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="30dp"
-    android:paddingTop="30dp"
-    android:paddingRight="30dp"
-    android:paddingBottom="60dp"
-    android:background="@drawable/main_background">
+    android:background="@color/main_background_color">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#aaffffff"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
+        android:layout_marginTop="40dp"
+        android:background="#aaffffff">
 
         <EditText
             android:id="@+id/fragmentLogin_loginField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/LoginScreenEditText"
             android:hint="@string/login_hint"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:layout_above="@+id/fragmentLogin_passwordField"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/text_field_background"
-            android:paddingLeft="10dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp" />
 
@@ -34,28 +29,37 @@
             android:id="@+id/fragmentLogin_passwordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/LoginScreenEditText"
             android:hint="@string/password_hint"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:inputType="textPassword"
             android:layout_above="@+id/fragmentLogin_rememberMeCheckBox"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/text_field_background"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:layout_marginTop="10dp"
-            android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp" />
 
         <CheckBox
             android:id="@+id/fragmentLogin_rememberMeCheckBox"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/remember_me_text"
-            android:textSize="13sp"
+            style="@style/LoginScreenCheckBox"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_alignLeft="@+id/fragmentLogin_passwordField"
+            android:layout_alignStart="@+id/fragmentLogin_passwordField"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/actis_app_text_color_hint"
+            android:textSize="15sp"
+            android:text="@string/remember_me_text"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/fragmentLogin_rememberMeCheckBox"
+            android:layout_toEndOf="@+id/fragmentLogin_rememberMeCheckBox"
+            android:layout_marginLeft="10dp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -70,7 +74,8 @@
             android:layout_alignStart="@+id/fragmentLogin_loginField"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="10dp" />
+            android:paddingTop="10dp"
+            android:contentDescription="@string/app_name" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -78,19 +83,27 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragmentLogin_rememberMeCheckBox"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal">
 
             <Button
                 android:id="@+id/fragmentLogin_loginButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                style="@style/LoginScreenButton"
+                android:layout_marginRight="10dp"
                 android:text="@string/login_button_label"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:background="@drawable/login_button_selector"
-                android:layout_marginRight="40dp"
-                android:textAllCaps="false"
-                android:layout_marginLeft="40dp" />
+                android:textSize="17sp"
+                tools:ignore="UnusedAttribute" />
+
+            <Button
+                android:id="@+id/fragmentLogin_demoButton"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                style="@style/LoginScreenButton"
+                android:text="@string/try_demo_button_label"
+                android:textSize="17sp"
+                tools:ignore="UnusedAttribute" />
 
         </LinearLayout>
 

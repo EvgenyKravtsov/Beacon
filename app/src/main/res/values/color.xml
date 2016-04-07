@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="main_dark" type="color">#ff3c4850</item>
+    <item name="main_green" type="color">#ff09d692</item>
+    <item name="text_white" type="color">#ffffffff</item>
+    <item name="text_gray" type="color">#ff666666</item>
+
+    <item name="main_background_color" type="color">#ffffffff</item>
+    <item name="main_brand_blue" type="color">#ff0074e1</item>
+    <item name="main_brand_black" type="color">#000000</item>
+
+    <!-- Colors for Actis app -->
+    <item name="actis_app_toolbar_title_text" type="color">#ff000000</item>
+    <item name="actis_app_toolbar_background" type="color">#ffc7c7c7</item>
+    <item name="actis_app_green_accent" type="color">#ff94bf3d</item>
+    <item name="actis_app_blue_accent" type="color">#ff547dbf</item>
+    <item name="actis_app_orange_accent" type="color">#fff48520</item>
+    <item name="actis_app_text_color_hint" type="color">#ff7d7d7d</item>
+    <item name="actis_app_yellow_accent" type="color">#F9CA0D</item>
+    <item name="actis_app_red_accent" type="color">#F9340E</item>
+    <item name="actis_app_transparent_color" type="color">#00000000</item>
+
+</resources>

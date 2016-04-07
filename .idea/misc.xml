@@ -98,9 +98,6 @@
             <id>Java language level migration aidsJava</id>
           </State>
           <State>
-            <id>JavaFX</id>
-          </State>
-          <State>
             <id>Javadoc issuesJava</id>
           </State>
           <State>
@@ -131,9 +128,17 @@
             <id>Serialization issuesJava</id>
           </State>
           <State>
+            <id>Spelling</id>
+          </State>
+          <State>
             <id>TestNG</id>
           </State>
         </expanded-state>
+        <selected-state>
+          <State>
+            <id>SpellCheckingInspection</id>
+          </State>
+        </selected-state>
       </profile-state>
     </entry>
   </component>

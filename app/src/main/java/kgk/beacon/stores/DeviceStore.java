@@ -1,7 +1,5 @@
 package kgk.beacon.stores;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +11,7 @@ import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.actions.HttpActions;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Device;
+import kgk.beacon.util.AppController;
 
 public class DeviceStore extends Store {
 
@@ -46,9 +45,28 @@ public class DeviceStore extends Store {
         switch (action.getType()) {
             case HttpActions.DEVICE_LIST_RESPONSE:
                 JSONArray devicesJson = (JSONArray) action.getData().get(ActionCreator.KEY_DEVICES);
-                devices = generateDeviceList(devicesJson);
+                devices = generateDeviceListActisOnly(devicesJson);
+                // devices = generateDeviceList(devicesJson);
                 break;
         }
+    }
+
+    private ArrayList<Device> generateDeviceListActisOnly(JSONArray devicesJson) {
+        ArrayList<Device> devices = new ArrayList<>();
+
+        for (int i = 0; i < devicesJson.length(); i++) {
+
+            try {
+                Device device = serializeDeviceFromJson((JSONObject) devicesJson.get(i));
+                if (device.getType().equals(AppController.ACTIS_DEVICE_TYPE)) {
+                    devices.add(device);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return devices;
     }
 
     private ArrayList<Device> generateDeviceList(JSONArray devicesJson) {
@@ -63,6 +81,13 @@ public class DeviceStore extends Store {
             }
         }
 
+        // TODO Delete test code
+        Device testGenerator = new Device();
+        testGenerator.setId("0101010101");
+        testGenerator.setModel("Test Generator");
+        testGenerator.setType("Generator");
+        devices.add(testGenerator);
+
         return devices;
     }
 
@@ -71,7 +96,19 @@ public class DeviceStore extends Store {
 
         try {
             device.setId(deviceJson.getString("id"));
-            device.setModel(deviceJson.getString("model"));
+            device.setModel(deviceJson.getString("type_name"));
+
+            JSONArray groupsArray = deviceJson.getJSONArray("groups");
+            for (int i = 0; i < groupsArray.length(); i++) {
+                String group = groupsArray.getJSONObject(i).getString("name");
+                device.getGroups().add(group);
+            }
+
+            if (deviceJson.getString("type_name").equals(AppController.ACTIS_DEVICE_TYPE)) {
+                device.setType(deviceJson.getString("type_name"));
+            } else {
+                device.setType(deviceJson.getBoolean("isT6") ? AppController.T6_DEVICE_TYPE : AppController.T5_DEVICE_TYPE);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
