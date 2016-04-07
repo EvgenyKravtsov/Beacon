@@ -3,6 +3,7 @@ package kgk.beacon.actions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class ActionCreator {
     public static final String KEY_NUMBER_OF_SIGNALS = "key_number_of_signals";
     public static final String KEY_FROM_DATE = "key_from_date";
     public static final String KEY_TO_DATE = "key_to_date";
+    public static final String KEY_LAST_STATE_PACKET = "key_last_state_packet";
+    public static final String KEY_PACKETS_FOR_TRACK = "key_packets_for_track";
 
     private static ActionCreator instance;
 
@@ -43,37 +46,37 @@ public class ActionCreator {
     }
 
     public void updateLastSignal(Signal signal) {
-        dispatcher.dispatch(SignalActions.UPDATE_LAST_SIGNAL,
+        dispatcher.dispatch(DataActions.UPDATE_LAST_SIGNAL,
                                         KEY_LAST_SIGNAL, signal);
     }
 
     public void refreshSignalsDisplayed() {
-        dispatcher.dispatch(SignalActions.REFRESH_SIGNALS_DISPLAYED);
+        dispatcher.dispatch(DataActions.REFRESH_SIGNALS_DISPLAYED);
     }
 
     public void filterSignalsDisplayed(List<Signal> signals) {
-        dispatcher.dispatch(SignalActions.FILTER_SIGNALS_DISPLAYED,
+        dispatcher.dispatch(DataActions.FILTER_SIGNALS_DISPLAYED,
                 KEY_SIGNALS, signals);
     }
 
     public void insertSignalToDatabase(Signal signal) {
-        dispatcher.dispatch(SignalActions.INSERT_SIGNAL_TO_DATABASE,
+        dispatcher.dispatch(DataActions.INSERT_SIGNAL_TO_DATABASE,
                 KEY_SIGNAL, signal);
     }
 
     public void getLastSignalsByDeviceIdFromDatabase(int numberOfSignals) {
-        dispatcher.dispatch(SignalActions.GET_LAST_SIGNALS_BY_DEVICE_ID_FROM_DATABASE,
+        dispatcher.dispatch(DataActions.GET_LAST_SIGNALS_BY_DEVICE_ID_FROM_DATABASE,
                 KEY_NUMBER_OF_SIGNALS, numberOfSignals);
     }
 
     public void getSignalsByPeriod(Date fromDate, Date toDate) {
-       dispatcher.dispatch(SignalActions.GET_SIGNALS_BY_PERIOD,
+       dispatcher.dispatch(DataActions.GET_SIGNALS_BY_PERIOD,
                KEY_FROM_DATE, fromDate,
                KEY_TO_DATE, toDate);
     }
 
     public void getLastSignalDateFromDatabase() {
-        dispatcher.dispatch(SignalActions.GET_LAST_SIGNAL_DATE_FROM_DATABASE);
+        dispatcher.dispatch(DataActions.GET_LAST_SIGNAL_DATE_FROM_DATABASE);
     }
 
     public void getLastSignalsRequest(long fromDate, long toDate) {
@@ -109,5 +112,49 @@ public class ActionCreator {
     public void sendSettingsRequest(JSONObject settings) {
         dispatcher.dispatch(HttpActions.SEND_SETTINGS_REQUEST,
                                         KEY_SETTINGS, settings);
+    }
+
+    public void sendGetSettingsRequest() {
+        dispatcher.dispatch(HttpActions.SEND_GET_SETTINGS_REQUEST);
+    }
+
+    public void sendLastStateForDeviceRequest() {
+        dispatcher.dispatch(HttpActions.LAST_STATE_FOR_DEVICE_REQUEST);
+    }
+
+    public void transportLastStatePacketToStore(Object packet) {
+        dispatcher.dispatch(DataActions.TRANSPORT_LAST_STATE_PACKET_TO_STORE,
+                KEY_LAST_STATE_PACKET, packet);
+    }
+
+    public void transportPacketsForTrack(ArrayList packets) {
+        dispatcher.dispatch(DataActions.TRANSPORT_PACKETS_FOR_TRACK,
+                KEY_PACKETS_FOR_TRACK, packets);
+    }
+
+    public void sendDetailReportRequest() {
+        dispatcher.dispatch(HttpActions.DETAIL_REPORT_REQUEST);
+    }
+
+    //// Generator actions
+
+    public void sendManualModeCommandToGenerator() {
+        dispatcher.dispatch(HttpActions.GENERATOR_SEND_MANUAL_MODE_COMMAND);
+    }
+
+    public void sendAutoModeCommandToGenerator() {
+        dispatcher.dispatch(HttpActions.GENERATOR_SEND_AUTO_MODE_COMMAND);
+    }
+
+    public void sendEmergencyStopCommandToGenerator() {
+        dispatcher.dispatch(HttpActions.GENERATOR_SEND_EMERGENCY_STOP_COMMAND);
+    }
+
+    public void sendSwitchOnCommandToGenerator() {
+        dispatcher.dispatch(HttpActions.GENERATOR_SEND_SWITCH_ON_COMMAND);
+    }
+
+    public void sendSwitchOffCommandToGenerator() {
+        dispatcher.dispatch(HttpActions.GENERATOR_SEND_SWITCH_OFF_COMMAND);
     }
 }

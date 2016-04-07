@@ -26,7 +26,8 @@
         android:textSize="13sp"
         android:textColor="#ffeb9c53"
         android:layout_below="@+id/popupWindowPath_lastActionTextView"
-        android:layout_marginLeft="100dp" />
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="100dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,7 +59,9 @@
         android:paddingTop="20dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:paddingLeft="20dp">
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry">
 
         <TableRow
             android:layout_width="match_parent"
@@ -159,13 +162,14 @@
                 android:textSize="13sp"
                 android:textColor="#ff215bb8" />
 
+            <!--
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/balance_label"
                 android:id="@+id/popupWindowPath_balanceTextView"
                 android:layout_weight="1"
-                android:textSize="13sp" />
+                android:textSize="13sp" /> -->
 
             <TextView
                 android:layout_width="wrap_content"

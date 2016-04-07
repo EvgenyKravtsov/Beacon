@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KGK Monitoring</string>
+    <string name="app_name">KGK Tracking</string>
     <string name="action_settings">Settings</string>
 
 
@@ -13,7 +13,7 @@
     <string name="device_list_activity_action_bar_label">Devices</string>
     <string name="information_action_bar_label">Information</string>
     <string name="history_action_bar_label">History</string>
-    <string name="path_action_bar_label">Path</string>
+    <string name="path_action_bar_label">Track</string>
     <string name="date_picker_action_bar_label">Period</string>
     <string name="map_custom_action_bar_label">Map</string>
     <string name="settings_action_bar_label">Settings</string>
@@ -27,8 +27,14 @@
     <string name="wrong_login_or_password_label">Wrong login or password</string>
     <string name="login_progress_dialog_title">Login…</string>
     <string name="login_progress_dialog_message">Authentication in progress</string>
-    <string name="no_registered_devices_toast">I have no registered devices</string>
+    <string name="no_registered_devices_toast">You have no registered devices</string>
     <string name="server_error">Server error</string>
+
+    <!-- Strings for DeviceListFragment -->
+    <string name="development_progress_dialog_title">Attention!</string>
+    <string name="development_progress_dialog_message">Current version supports only Actis beacons</string>
+    <string name="ordering_by_type_label">Type</string>
+    <string name="ordering_by_group_label">Group</string>
 
     <!-- Strings for InformationFragment -->
     <string name="detecting_mode_text">Message in detecting mode</string>
@@ -43,7 +49,7 @@
     <string name="temperature_label">Temperature</string>
     <string name="query_button_label">Query</string>
     <string name="history_button_label">History</string>
-    <string name="search_on_button_label">Search: On</string>
+    <string name="search_on_button_label">Search</string>
     <string name="search_off_button_label">Search: Off</string>
     <string name="map_button_label">Map</string>
     <string name="settings_button_label">Settings</string>
@@ -55,15 +61,22 @@
     <string name="download_data_progress_dialog_title">Downloading…</string>
     <string name="download_data_progress_dialog_message">Downloading data from server</string>
     <string name="download_error_toast">Error downloading data</string>
+    <string name="query_too_early_dialog_message">Command have been sent. Awainitg response from Actis device…</string>
+    <string name="demo_warning_dialog_message">This function is not available in demo mode</string>
+    <string name="awaiting_confirmation_dialog_message">Setting have been sent. Awaiting confirmation from device…</string>
+
+    <!-- Strings for DeviceCurrentLocationActivity -->
+    <string name="device_current_location_activity_action_bar_title">Device location</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Period</string>
     <string name="track_button_label">Track</string>
-    <string name="list_item_satellites_sign">st</string>
+    <string name="list_item_satellites_sign">sat</string>
     <string name="list_item_speed_sign">km/h</string>
     <string name="list_item_temperature_sign">°C</string>
     <string name="list_item_voltage_sign">V</string>
     <string name="list_item_balance_sign">rub</string>
+    <string name="track_drawing_in_progress_dialog_message">Track drawing in progress…</string>
 
     <!-- String for DatePickerFragment -->
     <string name="action_bar_label">Period</string>
@@ -84,7 +97,9 @@
     <string name="on_command_send_error_toast">Error sending command</string>
     <string name="no_internet_connection_message">No internet connection</string>
     <string name="balance_request_command_wrong_field_message">Balance request command too long</string>
-    <string name="connection_period_label">Connection period (min)</string>
+    <string name="connection_period_label">Number of signals</string>
+    <string name="connection_per_day_label">per day</string>
+    <string name="connection_per_week_label">per week</string>
     <string name="number_of_sms_omissions_label">Number of SMS omissions</string>
     <string name="gps_positioning_period_label">GPS positioning period (min)</string>
     <string name="balance_control_limit_label">Balance control limit (rub.)</string>
@@ -93,6 +108,41 @@
     <string name="send_button_label">Send</string>
     <string name="settings_gprs_spinner_on">On</string>
     <string name="settings_gprs_spinner_off">Off</string>
+
+    <!-- Strings for DeviceCurrentLocationActivity -->
+    <string name="daily_track_button_label">Track for day</string>
+    <string name="current_location_button_label">Current Location</string>
+    <string name="report_button_label">Detailed report</string>
+    <string name="location_button_label">Location</string>
+    <string name="no_data_for_device_message">No data for device</string>
+    <string name="device_current_location_menu_description">Menu</string>
+    <string name="select_map_dialog_title">Select map</string>
+    <string name="kgk_map">OSM KGK</string>
+    <string name="osm_map">OSM</string>
+    <string name="satellite_map">Satellite</string>
+    <string name="hybrid_map">Hybrid</string>
+    <string name="google_map">Google</string>
+
+    <!-- Strings for HelpScreen -->
+    <string name="help_screen_title">Help</string>
+    <string name="query_function_description">With this button you can get current position of
+        your Actis beacon</string>
+    <string name="search_function_description">Search button turns your Actis beacon search mode on
+        and off. In search mode device will send coordinates every 20 minutes</string>
+    <string name="history_screen_description">History screen contains last 10 signals from your
+        Actis beacon. Information is displayed with grouped list of dates. Each date entry cosists of
+        corresponding signals</string>
+    <string name="from_history_screen_navigation_description">From history screen you can navigate to
+        Period or Track screen</string>
+    <string name="period_screen_description">Here you can choose the date range for history list
+        of signals. Use buttons to choose range and click OK to filter signals</string>
+    <string name="track_screen_description">On Track screen you can see a map with signals, connected
+        by polyline. The signals are from history list. To see detailed information about a signal
+        you can tap on corresponding marker</string>
+    <string name="auto_search_description_title">Auto Search Switch</string>
+    <string name="auto_search_description">A switch allows to control automatic search mode. In this
+    mode Actis device will send coordinates every 20 minutes. To tunr on autosearch mode
+    hold switch and swipe right or swipe left to turn off.</string>
 
     <!-- Strings for Language Settings -->
     <string name="login_menu_language_setting_label">Language</string>
@@ -110,4 +160,17 @@
     <string name="direction_south_west">SW</string>
     <string name="direction_west">W</string>
     <string name="direction_north_west">NW</string>
+
+    <!-- Generator strings -->
+    <string name="activity_generator_main_main_image_description">Generator</string>
+    <string name="toolbar_generator_main_working_time_label">Work time:</string>
+    <string name="toolbar_generator_main_history_button_label">History</string>
+    <string name="toolbar_generator_main_status_label_online">online</string>
+    <string name="activity_generator_main_auto_button_label">Automatic</string>
+    <string name="activity_generator_main_manual_button_label">Manual</string>
+    <string name="activity_generator_main_emergency_button_label">Emergency shutdown</string>
+    <string name="activity_generator_main_fuel_indicator_label">FUEL LEVEL</string>
+    <string name="activity_generator_main_oil_indicator_label">OIL LEVEL</string>
+    <string name="activity_generator_history_hours_label">hours</string>
+    <string name="activity_generator_history_minutes_label">minutes</string>
 </resources>

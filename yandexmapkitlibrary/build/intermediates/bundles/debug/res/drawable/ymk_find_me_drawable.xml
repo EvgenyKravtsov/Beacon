@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>    
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" 
+        android:drawable="@drawable/ymk_where_am_i_pressed" />
+    <item android:state_enabled="true"
+        android:drawable="@drawable/ymk_where_am_i" />
+</selector><!-- From: file:/C:/Users/ru.dev18/AndroidStudioProjects/AndroidProjects/Beacon/yandexmapkitlibrary/src/main/res/drawable/ymk_find_me_drawable.xml -->

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:background="@drawable/main_background">
+        android:background="@color/main_background_color">
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,7 +68,8 @@
             android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="#FF000000" />
+            android:textColor="#FF000000"
+            android:visibility="gone" />
 
         <EditText
             android:layout_width="140dp"
@@ -82,7 +83,8 @@
             android:gravity="center"
             android:background="@drawable/settings_menu_button_pressed"
             android:selectAllOnFocus="true"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,7 +94,8 @@
             android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="#FF000000" />
+            android:textColor="#FF000000"
+            android:visibility="gone" />
 
         <EditText
             android:layout_width="140dp"
@@ -106,7 +109,8 @@
             android:gravity="center"
             android:background="@drawable/settings_menu_button_pressed"
             android:selectAllOnFocus="true"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,7 +120,8 @@
             android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="#FF000000" />
+            android:textColor="#FF000000"
+            android:visibility="gone" />
 
         <EditText
             android:layout_width="140dp"
@@ -130,7 +135,8 @@
             android:gravity="center"
             android:background="@drawable/settings_menu_button_pressed"
             android:selectAllOnFocus="true"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -140,7 +146,8 @@
             android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="#FF000000" />
+            android:textColor="#FF000000"
+            android:visibility="gone" />
 
         <Spinner
             android:layout_width="70dp"
@@ -148,7 +155,8 @@
             android:id="@+id/fragmentSettings_gprsStatusSpinner"
             android:background="@drawable/settings_menu_button_pressed"
             android:gravity="center"
-            android:textAlignment="gravity" />
+            android:textAlignment="gravity"
+            android:visibility="gone" />
 
         <Button
             android:layout_width="wrap_content"

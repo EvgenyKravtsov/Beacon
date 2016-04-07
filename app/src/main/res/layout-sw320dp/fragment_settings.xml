@@ -1,165 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/main_background_color">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="@drawable/main_background">
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/connection_period_label"
             android:id="@+id/textView3"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="#FF000000" />
-
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/fragmentSettings_connectionPeriodEditText"
-            android:layout_marginTop="5dp"
-            android:textSize="17sp"
-            android:ellipsize="start"
-            android:gravity="center"
-            android:background="@drawable/settings_menu_button_pressed"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/number_of_sms_omissions_label"
-            android:id="@+id/textView41"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="#FF000000" />
-
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/fragmentSettings_numberSmsOmissionsEditText"
-            android:layout_marginTop="5dp"
-            android:textSize="17sp"
-            android:ellipsize="start"
-            android:gravity="center"
-            android:background="@drawable/settings_menu_button_pressed"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gps_positioning_period_label"
-            android:id="@+id/textView32"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="#FF000000" />
-
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/fragmentSettings_gpsPositioningPeriodEditText"
-            android:layout_marginTop="5dp"
-            android:textSize="17sp"
-            android:ellipsize="start"
-            android:gravity="center"
-            android:background="@drawable/settings_menu_button_pressed"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/balance_control_limit_label"
-            android:id="@+id/textView23"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="#FF000000" />
-
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/fragmentSettings_balanceControlLimitEditText"
-            android:layout_marginTop="5dp"
-            android:textSize="17sp"
-            android:ellipsize="start"
-            android:gravity="center"
-            android:background="@drawable/settings_menu_button_pressed"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/balance_request_command_label"
-            android:id="@+id/textView233"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="#FF000000" />
-
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/fragmentSettings_balanceRequestCommandEditText"
-            android:layout_marginTop="5dp"
-            android:textSize="17sp"
-            android:ellipsize="start"
-            android:gravity="center"
-            android:background="@drawable/settings_menu_button_pressed"
-            android:selectAllOnFocus="true"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gprs_label"
-            android:id="@+id/textView4"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="#FF000000" />
 
         <Spinner
-            android:layout_width="150dp"
-            android:layout_height="35dp"
-            android:id="@+id/fragmentSettings_gprsStatusSpinner"
-            android:background="@drawable/settings_menu_button_pressed"
-            android:gravity="center"
-            android:textAlignment="gravity" />
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send_button_label"
-            android:id="@+id/fragmentSettings_sendSettingsButton"
-            android:layout_marginTop="45dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:background="@drawable/control_button_selector" />
+            android:id="@+id/settingsFragment_periodicRangeSpinner" />
 
     </LinearLayout>
 
-</ScrollView>
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        tools:text="33"
+        android:id="@+id/fragmentSettings_connectionPeriodEditText"
+        android:layout_marginTop="5dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/actis_app_green_accent"
+        android:selectAllOnFocus="true" />
+
+    <SeekBar
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingsFragment_seekBar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/number_of_sms_omissions_label"
+        android:id="@+id/textView41"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#FF000000"
+        android:visibility="gone" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/fragmentSettings_numberSmsOmissionsEditText"
+        android:layout_marginTop="5dp"
+        android:textSize="17sp"
+        android:ellipsize="start"
+        android:gravity="center"
+        android:background="@drawable/settings_menu_button_pressed"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gps_positioning_period_label"
+        android:id="@+id/textView32"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#FF000000"
+        android:visibility="gone" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/fragmentSettings_gpsPositioningPeriodEditText"
+        android:layout_marginTop="5dp"
+        android:textSize="17sp"
+        android:ellipsize="start"
+        android:gravity="center"
+        android:background="@drawable/settings_menu_button_pressed"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/balance_control_limit_label"
+        android:id="@+id/textView23"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#FF000000"
+        android:visibility="gone" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/fragmentSettings_balanceControlLimitEditText"
+        android:layout_marginTop="5dp"
+        android:textSize="17sp"
+        android:ellipsize="start"
+        android:gravity="center"
+        android:background="@drawable/settings_menu_button_pressed"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/balance_request_command_label"
+        android:id="@+id/textView233"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#FF000000"
+        android:visibility="gone" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/fragmentSettings_balanceRequestCommandEditText"
+        android:layout_marginTop="5dp"
+        android:textSize="17sp"
+        android:ellipsize="start"
+        android:gravity="center"
+        android:background="@drawable/settings_menu_button_pressed"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gprs_label"
+        android:id="@+id/textView4"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#FF000000"
+        android:visibility="gone" />
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:id="@+id/fragmentSettings_gprsStatusSpinner"
+        android:background="@drawable/settings_menu_button_pressed"
+        android:gravity="center"
+        android:textAlignment="gravity"
+        android:visibility="gone" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send_button_label"
+        android:id="@+id/fragmentSettings_sendSettingsButton"
+        android:layout_marginTop="45dp"
+        android:textSize="20sp"
+        android:textColor="@drawable/grey_rounded_button_text_selector"
+        android:background="@drawable/grey_rounded_button_selector"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textAllCaps="false" />
+
+</LinearLayout>

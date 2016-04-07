@@ -12,8 +12,6 @@ import kgk.beacon.util.AppController;
 
 public class Signal implements Parcelable {
 
-    // TODO Months names instead numbers
-
     private static final String TAG = Signal.class.getSimpleName();
 
     private long deviceId;
@@ -48,7 +46,8 @@ public class Signal implements Parcelable {
     }
 
     public double getLatitude() {
-        return latitude;
+        int roundedLatitude = (int) (latitude * 1E6);
+        return roundedLatitude * 1E-6;
     }
 
     public void setLatitude(double latitude) {
@@ -56,7 +55,8 @@ public class Signal implements Parcelable {
     }
 
     public double getLongitude() {
-        return longitude;
+        int roundedLongitude = (int) (longitude * 1E6);
+        return roundedLongitude * 1E-6;
     }
 
     public void setLongitude(double longitude) {
@@ -139,7 +139,7 @@ public class Signal implements Parcelable {
             signal.setMode(0);
             signal.setLatitude(signalJson.getDouble("lat"));
             signal.setLongitude(signalJson.getDouble("lng"));
-            signal.setDate(signalJson.getLong("packet_date"));
+            signal.setDate(signalJson.getLong("server_date"));
             signal.setVoltage(5);
             signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
             signal.setSatellites(signalJson.getInt("sat"));
@@ -171,8 +171,11 @@ public class Signal implements Parcelable {
             signal.setMode(0);
             signal.setLatitude(signalJson.getDouble("lat"));
             signal.setLongitude(signalJson.getDouble("lng"));
-            signal.setDate(signalJson.getLong("packet_date"));
-            signal.setVoltage(paramsJson.getInt("BAT") / 100.0);
+            signal.setDate(signalJson.getLong("server_date"));
+
+            double voltageFromPacket = paramsJson.getInt("BAT");
+            signal.setVoltage(voltageFromPacket / 100.0);
+
             signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
             signal.setSatellites(signalJson.getInt("sat"));
 

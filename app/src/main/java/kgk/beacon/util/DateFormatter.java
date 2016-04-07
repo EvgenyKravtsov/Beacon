@@ -9,17 +9,17 @@ import java.util.Locale;
 public class DateFormatter {
 
     public static String formatDate(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.ROOT);
         return simpleDateFormat.format(date);
     }
 
     public static String formatTime(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("kk:mm", Locale.ROOT);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
         return simpleDateFormat.format(date);
     }
 
     public static String formatDateAndTime(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd  -  kk:mm", Locale.ROOT);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy  -  HH:mm", Locale.ROOT);
         return simpleDateFormat.format(date);
     }
 
@@ -83,12 +83,28 @@ public class DateFormatter {
     }
 
     public static String loadLastActionDateString() {
-        Date date = LastActionDateStorage.getInstance().load();
+        Date date = LastActionDateStorageForActis.getInstance().load();
 
         if (date.compareTo(new Date(0)) == 0) {
-            return  "No actions";
+            return  "--";
         } else {
             return DateFormatter.formatDateAndTime(date);
         }
+    }
+
+    public static long[] generateDateInterval(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        long fromDateInSeconds = calendar.getTimeInMillis() / 1000;
+        long toDateInSeconds = fromDateInSeconds + 86399;
+
+        return new long[]{fromDateInSeconds, toDateInSeconds};
     }
 }

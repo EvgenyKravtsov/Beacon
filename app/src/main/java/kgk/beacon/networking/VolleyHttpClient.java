@@ -4,16 +4,19 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import de.greenrobot.event.EventBus;
@@ -21,27 +24,40 @@ import kgk.beacon.R;
 import kgk.beacon.actions.Action;
 import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.actions.HttpActions;
-import kgk.beacon.database.SignalDatabaseDao;
+import kgk.beacon.actions.event.ToggleSearchModeEvent;
+import kgk.beacon.database.ActisDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
+import kgk.beacon.model.T5Packet;
+import kgk.beacon.model.T6Packet;
+import kgk.beacon.networking.event.DownloadDataInProgressEvent;
+import kgk.beacon.networking.event.SearchModeStatusEvent;
 import kgk.beacon.stores.DeviceStore;
+import kgk.beacon.stores.PacketsForDetailReportEvent;
 import kgk.beacon.util.AppController;
-import kgk.beacon.util.DownloadDataInProgressEvent;
-import kgk.beacon.util.LastActionDateStorage;
-import kgk.beacon.util.StartActivityEvent;
-import kgk.beacon.util.ToggleSearchModeEvent;
-import kgk.beacon.view.DeviceListActivity;
+import kgk.beacon.util.LastActionDateStorageForActis;
+import kgk.beacon.view.actis.InformationFragment;
+import kgk.beacon.view.general.DeviceListActivity;
+import kgk.beacon.view.general.event.StartActivityEvent;
 
 public class VolleyHttpClient implements Response.ErrorListener {
 
+    // TODO Show all signals in history
+
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
-    private static final String AUTHENTICATION_URL = "http://dev.trezub.ru/api2/beacon/authorize";
-    private static final String DEVICE_LIST_URL = "http://dev.trezub.ru/api2/beacon/getdeviceslist";
-    private static final String GET_LAST_STATE_URL = "http://dev.trezub.ru/api2/beacon/getdeviceinfo";
-    private static final String GET_LAST_SIGNALS_URL = "http://dev.trezub.ru/api2/beacon/getpackets";
-    private static final String QUERY_BEACON_REQUEST_URL = "http://dev.trezub.ru/api2/beacon/cmdrequestinfo";
-    private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://dev.trezub.ru/api2/beacon/cmdtogglefind";
-    private static final String SETTINGS_REQUEST_URL = "http://dev.trezub.ru/api2/beacon/cmdsetsettings";
+    private static final String AUTHENTICATION_URL = "http://api.trezub.ru/api2/beacon/authorize";
+    private static final String DEVICE_LIST_URL = "http://api.trezub.ru/api2/beacon/getdeviceslist?all=1"; //monitor.kgk-global.com
+    private static final String GET_LAST_STATE_URL = "http://api.trezub.ru/api2/beacon/getdeviceinfo";
+    private static final String GET_LAST_SIGNALS_URL = "http://api.trezub.ru/api2/beacon/getpackets";
+    private static final String QUERY_BEACON_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdrequestinfo";
+    private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdtogglefind";
+    private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettingssms";
+    //private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettings";
+    private static final String DETAIL_REPORT_URL = "http://api.trezub.ru/api2/reports/getroute/";
+    private static final String ACTIS_CONFIG_URL = "http://api.trezub.ru/api2/beacon/getactisconfig";
+
+    private static final int SOCKET_TIMEOUT_MS = 30000;
+    private static final int SOCKET_MAX_RETRIES = 10;
 
     private static VolleyHttpClient instance;
     private Context context;
@@ -56,6 +72,9 @@ public class VolleyHttpClient implements Response.ErrorListener {
         dispatcher = Dispatcher.getInstance(EventBus.getDefault());
         dispatcher.register(this);
         dispatcher.register(DeviceStore.getInstance(dispatcher));
+
+        Thread periodicLastStateQueryThread = new Thread(periodicLastStateQueryRunnable());
+        periodicLastStateQueryThread.start();
     }
 
     public static synchronized VolleyHttpClient getInstance(Context context) {
@@ -88,6 +107,9 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 JSONObject settingsJson = (JSONObject) action.getData().get(ActionCreator.KEY_SETTINGS);
                 settingsRequest(settingsJson);
                 break;
+            case HttpActions.SEND_GET_SETTINGS_REQUEST:
+                getSettingsRequest();
+                break;
             case HttpActions.GET_LAST_STATE_REQUEST:
                 getLastStateRequest();
                 break;
@@ -95,6 +117,30 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 long fromDate = (long) action.getData().get(ActionCreator.KEY_FROM_DATE);
                 long toDate = (long) action.getData().get(ActionCreator.KEY_TO_DATE);
                 getLastSignalsRequest(fromDate, toDate);
+                break;
+            case HttpActions.LAST_STATE_FOR_DEVICE_REQUEST:
+                lastStateForDeviceRequest();
+                break;
+            case HttpActions.DETAIL_REPORT_REQUEST:
+                DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
+                event.setStatus(DownloadDataStatus.Started);
+                EventBus.getDefault().post(event);
+                detailReportRequest();
+                break;
+            case HttpActions.GENERATOR_SEND_MANUAL_MODE_COMMAND:
+                sendManualModeRequestToGenerator();
+                break;
+            case HttpActions.GENERATOR_SEND_AUTO_MODE_COMMAND:
+                sendAutoModeRequestToGenerator();
+                break;
+            case HttpActions.GENERATOR_SEND_EMERGENCY_STOP_COMMAND:
+                sendEmergencyStopRequestToGenerator();
+                break;
+            case HttpActions.GENERATOR_SEND_SWITCH_ON_COMMAND:
+                sendSwitchOnRequestToGenerator();
+                break;
+            case HttpActions.GENERATOR_SEND_SWITCH_OFF_COMMAND:
+                sendSwitchOffRequestToGenerator();
                 break;
         }
     }
@@ -127,6 +173,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         request.setLogin(login);
         request.setPassword(password);
 
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
@@ -147,20 +194,33 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
     private void queryBeaconRequest() {
-        LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
+        LastActionDateStorageForActis.getInstance().save(Calendar.getInstance().getTime());
         QueryBeaconRequest request = new QueryBeaconRequest(Request.Method.GET,
                 QueryBeaconRequest.makeUrl(QUERY_BEACON_REQUEST_URL),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        // TODO Delete test code
+                        Log.d(TAG, response);
+
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             if (responseJson.getBoolean("status")) {
                                 Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+
+                                long deviceId = AppController.getInstance().getActiveDeviceId();
+
+                                AppController.saveLongValueToSharedPreferences(deviceId + InformationFragment.KEY_QUERY_CONTROL_DATE,
+                                        ActisDatabaseDao.getInstance(AppController.getInstance()).getLastSignalDate());
+
+                                AppController.saveLongValueToSharedPreferences(deviceId + InformationFragment.KEY_QUERY_EXPIRE_DATE,
+                                        Calendar.getInstance().getTimeInMillis() / 1000 + InformationFragment.COMMAND_EXPIRATION_PERIOD);
+
                             } else {
                                 Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
                             }
@@ -172,6 +232,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
@@ -187,11 +248,12 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
     private void toggleSearchModeRequest(boolean searchModeStatus) {
-        LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
+        LastActionDateStorageForActis.getInstance().save(Calendar.getInstance().getTime());
         ToggleSearchModeRequest request = new ToggleSearchModeRequest(Request.Method.GET,
                 ToggleSearchModeRequest.makeUrl(TOGGLE_SEARCH_MODE_REQUEST_URL, searchModeStatus),
                 new Response.Listener<String>() {
@@ -199,11 +261,15 @@ public class VolleyHttpClient implements Response.ErrorListener {
                     public void onResponse(String response) {
                         try {
                             JSONObject responseJson = new JSONObject(response);
+                            ToggleSearchModeEvent event = new ToggleSearchModeEvent();
                             if (responseJson.getBoolean("status")) {
                                 Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
-                                EventBus.getDefault().post(new ToggleSearchModeEvent());
+                                event.setResult(true);
+                                EventBus.getDefault().post(event);
                             } else {
                                 Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
+                                event.setResult(false);
+                                EventBus.getDefault().post(event);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -213,11 +279,12 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
     private void settingsRequest(JSONObject settingsJson) {
-        LastActionDateStorage.getInstance().save(Calendar.getInstance().getTime());
+        LastActionDateStorageForActis.getInstance().save(Calendar.getInstance().getTime());
 
         try {
             settingsJson.put("id", AppController.getInstance().getActiveDeviceId());
@@ -230,13 +297,17 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // TODO Delete test code
-                        Log.d(TAG, response.toString());
                         try {
                             if (response.getBoolean("status")) {
-                                Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, response.toString());
+//                                Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+//                                AppController.saveBooleanValueToSharedPreferences(
+//                                        SettingsFragment.KEY_IS_AWAITING_SETTINGS_CONFIRMATION, true);
+//                                AppController.saveLongValueToSharedPreferences(
+//                                        SettingsFragment.KEY_SETTINGS_CONFIRMATION_CONTROL_DATE,
+//                                        Calendar.getInstance().getTimeInMillis() / 1000);
                             } else {
-                                Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, response.toString());
                             }
                         } catch (JSONException e) {
@@ -247,6 +318,25 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
+        requestQueue.add(request);
+    }
+
+    private void getSettingsRequest() {
+        long deviceId = AppController.getInstance().getActiveDeviceId();
+
+        GetSettingsRequest request = new GetSettingsRequest(ACTIS_CONFIG_URL + "?device=" + deviceId,
+                new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        processGetSettingsRequest(response);
+                    }
+                },
+                this);
+
+        request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
         requestQueue.add(request);
     }
 
@@ -269,13 +359,69 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 this);
 
         request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
         requestQueue.add(request);
-        // TODO Delete test code
-        Log.d(TAG, request.toString());
 
         DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
         event.setStatus(DownloadDataStatus.Started);
         EventBus.getDefault().post(event);
+    }
+
+    private void lastStateForDeviceRequest() {
+        if (!AppController.getInstance().isNetworkAvailable()) {
+            DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
+            event.setStatus(DownloadDataStatus.noInternetConnection);
+            EventBus.getDefault().post(event);
+            return;
+        }
+
+        GetLastStateRequest request = new GetLastStateRequest(Request.Method.GET,
+                GetLastStateRequest.makeUrl(GET_LAST_STATE_URL),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        processLastStateResponse(response);
+                    }
+                },
+                this);
+
+        request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
+        requestQueue.add(request);
+
+        DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
+        event.setStatus(DownloadDataStatus.Started);
+        EventBus.getDefault().post(event);
+    }
+
+    private void detailReportRequest() {
+        String requestUrlParameters = "?"
+                + "apikey=uadev11"
+                + "&rtype=json"
+                + "&datefrom=1453593600"
+                + "&dateto=1453680000"
+                + "&delta=30"
+                + "&offsetUTC=180"
+                + "&deviceID=" + AppController.getInstance().getActiveDeviceId();
+
+        DetailReportRequest request = new DetailReportRequest(Request.Method.POST,
+                DETAIL_REPORT_URL + requestUrlParameters,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject responseJson = new JSONObject(response);
+                            processDetailReportResponse(responseJson);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                this);
+
+        setRetryPolicy(request);
+        request.setPhpSessId(phpSessId);
+        requestQueue.add(request);
     }
 
     private void processAuthenticationResponseJson(JSONObject responseJson) throws JSONException {
@@ -293,9 +439,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void processDeviceListResponseJson(JSONObject responseJson) throws JSONException {
-        // TODO Delete test code
-        Log.d(TAG, responseJson.toString());
-
         if (responseJson.getBoolean("status")) {
             try {
                 JSONArray devices = responseJson.getJSONArray("data");
@@ -320,20 +463,104 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private void processLastSignalsResponse(String response) {
         Log.d(TAG, response);
 
+        final DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
+        try {
+            JSONObject responseJson = new JSONObject(response);
+            if (responseJson.getBoolean("status")) {
+                final JSONArray responseDataJson = responseJson.getJSONArray("data");
+
+                if (responseDataJson.length() <= 0) {
+                    event.setStatus(DownloadDataStatus.DeviceNotFound);
+                    EventBus.getDefault().post(event);
+                    return;
+                }
+
+                switch (AppController.getInstance().getActiveDeviceType()) {
+                    case AppController.ACTIS_DEVICE_TYPE:
+
+                        Thread workerThread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Signal lastSignalFromList = null;
+                                for (int i = 0; i < responseDataJson.length(); i++) {
+                                    try {
+                                        JSONObject signalJson = responseDataJson.getJSONObject(i);
+                                        Signal signal = Signal.signalFromJson(signalJson);
+                                        ActisDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
+
+                                        if (i == responseDataJson.length() - 1) {
+                                            lastSignalFromList = signal;
+                                        }
+                                    } catch (JSONException je) {
+                                        je.printStackTrace();
+                                    }
+                                }
+
+                                if (lastSignalFromList != null) {
+                                    ActionCreator.getInstance(dispatcher).updateLastSignal(lastSignalFromList);
+                                }
+
+                                event.setStatus(DownloadDataStatus.Success);
+                                EventBus.getDefault().post(event);
+                            }
+                        });
+
+                        workerThread.start();
+                        break;
+                    case AppController.T5_DEVICE_TYPE:
+                        ArrayList<T5Packet> t5packets = new ArrayList<>();
+                        for (int i = 0; i < responseDataJson.length(); i++) {
+                            JSONObject signalJson = responseDataJson.getJSONObject(i);
+                            T5Packet packet = T5Packet.fromJson(signalJson);
+                            t5packets.add(packet);
+                        }
+                        ActionCreator.getInstance(dispatcher).transportPacketsForTrack(t5packets);
+                        event.setStatus(DownloadDataStatus.Success);
+                        EventBus.getDefault().post(event);
+                        break;
+                    case AppController.T6_DEVICE_TYPE:
+                        ArrayList<T6Packet> t6packets = new ArrayList<>();
+                        for (int i = 0; i < responseDataJson.length(); i++) {
+                            JSONObject signalJson = responseDataJson.getJSONObject(i);
+                            T6Packet packet = T6Packet.fromJson(signalJson);
+                            t6packets.add(packet);
+                        }
+                        ActionCreator.getInstance(dispatcher).transportPacketsForTrack(t6packets);
+                        event.setStatus(DownloadDataStatus.Success);
+                        EventBus.getDefault().post(event);
+                        break;
+                }
+            } else {
+                event.setStatus(DownloadDataStatus.Success);
+                EventBus.getDefault().post(event);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void processLastStateResponse(String response) {
+        if (AppController.getInstance().getActiveDeviceType() == null) {
+            return;
+        }
+
         DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
         try {
             JSONObject responseJson = new JSONObject(response);
             if (responseJson.getBoolean("status")) {
-                JSONArray responseDataJson = responseJson.getJSONArray("data");
-
-                for (int i = 0; i < responseDataJson.length(); i++) {
-                    JSONObject signalJson = responseDataJson.getJSONObject(i);
-                    Signal signal = Signal.signalFromJson(signalJson);
-                    SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
+                JSONObject jsonPacket = responseJson.getJSONObject("data");
+                Object packet = null;
+                switch (AppController.getInstance().getActiveDeviceType()) {
+                    case AppController.T6_DEVICE_TYPE:
+                        packet = T6Packet.fromJson(jsonPacket);
+                        break;
+                    case AppController.T5_DEVICE_TYPE:
+                        packet = T5Packet.fromJson(jsonPacket);
+                        break;
                 }
-
                 event.setStatus(DownloadDataStatus.Success);
                 EventBus.getDefault().post(event);
+                ActionCreator.getInstance(dispatcher).transportLastStatePacketToStore(packet);
             } else {
                 event.setStatus(DownloadDataStatus.Error);
                 EventBus.getDefault().post(event);
@@ -343,21 +570,127 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
-    private void processLastStateResponse(String response) {
+    private void processDetailReportResponse(JSONObject responseJson) {
         try {
-            JSONObject responseJson = new JSONObject(response);
-            if (responseJson.getBoolean("status")) {
-                JSONObject signalJson = responseJson.getJSONObject("data");
-                Signal signal = Signal.signalFromJsonForLastState(signalJson);
-                SignalDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
+            JSONObject allData = responseJson.getJSONObject(String.valueOf(AppController.getInstance().getActiveDeviceId()));
+            JSONArray dataArray = allData.getJSONArray("rows");
+
+            ArrayList<LatLng> coordinatesMovingForDetailReport = new ArrayList<>();
+            ArrayList<LatLng> coordinatesStopsForDetailReport = new ArrayList<>();
+            for (int i = 1; i < dataArray.length(); i++) {
+                try {
+                    JSONObject entry = dataArray.getJSONObject(i);
+                    String eventType = entry.getString("event");
+
+                    if (eventType.equals("Движение")) {
+                        JSONArray movingArray = entry.getJSONArray("treck");
+
+                        for (int j = 0; j < movingArray.length(); j++) {
+                            JSONObject movingEntry = movingArray.getJSONObject(j);
+                            coordinatesMovingForDetailReport.add(new LatLng(movingEntry.getDouble("lat"), movingEntry.getDouble("lng")));
+                        }
+                    } else if (eventType.equals("Стоянка")) {
+                        JSONArray stopArray = entry.getJSONArray("treck");
+                        coordinatesStopsForDetailReport.add(new LatLng(stopArray.getJSONObject(0).getDouble("lat"),
+                                stopArray.getJSONObject(0).getDouble("lng")));
+                    }
+                } catch (JSONException e) {
+                    Log.d(TAG, "JSON Exception at processDetailReportResponse()");
+                }
+            }
+
+            PacketsForDetailReportEvent event = new PacketsForDetailReportEvent();
+            event.setCoordinatesForMoving(coordinatesMovingForDetailReport);
+            event.setCoordinatesForStops(coordinatesStopsForDetailReport);
+            EventBus.getDefault().post(event);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void processGetSettingsRequest(JSONObject dataJson) {
+        // TODO Delete test code
+        Log.d(TAG, dataJson.toString());
+
+        try {
+            Boolean status = dataJson.getBoolean("status");
+            if (status) {
+                String settingsAsString = dataJson.getString("data");
+                JSONObject settingsJson = new JSONObject(settingsAsString);
+
+                EventBus.getDefault().post(new SearchModeStatusEvent(
+                        settingsJson.getInt("track") == 1));
+
+                // TODO Settings confirmation mechanism temporary disabled
+//                if (AppController.loadBooleanValueFromSharedPreferences(SettingsFragment.KEY_IS_AWAITING_SETTINGS_CONFIRMATION)) {
+//                    if (settingsJson.getLong("tm") > AppController.loadLongValueFromSharedPreferences(
+//                            SettingsFragment.KEY_SETTINGS_CONFIRMATION_CONTROL_DATE)) {
+//                        AppController.saveBooleanValueToSharedPreferences(
+//                                SettingsFragment.KEY_IS_AWAITING_SETTINGS_CONFIRMATION, false);
+//                        SharedPreferences settings = AppController.getInstance().getSharedPreferences(SettingsFragment.APPLICATION_PREFERENCES,
+//                                Context.MODE_PRIVATE);
+//                        String deviceId = String.valueOf(AppController.getInstance().getActiveDeviceId());
+//                        SharedPreferences.Editor editor = settings.edit();
+//                        editor.putInt(deviceId + SettingsFragment.KEY_CONNECTION_PERIOD, settingsJson.getInt("t1"));
+//                        editor.apply();
+//                    }
+//                } else {
+//                    SharedPreferences settings = AppController.getInstance().getSharedPreferences(SettingsFragment.APPLICATION_PREFERENCES,
+//                            Context.MODE_PRIVATE);
+//                    String deviceId = String.valueOf(AppController.getInstance().getActiveDeviceId());
+//                    SharedPreferences.Editor editor = settings.edit();
+//                    editor.putInt(deviceId + SettingsFragment.KEY_CONNECTION_PERIOD, settingsJson.getInt("t1"));
+//                    editor.apply();
+//                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private void setRetryPolicy(Request request) {
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                SOCKET_TIMEOUT_MS,
+                SOCKET_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
     @Override
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(context, R.string.on_command_send_error_toast, Toast.LENGTH_SHORT).show();
     }
+
+    private Runnable periodicLastStateQueryRunnable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                // TODO Uncomment when work ok Monitoring app
+//                while (true) {
+//                    if (AppController.getInstance().getActiveDeviceType() != null) {
+//                        if (AppController.getInstance().getActiveDeviceType().equals(AppController.T6_DEVICE_TYPE) ||
+//                                AppController.getInstance().getActiveDeviceType().equals(AppController.T5_DEVICE_TYPE)) {
+//                            try {
+//                                getLastStateRequest();
+//                                TimeUnit.SECONDS.sleep(30);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//                }
+            }
+        };
+    }
+
+    //// Methods for Generator
+
+    private void sendManualModeRequestToGenerator() {}
+
+    private void sendAutoModeRequestToGenerator() {}
+
+    private void sendEmergencyStopRequestToGenerator() {}
+
+    private void sendSwitchOnRequestToGenerator() {}
+
+    private void sendSwitchOffRequestToGenerator() {}
 }

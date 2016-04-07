@@ -1,42 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background" >
+    android:background="@color/main_background_color" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:paddingRight="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/select_period_button_label"
+                android:id="@+id/fragmentHistory_selectPeriodButton"
+                android:textSize="20sp"
+                android:background="@drawable/actis_menu_button_selector"
+                android:textColor="@drawable/actis_menu_button_text_selector"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/actis_app_blue_accent" />
+
+        <ExpandableListView
+            android:id="@+id/fragmentHistory_historyListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:groupIndicator="@drawable/actis_group_indicator_selector">
+        </ExpandableListView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:background="@color/main_background_color">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/actis_app_blue_accent" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/select_period_button_label"
-            android:id="@+id/fragmentHistory_selectPeriodButton"
-            android:textSize="17sp"
-            android:layout_weight="1"
-            android:background="@drawable/control_button_selector"
-            android:textAllCaps="false" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_horizontal"
             android:text="@string/track_button_label"
             android:id="@+id/fragmentHistory_trackButton"
-            android:textSize="17sp"
-            android:layout_weight="1"
-            android:background="@drawable/control_button_selector"
+            android:textSize="20sp"
+            android:background="@drawable/actis_menu_button_selector"
+            android:textColor="@drawable/actis_menu_button_text_selector"
             android:textAllCaps="false" />
-
-
 
     </LinearLayout>
 
-    <ExpandableListView
-        android:id="@+id/fragmentHistory_historyListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ExpandableListView>
-
-</LinearLayout>
+</FrameLayout>
