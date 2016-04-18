@@ -1,6 +1,7 @@
 package kgk.beacon.view.actis;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ import kgk.beacon.map.MarkerClickListener;
 import kgk.beacon.map.event.MapChangeEvent;
 import kgk.beacon.map.event.MapReadyForUseEvent;
 import kgk.beacon.model.Signal;
+import kgk.beacon.networking.DownloadDataStatus;
+import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.networking.gcm.GCMClientManager;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.AppController;
@@ -46,6 +49,9 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
     @Bind(R.id.batteryView) TextView batteryView;
     @Bind(R.id.helpToolbarButton) ImageButton helpToolbarButton;
     @Bind(R.id.fragmentContainer) FrameLayout fragmentContainer;
+    @Bind(R.id.toolbar_title) TextView toolbarTitle;
+
+    private ProgressDialog downloadDataDialog;
 
     private boolean fullscreenStatus;
 
@@ -73,6 +79,17 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
                 Log.d(TAG, "Registration id - " + registrationId);
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if (extras.getString("key_target").equals("from_device_list")) {
+                    showDownloadDataDialog();
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -117,8 +134,10 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         String title = AppController.getInstance().getActiveDeviceId() + "";
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
+            getSupportActionBar().setTitle("");
         }
+
+        toolbarTitle.setText(title);
     }
 
     private void initFluxDependencies() {
@@ -167,16 +186,19 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
     private void updateBatteryView(int charge) {
         batteryView.setVisibility(View.VISIBLE);
 
-        if (charge >= 70) {
-            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_high));
-            batteryView.setTextColor(getResources().getColor(R.color.actis_app_green_accent));
-        } else if (charge >= 35 && charge < 70) {
-            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_average));
-            batteryView.setTextColor(getResources().getColor(R.color.actis_app_yellow_accent));
-        } else {
-            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_low));
-            batteryView.setTextColor(getResources().getColor(R.color.actis_app_red_accent));
-        }
+        batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_general));
+        batteryView.setTextColor(getResources().getColor(android.R.color.white));
+
+//        if (charge >= 70) {
+//            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_high));
+//            batteryView.setTextColor(getResources().getColor(R.color.battery_text_color));
+//        } else if (charge >= 35 && charge < 70) {
+//            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_average));
+//            batteryView.setTextColor(getResources().getColor(R.color.actis_app_yellow_accent));
+//        } else {
+//            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_low));
+//            batteryView.setTextColor(getResources().getColor(R.color.actis_app_red_accent));
+//        }
 
         batteryView.setText(charge + "%");
     }
@@ -185,6 +207,13 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         if (helpToolbarButton != null) {
             helpToolbarButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void showDownloadDataDialog() {
+        downloadDataDialog = new ProgressDialog(this);
+        downloadDataDialog.setTitle(getString(R.string.download_data_progress_dialog_title));
+        downloadDataDialog.setMessage(getString(R.string.download_data_progress_dialog_message));
+        downloadDataDialog.show();
     }
 
     ////
@@ -239,6 +268,15 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         } else {
             fullscreenButton.setImageDrawable(getResources().getDrawable(R.drawable.fullscreen_enter_icon_grey));
             fragmentContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onEventMainThread(DownloadDataInProgressEvent event) {
+        if (event.getStatus() == DownloadDataStatus.Success ||
+                event.getStatus() == DownloadDataStatus.noInternetConnection) {
+            if (downloadDataDialog != null) {
+                downloadDataDialog.dismiss();
+            }
         }
     }
 

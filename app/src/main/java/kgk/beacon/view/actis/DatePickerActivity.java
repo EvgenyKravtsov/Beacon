@@ -5,12 +5,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kgk.beacon.R;
 
 public class DatePickerActivity extends SingleFragmentActivityDeviceRelated {
+
+    @Bind(R.id.toolbar_title) TextView toolbarTitle;
+
+    ////
 
     @Override
     protected Fragment createFragment() {
@@ -21,6 +27,7 @@ public class DatePickerActivity extends SingleFragmentActivityDeviceRelated {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        toolbarTitle.setText(getString(R.string.select_period_button_label));
     }
 
     @Override

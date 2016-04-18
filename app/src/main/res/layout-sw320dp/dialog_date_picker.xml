@@ -26,42 +26,49 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="@string/from_label"
             android:id="@+id/textView2"
             android:textSize="17sp"
-            android:layout_weight="3"
+            android:layout_weight="5"
             android:gravity="center"
             android:textColor="#FF000000" />
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_button_label"
-            android:id="@+id/fragmentDatePicker_fromDateButton"
-            android:textSize="17sp"
-            android:layout_weight="2"
-            android:textAllCaps="false"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/grey_rounded_button_selector"
-            android:textColor="@drawable/grey_rounded_button_text_selector" />
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/time_button_label"
-            android:id="@+id/fragmentDatePicker_fromTimeButton"
-            android:textSize="17sp"
-            android:layout_weight="2"
-            android:textAllCaps="false"
-            android:layout_marginLeft="2dp"
-            android:background="@drawable/grey_rounded_button_selector"
-            android:textColor="@drawable/grey_rounded_button_text_selector" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/date_button_label"
+                android:id="@+id/fragmentDatePicker_fromDateButton"
+                android:textSize="17sp"
+                android:layout_weight="2"
+                android:textAllCaps="false"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/grey_rounded_button_selector"
+                android:textColor="@drawable/grey_rounded_button_text_selector" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/time_button_label"
+                android:id="@+id/fragmentDatePicker_fromTimeButton"
+                android:textSize="17sp"
+                android:layout_weight="2"
+                android:textAllCaps="false"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/grey_rounded_button_selector"
+                android:textColor="@drawable/grey_rounded_button_text_selector" />
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></RelativeLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -74,49 +81,64 @@
             android:layout_height="wrap_content"
             android:text="@string/to_label"
             android:textSize="17sp"
-            android:layout_weight="3"
+            android:layout_weight="5"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:textColor="#FF000000" />
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_button_label"
-            android:id="@+id/fragmentDatePicker_toDateButton"
-            android:textSize="17sp"
-            android:layout_weight="2"
-            android:textAllCaps="false"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/grey_rounded_button_selector"
-            android:textColor="@drawable/grey_rounded_button_text_selector" />
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/time_button_label"
-            android:id="@+id/fragmentDatePicker_toTimeButton"
-            android:textSize="17sp"
-            android:layout_weight="2"
-            android:textAllCaps="false"
-            android:layout_marginLeft="2dp"
-            android:background="@drawable/grey_rounded_button_selector"
-            android:textColor="@drawable/grey_rounded_button_text_selector" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_button_label"
+                    android:id="@+id/fragmentDatePicker_toDateButton"
+                    android:textSize="17sp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/grey_rounded_button_selector"
+                    android:textColor="@drawable/grey_rounded_button_text_selector" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_button_label"
+                    android:id="@+id/fragmentDatePicker_toTimeButton"
+                    android:textSize="17sp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="2dp"
+                    android:background="@drawable/grey_rounded_button_selector"
+                    android:textColor="@drawable/grey_rounded_button_text_selector" />
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@android:string/ok"
+                android:id="@+id/fragmentDatePicker_okButton"
+                android:textSize="17sp"
+                android:textAllCaps="false"
+                android:background="@drawable/grey_rounded_button_selector"
+                android:textColor="@drawable/grey_rounded_button_text_selector"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@android:string/ok"
-        android:id="@+id/fragmentDatePicker_okButton"
-        android:textSize="20sp"
-        android:textAllCaps="false"
-        android:background="@drawable/grey_rounded_button_selector"
-        android:textColor="@drawable/grey_rounded_button_text_selector"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"/>
-
 
 </LinearLayout>

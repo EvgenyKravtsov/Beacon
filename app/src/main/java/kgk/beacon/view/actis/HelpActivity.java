@@ -63,23 +63,23 @@ public class HelpActivity extends AppCompatActivity {
 
         HelpEntry historyEntry = new HelpEntry();
         historyEntry.setTitle(getString(R.string.history_button_label));
-        historyEntry.setBody(getString(R.string.history_screen_description));
+        historyEntry.setBody(getText(R.string.history_screen_description));
 
         HelpEntry searchEntry = new HelpEntry();
         searchEntry.setTitle(getString(R.string.search_on_button_label));
-        searchEntry.setBody(getString(R.string.query_function_description));
+        searchEntry.setBody(getText(R.string.query_function_description));
 
         HelpEntry autosearchEntry = new HelpEntry();
         autosearchEntry.setTitle(getString(R.string.auto_search_description_title));
-        autosearchEntry.setBody(getString(R.string.auto_search_description));
+        autosearchEntry.setBody(getText(R.string.auto_search_description));
 
         HelpEntry periodEntry = new HelpEntry();
         periodEntry.setTitle(getString(R.string.select_period_button_label));
-        periodEntry.setBody(getString(R.string.period_screen_description));
+        periodEntry.setBody(getText(R.string.period_screen_description));
 
         HelpEntry trackEntry = new HelpEntry();
         trackEntry.setTitle(getString(R.string.track_button_label));
-        trackEntry.setBody(getString(R.string.track_screen_description));
+        trackEntry.setBody(getText(R.string.track_screen_description));
 
 
         if (screenName != null) {

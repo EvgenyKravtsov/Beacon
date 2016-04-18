@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true">
+
+        <shape
+            android:shape="oval"
+            android:visible="true"
+            android:dither="true"
+            android:useLevel="false">
+
+            <solid android:color="@color/actis_app_green_accent" />
+            <size
+                android:width="45dp"
+                android:height="45dp" />
+
+        </shape>
+
+    </item>
+
+
+
+
+    <item android:state_checked="false">
+
+        <shape
+            android:shape="oval"
+            android:visible="true"
+            android:dither="true"
+            android:useLevel="false">
+
+            <solid android:color="@color/actis_app_text_color_hint" />
+            <size
+                android:width="45dp"
+                android:height="45dp" />
+
+        </shape>
+
+    </item>
+
+</selector>

@@ -1,6 +1,7 @@
 package kgk.beacon.view.actis;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ public class DatePickerFragment extends Fragment {
     @Bind(R.id.fragmentDatePicker_fromTimeButton) Button fromTimeButton;
     @Bind(R.id.fragmentDatePicker_toDateButton) Button toDateButton;
     @Bind(R.id.fragmentDatePicker_toTimeButton) Button toTimeButton;
+
+    private ProgressDialog trackDrawingInProgressDialog;
 
     public static final String FROM_DATE_DIALOG = "fromDateDialog";
     public static final String FROM_TIME_DIALOG = "fromTimeDialog";
@@ -66,8 +69,9 @@ public class DatePickerFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
+        dispatcher.unregister(this);
     }
 
     @Override
@@ -131,6 +135,13 @@ public class DatePickerFragment extends Fragment {
         actisStore = ActisStore.getInstance(dispatcher);
     }
 
+    private void showTrackDrawingInProgressDialog() {
+        trackDrawingInProgressDialog = new ProgressDialog(getActivity());
+        trackDrawingInProgressDialog.setTitle(getString(R.string.development_progress_dialog_title));
+        trackDrawingInProgressDialog.setMessage(getString(R.string.track_drawing_in_progress_dialog_message));
+        trackDrawingInProgressDialog.show();
+    }
+
     @OnClick(R.id.fragmentDatePicker_fromDateButton)
     public void onPressFromDateButton(View view) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -175,8 +186,27 @@ public class DatePickerFragment extends Fragment {
         } else if (fromDate.getTime().getTime() >= toDate.getTime().getTime()) {
             Toast.makeText(getActivity(), getString(R.string.wrong_period_message), Toast.LENGTH_LONG).show();
         } else {
-            actionCreator.getSignalsByPeriod(fromDate.getTime(), toDate.getTime());
-            getActivity().finish();
+            try {
+                if (getActivity().getIntent().getExtras().getString(HistoryFragment.KEY_TARGET).equals(HistoryFragment.FOR_TRACK)) {
+                    if (actisStore.getSignalsDisplayed().size() > 0) {
+                        dispatcher.register(this);
+                        actionCreator.getSignalsByPeriod(fromDate.getTime(), toDate.getTime());
+                        showTrackDrawingInProgressDialog();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.no_signals_toast, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                actionCreator.getSignalsByPeriod(fromDate.getTime(), toDate.getTime());
+                getActivity().finish();
+            }
         }
+    }
+
+    public void onEventMainThread(ActisStore.ActisStoreChangeEvent event) {
+        Intent intent = new Intent(getActivity(), PathActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

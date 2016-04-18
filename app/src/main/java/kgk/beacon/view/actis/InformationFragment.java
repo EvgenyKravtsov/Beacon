@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,15 +31,13 @@ import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.actions.event.ToggleSearchModeEvent;
 import kgk.beacon.database.ActisDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
 import kgk.beacon.networking.event.SearchModeStatusEvent;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.AppController;
 
 public class InformationFragment extends Fragment implements DialogInterface.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
-
-    // TODO Add periodic unlock for query command (like with Search command)
-    // TODO Update help desription
 
     public static final String TAG = InformationFragment.class.getSimpleName();
 
@@ -101,9 +100,16 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             AppController.saveLongValueToSharedPreferences(deviceId + KEY_SEARCH_EXPIRE_DATE,
                     Calendar.getInstance().getTimeInMillis() / 1000 + COMMAND_EXPIRATION_PERIOD);
             AppController.saveBooleanValueToSharedPreferences(deviceId + KEY_SEARCH_SWITCH, switchCustomSearch.isChecked());
+
+            if (switchCustomSearch.isChecked()) {
+                showAlertDialog(getString(R.string.on_actis_search_turned_on_message));
+            } else {
+                showAlertDialog(getString(R.string.on_actis_search_turned_off_message));
+            }
         }
     }
 
+    // TODO For search command state control
     public void onEventMainThread(SearchModeStatusEvent event) {
         long deviceId = AppController.getInstance().getActiveDeviceId();
 
@@ -121,6 +127,10 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             changeStateSearchButton(event.getStatus());
             AppController.saveBooleanValueToSharedPreferences(deviceId + KEY_SEARCH_MODE_AWAITING, false);
         }
+    }
+
+    public void onEventMainThread(QueryRequestSuccessfulEvent event) {
+        showAlertDialog(getString(R.string.on_actis_query_success_message));
     }
 
     ////
@@ -149,6 +159,14 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         dialog.show();
     }
 
+    // TODO For search command control only on device
+//    private void setupSearchButton() {
+//        long deviceId = AppController.getInstance().getActiveDeviceId();
+//        boolean savedStatus = AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_SWITCH);
+//        changeStateSearchButton(savedStatus);
+//    }
+
+    // TODO For search command state control
     private void setupSearchButton() {
         switchCustomSearch.setOnCheckedChangeListener(this);
         long deviceId = AppController.getInstance().getActiveDeviceId();
@@ -159,10 +177,10 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         if (AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_MODE_AWAITING)) {
             changeStateSearchButton(
                     AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_SWITCH));
-            searchButtonFrame.setBackgroundDrawable(getResources()
-                    .getDrawable(R.drawable.actis_search_button_frame_yellow));
+//            searchButtonFrame.setBackgroundDrawable(getResources()
+//                    .getDrawable(R.drawable.actis_search_button_frame_yellow));
             switchCustomSearch.setThumbDrawable(getResources()
-                    .getDrawable(R.drawable.search_custom_switch_yellow_thumb));
+                    .getDrawable(R.drawable.search_custom_switch_yellow_thumb_with_lock));
         }
     }
 
@@ -171,13 +189,20 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         switchCustomSearch.setChecked(state);
         switchCustomSearch.setThumbDrawable(getResources()
                 .getDrawable(state ?
-                        R.drawable.search_custom_switch_green_thumb :
-                        R.drawable.search_custom_switch_grey_thumb));
+                        R.drawable.search_custom_switch_green_thumb_with_lock :
+                        R.drawable.search_custom_switch_grey_thumb_with_lock));
         searchButtonFrame.setBackgroundDrawable(getResources()
                 .getDrawable(state ?
-                        R.drawable.actis_search_button_frame_green :
+                        R.drawable.actis_search_button_frame_pressed :
                         R.drawable.actis_menu_button_background));
         switchCustomSearch.setOnCheckedChangeListener(this);
+    }
+
+    private void showAlertDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null);
+        builder.create().show();
     }
 
     ////
@@ -192,25 +217,47 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 
     @OnClick(R.id.informationFragment_searchButton)
     public void onClickSearchButton(View view) {
-        if (AppController.getInstance().isDemoMode()) {
-            showDemoWarningDialog();
-            return;
-        }
+        // TODO Delete test code
+        ActisDatabaseDao actisDatabaseDao = ActisDatabaseDao.getInstance(getActivity());
+        Log.d(TAG, "Dublicats count - " + actisDatabaseDao.getDuplicatesCountByPacketDate());
 
-        long deviceId = AppController.getInstance().getActiveDeviceId();
-
-        if (AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_CONTROL_DATE)
-                == ActisDatabaseDao.getInstance(getActivity()).getLastSignalDate()) {
-            if (Calendar.getInstance().getTimeInMillis() / 1000 <
-                    AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
-                showQueryTooEarlyDialog();
-                return;
-            }
-        }
-
-        actionCreator.sendQueryBeaconRequest();
+//        if (AppController.getInstance().isDemoMode()) {
+//            showDemoWarningDialog();
+//            return;
+//        }
+//
+//        long deviceId = AppController.getInstance().getActiveDeviceId();
+//
+//        if (AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_CONTROL_DATE)
+//                == ActisDatabaseDao.getInstance(getActivity()).getLastSignalDate()) {
+//            if (Calendar.getInstance().getTimeInMillis() / 1000 <
+//                    AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
+//                showQueryTooEarlyDialog();
+//                return;
+//            }
+//        }
+//
+//        actionCreator.sendQueryBeaconRequest();
     }
 
+    // TODO For search command control only on device
+//    @OnLongClick(R.id.informationFragment_searchButton)
+//    public boolean onLongClickSearchButton(View view) {
+//        if (AppController.getInstance().isDemoMode()) {
+//            showDemoWarningDialog();
+//            return false;
+//        }
+//
+//        Vibrator vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
+//        vibe.vibrate(50);
+//
+//        switchCustomSearch.setClickable(true);
+//        searchSwitchActivated = true;
+//
+//        return true;
+//    }
+
+    // TODO For search command state control
     @OnLongClick(R.id.informationFragment_searchButton)
     public boolean onLongClickSearchButton(View view) {
         if (AppController.getInstance().isDemoMode()) {
@@ -221,11 +268,11 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         Vibrator vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
         vibe.vibrate(50);
 
-        if (AppController.loadBooleanValueFromSharedPreferences(
-                AppController.getInstance().getActiveDeviceId() + KEY_SEARCH_MODE_AWAITING)) {
-            showQueryTooEarlyDialog();
-            return false;
-        }
+//        if (AppController.loadBooleanValueFromSharedPreferences(
+//                AppController.getInstance().getActiveDeviceId() + KEY_SEARCH_MODE_AWAITING)) {
+//            showQueryTooEarlyDialog();
+//            return false;
+//        }
 
         switchCustomSearch.setClickable(true);
         searchSwitchActivated = true;
@@ -235,20 +282,20 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 
     @OnTouch(R.id.informationFragment_searchButton)
     public boolean onTouchSearchButton(MotionEvent event) {
+
         if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-            searchButtonTextView.setTextColor(getResources().getColor(R.color.actis_app_green_accent));
-        } else {
-            searchButtonTextView.setTextColor(getResources().getColor(R.color.main_brand_black));
+            searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
+        } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
+            searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
         }
 
-        if (AppController.getInstance().isDemoMode() ||
-                AppController.loadBooleanValueFromSharedPreferences(
-                        AppController.getInstance().getActiveDeviceId() + KEY_SEARCH_MODE_AWAITING)) {
+        if (AppController.getInstance().isDemoMode()) {
             return false;
         }
 
-        switchCustomSearch.onTouchEvent(event);
         if (searchSwitchActivated) {
+            switchCustomSearch.onTouchEvent(event);
+
             if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
                 switchCustomSearch.setClickable(false);
                 searchSwitchActivated = false;
@@ -268,13 +315,24 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         }
     }
 
+    // TODO For search command control only on device
+//    @Override
+//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//        actionCreator.sendToggleSearchModeRequest(isChecked);
+//        changeStateSearchButton(isChecked);
+//    }
+
+    // TODO For search command state control
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         actionCreator.sendToggleSearchModeRequest(isChecked);
 
-        searchButtonFrame.setBackgroundDrawable(getResources()
-                .getDrawable(R.drawable.actis_search_button_frame_yellow));
+//        searchButtonFrame.setBackgroundDrawable(getResources()
+//                .getDrawable(R.drawable.actis_search_button_frame_yellow));
         switchCustomSearch.setThumbDrawable(getResources()
-                .getDrawable(R.drawable.search_custom_switch_yellow_thumb));
+                .getDrawable(R.drawable.search_custom_switch_yellow_thumb_with_lock));
+
+        switchCustomSearch.setClickable(false);
+        searchSwitchActivated = false;
     }
 }

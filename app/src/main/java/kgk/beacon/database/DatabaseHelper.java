@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "signal_database";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     static final String TABLE_SIGNAL = "table_signal";
     static final String COLUMN_ID = "_id";
@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final String COLUMN_LATITUDE = "latitude";
     static final String COLUMN_LONGITUDE = "longitude";
     static final String COLUMN_DATE = "date";
+    static final String COLUMN_ACTIS_DATE = "actis_date";
     static final String COLUMN_VOLTAGE = "voltage";
     static final String COLUMN_BALANCE = "balance";
     static final String COLUMN_SATELLITES = "satellites";
@@ -58,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_LATITUDE + " REAL NOT NULL, "
                 + COLUMN_LONGITUDE + " REAL NOT NULL, "
                 + COLUMN_DATE + " INTEGER NOT NULL, "
+                + COLUMN_ACTIS_DATE + " INTEGER NOT NULL, "
                 + COLUMN_VOLTAGE + " REAL NOT NULL, "
                 + COLUMN_BALANCE + " INTEGER NOT NULL, "
                 + COLUMN_SATELLITES + " INTEGER NOT NULL, "
@@ -81,6 +83,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_DATE + " = %d";
 
         public static final String GET_SIGNALS_BY_DEVICE_ID = "SELECT * FROM " + TABLE_SIGNAL
-                + " WHERE " + COLUMN_DEVICE_ID + " = %d";
+                + " WHERE " + COLUMN_DEVICE_ID + " = %d ORDER BY " + COLUMN_ACTIS_DATE + " DESC";
     }
 }

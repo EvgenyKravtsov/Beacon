@@ -4,19 +4,13 @@
     android:layout_height="match_parent"
     android:background="@color/main_background_color" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <ExpandableListView
+        android:id="@+id/fragmentHistory_historyListView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ExpandableListView
-            android:id="@+id/fragmentHistory_historyListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:groupIndicator="@drawable/actis_group_indicator_selector">
-        </ExpandableListView>
-
-    </LinearLayout>
+        android:paddingBottom="75dp"
+        android:groupIndicator="@drawable/actis_group_indicator_selector">
+    </ExpandableListView>
 
     <LinearLayout
         android:layout_width="match_parent"

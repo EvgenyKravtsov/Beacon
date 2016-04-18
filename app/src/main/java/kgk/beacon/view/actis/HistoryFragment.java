@@ -3,17 +3,19 @@ package kgk.beacon.view.actis;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,9 +37,12 @@ import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.DateFormatter;
 
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements DialogInterface.OnClickListener {
 
     public static final String TAG = HistoryFragment.class.getSimpleName();
+
+    public static final String KEY_TARGET = "key_target";
+    public static final String FOR_TRACK = "for_track";
 
     public static final int REQUEST_DATE_PICKER = 5;
     public static final int DEFAULT_NUMBER_OF_SIGNALS = 10;
@@ -207,6 +212,13 @@ public class HistoryFragment extends Fragment {
         trackDrawingInProgressDialog.show();
     }
 
+    private void showAlertDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, this);
+        builder.create().show();
+    }
+
     @OnClick(R.id.fragmentHistory_selectPeriodButton)
     public void onPressSelectPeriodButton(View view) {
         Intent datePickerIntent = new Intent(getActivity(), DatePickerActivity.class);
@@ -215,14 +227,17 @@ public class HistoryFragment extends Fragment {
 
     @OnClick(R.id.fragmentHistory_trackButton)
     public void onPressTrackButton(View view) {
-        if (actisStore.getSignalsDisplayed().size() > 0) {
-            showTrackDrawingInProgressDialog();
+        showAlertDialog(getString(R.string.choose_period_dialog_message));
 
-            Intent intent = new Intent(getActivity(), PathActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(getActivity(), R.string.no_signals_toast, Toast.LENGTH_SHORT).show();
-        }
+
+//        if (actisStore.getSignalsDisplayed().size() > 0) {
+//            showTrackDrawingInProgressDialog();
+//
+//            Intent intent = new Intent(getActivity(), PathActivity.class);
+//            startActivity(intent);
+//        } else {
+//            Toast.makeText(getActivity(), R.string.no_signals_toast, Toast.LENGTH_SHORT).show();
+//        }
     }
 
     class HistoryExpandableListViewAdapter extends SimpleExpandableListAdapter
@@ -310,6 +325,13 @@ public class HistoryFragment extends Fragment {
         public ViewHolderHistoryFragment(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        Intent datePickerIntent = new Intent(getActivity(), DatePickerActivity.class);
+        datePickerIntent.putExtra(KEY_TARGET, FOR_TRACK);
+        getActivity().startActivityForResult(datePickerIntent, REQUEST_DATE_PICKER);
     }
 }
 

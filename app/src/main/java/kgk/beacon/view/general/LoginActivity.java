@@ -10,10 +10,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.Locale;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import kgk.beacon.R;
 import kgk.beacon.util.AppController;
 import kgk.beacon.view.actis.SingleFragmentActivity;
@@ -25,6 +29,13 @@ public class LoginActivity extends SingleFragmentActivity {
     private static final String LANGUAGE_UKRAINIAN = "uk";
     private static final String KEY_LANGUAGE = "key_language";
 
+    ////
+
+    @Bind(R.id.helpToolbarButton) ImageButton helpToolbarButton;
+    @Bind(R.id.toolbar_title) TextView toolbarTitle;
+
+    ////
+
     @Override
     protected Fragment createFragment() {
         return new LoginFragment();
@@ -33,6 +44,7 @@ public class LoginActivity extends SingleFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         prepareToolbar();
         String locale = AppController.loadStringValueFromSharedPreferences(KEY_LANGUAGE);
         if (!locale.equals("default")) {
@@ -64,6 +76,8 @@ public class LoginActivity extends SingleFragmentActivity {
 
     private void prepareToolbar() {
         toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.actis_login_menu_icon));
+        helpToolbarButton.setVisibility(View.GONE);
+        toolbarTitle.setText(getString(R.string.app_name));
     }
 
     private void showLanguagePickerDialog() {

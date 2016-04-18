@@ -43,6 +43,8 @@ import kgk.beacon.stores.T6Store;
 
 public class AppController extends Application {
 
+    // TODO Change google maps key before release
+
     private static final String TAG = AppController.class.getSimpleName();
     private static final String APPLICATION_PREFERENCES = "application_preferences";
 

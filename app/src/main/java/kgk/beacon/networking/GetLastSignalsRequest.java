@@ -1,7 +1,5 @@
 package kgk.beacon.networking;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -29,11 +27,6 @@ public class GetLastSignalsRequest extends StringRequest {
     }
 
     public static String makeUrl(String baseUrl, long fromDate, long toDate) {
-        // TODO Delete test code
-        Log.d(TAG, baseUrl + "?"
-                + "device" + "=" + AppController.getInstance().getActiveDeviceId() + "&"
-                + "from" + "=" + fromDate + "&"
-                + "to" + "=" + toDate);
         return baseUrl + "?"
                 + "device" + "=" + AppController.getInstance().getActiveDeviceId() + "&"
                 + "from" + "=" + fromDate + "&"

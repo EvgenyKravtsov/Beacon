@@ -1,16 +1,20 @@
 package kgk.beacon.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import kgk.beacon.actions.Action;
@@ -19,6 +23,7 @@ import kgk.beacon.actions.DataActions;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.ActisStore;
+import kgk.beacon.util.ActisCoordinatesValidator;
 import kgk.beacon.util.AppController;
 
 public class ActisDatabaseDao {
@@ -37,6 +42,7 @@ public class ActisDatabaseDao {
                                    DatabaseHelper.COLUMN_LATITUDE,
                                    DatabaseHelper.COLUMN_LONGITUDE,
                                    DatabaseHelper.COLUMN_DATE,
+                                   DatabaseHelper.COLUMN_ACTIS_DATE,
                                    DatabaseHelper.COLUMN_VOLTAGE,
                                    DatabaseHelper.COLUMN_BALANCE,
                                    DatabaseHelper.COLUMN_SATELLITES,
@@ -83,6 +89,7 @@ public class ActisDatabaseDao {
             values.put(DatabaseHelper.COLUMN_LATITUDE, signal.getLatitude());
             values.put(DatabaseHelper.COLUMN_LONGITUDE, signal.getLongitude());
             values.put(DatabaseHelper.COLUMN_DATE, signal.getDate());
+            values.put(DatabaseHelper.COLUMN_ACTIS_DATE, signal.getActisDate());
             values.put(DatabaseHelper.COLUMN_VOLTAGE, signal.getVoltage());
             values.put(DatabaseHelper.COLUMN_BALANCE, signal.getBalance());
             values.put(DatabaseHelper.COLUMN_SATELLITES, signal.getSatellites());
@@ -98,7 +105,7 @@ public class ActisDatabaseDao {
     }
 
     private boolean hasDuplicate(Signal signal) {
-        Cursor cursor = database.rawQuery(String.format(DatabaseHelper
+        @SuppressLint("DefaultLocale") Cursor cursor = database.rawQuery(String.format(DatabaseHelper
                 .SignalDatabaseQuery.GET_SIGNALS_BY_DEVICE_ID_AND_DATE, signal.getDeviceId(), signal.getDate()), null);
         int duplicateCount  = cursor.getCount();
         cursor.close();
@@ -138,22 +145,29 @@ public class ActisDatabaseDao {
                             .SignalDatabaseQuery.GET_SIGNALS_BY_DEVICE_ID,
                     AppController.getInstance().getActiveDeviceId()), null);
 
-            if (numberOfSignals >= cursor.getCount()) {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-                    Signal signal = cursorToSignal(cursor);
-                    signals.add(signal);
-                    cursor.moveToNext();
-                }
-            } else {
-                cursor.moveToLast();
-                while (numberOfSignals != 0) {
-                    Signal signal = cursorToSignal(cursor);
-                    signals.add(0, signal);
-                    cursor.moveToPrevious();
-                    numberOfSignals--;
-                }
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Signal signal = cursorToSignal(cursor);
+                signals.add(signal);
+                cursor.moveToNext();
             }
+
+//            if (numberOfSignals >= cursor.getCount()) {
+//                cursor.moveToFirst();
+//                while (!cursor.isAfterLast()) {
+//                    Signal signal = cursorToSignal(cursor);
+//                    signals.add(signal);
+//                    cursor.moveToNext();
+//                }
+//            } else {
+//                cursor.moveToLast();
+//                while (numberOfSignals != 0) {
+//                    Signal signal = cursorToSignal(cursor);
+//                    signals.add(0, signal);
+//                    cursor.moveToPrevious();
+//                    numberOfSignals--;
+//                }
+//            }
 
             cursor.close();
             close();
@@ -233,15 +247,47 @@ public class ActisDatabaseDao {
         signal.setLatitude(cursor.getDouble(3));
         signal.setLongitude(cursor.getDouble(4));
         signal.setDate(cursor.getLong(5));
-        signal.setVoltage(cursor.getDouble(6));
-        signal.setBalance(cursor.getInt(7));
-        signal.setSatellites(cursor.getInt(8));
-        signal.setSpeed(cursor.getInt(9));
-        signal.setCharge(cursor.getInt(10));
-        signal.setDirection(cursor.getInt(11));
-        signal.setTemperature(cursor.getInt(12));
+        signal.setActisDate(cursor.getLong(6));
+        signal.setVoltage(cursor.getDouble(7));
+        signal.setBalance(cursor.getInt(8));
+        signal.setSatellites(cursor.getInt(9));
+        signal.setSpeed(cursor.getInt(10));
+        signal.setCharge(cursor.getInt(11));
+        signal.setDirection(cursor.getInt(12));
+        signal.setTemperature(cursor.getInt(13));
         return signal;
     }
+
+    // TODO Delete test method
+    public int getDuplicatesCountByPacketDate() {
+        List<Signal> signals = getAllSignals();
+
+        Map<Long, List<Signal>> packetDates = new HashMap<>();
+
+        for (Signal signal : signals) {
+            long packetDate = signal.getActisDate();
+
+            try {
+                packetDates.get(packetDate).add(signal);
+            } catch (Exception e) {
+                packetDates.put(packetDate, new ArrayList<Signal>());
+                packetDates.get(packetDate).add(signal);
+            }
+        }
+
+        for (Map.Entry<Long, List<Signal>> entry : packetDates.entrySet()) {
+            Log.d(TAG, entry.getKey() + "   count - " + entry.getValue().size());
+
+            if (entry.getValue().size() > 1) {
+                ActisCoordinatesValidator validator = new ActisCoordinatesValidator(entry.getValue());
+                validator.validate();
+            }
+        }
+
+        return 0;
+    }
+
+    ////
 
     public void onEventBackgroundThread(Action action) {
         onAction(action);

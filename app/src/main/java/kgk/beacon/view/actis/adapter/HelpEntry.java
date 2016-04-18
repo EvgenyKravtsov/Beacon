@@ -3,7 +3,7 @@ package kgk.beacon.view.actis.adapter;
 public class HelpEntry {
 
     private String title;
-    private String body;
+    private CharSequence body;
 
     public String getTitle() {
         return title;
@@ -13,11 +13,11 @@ public class HelpEntry {
         this.title = title;
     }
 
-    public String getBody() {
+    public CharSequence getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(CharSequence body) {
         this.body = body;
     }
 }

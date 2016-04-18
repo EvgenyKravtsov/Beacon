@@ -64,6 +64,9 @@
     <string name="query_too_early_dialog_message">Команда відправлена. Очікування відповіді від устройства Actis…</string>
     <string name="demo_warning_dialog_message">Ця функція недоступна в демо режимі</string>
     <string name="awaiting_confirmation_dialog_message">Налаштування вже відправлені. Очікування підтвердження на пристрої Actis…</string>
+    <string name="on_actis_query_success_message">Команда на разовое определение местоположения отправлена. Ожидайте получение координат устройства…</string>
+    <string name="on_actis_search_turned_on_message">Команда включения Автопоиска отправлена. Ожидайте сообщения с координатами устройства каждые 20 минут</string>
+    <string name="on_actis_search_turned_off_message">Команда выключения Автопоиска отправлена</string>
 
     <!-- Strings for DeviceCurrentLocationActivity -->
     <string name="device_current_location_activity_action_bar_title">
@@ -78,6 +81,7 @@
     <string name="list_item_voltage_sign">В</string>
     <string name="list_item_balance_sign">р</string>
     <string name="track_drawing_in_progress_dialog_message">Підготовка треку…</string>
+    <string name="choose_period_dialog_message">Оберіть період для побудови Треку</string>
 
     <!-- String for DatePickerFragment -->
     <string name="action_bar_label">Період</string>
@@ -126,7 +130,7 @@
 
     <!-- Strings for HelpScreen -->
     <string name="help_screen_title">Допомога</string>
-    <string name="query_function_description">Кнопка <b>Розпитати</b> - дозволяє відправляти
+    <string name="query_function_description">Кнопка <b>Пошук</b> - дозволяє відправляти
         пристрою повідомлення для отримання поточних координат його місця розташування.</string>
     <string name="search_function_description">Кнопка <b>Пошук</b> - служить для включення/вимикання режиму <b>Пошук</b>.
         Після включення режиму <b>Пошук</b> пристрій кожні 20 хвилин виходить на зв\'язок і відправляє координати свого місця розташування.

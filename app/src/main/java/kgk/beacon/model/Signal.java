@@ -19,6 +19,7 @@ public class Signal implements Parcelable {
     private double latitude;
     private double longitude;
     private long date; // Unix seconds
+    private long actisDate; // Unix seconds
     private double voltage;  // Volts
     private double balance; // Russian roubles
     private int satellites;
@@ -26,6 +27,13 @@ public class Signal implements Parcelable {
     private int speed;  // km/h
     private int direction;
     private int temperature; // Celsius
+
+    private int mcc;
+    private int mnc;
+    private String cellId;
+    private String lac;
+
+    ////
 
     public Signal() {}
 
@@ -69,6 +77,14 @@ public class Signal implements Parcelable {
 
     public void setDate(long date) {
         this.date = date;
+    }
+
+    public long getActisDate() {
+        return actisDate;
+    }
+
+    public void setActisDate(long actisDate) {
+        this.actisDate = actisDate;
     }
 
     public double getVoltage() {
@@ -127,6 +143,38 @@ public class Signal implements Parcelable {
         this.temperature = temperature;
     }
 
+    public int getMcc() {
+        return mcc;
+    }
+
+    public void setMcc(int mcc) {
+        this.mcc = mcc;
+    }
+
+    public int getMnc() {
+        return mnc;
+    }
+
+    public void setMnc(int mnc) {
+        this.mnc = mnc;
+    }
+
+    public String getCellId() {
+        return cellId;
+    }
+
+    public void setCellId(String cellId) {
+        this.cellId = cellId;
+    }
+
+    public String getLac() {
+        return lac;
+    }
+
+    public void setLac(String lac) {
+        this.lac = lac;
+    }
+
     public static Signal signalFromJsonForLastState(JSONObject signalJson) {
         Signal signal = new Signal();
 
@@ -172,7 +220,7 @@ public class Signal implements Parcelable {
             signal.setLatitude(signalJson.getDouble("lat"));
             signal.setLongitude(signalJson.getDouble("lng"));
             signal.setDate(signalJson.getLong("server_date"));
-
+            signal.setActisDate(signalJson.getLong("packet_date"));
             double voltageFromPacket = paramsJson.getInt("BAT");
             signal.setVoltage(voltageFromPacket / 100.0);
 
@@ -188,6 +236,11 @@ public class Signal implements Parcelable {
             signal.setSpeed((int) signalJson.getDouble("speed"));
             signal.setDirection(signalJson.getInt("az"));
             signal.setTemperature(paramsJson.getInt("TEMP"));
+
+            signal.setMcc(paramsJson.getInt("MCC"));
+            signal.setMnc(paramsJson.getInt("MNC"));
+            signal.setCellId(paramsJson.getString("CID"));
+            signal.setLac(paramsJson.getString("LAC"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -39,6 +39,7 @@ public class MapCustomActivity extends AppCompatActivity implements MapClickList
 
     @Bind(R.id.batteryView) TextView batteryView;
     @Bind(R.id.helpToolbarButton) ImageButton helpToolbarButton;
+    @Bind(R.id.toolbar_title) TextView toolbarTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class MapCustomActivity extends AppCompatActivity implements MapClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.actisApp_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.actis_navigation_menu_icon));
+        toolbarTitle.setText(getString(R.string.map_custom_action_bar_label));
     }
 
     private void initFluxDependencies() {
@@ -101,16 +103,19 @@ public class MapCustomActivity extends AppCompatActivity implements MapClickList
 
             int charge = actisStore.getSignal().getCharge();
 
-            if (charge >= 70) {
-                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_high));
-                batteryView.setTextColor(getResources().getColor(R.color.actis_app_green_accent));
-            } else if (charge >= 35 && charge < 70) {
-                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_average));
-                batteryView.setTextColor(getResources().getColor(R.color.actis_app_yellow_accent));
-            } else {
-                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_low));
-                batteryView.setTextColor(getResources().getColor(R.color.actis_app_red_accent));
-            }
+            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_general));
+            batteryView.setTextColor(getResources().getColor(android.R.color.white));
+
+//            if (charge >= 70) {
+//                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_high));
+//                batteryView.setTextColor(getResources().getColor(R.color.actis_app_green_accent));
+//            } else if (charge >= 35 && charge < 70) {
+//                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_average));
+//                batteryView.setTextColor(getResources().getColor(R.color.actis_app_yellow_accent));
+//            } else {
+//                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_low));
+//                batteryView.setTextColor(getResources().getColor(R.color.actis_app_red_accent));
+//            }
 
             batteryView.setText(charge + "%");
         }

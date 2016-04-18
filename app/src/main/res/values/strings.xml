@@ -63,7 +63,10 @@
     <string name="download_error_toast">Error downloading data</string>
     <string name="query_too_early_dialog_message">Command have been sent. Awainitg response from Actis device…</string>
     <string name="demo_warning_dialog_message">This function is not available in demo mode</string>
-    <string name="awaiting_confirmation_dialog_message">Setting have been sent. Awaiting confirmation from device…</string>
+    <string name="awaiting_confirmation_dialog_message">Setting have been sent. Awaiting confirmation from device</string>
+    <string name="on_actis_query_success_message">Location query has been sent. Awaiting coordinates from Actis beacon</string>
+    <string name="on_actis_search_turned_on_message">Search on query has been sent. Actis beacon will send coordinates every 20 seconds</string>
+    <string name="on_actis_search_turned_off_message">Search off query has been sent</string>
 
     <!-- Strings for DeviceCurrentLocationActivity -->
     <string name="device_current_location_activity_action_bar_title">Device location</string>
@@ -77,6 +80,7 @@
     <string name="list_item_voltage_sign">V</string>
     <string name="list_item_balance_sign">rub</string>
     <string name="track_drawing_in_progress_dialog_message">Track drawing in progress…</string>
+    <string name="choose_period_dialog_message">Choose time period for track</string>
 
     <!-- String for DatePickerFragment -->
     <string name="action_bar_label">Period</string>

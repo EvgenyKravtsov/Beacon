@@ -29,7 +29,6 @@ public class QueryBeaconRequest extends StringRequest {
     public static String makeUrl(String baseUrl) {
         return baseUrl + "?"
                 + "device" + "=" + AppController.getInstance().getActiveDeviceId();
-                // + "query" + "=" + "true";
     }
 
     @Override

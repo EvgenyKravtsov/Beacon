@@ -35,8 +35,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="51dp"
-            android:background="@drawable/actis_search_button_frame"
-            android:animateLayoutChanges="true"
+            android:background="@drawable/actis_menu_button_background"
             android:paddingRight="3dp"
             android:paddingEnd="3dp"
             android:layout_marginLeft="100dp"
@@ -62,17 +61,13 @@
                 android:layout_width="wrap_content"
                 app:switchMinWidth="180dp"
                 android:layout_height="match_parent"
-                android:thumb="@drawable/search_custom_switch_selector"
+                android:thumb="@drawable/search_custom_switch_selector_with_lock"
                 app:track="@drawable/search_custom_switch_track"
                 android:background="@null"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_gravity="center"
                 android:clickable="false"
-                android:textOn="A"
-                android:textOff="A"
-                app:switchTextAppearance="@style/SearchSwitchTextAppearance"
-                app:showText="true"
                 android:id="@+id/switchCustomSearch" />
 
         </RelativeLayout>

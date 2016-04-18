@@ -2,11 +2,19 @@ package kgk.beacon.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class DateFormatter {
+
+    private static final String TAG = DateFormatter.class.getSimpleName();
+
+    ////
 
     public static String formatDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.ROOT);
@@ -37,34 +45,22 @@ public class DateFormatter {
             days.add(new Day(year, month, day));
         }
 
-        // Filtering days list for unique elements
-        ArrayList<Day> unique = new ArrayList<>();
+        Set<Day> uniqueDays = new HashSet<>();
         for (Day day : days) {
-            if (unique.isEmpty()) {
-                unique.add(day);
-            } else {
-                Day uniqueDay = unique.get(unique.size() - 1);
-
-                int year = uniqueDay.year;
-                int month = uniqueDay.month;
-                int dayOfMonth = uniqueDay.day;
-
-                if (!(year == day.year && month == day.month && dayOfMonth == day.day)) {
-                    unique.add(day);
-                }
-            }
+            uniqueDays.add(day);
         }
 
-        Date[] filteredDates = new Date[unique.size()];
+        Date[] filteredDates = new Date[uniqueDays.size()];
 
         int index = 0;
         Calendar calendar = Calendar.getInstance();
-        for (Day day : unique) {
+        for (Day day : uniqueDays) {
             calendar.set(Calendar.YEAR, day.year);
             calendar.set(Calendar.MONTH, day.month);
             calendar.set(Calendar.DAY_OF_MONTH, day.day);
             filteredDates[index++] = calendar.getTime();
         }
+        Arrays.sort(filteredDates, Collections.<Date>reverseOrder());
 
         return filteredDates;
     }
@@ -79,6 +75,39 @@ public class DateFormatter {
             this.year = year;
             this.month = month;
             this.day = day;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 11;
+            return this.year * prime + this.month * prime + this.day * prime;
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            if (object == null) {
+                return false;
+            }
+
+            if (getClass() != object.getClass()) {
+                return false;
+            }
+
+            final Day day = (Day) object;
+
+            if (this.year != day.year) {
+                return false;
+            }
+
+            if (this.month != day.month) {
+                return false;
+            }
+
+            if (this.day != day.day) {
+                return false;
+            }
+
+            return true;
         }
     }
 

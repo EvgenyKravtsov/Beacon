@@ -29,6 +29,12 @@ public class ActionCreator {
     public static final String KEY_LAST_STATE_PACKET = "key_last_state_packet";
     public static final String KEY_PACKETS_FOR_TRACK = "key_packets_for_track";
 
+    public static final String KEY_VALIDATION_SERVER_DATE = "key_validation_server_time";
+    public static final String KEY_VALIDATION_MCC = "key_validation_mcc";
+    public static final String KEY_VALIDATION_MNC = "key_validation_mnc";
+    public static final String KEY_VALIDATION_CELL_ID = "key_validation_cell_id";
+    public static final String KEY_VALIDATION_LAC = "key_validation_lac";
+
     private static ActionCreator instance;
 
     final Dispatcher dispatcher;
@@ -134,6 +140,19 @@ public class ActionCreator {
 
     public void sendDetailReportRequest() {
         dispatcher.dispatch(HttpActions.DETAIL_REPORT_REQUEST);
+    }
+
+    public void sendActisCoordinatesValidationRequest(long serverDate,
+                                                      int mcc,
+                                                      int mnc,
+                                                      String cellIdHex,
+                                                      String lacHex){
+        dispatcher.dispatch(HttpActions.ACTIS_COORDINATES_VALIDATION_REQUEST,
+                KEY_VALIDATION_SERVER_DATE, serverDate,
+                KEY_VALIDATION_MCC, mcc,
+                KEY_VALIDATION_MNC, mnc,
+                KEY_VALIDATION_CELL_ID, cellIdHex,
+                KEY_VALIDATION_LAC, lacHex);
     }
 
     //// Generator actions

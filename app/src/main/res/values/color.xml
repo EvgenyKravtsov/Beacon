@@ -9,11 +9,14 @@
     <item name="main_background_color" type="color">#ffffffff</item>
     <item name="main_brand_blue" type="color">#ff0074e1</item>
     <item name="main_brand_black" type="color">#000000</item>
+    <item name="main_brand_dark_grey" type="color">#414141</item>
+    <item name="main_brand_light_grey" type="color">#e7e6e4</item>
 
     <!-- Colors for Actis app -->
     <item name="actis_app_toolbar_title_text" type="color">#ff000000</item>
     <item name="actis_app_toolbar_background" type="color">#ffc7c7c7</item>
     <item name="actis_app_green_accent" type="color">#ff94bf3d</item>
+    <item name="battery_text_color" type="color">#60a208</item>
     <item name="actis_app_blue_accent" type="color">#ff547dbf</item>
     <item name="actis_app_orange_accent" type="color">#fff48520</item>
     <item name="actis_app_text_color_hint" type="color">#ff7d7d7d</item>

@@ -256,6 +256,41 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
 
     @Override
     public void addCustomMarkerPoint(int direction, double latitude, double longitude) {
+//        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View layout = inflater.inflate(R.layout.actis_path_marker, null);
+//        TextView markerNumber = (TextView) layout.findViewById(R.id.actisPathMarker_number);
+//        markerNumber.setText(Integer.toString(number));
+//        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+//        Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
+//
+//        OverlayItem point = new PointMarkerOverlayItem(getResources(), markerBitmap, latitude, longitude);
+//        point.setMarkerHotspot(OverlayItem.HotspotPlace.CENTER);
+//        ArrayList<OverlayItem> overlayItemArray = new ArrayList<>();
+//        overlayItemArray.add(point);
+//        ItemizedIconOverlay<OverlayItem> currentPositionMarker = new ItemizedIconOverlay<>(getActivity(),
+//                overlayItemArray,
+//                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+//
+//                    @Override public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+//                        if (markerClickListener != null) {
+//                            markerClickListener.onMarkerClick(item.getPoint().getLatitude(),
+//                                    item.getPoint().getLongitude());
+//                        }
+//                        return true;
+//                    }
+//
+//                    @Override public boolean onItemLongPress(final int index, final OverlayItem item) {
+//                        return false;
+//                    }
+//                });
+//        map.getOverlays().add(currentPositionMarker);
+//        map.invalidate();
+
+
+
+
+
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
         ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);

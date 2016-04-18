@@ -17,6 +17,8 @@ public abstract class SingleFragmentActivityDeviceRelated extends SingleFragment
     @Bind(R.id.batteryView) TextView batteryView;
     @Bind(R.id.helpToolbarButton) ImageButton helpToolbarButton;
 
+    ////
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,16 +39,19 @@ public abstract class SingleFragmentActivityDeviceRelated extends SingleFragment
         if (batteryView != null) {
             batteryView.setVisibility(View.VISIBLE);
 
-            if (charge >= 70) {
-                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_high));
-                batteryView.setTextColor(getResources().getColor(R.color.actis_app_green_accent));
-            } else if (charge >= 35 && charge < 70) {
-                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_average));
-                batteryView.setTextColor(getResources().getColor(R.color.actis_app_yellow_accent));
-            } else {
-                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_low));
-                batteryView.setTextColor(getResources().getColor(R.color.actis_app_red_accent));
-            }
+            batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_general));
+            batteryView.setTextColor(getResources().getColor(android.R.color.white));
+
+//            if (charge >= 70) {
+//                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_high));
+//                batteryView.setTextColor(getResources().getColor(R.color.battery_text_color));
+//            } else if (charge >= 35 && charge < 70) {
+//                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_average));
+//                batteryView.setTextColor(getResources().getColor(R.color.actis_app_yellow_accent));
+//            } else {
+//                batteryView.setBackgroundDrawable(getResources().getDrawable(R.drawable.battery_icon_low));
+//                batteryView.setTextColor(getResources().getColor(R.color.actis_app_red_accent));
+//            }
 
             batteryView.setText(charge + "%");
         }

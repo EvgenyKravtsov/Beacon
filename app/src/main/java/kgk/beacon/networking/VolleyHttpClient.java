@@ -31,6 +31,7 @@ import kgk.beacon.model.Signal;
 import kgk.beacon.model.T5Packet;
 import kgk.beacon.model.T6Packet;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
+import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
 import kgk.beacon.networking.event.SearchModeStatusEvent;
 import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.stores.PacketsForDetailReportEvent;
@@ -42,8 +43,6 @@ import kgk.beacon.view.general.event.StartActivityEvent;
 
 public class VolleyHttpClient implements Response.ErrorListener {
 
-    // TODO Show all signals in history
-
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
     private static final String AUTHENTICATION_URL = "http://api.trezub.ru/api2/beacon/authorize";
     private static final String DEVICE_LIST_URL = "http://api.trezub.ru/api2/beacon/getdeviceslist?all=1"; //monitor.kgk-global.com
@@ -52,9 +51,14 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private static final String QUERY_BEACON_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdrequestinfo";
     private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdtogglefind";
     private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettingssms";
-    //private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettings";
+    // private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettings";
     private static final String DETAIL_REPORT_URL = "http://api.trezub.ru/api2/reports/getroute/";
     private static final String ACTIS_CONFIG_URL = "http://api.trezub.ru/api2/beacon/getactisconfig";
+
+    private static final String OPEN_CELL_ID_GET_URL = "http://opencellid.org/cell/get";
+    private static final String OPEN_CELL_ID_API_KEY = "635c0e4c-afd3-4272-a0ac-66275f6a9c1b";
+
+    private static final String YANDEX_LBS_LOCATION_REQUEST = "http://mobile.maps.yandex.net/cellid_location/";
 
     private static final int SOCKET_TIMEOUT_MS = 30000;
     private static final int SOCKET_MAX_RETRIES = 10;
@@ -142,6 +146,16 @@ public class VolleyHttpClient implements Response.ErrorListener {
             case HttpActions.GENERATOR_SEND_SWITCH_OFF_COMMAND:
                 sendSwitchOffRequestToGenerator();
                 break;
+            case HttpActions.ACTIS_COORDINATES_VALIDATION_REQUEST:
+                Log.d(TAG, "VALIDATION");
+
+                long serverDate = (long) action.getData().get(ActionCreator.KEY_VALIDATION_SERVER_DATE);
+                int mcc = (int) action.getData().get(ActionCreator.KEY_VALIDATION_MCC);
+                int mnc = (int) action.getData().get(ActionCreator.KEY_VALIDATION_MNC);
+                String cellIdHex = (String) action.getData().get(ActionCreator.KEY_VALIDATION_CELL_ID);
+                String lacHex = (String) action.getData().get(ActionCreator.KEY_VALIDATION_LAC);
+                openCellIdRequest(serverDate, mcc, mnc, cellIdHex, lacHex);
+                break;
         }
     }
 
@@ -205,13 +219,10 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // TODO Delete test code
-                        Log.d(TAG, response);
-
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             if (responseJson.getBoolean("status")) {
-                                Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
+                                EventBus.getDefault().post(new QueryRequestSuccessfulEvent());
 
                                 long deviceId = AppController.getInstance().getActiveDeviceId();
 
@@ -263,7 +274,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                             JSONObject responseJson = new JSONObject(response);
                             ToggleSearchModeEvent event = new ToggleSearchModeEvent();
                             if (responseJson.getBoolean("status")) {
-                                Toast.makeText(context, R.string.on_command_send_toast, Toast.LENGTH_SHORT).show();
                                 event.setResult(true);
                                 EventBus.getDefault().post(event);
                             } else {
@@ -653,6 +663,58 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 SOCKET_TIMEOUT_MS,
                 SOCKET_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private void openCellIdRequest(long serverDate, final int mcc, final int mnc, final String cellIdHex, final String lacHex) {
+        OpenCellIdRequest request = new OpenCellIdRequest(Request.Method.GET,
+                OpenCellIdRequest.makeUrl(OPEN_CELL_ID_GET_URL,
+                        OPEN_CELL_ID_API_KEY,
+                        mcc,
+                        mnc,
+                        Integer.parseInt(cellIdHex, 16),
+                        Integer.parseInt(lacHex, 16)),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // TODO Delete test code
+                        Log.d(TAG, response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        yandexLbsLocationRequest(mcc, mnc, cellIdHex, lacHex);
+                    }
+                });
+
+        setRetryPolicy(request);
+        requestQueue.add(request);
+    }
+
+    private void yandexLbsLocationRequest(int mcc, int mnc, String cellIdHex, String lacHex) {
+        YandexLBSLocationRequest request = new YandexLBSLocationRequest(Request.Method.GET,
+                YandexLBSLocationRequest.makeUrl(YANDEX_LBS_LOCATION_REQUEST,
+                        mcc,
+                        mnc,
+                        Integer.parseInt(cellIdHex, 16),
+                        Integer.parseInt(lacHex, 16)),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // TODO Delete test code
+                        Log.d(TAG, response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Delete test code
+                        Log.d(TAG, "Both requests failed");
+                    }
+                });
+
+        setRetryPolicy(request);
+        requestQueue.add(request);
     }
 
     @Override

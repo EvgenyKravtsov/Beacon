@@ -106,7 +106,8 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         String model = activeDevice.getModel();
         if (model.equals(AppController.ACTIS_DEVICE_NAME)) {
             updateLastSignalFromDatabase();
-            ActionCreator.getInstance(Dispatcher.getInstance(EventBus.getDefault())).getLastSignalDateFromDatabase();
+            //ActionCreator.getInstance(Dispatcher.getInstance(EventBus.getDefault())).getLastSignalDateFromDatabase();
+            startAssociatedUI();
         } else if (model.equals(AppController.TEST_GENERATOR_DEVICE_NAME)) {    // TODO Delete test code
             Intent generatorAppIntent = new Intent(getActivity(), MainActivity.class);
             getActivity().startActivity(generatorAppIntent);
@@ -302,6 +303,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         switch (AppController.getInstance().getActiveDeviceType()) {
             case AppController.ACTIS_DEVICE_TYPE:
                 Intent startInformationActivityIntent = new Intent(getActivity(), InformationActivity.class);
+                startInformationActivityIntent.putExtra("key_target", "from_device_list");
                 startActivity(startInformationActivityIntent);
                 break;
             case AppController.T5_DEVICE_TYPE:
