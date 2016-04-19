@@ -15,9 +15,14 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
@@ -33,10 +38,13 @@ import kgk.beacon.model.T6Packet;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
 import kgk.beacon.networking.event.SearchModeStatusEvent;
+import kgk.beacon.networking.event.ValidatedCoordinatesReceivedEvent;
 import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.stores.PacketsForDetailReportEvent;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.LastActionDateStorageForActis;
+import kgk.beacon.util.lbscoordinatesvalidator.ActisCoordinatesValidatorFromNetwork;
+import kgk.beacon.util.lbscoordinatesvalidator.LbsCoordinatesValidator;
 import kgk.beacon.view.actis.InformationFragment;
 import kgk.beacon.view.general.DeviceListActivity;
 import kgk.beacon.view.general.event.StartActivityEvent;
@@ -147,8 +155,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 sendSwitchOffRequestToGenerator();
                 break;
             case HttpActions.ACTIS_COORDINATES_VALIDATION_REQUEST:
-                Log.d(TAG, "VALIDATION");
-
                 long serverDate = (long) action.getData().get(ActionCreator.KEY_VALIDATION_SERVER_DATE);
                 int mcc = (int) action.getData().get(ActionCreator.KEY_VALIDATION_MCC);
                 int mnc = (int) action.getData().get(ActionCreator.KEY_VALIDATION_MNC);
@@ -491,24 +497,36 @@ public class VolleyHttpClient implements Response.ErrorListener {
                         Thread workerThread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                Signal lastSignalFromList = null;
-                                for (int i = 0; i < responseDataJson.length(); i++) {
-                                    try {
-                                        JSONObject signalJson = responseDataJson.getJSONObject(i);
-                                        Signal signal = Signal.signalFromJson(signalJson);
-                                        ActisDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
+                                List<Signal> signals = new ArrayList<>();
 
-                                        if (i == responseDataJson.length() - 1) {
-                                            lastSignalFromList = signal;
-                                        }
-                                    } catch (JSONException je) {
-                                        je.printStackTrace();
+                                try {
+                                    for (int i = 0; i < responseDataJson.length(); i++) {
+                                        signals.add(Signal.signalFromJson(responseDataJson.getJSONObject(i)));
                                     }
+                                    LbsCoordinatesValidator validator = new ActisCoordinatesValidatorFromNetwork(signals);
+                                    validator.validate();
+                                } catch (JSONException je) {
+                                    je.printStackTrace();
                                 }
 
-                                if (lastSignalFromList != null) {
-                                    ActionCreator.getInstance(dispatcher).updateLastSignal(lastSignalFromList);
-                                }
+//                                Signal lastSignalFromList = null;
+//                                for (int i = 0; i < responseDataJson.length(); i++) {
+//                                    try {
+//                                        JSONObject signalJson = responseDataJson.getJSONObject(i);
+//                                        Signal signal = Signal.signalFromJson(signalJson);
+//                                        ActisDatabaseDao.getInstance(AppController.getInstance()).insertSignal(signal);
+//
+//                                        if (i == responseDataJson.length() - 1) {
+//                                            lastSignalFromList = signal;
+//                                        }
+//                                    } catch (JSONException je) {
+//                                        je.printStackTrace();
+//                                    }
+//                                }
+//
+//                                if (lastSignalFromList != null) {
+//                                    ActionCreator.getInstance(dispatcher).updateLastSignal(lastSignalFromList);
+//                                }
 
                                 event.setStatus(DownloadDataStatus.Success);
                                 EventBus.getDefault().post(event);
@@ -665,7 +683,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private void openCellIdRequest(long serverDate, final int mcc, final int mnc, final String cellIdHex, final String lacHex) {
+    private void openCellIdRequest(final long serverDate, final int mcc, final int mnc, final String cellIdHex, final String lacHex) {
         OpenCellIdRequest request = new OpenCellIdRequest(Request.Method.GET,
                 OpenCellIdRequest.makeUrl(OPEN_CELL_ID_GET_URL,
                         OPEN_CELL_ID_API_KEY,
@@ -676,14 +694,13 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // TODO Delete test code
-                        Log.d(TAG, response);
+                        parseOpenCellIdResponse(serverDate, response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        yandexLbsLocationRequest(mcc, mnc, cellIdHex, lacHex);
+                        yandexLbsLocationRequest(serverDate, mcc, mnc, cellIdHex, lacHex);
                     }
                 });
 
@@ -691,7 +708,20 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
-    private void yandexLbsLocationRequest(int mcc, int mnc, String cellIdHex, String lacHex) {
+    private void parseOpenCellIdResponse(long serverDate, String response) {
+        try {
+            JSONObject responseJson = new JSONObject(response);
+            ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();
+            event.setServerDate(serverDate);
+            event.setLatitude(responseJson.getDouble("lat"));
+            event.setLongitude(responseJson.getDouble("lon"));
+            EventBus.getDefault().post(event);
+        } catch (JSONException je) {
+            je.printStackTrace();
+        }
+    }
+
+    private void yandexLbsLocationRequest(final long serverDate, int mcc, int mnc, String cellIdHex, String lacHex) {
         YandexLBSLocationRequest request = new YandexLBSLocationRequest(Request.Method.GET,
                 YandexLBSLocationRequest.makeUrl(YANDEX_LBS_LOCATION_REQUEST,
                         mcc,
@@ -701,8 +731,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // TODO Delete test code
-                        Log.d(TAG, response);
+                        parseYnadexLbsResponse(serverDate, response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -715,6 +744,42 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
         setRetryPolicy(request);
         requestQueue.add(request);
+    }
+
+    private void parseYnadexLbsResponse(long serverDate, String response) {
+        double latitude = 0;
+        double longitude = 0;
+
+        try {
+            XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
+            parser.setInput(new ByteArrayInputStream(response.getBytes()), null);
+
+            int xmlEvent = parser.getEventType();
+            while (xmlEvent != XmlPullParser.END_DOCUMENT) {
+                String name = parser.getName();
+
+                switch (xmlEvent) {
+                    case XmlPullParser.START_TAG:
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if (name.equals("coordinates")) {
+                            latitude = Double.parseDouble(parser.getAttributeValue(null, "latitude"));
+                            longitude = Double.parseDouble(parser.getAttributeValue(null, "longitude"));
+                        }
+                }
+            }
+
+            if (latitude != 0 && longitude != 0) {
+                ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();
+                event.setServerDate(serverDate);
+                event.setLatitude(latitude);
+                event.setLongitude(longitude);
+                EventBus.getDefault().post(event);
+            }
+
+        } catch (XmlPullParserException xppe) {
+            xppe.printStackTrace();
+        }
     }
 
     @Override

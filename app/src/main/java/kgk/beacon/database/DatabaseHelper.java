@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    // TODO Increment database version before release
+
     private static final String DATABASE_NAME = "signal_database";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 9;
 
     static final String TABLE_SIGNAL = "table_signal";
     static final String COLUMN_ID = "_id";
@@ -24,6 +26,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final String COLUMN_CHARGE = "charge";
     static final String COLUMN_DIRECTION = "direction";
     static final String COLUMN_TEMPERATURE = "temperature";
+    static final String COLUMN_MCC = "mcc";
+    static final String COLUMN_MNC = "mnc";
+    static final String COLUMN_CELL_ID = "cell_id";
+    static final String COLUMN_LAC = "lac";
 
     private static DatabaseHelper instance;
 
@@ -66,7 +72,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_SPEED + " INTEGER NOT NULL, "
                 + COLUMN_CHARGE + " INTEGER NOT NULL, "
                 + COLUMN_DIRECTION + " INTEGER NOT NULL, "
-                + COLUMN_TEMPERATURE + " INTEGER NOT NULL);";
+                + COLUMN_TEMPERATURE + " INTEGER NOT NULL, "
+                + COLUMN_MCC + " INTEGER, "
+                + COLUMN_MNC + " INTEGER, "
+                + COLUMN_CELL_ID + " TEXT, "
+                + COLUMN_LAC + " TEXT);";
 
         public static final String DROP_SIGNAL_TABLE = "DROP TABLE IF EXISTS "
                 + TABLE_SIGNAL;

@@ -237,10 +237,14 @@ public class Signal implements Parcelable {
             signal.setDirection(signalJson.getInt("az"));
             signal.setTemperature(paramsJson.getInt("TEMP"));
 
-            signal.setMcc(paramsJson.getInt("MCC"));
-            signal.setMnc(paramsJson.getInt("MNC"));
-            signal.setCellId(paramsJson.getString("CID"));
-            signal.setLac(paramsJson.getString("LAC"));
+            try {
+                signal.setMcc(paramsJson.getInt("MCC"));
+                signal.setMnc(paramsJson.getInt("MNC"));
+                signal.setCellId(paramsJson.getString("CID"));
+                signal.setLac(paramsJson.getString("LAC"));
+            } catch (JSONException je) {
+                je.printStackTrace();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -257,6 +261,7 @@ public class Signal implements Parcelable {
                 + "latitude - " + latitude + " | "
                 + "longitude - " + longitude + " | "
                 + "date - " + date + " | "
+                + "actis date - " + actisDate + " | "
                 + "voltage - " + voltage + " | "
                 + "balance - " + balance + " | "
                 + "satellites - " + satellites + " | "

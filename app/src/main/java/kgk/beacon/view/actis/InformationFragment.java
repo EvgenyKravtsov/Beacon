@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -217,27 +216,23 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 
     @OnClick(R.id.informationFragment_searchButton)
     public void onClickSearchButton(View view) {
-        // TODO Delete test code
-        ActisDatabaseDao actisDatabaseDao = ActisDatabaseDao.getInstance(getActivity());
-        Log.d(TAG, "Dublicats count - " + actisDatabaseDao.getDuplicatesCountByPacketDate());
+        if (AppController.getInstance().isDemoMode()) {
+            showDemoWarningDialog();
+            return;
+        }
 
-//        if (AppController.getInstance().isDemoMode()) {
-//            showDemoWarningDialog();
-//            return;
-//        }
-//
-//        long deviceId = AppController.getInstance().getActiveDeviceId();
-//
-//        if (AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_CONTROL_DATE)
-//                == ActisDatabaseDao.getInstance(getActivity()).getLastSignalDate()) {
-//            if (Calendar.getInstance().getTimeInMillis() / 1000 <
-//                    AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
-//                showQueryTooEarlyDialog();
-//                return;
-//            }
-//        }
-//
-//        actionCreator.sendQueryBeaconRequest();
+        long deviceId = AppController.getInstance().getActiveDeviceId();
+
+        if (AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_CONTROL_DATE)
+                == ActisDatabaseDao.getInstance(getActivity()).getLastSignalDate()) {
+            if (Calendar.getInstance().getTimeInMillis() / 1000 <
+                    AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
+                showQueryTooEarlyDialog();
+                return;
+            }
+        }
+
+        actionCreator.sendQueryBeaconRequest();
     }
 
     // TODO For search command control only on device
@@ -283,10 +278,18 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
     @OnTouch(R.id.informationFragment_searchButton)
     public boolean onTouchSearchButton(MotionEvent event) {
 
-        if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-            searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
-        } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
-            searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
+        if (!switchCustomSearch.isChecked()) {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
+            } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
+                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
+            }
+        } else {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
+            } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
+                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
+            }
         }
 
         if (AppController.getInstance().isDemoMode()) {

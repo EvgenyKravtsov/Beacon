@@ -6,15 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import kgk.beacon.actions.Action;
@@ -23,7 +20,6 @@ import kgk.beacon.actions.DataActions;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.ActisStore;
-import kgk.beacon.util.ActisCoordinatesValidator;
 import kgk.beacon.util.AppController;
 
 public class ActisDatabaseDao {
@@ -49,7 +45,11 @@ public class ActisDatabaseDao {
                                    DatabaseHelper.COLUMN_SPEED,
                                    DatabaseHelper.COLUMN_CHARGE,
                                    DatabaseHelper.COLUMN_DIRECTION,
-                                   DatabaseHelper.COLUMN_TEMPERATURE};
+                                   DatabaseHelper.COLUMN_TEMPERATURE,
+                                   DatabaseHelper.COLUMN_MCC,
+                                   DatabaseHelper.COLUMN_MNC,
+                                   DatabaseHelper.COLUMN_CELL_ID,
+                                   DatabaseHelper.COLUMN_LAC};
 
     private ActisDatabaseDao(Context context) {
         databaseHelper = DatabaseHelper.getInstance(context);
@@ -97,6 +97,10 @@ public class ActisDatabaseDao {
             values.put(DatabaseHelper.COLUMN_CHARGE, signal.getCharge());
             values.put(DatabaseHelper.COLUMN_DIRECTION, signal.getDirection());
             values.put(DatabaseHelper.COLUMN_TEMPERATURE, signal.getTemperature());
+            values.put(DatabaseHelper.COLUMN_MCC, signal.getMcc());
+            values.put(DatabaseHelper.COLUMN_MNC, signal.getMnc());
+            values.put(DatabaseHelper.COLUMN_CELL_ID, signal.getCellId());
+            values.put(DatabaseHelper.COLUMN_LAC, signal.getLac());
             database.insert(DatabaseHelper.TABLE_SIGNAL, null, values);
             close();
         } catch (SQLException e) {
@@ -117,7 +121,7 @@ public class ActisDatabaseDao {
 
         try {
             open();
-            Cursor cursor = database.rawQuery(String.format(DatabaseHelper
+            @SuppressLint("DefaultLocale") Cursor cursor = database.rawQuery(String.format(DatabaseHelper
                     .SignalDatabaseQuery.GET_SIGNALS_BY_PERIOD, dateFrom, dateTo,
                     AppController.getInstance().getActiveDeviceId()), null);
             cursor.moveToFirst();
@@ -141,7 +145,7 @@ public class ActisDatabaseDao {
 
         try {
             open();
-            Cursor cursor = database.rawQuery(String.format(DatabaseHelper
+            @SuppressLint("DefaultLocale") Cursor cursor = database.rawQuery(String.format(DatabaseHelper
                             .SignalDatabaseQuery.GET_SIGNALS_BY_DEVICE_ID,
                     AppController.getInstance().getActiveDeviceId()), null);
 
@@ -240,6 +244,32 @@ public class ActisDatabaseDao {
         return lastSignalDate;
     }
 
+    public void updateSignalCoordinatesByServerDate(long serverDate, double latitude, double longitude) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_LATITUDE, latitude);
+        values.put(DatabaseHelper.COLUMN_LONGITUDE, longitude);
+        values.put(DatabaseHelper.COLUMN_ACTIS_DATE, serverDate);
+
+        try {
+            open();
+            database.update(DatabaseHelper.TABLE_SIGNAL, values, DatabaseHelper.COLUMN_DATE + " = " + serverDate, null);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
+    public void updateSignalActisDate(long serverDate) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_ACTIS_DATE, serverDate);
+
+        try {
+            open();
+            database.update(DatabaseHelper.TABLE_SIGNAL, values, DatabaseHelper.COLUMN_DATE + " = " + serverDate, null);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
     private Signal cursorToSignal(Cursor cursor) {
         Signal signal = new Signal();
         signal.setDeviceId(cursor.getLong(1));
@@ -255,36 +285,11 @@ public class ActisDatabaseDao {
         signal.setCharge(cursor.getInt(11));
         signal.setDirection(cursor.getInt(12));
         signal.setTemperature(cursor.getInt(13));
+        signal.setMcc(cursor.getInt(14));
+        signal.setMnc(cursor.getInt(15));
+        signal.setCellId(cursor.getString(16));
+        signal.setLac(cursor.getString(17));
         return signal;
-    }
-
-    // TODO Delete test method
-    public int getDuplicatesCountByPacketDate() {
-        List<Signal> signals = getAllSignals();
-
-        Map<Long, List<Signal>> packetDates = new HashMap<>();
-
-        for (Signal signal : signals) {
-            long packetDate = signal.getActisDate();
-
-            try {
-                packetDates.get(packetDate).add(signal);
-            } catch (Exception e) {
-                packetDates.put(packetDate, new ArrayList<Signal>());
-                packetDates.get(packetDate).add(signal);
-            }
-        }
-
-        for (Map.Entry<Long, List<Signal>> entry : packetDates.entrySet()) {
-            Log.d(TAG, entry.getKey() + "   count - " + entry.getValue().size());
-
-            if (entry.getValue().size() > 1) {
-                ActisCoordinatesValidator validator = new ActisCoordinatesValidator(entry.getValue());
-                validator.validate();
-            }
-        }
-
-        return 0;
     }
 
     ////
