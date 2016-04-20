@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -226,20 +226,14 @@ public class GoogleMapFragmentForActis extends Fragment implements Map,
     }
 
     @Override
-    public void addCustomMarkerPoint(int direction, double latitude, double longitude) {
-        LatLng coordinates = new LatLng(latitude, longitude);;
-
+    public void addCustomMarkerPoint(int number, double latitude, double longitude) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
+        View layout = inflater.inflate(R.layout.actis_path_marker, null);
+        TextView markerNumber = (TextView) layout.findViewById(R.id.actisPathMarker_number);
+        markerNumber.setText(Integer.toString(number));
 
-        ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
-
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            arrow.setRotation((float) direction);
-        }
-
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
 
         Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
 
@@ -247,6 +241,27 @@ public class GoogleMapFragmentForActis extends Fragment implements Map,
                 .position(new LatLng(latitude, longitude))
                 .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap))
                 .anchor(0.5f, 0.5f));
+
+//        LatLng coordinates = new LatLng(latitude, longitude);;
+//
+//        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
+//
+//        ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
+//
+//        if (android.os.Build.VERSION.SDK_INT >= 11) {
+//            arrow.setRotation((float) direction);
+//        }
+//
+//        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+//
+//        Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
+//
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(latitude, longitude))
+//                .icon(BitmapDescriptorFactory.fromBitmap(markerBitmap))
+//                .anchor(0.5f, 0.5f));
     }
 
     @Override
@@ -307,6 +322,16 @@ public class GoogleMapFragmentForActis extends Fragment implements Map,
     @Override
     public void moveCamera(double latitude, double longitude, int zoom) {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoom));
+    }
+
+    @Override
+    public void addCircleZone(double latitude, double longitude, int radius) {
+        googleMap.addCircle(new CircleOptions()
+                .center(new LatLng(latitude, longitude))
+                .radius(radius)
+                .strokeColor(getResources().getColor(R.color.main_brand_blue))
+                .strokeWidth(2.0f)
+                .fillColor(getResources().getColor(R.color.main_barnd_blue_transparent)));
     }
 
     @Override

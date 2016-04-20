@@ -1,7 +1,5 @@
 package kgk.beacon.util.lbscoordinatesvalidator;
 
-import android.util.Log;
-
 import java.util.Iterator;
 import java.util.List;
 

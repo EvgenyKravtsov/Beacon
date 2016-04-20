@@ -32,6 +32,7 @@ public class Signal implements Parcelable {
     private int mnc;
     private String cellId;
     private String lac;
+    private boolean LbsDeteceted;
 
     ////
 
@@ -173,6 +174,14 @@ public class Signal implements Parcelable {
 
     public void setLac(String lac) {
         this.lac = lac;
+    }
+
+    public boolean isLbsDeteceted() {
+        return LbsDeteceted;
+    }
+
+    public void setLbsDeteceted(boolean lbsDeteceted) {
+        LbsDeteceted = lbsDeteceted;
     }
 
     public static Signal signalFromJsonForLastState(JSONObject signalJson) {

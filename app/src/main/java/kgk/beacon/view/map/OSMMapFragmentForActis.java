@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.overlays.MapEventsOverlay;
 import org.osmdroid.bonuspack.overlays.MapEventsReceiver;
+import org.osmdroid.bonuspack.overlays.Polygon;
 import org.osmdroid.bonuspack.overlays.Polyline;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
@@ -255,50 +255,13 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
     }
 
     @Override
-    public void addCustomMarkerPoint(int direction, double latitude, double longitude) {
-//        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View layout = inflater.inflate(R.layout.actis_path_marker, null);
-//        TextView markerNumber = (TextView) layout.findViewById(R.id.actisPathMarker_number);
-//        markerNumber.setText(Integer.toString(number));
-//        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
-//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
-//        Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
-//
-//        OverlayItem point = new PointMarkerOverlayItem(getResources(), markerBitmap, latitude, longitude);
-//        point.setMarkerHotspot(OverlayItem.HotspotPlace.CENTER);
-//        ArrayList<OverlayItem> overlayItemArray = new ArrayList<>();
-//        overlayItemArray.add(point);
-//        ItemizedIconOverlay<OverlayItem> currentPositionMarker = new ItemizedIconOverlay<>(getActivity(),
-//                overlayItemArray,
-//                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-//
-//                    @Override public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-//                        if (markerClickListener != null) {
-//                            markerClickListener.onMarkerClick(item.getPoint().getLatitude(),
-//                                    item.getPoint().getLongitude());
-//                        }
-//                        return true;
-//                    }
-//
-//                    @Override public boolean onItemLongPress(final int index, final OverlayItem item) {
-//                        return false;
-//                    }
-//                });
-//        map.getOverlays().add(currentPositionMarker);
-//        map.invalidate();
-
-
-
-
-
+    public void addCustomMarkerPoint(int number, double latitude, double longitude) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
-        ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            arrow.setRotation((float) direction);
-        }
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+        View layout = inflater.inflate(R.layout.actis_path_marker, null);
+        TextView markerNumber = (TextView) layout.findViewById(R.id.actisPathMarker_number);
+        markerNumber.setText(Integer.toString(number));
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
         Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
 
         OverlayItem point = new PointMarkerOverlayItem(getResources(), markerBitmap, latitude, longitude);
@@ -323,6 +286,40 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
                 });
         map.getOverlays().add(currentPositionMarker);
         map.invalidate();
+
+
+//        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View layout = inflater.inflate(R.layout.map_custom_marker_point, null);
+//        ImageView arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
+//        if (android.os.Build.VERSION.SDK_INT >= 11) {
+//            arrow.setRotation((float) direction);
+//        }
+//        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+//        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+//        Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
+//
+//        OverlayItem point = new PointMarkerOverlayItem(getResources(), markerBitmap, latitude, longitude);
+//        point.setMarkerHotspot(OverlayItem.HotspotPlace.CENTER);
+//        ArrayList<OverlayItem> overlayItemArray = new ArrayList<>();
+//        overlayItemArray.add(point);
+//        ItemizedIconOverlay<OverlayItem> currentPositionMarker = new ItemizedIconOverlay<>(getActivity(),
+//                overlayItemArray,
+//                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+//
+//                    @Override public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+//                        if (markerClickListener != null) {
+//                            markerClickListener.onMarkerClick(item.getPoint().getLatitude(),
+//                                    item.getPoint().getLongitude());
+//                        }
+//                        return true;
+//                    }
+//
+//                    @Override public boolean onItemLongPress(final int index, final OverlayItem item) {
+//                        return false;
+//                    }
+//                });
+//        map.getOverlays().add(currentPositionMarker);
+//        map.invalidate();
     }
 
     @Override
@@ -401,6 +398,17 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
         mapController.setZoom(zoom);
         GeoPoint geoPoint = new GeoPoint(latitude, longitude);
         mapController.setCenter(geoPoint);
+    }
+
+    @Override
+    public void addCircleZone(double latitude, double longitude, int radius) {
+        Polygon circle = new Polygon(getActivity());
+        circle.setPoints(Polygon.pointsAsCircle(new GeoPoint(latitude, longitude), radius));
+        circle.setStrokeColor(getResources().getColor(R.color.main_brand_blue));
+        circle.setStrokeWidth(2.0f);
+        circle.setFillColor(getResources().getColor(R.color.main_barnd_blue_transparent));
+        map.getOverlays().add(circle);
+        map.invalidate();
     }
 
     @Override

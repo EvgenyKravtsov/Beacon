@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -105,6 +108,47 @@ public class PathActivity extends AppCompatActivity implements MapClickListener,
         ArrayList<LatLng> coordinates = new ArrayList<>();
         signals = actisStore.getSignalsDisplayed();
 
+        Collections.sort(signals, new Comparator<Signal>() {
+            @Override
+            public int compare(Signal lhs, Signal rhs) {
+                if (lhs.getDate() < rhs.getDate()) return -1;
+                if (lhs.getDate() == rhs.getDate()) return 0;
+                if (lhs.getDate() > rhs.getDate()) return 1;
+                return 0;
+            }
+        });
+
+//        signals = new ArrayList<>();
+//        Signal signal1 = new Signal();
+//        signal1.setLatitude(55.910192);
+//        signal1.setLongitude(37.568688);
+//        signals.add(signal1);
+//
+//        Signal signal2 = new Signal();
+//        signal2.setLatitude(55.629259);
+//        signal2.setLongitude(37.470310);
+//        signals.add(signal2);
+//
+//        Signal signal3 = new Signal();
+//        signal3.setLatitude(55.770879);
+//        signal3.setLongitude(37.844531);
+//        signals.add(signal3);
+//
+//        Signal signal4 = new Signal();
+//        signal4.setLatitude(55.760836);
+//        signal4.setLongitude(37.368686);
+//        signals.add(signal4);
+//
+//        Signal signal5 = new Signal();
+//        signal5.setLatitude(55.630421);
+//        signal5.setLongitude(37.803333);
+//        signals.add(signal5);
+//
+//        Signal signal6 = new Signal();
+//        signal6.setLatitude(55.910192);
+//        signal6.setLongitude(37.568688);
+//        signals.add(signal6);
+
         for (Signal signal : signals) {
             double latitude = signal.getLatitude();
             double longitude = signal.getLongitude();
@@ -115,7 +159,14 @@ public class PathActivity extends AppCompatActivity implements MapClickListener,
 
         for (int i = 0; i < signals.size(); i++) {
             Signal signal = signals.get(i);
-            map.addCustomMarkerPoint(signal.getDirection(), signal.getLatitude(), signal.getLongitude());
+            map.addCustomMarkerPoint(i + 1, signal.getLatitude(), signal.getLongitude());
+
+            // TODO Delete test code
+            Log.d(TAG, "is lbs detected - " + signal.isLbsDeteceted());
+
+            if (signal.isLbsDeteceted()) {
+                map.addCircleZone(signal.getLatitude(), signal.getLongitude(), Map.DEFAULT_CIRCLE_ZONE_RADIUS);
+            }
         }
 
         map.moveCamera(coordinates.get(0).latitude, coordinates.get(0).longitude, 13);
@@ -192,7 +243,7 @@ public class PathActivity extends AppCompatActivity implements MapClickListener,
         Fragment mapFragment = fragmentManager
                 .findFragmentById(R.id.fragmentContainer);
 
-        mapFragment = new MapManager().loadPreferredMapFragment();
+        mapFragment = new MapManager().loadPreferredMapFragmentForActis();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, mapFragment)
                 .commit();

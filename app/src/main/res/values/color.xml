@@ -8,6 +8,7 @@
 
     <item name="main_background_color" type="color">#ffffffff</item>
     <item name="main_brand_blue" type="color">#ff0074e1</item>
+    <item name="main_barnd_blue_transparent" type="color">#330074e1</item>
     <item name="main_brand_black" type="color">#000000</item>
     <item name="main_brand_dark_grey" type="color">#414141</item>
     <item name="main_brand_light_grey" type="color">#e7e6e4</item>

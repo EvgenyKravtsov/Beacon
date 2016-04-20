@@ -369,6 +369,11 @@ public class OSMMapFragment extends Fragment implements Map {
     }
 
     @Override
+    public void addCircleZone(double latitude, double longitude, int radius) {
+
+    }
+
+    @Override
     public void clear() {
         map.getOverlays().clear();
         if (mapClickListener != null) {

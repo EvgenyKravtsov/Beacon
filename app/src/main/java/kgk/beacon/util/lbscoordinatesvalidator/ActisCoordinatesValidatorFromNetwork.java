@@ -34,12 +34,6 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
         actionCreator = ActionCreator.getInstance(Dispatcher.getInstance(EventBus.getDefault()));
         actisDatabaseDao = ActisDatabaseDao.getInstance(AppController.getInstance().getApplicationContext());
         this.signals = signals;
-
-        // TODO Delete test code
-        Log.d(TAG, "Raw signals");
-        for (Signal signal : signals) {
-            Log.d(TAG, signal.toString());
-        }
     }
 
     ////
@@ -82,17 +76,8 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
             if (firstSignal.getActisDate() == signalToCompare.getActisDate()) {
                 if (firstSignal.getDate() != signalToCompare.getDate()) {
                     signalsToValidate.add(firstSignal);
-
-                    // TODO Delete test code
-                    Log.d(TAG, "first signal added to validation queue");
-                } else {
-                    // TODO Delete test code
-                    Log.d(TAG, "Nevermind");
                 }
             }
-        } else {
-            // TODO Delete test code
-            Log.d(TAG, "Signal to compare is null");
         }
 
         for (int i = 0; i < signals.size() - 1; i++) {
@@ -144,6 +129,10 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
                 signalToChange = signal;
                 signalToChange.setLatitude(event.getLatitude());
                 signalToChange.setLongitude(event.getLongitude());
+                signalToChange.setLbsDeteceted(true);
+
+                // TODO Delete test code
+                Log.d(TAG, "LBS Validated");
             }
         }
 

@@ -9,7 +9,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // TODO Increment database version before release
 
     private static final String DATABASE_NAME = "signal_database";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
 
     static final String TABLE_SIGNAL = "table_signal";
     static final String COLUMN_ID = "_id";
@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final String COLUMN_MNC = "mnc";
     static final String COLUMN_CELL_ID = "cell_id";
     static final String COLUMN_LAC = "lac";
+    static final String COLUMN_LBS_DETECTED = "lbs_detected";
 
     private static DatabaseHelper instance;
 
@@ -76,7 +77,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_MCC + " INTEGER, "
                 + COLUMN_MNC + " INTEGER, "
                 + COLUMN_CELL_ID + " TEXT, "
-                + COLUMN_LAC + " TEXT);";
+                + COLUMN_LAC + " TEXT, "
+                + COLUMN_LBS_DETECTED + " INTEGER DEFAULT 0);";
 
         public static final String DROP_SIGNAL_TABLE = "DROP TABLE IF EXISTS "
                 + TABLE_SIGNAL;
@@ -90,9 +92,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         public static final String GET_SIGNALS_BY_DEVICE_ID_AND_DATE = "SELECT * FROM " + TABLE_SIGNAL
                 + " WHERE " + COLUMN_DEVICE_ID + " = %d AND "
-                + COLUMN_DATE + " = %d";
+                + COLUMN_DATE + " = %d ORDER BY " + COLUMN_DATE + " DESC";
 
         public static final String GET_SIGNALS_BY_DEVICE_ID = "SELECT * FROM " + TABLE_SIGNAL
-                + " WHERE " + COLUMN_DEVICE_ID + " = %d ORDER BY " + COLUMN_ACTIS_DATE + " DESC";
+                + " WHERE " + COLUMN_DEVICE_ID + " = %d ORDER BY " + COLUMN_DATE + " DESC";
     }
 }

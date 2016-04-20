@@ -49,7 +49,8 @@ public class ActisDatabaseDao {
                                    DatabaseHelper.COLUMN_MCC,
                                    DatabaseHelper.COLUMN_MNC,
                                    DatabaseHelper.COLUMN_CELL_ID,
-                                   DatabaseHelper.COLUMN_LAC};
+                                   DatabaseHelper.COLUMN_LAC,
+                                   DatabaseHelper.COLUMN_LBS_DETECTED};
 
     private ActisDatabaseDao(Context context) {
         databaseHelper = DatabaseHelper.getInstance(context);
@@ -101,6 +102,7 @@ public class ActisDatabaseDao {
             values.put(DatabaseHelper.COLUMN_MNC, signal.getMnc());
             values.put(DatabaseHelper.COLUMN_CELL_ID, signal.getCellId());
             values.put(DatabaseHelper.COLUMN_LAC, signal.getLac());
+            values.put(DatabaseHelper.COLUMN_LBS_DETECTED, signal.isLbsDeteceted() ? 1 : 0);
             database.insert(DatabaseHelper.TABLE_SIGNAL, null, values);
             close();
         } catch (SQLException e) {
@@ -289,6 +291,7 @@ public class ActisDatabaseDao {
         signal.setMnc(cursor.getInt(15));
         signal.setCellId(cursor.getString(16));
         signal.setLac(cursor.getString(17));
+        signal.setLbsDeteceted(cursor.getInt(18) == 1);
         return signal;
     }
 

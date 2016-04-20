@@ -8,6 +8,10 @@ import kgk.beacon.model.Signal;
 
 public interface Map {
 
+    int DEFAULT_CIRCLE_ZONE_RADIUS = 500; // meters
+
+    ////
+
     void setOnMapClickListener(MapClickListener listener);
 
     void setOnMarkerClickListener(MarkerClickListener listener);
@@ -23,6 +27,8 @@ public interface Map {
     void addPolyline(ArrayList<LatLng> coordinates);
 
     void moveCamera(double latitude, double longitude, int zoom);
+
+    void addCircleZone(double latitude, double longitude, int radius); // meters
 
     void clear();
 
