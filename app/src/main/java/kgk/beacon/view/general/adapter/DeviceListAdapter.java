@@ -14,6 +14,7 @@ import java.util.List;
 import kgk.beacon.R;
 import kgk.beacon.view.general.DeviceListScreen;
 
+/** Платформенный адаптер для отображения списка устройств */
 public class DeviceListAdapter extends BaseExpandableListAdapter
         implements ExpandableListView.OnChildClickListener {
 

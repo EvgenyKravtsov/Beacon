@@ -12,6 +12,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kgk.beacon.R;
 
+/**
+ * Экран выбора временного периода
+ */
 public class DatePickerActivity extends SingleFragmentActivityDeviceRelated {
 
     @Bind(R.id.toolbar_title) TextView toolbarTitle;

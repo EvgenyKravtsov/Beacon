@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -34,6 +33,9 @@ import kgk.beacon.map.event.MapReadyForUseEvent;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.ActisStore;
 
+/**
+ * Экран с треком
+ */
 public class PathActivity extends AppCompatActivity implements MapClickListener,
                                                                MarkerClickListener {
 
@@ -104,6 +106,7 @@ public class PathActivity extends AppCompatActivity implements MapClickListener,
         actisStore = ActisStore.getInstance(dispatcher);
     }
 
+    /** Отрисовать трек */
     private void drawPath() {
         ArrayList<LatLng> coordinates = new ArrayList<>();
         signals = actisStore.getSignalsDisplayed();
@@ -160,9 +163,6 @@ public class PathActivity extends AppCompatActivity implements MapClickListener,
         for (int i = 0; i < signals.size(); i++) {
             Signal signal = signals.get(i);
             map.addCustomMarkerPoint(i + 1, signal.getLatitude(), signal.getLongitude());
-
-            // TODO Delete test code
-            Log.d(TAG, "is lbs detected - " + signal.isLbsDeteceted());
 
             if (signal.isLbsDeteceted()) {
                 map.addCircleZone(signal.getLatitude(), signal.getLongitude(), Map.DEFAULT_CIRCLE_ZONE_RADIUS);

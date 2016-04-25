@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 
 import kgk.beacon.R;
 
+/**
+ * Абстракция экрана с одним контроллером
+ */
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     protected Toolbar toolbar;

@@ -4,6 +4,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+/**
+ * Событие, содержащее пакеты для построения детального отчета
+ */
 public class PacketsForDetailReportEvent {
 
     private ArrayList<LatLng> coordinatesForMoving;

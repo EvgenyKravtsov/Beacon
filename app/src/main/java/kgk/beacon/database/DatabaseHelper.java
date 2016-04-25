@@ -4,12 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Стандартная абстракция базы данных SQLite на платформе Android
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // TODO Increment database version before release
 
     private static final String DATABASE_NAME = "signal_database";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     static final String TABLE_SIGNAL = "table_signal";
     static final String COLUMN_ID = "_id";
@@ -56,6 +59,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(database);
     }
 
+    /**
+     * Список запросов, связанных с обслуживанием приборов Actis
+     */
     public static class SignalDatabaseQuery {
 
         public static final String DATABASE_CREATE = "CREATE TABLE "

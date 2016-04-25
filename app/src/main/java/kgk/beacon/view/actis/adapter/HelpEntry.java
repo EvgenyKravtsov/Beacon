@@ -1,5 +1,8 @@
 package kgk.beacon.view.actis.adapter;
 
+/**
+ * ADT для одной подсказки в пользовательской инструкции
+ */
 public class HelpEntry {
 
     private String title;

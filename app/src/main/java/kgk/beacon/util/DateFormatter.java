@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * Набор методо для форматирования дат
+ */
 public class DateFormatter {
 
     private static final String TAG = DateFormatter.class.getSimpleName();
@@ -31,6 +34,7 @@ public class DateFormatter {
         return simpleDateFormat.format(date);
     }
 
+    /** Извлечь список униклаьных дней из списка сигналов */
     public static Date[] filterForUniqueDays(ArrayList<Date> dates) {
         ArrayList<Day> days = new ArrayList<>();
 

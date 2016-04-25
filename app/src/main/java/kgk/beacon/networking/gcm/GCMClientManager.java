@@ -15,6 +15,9 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
+/**
+ * Стандартная реализация класса для управления Push-уведомлениями Google
+ */
 public class GCMClientManager {
     // Constants
     public static final String TAG = "GCMClientManager";

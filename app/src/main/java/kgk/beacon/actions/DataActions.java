@@ -1,5 +1,8 @@
 package kgk.beacon.actions;
 
+/**
+ * Список типов действий для работы с локальным хранилищем
+ */
 public interface DataActions {
     String UPDATE_LAST_SIGNAL = "update_last_signal";
 

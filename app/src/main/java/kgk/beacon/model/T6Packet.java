@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
+/** Абстракция пакета с устройства типа Т6 */
 public class T6Packet {
 
     private long deviceId;

@@ -40,6 +40,9 @@ import kgk.beacon.view.devices.DeviceCurrentLocationActivity;
 import kgk.beacon.view.general.adapter.DeviceListAdapter;
 import kgk.beacon.view.generator.activity.MainActivity;
 
+/**
+ * Контроллер экрана списка устройств
+ */
 public class DeviceListFragment extends android.support.v4.app.Fragment
                 implements DeviceListScreen {
 
@@ -146,6 +149,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         EventBus.getDefault().register(this);
     }
 
+    /** Загрузить необходимый адаптер списк с группировкой по типам или группам */
     private void setPreferredAdapter() {
         DeviceListAdapter adapter;
 
@@ -159,18 +163,21 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         deviceListView.setOnChildClickListener(adapter);
     }
 
+    /** Подгтовить адаптер с группировкой по типам устройств */
     private DeviceListAdapter prepareAdapterByType() {
         List<String> typeList = generateDeviceTypeList();
         HashMap<String, List<String>> devicesByType = generateDeviceListByType(typeList);
         return new DeviceListAdapter(getActivity(), this, typeList, devicesByType);
     }
 
+    /** Подгтовить адаптер с группировкой по пользовательским группам */
     private DeviceListAdapter prepareAdapterByGroup() {
         List<String> groupList = generateDeviceGroupList();
         HashMap<String, List<String>> devicesByGroup = generateDeviceListByGroup(groupList);
         return new DeviceListAdapter(getActivity(), this, groupList, devicesByGroup);
     }
 
+    /** Сгенерировать список типов устройств */
     private List<String> generateDeviceTypeList() {
         Set<String> typeSet = new HashSet<>();
 
@@ -195,6 +202,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         return typeList;
     }
 
+    /** Сгенерировать список устройств по типам */
     private HashMap<String, List<String>> generateDeviceListByType(List<String> typeList) {
         HashMap<String, List<String>> deviceMap = new HashMap<>();
 
@@ -231,6 +239,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         return deviceMap;
     }
 
+    /** Сгенерировать список пользовательских групп */
     private List<String> generateDeviceGroupList() {
         Set<String> groupSet = new HashSet<>();
 
@@ -254,6 +263,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         return groupList;
     }
 
+    /** Сгенерировать список устройств по типам */
     private HashMap<String, List<String>> generateDeviceListByGroup(List<String> groupList) {
         List<Device> devices = deviceStore.getDevices();
         HashMap<String, List<String>> deviceMap = new HashMap<>();
@@ -299,6 +309,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         dialog.show();
     }
 
+    /** Загрузить интерфейс, соответствующий типу выбранного устройства */
     private void startAssociatedUI() {
         switch (AppController.getInstance().getActiveDeviceType()) {
             case AppController.ACTIS_DEVICE_TYPE:

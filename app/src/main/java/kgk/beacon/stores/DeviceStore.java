@@ -13,6 +13,10 @@ import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Device;
 import kgk.beacon.util.AppController;
 
+/**
+ * Стандартная реализация базового элемента архитектуры FLUX - хранилища, в данном случае класс
+ * абстрагирует состояние списка устройств пользователя
+ */
 public class DeviceStore extends Store {
 
     public static final String TAG = DeviceStore.class.getSimpleName();
@@ -51,6 +55,7 @@ public class DeviceStore extends Store {
         }
     }
 
+    /** Сгенерировать список устройств только из устройств Actis */
     private ArrayList<Device> generateDeviceListActisOnly(JSONArray devicesJson) {
         ArrayList<Device> devices = new ArrayList<>();
 
@@ -69,6 +74,7 @@ public class DeviceStore extends Store {
         return devices;
     }
 
+    /** Сгенерировать список устройств */
     private ArrayList<Device> generateDeviceList(JSONArray devicesJson) {
         ArrayList<Device> devices = new ArrayList<>();
 
@@ -91,6 +97,7 @@ public class DeviceStore extends Store {
         return devices;
     }
 
+    /** Демаршалинг входящих данных об устройстве в объект модели */
     private Device serializeDeviceFromJson(JSONObject deviceJson) {
         Device device = new Device();
 

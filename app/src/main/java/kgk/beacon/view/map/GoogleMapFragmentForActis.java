@@ -51,6 +51,9 @@ import kgk.beacon.util.DateFormatter;
 import kgk.beacon.util.ImageProcessor;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
+/**
+ * Контроллер карты Google, специализированый для экранов, связанных с Actis
+ */
 public class GoogleMapFragmentForActis extends Fragment implements Map,
                                                                    OnMapReadyCallback {
 
@@ -329,9 +332,9 @@ public class GoogleMapFragmentForActis extends Fragment implements Map,
         googleMap.addCircle(new CircleOptions()
                 .center(new LatLng(latitude, longitude))
                 .radius(radius)
-                .strokeColor(getResources().getColor(R.color.main_brand_blue))
+                .strokeColor(getResources().getColor(R.color.main_brand_pink))
                 .strokeWidth(2.0f)
-                .fillColor(getResources().getColor(R.color.main_barnd_blue_transparent)));
+                .fillColor(getResources().getColor(R.color.main_brand_pink_transparent)));
     }
 
     @Override

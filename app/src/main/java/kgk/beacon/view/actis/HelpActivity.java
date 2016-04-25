@@ -15,6 +15,9 @@ import kgk.beacon.R;
 import kgk.beacon.view.actis.adapter.HelpEntry;
 import kgk.beacon.view.actis.adapter.HelpListAdapter;
 
+/**
+ * Экран пользовательской инструкции
+ */
 public class HelpActivity extends AppCompatActivity {
 
     public static final String KEY_SCREEN_NAME = "key_screen_name";
@@ -57,6 +60,7 @@ public class HelpActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.actis_navigation_menu_icon));
     }
 
+    /** составления списка подсказок в зависимости от экрана, с которого был сделан переход */
     private void prepareListView() {
         String screenName = getIntent().getExtras().getString(KEY_SCREEN_NAME);
         List<HelpEntry> helpEntryList = new ArrayList<>();

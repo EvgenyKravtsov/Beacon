@@ -9,6 +9,10 @@ import java.util.Map;
 
 import kgk.beacon.util.AppController;
 
+/**
+ * Абстракция запроса на получение последнего актуального местоположения,
+ * реализованная в рамках требований библиотеки Volley
+ */
 public class GetLastStateRequest extends StringRequest {
 
     private static final String TAG = GetLastStateRequest.class.getSimpleName();

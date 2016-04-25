@@ -1,5 +1,6 @@
 package kgk.beacon.view.general.event;
 
+/** Событие, сигнализирующее о необходимости загрузить определенный экран */
 public class StartActivityEvent {
 
     private Class activityClass;

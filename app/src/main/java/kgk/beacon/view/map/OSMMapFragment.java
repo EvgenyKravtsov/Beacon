@@ -57,6 +57,9 @@ import kgk.beacon.util.DateFormatter;
 import kgk.beacon.util.ImageProcessor;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
+/**
+ * Контроллер карты OSM
+ */
 public class OSMMapFragment extends Fragment implements Map {
 
     private static final String TAG = OSMMapFragment.class.getSimpleName();

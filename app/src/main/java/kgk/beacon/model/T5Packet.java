@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
+/** Абстракция пакета с устройства типа Т5 */
 public class T5Packet {
 
     private long idTerm;

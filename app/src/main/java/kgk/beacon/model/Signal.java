@@ -10,6 +10,7 @@ import java.util.Date;
 
 import kgk.beacon.util.AppController;
 
+/** Абстракция сигнала с устройства Actis */
 public class Signal implements Parcelable {
 
     private static final String TAG = Signal.class.getSimpleName();

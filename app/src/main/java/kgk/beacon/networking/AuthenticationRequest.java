@@ -1,7 +1,5 @@
 package kgk.beacon.networking;
 
-import android.util.Log;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -13,6 +11,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Абстракция запроса на авторизацию, реализованная в рамках требований библиотеки Volley
+ */
 public class AuthenticationRequest extends StringRequest {
 
     private static final String TAG = AuthenticationRequest.class.getSimpleName();

@@ -10,6 +10,9 @@ import kgk.beacon.view.map.GoogleMapFragmentForActis;
 import kgk.beacon.view.map.OSMMapFragment;
 import kgk.beacon.view.map.OSMMapFragmentForActis;
 
+/**
+ * Класс для управления типами карт
+ */
 public class MapManager {
 
     public static String PREFFERED_MAP;
@@ -45,16 +48,19 @@ public class MapManager {
         MapManager.cameraZoom = cameraZoom;
     }
 
+    /** Сохранить выбранный тип карты в локальное хранилище */
     public void savePreferredMap(String mapName) {
         PREFFERED_MAP = mapName;
         AppController.saveStringValueToSharedPreferences(KEY_PREFERRED_MAP, mapName);
     }
 
+    /** Загрузить выбранный тип карты из локального хранилища */
     public String loadPreferredMapName() {
         String mapName = AppController.loadStringValueFromSharedPreferences(KEY_PREFERRED_MAP);
         return mapName.equals("default") ? OSM_KGK_MAP : mapName;
     }
 
+    /** Возвращает графический контроллер в зависимости от выбранного типа карты */
     public Fragment loadPreferredMapFragment() {
         String mapName = AppController.loadStringValueFromSharedPreferences(KEY_PREFERRED_MAP);
 
@@ -76,6 +82,10 @@ public class MapManager {
         }
     }
 
+    /**
+     * Возвращает графический контроллер в зависимости от выбранного типа карты, только для экранов,
+     * связанных с устройством Actis
+     */
     public Fragment loadPreferredMapFragmentForActis() {
         String mapName = AppController.loadStringValueFromSharedPreferences(KEY_PREFERRED_MAP);
 

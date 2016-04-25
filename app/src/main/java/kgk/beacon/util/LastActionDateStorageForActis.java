@@ -2,6 +2,9 @@ package kgk.beacon.util;
 
 import java.util.Date;
 
+/**
+ * Хранилище для записи даты последней отправленной команды на Actis
+ */
 public class LastActionDateStorageForActis {
 
     private static final String TAG = LastActionDateStorageForActis.class.getSimpleName();

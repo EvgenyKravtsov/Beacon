@@ -5,20 +5,19 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.DatePicker;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import kgk.beacon.R;
 
+/**
+ * Диалог выбора даты
+ */
 public class FromDatePickerDialog extends DialogFragment {
 
     public static final String EXTRA_FROM_DATE = "fromDate";

@@ -4,6 +4,9 @@ import de.greenrobot.event.EventBus;
 import kgk.beacon.actions.Action;
 import kgk.beacon.stores.Store;
 
+/**
+ * Стандартная реализация диспетчера, базового компонента архитектуры FLUX
+ */
 public class Dispatcher {
 
     private static final String TAG = Dispatcher.class.getSimpleName();

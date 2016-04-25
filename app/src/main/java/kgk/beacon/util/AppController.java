@@ -21,6 +21,18 @@ import kgk.beacon.stores.ActisStore;
 import kgk.beacon.stores.T5Store;
 import kgk.beacon.stores.T6Store;
 
+/**
+ * Приложение разработано на базе многослойной архитектуры Flux, реализующий однонаправленный поток данных, как показано на схеме
+ *
+ * - Для реализации модуля диспетчера (Dispatcher) используется стандартная шина событий (Event Bus). Сам диспетчер является по сути оберткой вокруг шины
+ *
+ * - Коммуникация между слоями осуществляется с помощью простых DTO, созданием и распеределением которых занимается модуль Action Creator
+ *
+ * - Вся бизнес-логика инкапсулирована в оперативном хранилище (Actis Store), Предполагается, что последующее расширение приложения для поддержки других типов устройств будет происходить путем добавления новых модулей Store
+ *
+ * - Кроме того, Store одновременно реализует шаблон ViewModel предоставляя все необходимые поля данных, которые необходимо отбразать на экране, Оповещение модуля View осуществляется так же при помощи объектов Action (DTO)
+ */
+
 @ReportsCrashes(
         formUri = "https://evgenykravtsov.cloudant.com/acra-beacon/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
@@ -113,6 +125,7 @@ public class AppController extends Application {
         this.activeDeviceModel = activeDeviceModel;
     }
 
+    /** Проверка наличия на устройстве интернет-соединения */
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -167,6 +180,7 @@ public class AppController extends Application {
         return sharedPreferences.getString(key, "default");
     }
 
+    /** Получить литеру направления в зависимости от градусного значения */
     public static String getDirectionLetterFromDegrees(int degrees) {
         if (degrees > 337 && degrees <= 22) {
             return AppController.getInstance().getString(R.string.direction_north);

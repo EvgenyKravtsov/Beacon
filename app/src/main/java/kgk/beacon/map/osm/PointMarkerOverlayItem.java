@@ -7,6 +7,9 @@ import android.graphics.drawable.BitmapDrawable;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
 
+/**
+ * Кастомная реализация маркера для OSM карты
+ */
 public class PointMarkerOverlayItem extends OverlayItem {
 
     public PointMarkerOverlayItem(Resources resources, Bitmap bitmap, double latitude, double longitude) {

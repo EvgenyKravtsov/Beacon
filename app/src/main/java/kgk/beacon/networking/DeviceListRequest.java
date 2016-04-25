@@ -7,6 +7,10 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Абстракция запроса на получения списка устройств пользователя,
+ * реализованная в рамках требований библиотеки Volley
+ */
 public class DeviceListRequest extends StringRequest {
 
     private static final String TAG = DeviceListRequest.class.getSimpleName();

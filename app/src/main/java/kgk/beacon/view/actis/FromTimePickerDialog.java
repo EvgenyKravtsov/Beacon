@@ -15,6 +15,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import kgk.beacon.R;
 
+/**
+ * Диалог выбора временного промежутка
+ */
 public class FromTimePickerDialog extends DialogFragment {
 
     public static final String EXTRA_FROM_TIME = "fromTime";

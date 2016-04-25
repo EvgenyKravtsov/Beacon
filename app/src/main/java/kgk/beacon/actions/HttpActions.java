@@ -1,5 +1,8 @@
 package kgk.beacon.actions;
 
+/**
+ * Список типов действий для работы с сетевыми запросами
+ */
 public interface HttpActions {
 
     String AUTHENTICATION_REQUEST = "authentication_request";

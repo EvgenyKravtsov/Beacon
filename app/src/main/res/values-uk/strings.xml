@@ -61,7 +61,7 @@
     <string name="download_data_progress_dialog_title">Завантаження…</string>
     <string name="download_data_progress_dialog_message">Завантаження даних з сервера</string>
     <string name="download_error_toast">Помилка завантаження даних</string>
-    <string name="query_too_early_dialog_message">Команда відправлена. Очікування відповіді від устройства Actis…</string>
+    <string name="query_too_early_dialog_message">Команда вже відправлена. Очікування відповіді від устройства Actis…</string>
     <string name="demo_warning_dialog_message">Ця функція недоступна в демо режимі</string>
     <string name="awaiting_confirmation_dialog_message">Налаштування вже відправлені. Очікування підтвердження на пристрої Actis…</string>
     <string name="on_actis_query_success_message">Команда на разовое определение местоположения отправлена. Ожидайте получение координат устройства…</string>

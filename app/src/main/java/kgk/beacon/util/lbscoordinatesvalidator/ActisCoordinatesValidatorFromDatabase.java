@@ -11,6 +11,11 @@ import kgk.beacon.model.Signal;
 import kgk.beacon.networking.event.ValidatedCoordinatesReceivedEvent;
 import kgk.beacon.util.AppController;
 
+/**
+ * Класс для проверки координат местоположения по базовым станциям, в данной реализации предназначен
+ * для работы в режиме демона, периодически проверяющего сигналы в локальной базе данных, в настоящее
+ * время класс нуждается в доработке
+ */
 public class ActisCoordinatesValidatorFromDatabase implements LbsCoordinatesValidator {
 
     private static final String TAG = ActisCoordinatesValidatorFromDatabase.class.getSimpleName();
@@ -66,10 +71,6 @@ public class ActisCoordinatesValidatorFromDatabase implements LbsCoordinatesVali
                 iterator.remove();
             }
         }
-    }
-
-    private void sendValidationRequests() {
-
     }
 
     ////

@@ -15,6 +15,11 @@ import kgk.beacon.model.Signal;
 import kgk.beacon.networking.event.ValidatedCoordinatesReceivedEvent;
 import kgk.beacon.util.AppController;
 
+
+/**
+ * Класс для проверки координат местоположения по базовым станциям, в данной реализации проверка
+ * осуществляется сразу в момент получения нового сигнала
+ */
 public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValidator {
 
     private static final String TAG = ActisCoordinatesValidatorFromNetwork.class.getSimpleName();
@@ -48,6 +53,7 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
 
     ////
 
+    /** Сортировка сигнало в в порядке убывания серверной даты */
     private void sortSignals() {
         Collections.sort(signals, new Comparator<Signal>() {
             @Override
@@ -60,6 +66,7 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
         });
     }
 
+    /** Извлечь из списка сигналов те, которые нуждаются в проверке координат */
     private List<Signal> extractBadSignals() {
         List<Signal> signalsToValidate = new ArrayList<>();
 
@@ -91,6 +98,7 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
         return signalsToValidate;
     }
 
+    /** Записать корректные сигналы в базу данных */
     private void writeNormalSignalsToDatabase() {
         Thread databaseWriterThread = new Thread(new Runnable() {
             @Override
@@ -104,6 +112,7 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
         databaseWriterThread.start();
     }
 
+    /** Отправить запросы на проверки координат местоположения */
     private void sendValidationRequests() {
         signalsToValidateCount = signalsToValidate.size();
         signalsValidated = 0;
@@ -130,6 +139,7 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
                 signalToChange.setLatitude(event.getLatitude());
                 signalToChange.setLongitude(event.getLongitude());
                 signalToChange.setLbsDeteceted(true);
+                signalToChange.setSatellites(0);
 
                 // TODO Delete test code
                 Log.d(TAG, "LBS Validated");

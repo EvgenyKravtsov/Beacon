@@ -43,6 +43,9 @@ import kgk.beacon.stores.T6Store;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.DateFormatter;
 
+/**
+ * Экран с текущим местоположеним устройства, предполагается как главный экран мобильного мониторинга
+ */
 public class DeviceCurrentLocationActivity extends AppCompatActivity {
 
     private  static final String TAG = DeviceCurrentLocationActivity.class.getSimpleName();
@@ -342,6 +345,9 @@ public class DeviceCurrentLocationActivity extends AppCompatActivity {
 
     ////
 
+    /**
+     * Абстрактый пакет с данными от устройства
+     */
     class UniversalPacket {
 
         private double latitude;

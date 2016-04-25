@@ -2,6 +2,9 @@ package kgk.beacon.view.actis;
 
 import java.util.Date;
 
+/**
+ * DTO для временного периода
+ */
 public class FromAndToDatesEvent {
 
     private Date fromDate;

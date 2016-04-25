@@ -2,6 +2,7 @@ package kgk.beacon.model;
 
 import java.util.ArrayList;
 
+/** Абстракция устройства КГК */
 public class Device {
 
     private String id;

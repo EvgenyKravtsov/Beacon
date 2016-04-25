@@ -2,6 +2,9 @@ package kgk.beacon.map.event;
 
 import kgk.beacon.map.Map;
 
+/**
+ * Абстракция события готовности объекта карты для взаимодействия
+ */
 public class MapReadyForUseEvent {
 
     private Map map;

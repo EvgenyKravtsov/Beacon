@@ -1,5 +1,8 @@
 package kgk.beacon.networking.event;
 
+/**
+ * Событие, содержащее координаты, определенные по базовым станциям
+ */
 public class ValidatedCoordinatesReceivedEvent {
 
     private long serverDate;

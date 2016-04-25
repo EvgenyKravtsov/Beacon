@@ -3,6 +3,9 @@ package kgk.beacon.map.osm;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 
+/**
+ * Кастомная реализация объекта доступа к хранилищу тайлов для OSM карть
+ */
 public class XYTileSourceKGK extends XYTileSource {
 
     public XYTileSourceKGK(final String aName, final int aZoomMinLevel,

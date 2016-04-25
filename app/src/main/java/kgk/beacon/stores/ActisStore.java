@@ -12,6 +12,10 @@ import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Signal;
 import kgk.beacon.util.AppController;
 
+/**
+ * Стандартная реализация базового элемента архитектуры FLUX - хранилища, в данном случае класс
+ * абстрагирует состояние маячка Actis
+ */
 public class ActisStore extends Store {
 
     public static final String TAG = ActisStore.class.getSimpleName();

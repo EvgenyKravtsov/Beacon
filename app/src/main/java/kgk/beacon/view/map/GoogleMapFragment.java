@@ -51,6 +51,9 @@ import kgk.beacon.util.DateFormatter;
 import kgk.beacon.util.ImageProcessor;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
+/**
+ * Контроллер карты Google
+ */
 public class GoogleMapFragment extends Fragment implements Map,
                                                            OnMapReadyCallback {
 

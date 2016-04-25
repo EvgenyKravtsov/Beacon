@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +36,9 @@ import kgk.beacon.networking.event.SearchModeStatusEvent;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.AppController;
 
+/**
+ * Контроллер информационного экрана
+ */
 public class InformationFragment extends Fragment implements DialogInterface.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
@@ -130,6 +134,7 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 
     public void onEventMainThread(QueryRequestSuccessfulEvent event) {
         showAlertDialog(getString(R.string.on_actis_query_success_message));
+        searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
     }
 
     ////
@@ -165,6 +170,7 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 //        changeStateSearchButton(savedStatus);
 //    }
 
+    /** Инициализация кнопки поиска */
     // TODO For search command state control
     private void setupSearchButton() {
         switchCustomSearch.setOnCheckedChangeListener(this);
@@ -183,6 +189,7 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         }
     }
 
+    /** Изменить графическое состояние свича без обратного вызова метода смены логического состояния */
     private void changeStateSearchButton(boolean state) {
         switchCustomSearch.setOnCheckedChangeListener(null);
         switchCustomSearch.setChecked(state);
@@ -195,6 +202,26 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
                         R.drawable.actis_search_button_frame_pressed :
                         R.drawable.actis_menu_button_background));
         switchCustomSearch.setOnCheckedChangeListener(this);
+
+        checkQueryButton();
+    }
+
+    /** Проверить доступность кнопки отправки разового запроса на определение местороложения */
+    private void checkQueryButton() {
+        long deviceId = AppController.getInstance().getActiveDeviceId();
+
+        if (AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_CONTROL_DATE)
+                == ActisDatabaseDao.getInstance(getActivity()).getLastSignalDate()) {
+            if (Calendar.getInstance().getTimeInMillis() / 1000 <
+                    AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
+                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
+                Log.d(TAG, "Here");
+                return;
+            }
+        }
+
+        Log.d(TAG, "Here twice");
+        searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
     }
 
     private void showAlertDialog(String message) {
@@ -278,19 +305,19 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
     @OnTouch(R.id.informationFragment_searchButton)
     public boolean onTouchSearchButton(MotionEvent event) {
 
-        if (!switchCustomSearch.isChecked()) {
-            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
-            } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
-                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
-            }
-        } else {
-            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
-            } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
-                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
-            }
-        }
+//        if (!switchCustomSearch.isChecked()) {
+//            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+//                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
+//            } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
+//                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
+//            }
+//        } else {
+//            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+//                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
+//            } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
+//                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
+//            }
+//        }
 
         if (AppController.getInstance().isDemoMode()) {
             return false;
@@ -334,6 +361,8 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 //                .getDrawable(R.drawable.actis_search_button_frame_yellow));
         switchCustomSearch.setThumbDrawable(getResources()
                 .getDrawable(R.drawable.search_custom_switch_yellow_thumb_with_lock));
+        searchButtonFrame.setBackgroundDrawable(getResources()
+                .getDrawable(R.drawable.actis_search_button_frame_pressed));
 
         switchCustomSearch.setClickable(false);
         searchSwitchActivated = false;

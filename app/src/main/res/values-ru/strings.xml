@@ -61,11 +61,11 @@
     <string name="download_data_progress_dialog_title">Загрузка</string>
     <string name="download_data_progress_dialog_message">Загрузка данных с сервера</string>
     <string name="download_error_toast">Ошибка загрузки данных</string>
-    <string name="query_too_early_dialog_message">Команда отправлена. Ожидание ответа от устройства Actis</string>
+    <string name="query_too_early_dialog_message">Команда уже отправлена. Ожидание ответа от устройства Actis</string>
     <string name="demo_warning_dialog_message">Данная функция недоступна в демо режиме</string>
     <string name="awaiting_confirmation_dialog_message">Настройки уже отправлены. Ожидание подтверждения на устройстве Actis</string>
     <string name="on_actis_query_success_message">Команда на разовое определение местоположения отправлена. Ожидайте получение координат устройства</string>
-    <string name="on_actis_search_turned_on_message">Команда включения Автопоиска отправлена. Ожидайте сообщения с координатами устройства каждые 20 минут</string>
+    <string name="on_actis_search_turned_on_message">Команда включения Автопоиска отправлена. Ожидайте сообщения с координатами устройства каждые 20 минут после того, как Актис примет команду</string>
     <string name="on_actis_search_turned_off_message">Команда выключения Автопоиска отправлена</string>
 
     <!-- Strings for DeviceCurrentLocationActivity -->

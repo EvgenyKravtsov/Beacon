@@ -11,6 +11,9 @@ import java.util.List;
 
 import kgk.beacon.R;
 
+/**
+ * Стандартный платформенный адаптер для отображения списка подсказок
+ */
 public class HelpListAdapter extends BaseAdapter {
 
     private Context context;

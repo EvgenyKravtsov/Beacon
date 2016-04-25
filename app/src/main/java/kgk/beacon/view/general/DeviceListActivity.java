@@ -13,6 +13,9 @@ import butterknife.ButterKnife;
 import kgk.beacon.R;
 import kgk.beacon.view.actis.SingleFragmentActivity;
 
+/**
+ * Экран со списком устройств
+ */
 public class DeviceListActivity extends SingleFragmentActivity {
 
     @Bind(R.id.helpToolbarButton) ImageButton helpToolbarButton;

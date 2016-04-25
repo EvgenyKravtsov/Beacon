@@ -24,6 +24,9 @@ import kgk.beacon.map.event.MapReadyForUseEvent;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.ActisStore;
 
+/**
+ * Экран с полноразмерной картой
+ */
 public class MapCustomActivity extends AppCompatActivity implements MapClickListener,
                                                                     MarkerClickListener {
 

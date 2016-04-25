@@ -10,6 +10,10 @@ import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.T6Packet;
 import kgk.beacon.util.AppController;
 
+/**
+ * Стандартная реализация базового элемента архитектуры FLUX - хранилища, в данном случае класс
+ * абстрагирует состояние устройства типа Т6
+ */
 public class T6Store extends Store {
 
     public static final String TAG = T6Store.class.getSimpleName();

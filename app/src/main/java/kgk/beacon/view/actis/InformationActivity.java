@@ -36,6 +36,9 @@ import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.AppController;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
+/**
+ * Главный экран приложения
+ */
 public class InformationActivity extends AppCompatActivity implements MapClickListener,
                                                                         MarkerClickListener {
 
@@ -157,6 +160,7 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         }
     }
 
+    /** Инициализация карты */
     private void initializeMap() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment mapFragment = fragmentManager
@@ -170,6 +174,7 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         }
     }
 
+    /** Обновить карту */
     private void updateMap() {
         Signal signal = actisStore.getSignal();
         map.clear();
@@ -183,6 +188,7 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         map.addSignalInfoMarker(signal);
     }
 
+    /** Обновить показания значка батареи */
     private void updateBatteryView(int charge) {
         batteryView.setVisibility(View.VISIBLE);
 

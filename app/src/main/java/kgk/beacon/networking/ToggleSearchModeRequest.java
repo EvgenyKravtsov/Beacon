@@ -9,6 +9,10 @@ import java.util.Map;
 
 import kgk.beacon.util.AppController;
 
+/**
+ * Абстракция запроса на отправку комманды на включение/выключение режима Поиск устройства Actis,
+ * реализованная в рамках требований библиотеки Volley
+ */
 public class ToggleSearchModeRequest extends StringRequest {
 
     private static final String TAG = ToggleSearchModeRequest.class.getSimpleName();

@@ -3,6 +3,10 @@ package kgk.beacon.networking;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+/**
+ * Абстракция запроса в Yandex на определение координат по базовым станциям,
+ * реализованная в рамках требований библиотеки Volley
+ */
 public class YandexLBSLocationRequest extends StringRequest {
 
     private static final String TAG = OpenCellIdRequest.class.getSimpleName();

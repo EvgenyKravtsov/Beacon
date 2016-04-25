@@ -17,6 +17,9 @@ import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
 
 
+/**
+ * Экран истории
+ */
 public class HistoryActivity extends SingleFragmentActivityDeviceRelated {
 
     @Bind(R.id.toolbar_title) TextView toolbarTitle;

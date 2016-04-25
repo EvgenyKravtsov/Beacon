@@ -23,6 +23,9 @@ import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.util.AppController;
 import kgk.beacon.view.general.event.StartActivityEvent;
 
+/**
+ * Контроллер экрана авторизации
+ */
 public class LoginFragment extends Fragment {
 
     public static final String TAG = LoginFragment.class.getSimpleName();
@@ -60,6 +63,7 @@ public class LoginFragment extends Fragment {
         actionCreator = ActionCreator.getInstance(dispatcher);
     }
 
+    /** Запомнить данные для авторизации */
     private void saveLoginParametersToSharedPreferences() {
         SharedPreferences loginAndPassword = getActivity().getSharedPreferences(APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = loginAndPassword.edit();
@@ -72,6 +76,7 @@ public class LoginFragment extends Fragment {
         editor.apply();
     }
 
+    /** Загрузить данные для авторизации */
     private void loadLoginParametersFromSharedPreferences() {
         SharedPreferences loginAndPassword = getActivity().getSharedPreferences(APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
         rememberMeCheckBox.setChecked(loginAndPassword.getBoolean(REMEMBER_ME_OPTION_KEY, false));

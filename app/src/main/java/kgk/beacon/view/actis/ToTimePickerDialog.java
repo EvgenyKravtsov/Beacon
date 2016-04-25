@@ -15,6 +15,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import kgk.beacon.R;
 
+/**
+ * Диалог выбора времени
+ */
 public class ToTimePickerDialog extends DialogFragment {
 
     public static final String EXTRA_TO_TIME = "toTime";

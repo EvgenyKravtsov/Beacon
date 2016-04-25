@@ -9,6 +9,10 @@ import java.util.Map;
 
 import kgk.beacon.util.AppController;
 
+/**
+ * Абстракция запроса на отправку комманды на разоаое определение местоположения устройства Actis,
+ * реализованная в рамках требований библиотеки Volley
+ */
 public class QueryBeaconRequest extends StringRequest {
 
     private static final String TAG = QueryBeaconRequest.class.getSimpleName();

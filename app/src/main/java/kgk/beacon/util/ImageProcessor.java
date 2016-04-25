@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
+/**
+ * Класс для конвертации платформенного представления о графическом объекте в битовую маску
+ */
 public class ImageProcessor {
 
     public static Bitmap bitmapFromView(View layout, int width, int height) {

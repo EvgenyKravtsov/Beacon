@@ -57,6 +57,9 @@ import kgk.beacon.util.DateFormatter;
 import kgk.beacon.util.ImageProcessor;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
+/**
+ * Контроллер карты OSM, специализированый для экранов, связанных с Actis
+ */
 public class OSMMapFragmentForActis extends Fragment implements Map {
 
     private static final String TAG = OSMMapFragmentForActis.class.getSimpleName();
@@ -404,9 +407,9 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
     public void addCircleZone(double latitude, double longitude, int radius) {
         Polygon circle = new Polygon(getActivity());
         circle.setPoints(Polygon.pointsAsCircle(new GeoPoint(latitude, longitude), radius));
-        circle.setStrokeColor(getResources().getColor(R.color.main_brand_blue));
+        circle.setStrokeColor(getResources().getColor(R.color.main_brand_pink));
         circle.setStrokeWidth(2.0f);
-        circle.setFillColor(getResources().getColor(R.color.main_barnd_blue_transparent));
+        circle.setFillColor(getResources().getColor(R.color.main_brand_pink_transparent));
         map.getOverlays().add(circle);
         map.invalidate();
     }

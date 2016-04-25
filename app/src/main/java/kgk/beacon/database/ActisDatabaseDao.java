@@ -22,6 +22,9 @@ import kgk.beacon.model.Signal;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.AppController;
 
+/**
+ * Стандартный Data Access Object для работы с локальной базой данных
+ */
 public class ActisDatabaseDao {
 
     private static final String TAG = ActisDatabaseDao.class.getSimpleName();
@@ -66,6 +69,7 @@ public class ActisDatabaseDao {
         return instance;
     }
 
+    /** Открыть соединение с базой данных */
     public void open() throws SQLException {
         database = databaseHelper.getWritableDatabase();
     }
@@ -75,6 +79,7 @@ public class ActisDatabaseDao {
         // databaseHelper.close();
     }
 
+    /** Вставка данных сигнала в базу данных */
     public void insertSignal(Signal signal) {
         try {
             open();
@@ -110,6 +115,7 @@ public class ActisDatabaseDao {
         }
     }
 
+    /** Проверака данных сигнала на уникальность в базе данных */
     private boolean hasDuplicate(Signal signal) {
         @SuppressLint("DefaultLocale") Cursor cursor = database.rawQuery(String.format(DatabaseHelper
                 .SignalDatabaseQuery.GET_SIGNALS_BY_DEVICE_ID_AND_DATE, signal.getDeviceId(), signal.getDate()), null);
@@ -118,6 +124,7 @@ public class ActisDatabaseDao {
         return duplicateCount != 0;
     }
 
+    /** Выбрать данные о сигналах за указанный период */
     public List<Signal> getSignalsByPeriod(long dateFrom, long dateTo) {
         List<Signal> signals = new ArrayList<>();
 
@@ -142,6 +149,7 @@ public class ActisDatabaseDao {
         return signals;
     }
 
+    /** Выбрать желаемое количество сигналов для указанного id устройства, начиная с последнего */
     public List<Signal> getLastSignalsByDeviceId(int numberOfSignals) {
         List<Signal> signals = new ArrayList<>();
 
@@ -185,6 +193,7 @@ public class ActisDatabaseDao {
         return signals;
     }
 
+    /** Выбрать все данные о сигналах для всех id */
     public List<Signal> getAllSignals() {
         List<Signal> signals = new ArrayList<>();
 
@@ -207,6 +216,7 @@ public class ActisDatabaseDao {
         return signals;
     }
 
+    /** Удалить все данные о сигналах из базы данных */
     public void deleteAllSignalsFromDatabase() {
         try {
             open();
@@ -217,6 +227,7 @@ public class ActisDatabaseDao {
         }
     }
 
+    /** Выбрать дату последнего сигнала для активного id устройства */
     public long getLastSignalDate() {
         long lastSignalDate = 0;
 
@@ -246,6 +257,7 @@ public class ActisDatabaseDao {
         return lastSignalDate;
     }
 
+    /** Обновить поля, содержащие координаты, для указанного серверного времени сигнала */
     public void updateSignalCoordinatesByServerDate(long serverDate, double latitude, double longitude) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_LATITUDE, latitude);
@@ -260,6 +272,7 @@ public class ActisDatabaseDao {
         }
     }
 
+    /** Обновить фактическое время сигнала */
     public void updateSignalActisDate(long serverDate) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_ACTIS_DATE, serverDate);
@@ -272,6 +285,7 @@ public class ActisDatabaseDao {
         }
     }
 
+    /** Демаршалинг курсора SQLite в объект модели приложения */
     private Signal cursorToSignal(Cursor cursor) {
         Signal signal = new Signal();
         signal.setDeviceId(cursor.getLong(1));

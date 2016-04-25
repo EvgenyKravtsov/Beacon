@@ -7,6 +7,10 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Абстракция запроса на получение детального отчета,
+ * реализованная в рамках требований библиотеки Volley
+ */
 public class DetailReportRequest extends StringRequest {
 
     private static final String TAG = DetailReportRequest.class.getSimpleName();

@@ -22,6 +22,9 @@ import kgk.beacon.R;
 import kgk.beacon.util.AppController;
 import kgk.beacon.view.actis.SingleFragmentActivity;
 
+/**
+ * Экран авторизации
+ */
 public class LoginActivity extends SingleFragmentActivity {
 
     private static final String LANGUAGE_ENGLISH = "en";
@@ -99,6 +102,7 @@ public class LoginActivity extends SingleFragmentActivity {
         dialog.show();
     }
 
+    /** Запомнить языковой выбор пользователя */
     private void switchLanguage(int languageId) {
         switch (languageId) {
             case R.id.dialogLanguagePicker_englishButton:
@@ -118,6 +122,7 @@ public class LoginActivity extends SingleFragmentActivity {
         startActivity(getIntent());
     }
 
+    /** Изменить локаль приложения */
     private void changeLocale(String localeIndex) {
         Locale locale = new Locale(localeIndex);
         Locale.setDefault(locale);

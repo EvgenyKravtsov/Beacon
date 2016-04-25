@@ -3,11 +3,13 @@ package kgk.beacon.actions;
 import java.util.HashMap;
 
 /**
- * Represents and action - main communication component of Flux architecture
+ * Абстрактое действие - базовый компонент архитектуры FLUX
  */
 public class Action {
 
+    /** Тип действия */
     private final String type;
+    /** Данные, связанные с действием и необходимые для его осуществления */
     private final HashMap<String, Object> data;
 
     //// Constructors
@@ -35,6 +37,9 @@ public class Action {
 
     //// Inner classes
 
+    /**
+     * Стандартная реализация шаблона Builder для объектов класса Action
+     */
     public static class Builder {
 
         private String type;

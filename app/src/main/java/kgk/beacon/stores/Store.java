@@ -4,7 +4,7 @@ import kgk.beacon.actions.Action;
 import kgk.beacon.dispatcher.Dispatcher;
 
 /**
- * One of the key components of Flux architecture. Contains model and associated logic
+ * Стандартная реализация базового элемента архитектуры FLUX - абстрактного хранилища
  */
 public abstract class Store {
 

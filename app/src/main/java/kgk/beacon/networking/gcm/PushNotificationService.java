@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+/**
+ * Сервис для приема Push-уведомления Google
+ */
 public class PushNotificationService extends GcmListenerService {
 
     private static final String TAG = PushNotificationService.class.getSimpleName();

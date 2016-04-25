@@ -9,6 +9,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Абстракция запроса на полкчение текущих настроек устройства Actis,
+ * реализованная в рамках требований библиотеки Volley
+ */
 public class GetSettingsRequest extends JsonObjectRequest {
 
     private static final String TAG = GetSettingsRequest.class.getSimpleName();

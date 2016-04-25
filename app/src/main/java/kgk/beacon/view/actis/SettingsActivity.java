@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+/**
+ * Экран настроек
+ */
 public class SettingsActivity extends SingleFragmentActivity {
 
     @Override

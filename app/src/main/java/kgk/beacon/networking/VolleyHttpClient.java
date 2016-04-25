@@ -49,6 +49,9 @@ import kgk.beacon.view.actis.InformationFragment;
 import kgk.beacon.view.general.DeviceListActivity;
 import kgk.beacon.view.general.event.StartActivityEvent;
 
+/**
+ * Реализация менеджера http-запросов на базе библиотеки Google Volley
+ */
 public class VolleyHttpClient implements Response.ErrorListener {
 
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
@@ -165,6 +168,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Отправка запроса на авторизацию */
     private void authenticationRequest(String login, final String password) {
         final AuthenticationRequest request = new AuthenticationRequest(Request.Method.POST,
                 AUTHENTICATION_URL,
@@ -197,6 +201,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Отправка запроса на получение списка устройств пользователя */
     private void deviceListRequest(String phpSessId) {
         DeviceListRequest request = new DeviceListRequest(Request.Method.GET,
                 DEVICE_LIST_URL,
@@ -218,6 +223,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Отправка запроса на команду разового определения местоположения Actis */
     private void queryBeaconRequest() {
         LastActionDateStorageForActis.getInstance().save(Calendar.getInstance().getTime());
         QueryBeaconRequest request = new QueryBeaconRequest(Request.Method.GET,
@@ -253,6 +259,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Отправка запроса на получение последнего актуального местоположения */
     private void getLastStateRequest() {
         GetLastStateRequest request = new GetLastStateRequest(Request.Method.GET,
                 GetLastStateRequest.makeUrl(GET_LAST_STATE_URL),
@@ -269,6 +276,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Отправка запроса на отправку комманды на включение/выключение режима Поиск устройства Actis */
     private void toggleSearchModeRequest(boolean searchModeStatus) {
         LastActionDateStorageForActis.getInstance().save(Calendar.getInstance().getTime());
         ToggleSearchModeRequest request = new ToggleSearchModeRequest(Request.Method.GET,
@@ -299,6 +307,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Отправка запроса на отправку настроек для устройства Actis */
     private void settingsRequest(JSONObject settingsJson) {
         LastActionDateStorageForActis.getInstance().save(Calendar.getInstance().getTime());
 
@@ -338,6 +347,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Отправка запроса на получение текущих настроек устройства Actis */
     private void getSettingsRequest() {
         long deviceId = AppController.getInstance().getActiveDeviceId();
 
@@ -356,6 +366,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Отправка запроса на получение свежих сигналов за указанный период */
     private void getLastSignalsRequest(long fromDate, long toDate) {
         if (!AppController.getInstance().isNetworkAvailable()) {
             DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
@@ -383,6 +394,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         EventBus.getDefault().post(event);
     }
 
+    /** Отправка запроса на получение последнего актуального местоположения */
     private void lastStateForDeviceRequest() {
         if (!AppController.getInstance().isNetworkAvailable()) {
             DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
@@ -410,6 +422,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         EventBus.getDefault().post(event);
     }
 
+    /** Отправка запроса на получение детального отчета */
     private void detailReportRequest() {
         String requestUrlParameters = "?"
                 + "apikey=uadev11"
@@ -440,6 +453,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Обработка результатов запроса на авторизацию */
     private void processAuthenticationResponseJson(JSONObject responseJson) throws JSONException {
         if (responseJson.getBoolean("status")) {
             String[] parsedCookie = ((String) responseJson.get("Cookie")).split(";");
@@ -454,7 +468,9 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Обработка результатов запроса на получение списка устройств пользователя */
     private void processDeviceListResponseJson(JSONObject responseJson) throws JSONException {
+        Log.d(TAG, responseJson.toString());
         if (responseJson.getBoolean("status")) {
             try {
                 JSONArray devices = responseJson.getJSONArray("data");
@@ -476,6 +492,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Обработка результатов запроса на получение свежих сигналов за указанный период */
     private void processLastSignalsResponse(String response) {
         Log.d(TAG, response);
 
@@ -567,6 +584,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Обработка результатов запроса на получение последнего актуального местоположения */
     private void processLastStateResponse(String response) {
         if (AppController.getInstance().getActiveDeviceType() == null) {
             return;
@@ -598,6 +616,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Обработка результатов запроса на получение детального отчета */
     private void processDetailReportResponse(JSONObject responseJson) {
         try {
             JSONObject allData = responseJson.getJSONObject(String.valueOf(AppController.getInstance().getActiveDeviceId()));
@@ -636,6 +655,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Обработка результатов запроса на получение текущих настроек устройства Actis */
     private void processGetSettingsRequest(JSONObject dataJson) {
         // TODO Delete test code
         Log.d(TAG, dataJson.toString());
@@ -676,6 +696,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Установка характеристик переотправки запросов */
     private void setRetryPolicy(Request request) {
         request.setRetryPolicy(new DefaultRetryPolicy(
                 SOCKET_TIMEOUT_MS,
@@ -683,6 +704,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
+    /** Отправка запроса в OpenCellId на определение координат по базовым станциям */
     private void openCellIdRequest(final long serverDate, final int mcc, final int mnc, final String cellIdHex, final String lacHex) {
         OpenCellIdRequest request = new OpenCellIdRequest(Request.Method.GET,
                 OpenCellIdRequest.makeUrl(OPEN_CELL_ID_GET_URL,
@@ -708,6 +730,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    /** Парсинг результатов запроса в OpenCellId на определение координат по базовым станциям */
     private void parseOpenCellIdResponse(long serverDate, String response) {
         try {
             JSONObject responseJson = new JSONObject(response);
@@ -721,6 +744,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
         }
     }
 
+    /** Отправка запроса в Yandex на определение координат по базовым станциям */
     private void yandexLbsLocationRequest(final long serverDate, int mcc, int mnc, String cellIdHex, String lacHex) {
         YandexLBSLocationRequest request = new YandexLBSLocationRequest(Request.Method.GET,
                 YandexLBSLocationRequest.makeUrl(YANDEX_LBS_LOCATION_REQUEST,
@@ -746,40 +770,53 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
-    private void parseYnadexLbsResponse(long serverDate, String response) {
-        double latitude = 0;
-        double longitude = 0;
+    /** Парсинг результатов запроса в Yandex на определение координат по базовым станциям */
+    private void parseYnadexLbsResponse(final long serverDate, final String response) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    double latitude = 0;
+                    double longitude = 0;
 
-        try {
-            XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
-            parser.setInput(new ByteArrayInputStream(response.getBytes()), null);
+                    XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
+                    parser.setInput(new ByteArrayInputStream(response.getBytes()), null);
 
-            int xmlEvent = parser.getEventType();
-            while (xmlEvent != XmlPullParser.END_DOCUMENT) {
-                String name = parser.getName();
+                    long startTime = Calendar.getInstance().getTimeInMillis();
 
-                switch (xmlEvent) {
-                    case XmlPullParser.START_TAG:
-                        break;
-                    case XmlPullParser.END_TAG:
-                        if (name.equals("coordinates")) {
-                            latitude = Double.parseDouble(parser.getAttributeValue(null, "latitude"));
-                            longitude = Double.parseDouble(parser.getAttributeValue(null, "longitude"));
+                    int xmlEvent = parser.getEventType();
+                    while (xmlEvent != XmlPullParser.END_DOCUMENT) {
+                        String name = parser.getName();
+
+                        switch (xmlEvent) {
+                            case XmlPullParser.START_TAG:
+                                break;
+                            case XmlPullParser.END_TAG:
+                                if (name.equals("coordinates")) {
+                                    latitude = Double.parseDouble(parser.getAttributeValue(null, "latitude"));
+                                    longitude = Double.parseDouble(parser.getAttributeValue(null, "longitude"));
+                                }
                         }
+
+                        if (Calendar.getInstance().getTimeInMillis() - startTime > 5000) {
+                            break;
+                        }
+
+                        // TODO Delete test code
+                        Log.d(TAG, "Stall here");
+                    }
+
+                    ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();
+                    event.setServerDate(serverDate);
+                    event.setLatitude(latitude);
+                    event.setLongitude(longitude);
+                    EventBus.getDefault().post(event);
+
+                } catch (XmlPullParserException xppe) {
+                    xppe.printStackTrace();
                 }
             }
-
-            if (latitude != 0 && longitude != 0) {
-                ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();
-                event.setServerDate(serverDate);
-                event.setLatitude(latitude);
-                event.setLongitude(longitude);
-                EventBus.getDefault().post(event);
-            }
-
-        } catch (XmlPullParserException xppe) {
-            xppe.printStackTrace();
-        }
+        }).start();
     }
 
     @Override
