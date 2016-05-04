@@ -33,13 +33,15 @@
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                android:id="@+id/activityGeneratorMain_manualButtonLayout">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/generator_list_image_manual_off"
-                    android:contentDescription="@string/activity_generator_main_manual_button_label"/>
+                    android:contentDescription="@string/activity_generator_main_manual_button_label"
+                    android:id="@+id/activityGeneratorMain_manualButtonIcon" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -61,13 +63,15 @@
                 android:paddingRight="5dp"
                 android:paddingEnd="5dp"
                 android:paddingTop="3dp"
-                android:paddingBottom="3dp">
+                android:paddingBottom="3dp"
+                android:id="@+id/activityGeneratorMain_autoButtonLayout">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/generator_list_image_auto_off"
-                    android:contentDescription="@string/activity_generator_main_auto_button_label"/>
+                    android:contentDescription="@string/activity_generator_main_auto_button_label"
+                    android:id="@+id/activityGeneratorMain_autoButtonIcon" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -202,6 +206,15 @@
             android:layout_alignLeft="@+id/activityGeneratorMain_oilIndicator"
             android:layout_alignStart="@+id/activityGeneratorMain_oilIndicator"
             android:textSize="11sp" />
+
+        <Button
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:id="@+id/activityGeneratorMain_trueSwitchButton"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/activityGeneratorMain_switchButton"
+            android:layout_marginBottom="-125dp"
+            android:background="#00000000" />
 
     </RelativeLayout>
 

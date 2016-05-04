@@ -29,6 +29,9 @@
     <string name="no_registered_devices_toast">You have no registered devices</string>
     <string name="server_error">Server error</string>
 
+    <!-- Strings for ProductActivity -->
+    <string name="product_activity_title">Products</string>
+
     <!-- Strings for DeviceListFragment -->
     <string name="development_progress_dialog_title">Attention!</string>
     <string name="development_progress_dialog_message">Current version supports only Actis beacons</string>
@@ -142,10 +145,13 @@
     <string name="track_screen_description">On Track screen you can see a map with signals, connected
         by polyline. The signals are from history list. To see detailed information about a signal
         you can tap on corresponding marker</string>
-    <string name="auto_search_description_title">Auto Search Switch</string>
-    <string name="auto_search_description">A switch allows to control automatic search mode. In this
-    mode Actis device will send coordinates every 20 minutes. To tunr on autosearch mode
-    hold switch and swipe right or swipe left to turn off.</string>
+    <string name="auto_search_description_title">Autosearch</string>
+    <string name="auto_search_description">Turning the lock switch enables and disables automatic search mode for your Actis beacon — device starts to send coordinates every 20 minutes.\n\n
+            @1 — Autosearch mode enabled;\n
+            @2 — Awaiting confirmation from beacon;\n
+            @3 — Autosearch mode disabled;\n\n
+            To enable Autosearch mode move switch to right. @4 ----> @5 ----> @6\n\n
+            To disable Autosearch mode move switch to left. @7 ----> @8 ----> @9</string>
 
     <!-- Strings for Language Settings -->
     <string name="login_menu_language_setting_label">Language</string>

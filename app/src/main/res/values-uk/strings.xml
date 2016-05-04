@@ -30,6 +30,9 @@
     <string name="no_registered_devices_toast">У вас немає зареєстрованих пристроїв</string>
     <string name="server_error">Помилка сервера</string>
 
+    <!-- Strings for ProductActivity -->
+    <string name="product_activity_title">Продукты компании</string>
+
     <!-- Strings for DeviceListFragment -->
     <string name="development_progress_dialog_title">Увага</string>
     <string name="development_progress_dialog_message">Поточна версія програми підтримує тільки охоронні маячки Actis</string>

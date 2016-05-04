@@ -136,8 +136,12 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
         for (Signal signal : signalsToValidate) {
             if (signal.getDate() == event.getServerDate()) {
                 signalToChange = signal;
-                signalToChange.setLatitude(event.getLatitude());
-                signalToChange.setLongitude(event.getLongitude());
+
+                if (event.getLatitude() != 0 && event.getLongitude() != 0) {
+                    signalToChange.setLatitude(event.getLatitude());
+                    signalToChange.setLongitude(event.getLongitude());
+                }
+
                 signalToChange.setLbsDeteceted(true);
                 signalToChange.setSatellites(0);
 

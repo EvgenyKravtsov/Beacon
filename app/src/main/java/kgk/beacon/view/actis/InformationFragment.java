@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -203,7 +202,9 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
                         R.drawable.actis_menu_button_background));
         switchCustomSearch.setOnCheckedChangeListener(this);
 
-        checkQueryButton();
+        if (!switchCustomSearch.isChecked()) {
+            checkQueryButton();
+        }
     }
 
     /** Проверить доступность кнопки отправки разового запроса на определение местороложения */
@@ -215,12 +216,10 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             if (Calendar.getInstance().getTimeInMillis() / 1000 <
                     AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
                 searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
-                Log.d(TAG, "Here");
                 return;
             }
         }
 
-        Log.d(TAG, "Here twice");
         searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
     }
 

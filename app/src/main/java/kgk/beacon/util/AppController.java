@@ -67,6 +67,7 @@ public class AppController extends Application {
     public static final String ACTIS_DEVICE_TYPE = "Actis";
     public static final String T6_DEVICE_TYPE = "T6";
     public static final String T5_DEVICE_TYPE = "T5";
+    public static final String GENERATOR_DEVICE_TYPE = "Generator";
 
     private static AppController instance;
 

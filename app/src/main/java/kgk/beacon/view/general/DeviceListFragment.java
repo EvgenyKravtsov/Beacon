@@ -31,6 +31,7 @@ import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.database.ActisDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
 import kgk.beacon.model.Device;
+import kgk.beacon.model.product.ProductType;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.stores.DeviceStore;
@@ -58,7 +59,20 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
     private Dispatcher dispatcher;
     private DeviceStore deviceStore;
 
+    private ProductType productType;
+
     private ProgressDialog downloadDataProgressDialog;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Intent startIntent = getActivity().getIntent();
+
+        if (startIntent != null) {
+            productType = (ProductType) startIntent.getSerializableExtra(ProductActivity.KEY_PRODUCT_TYPE);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +95,10 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         super.onResume();
         initFluxDependencies();
         setPreferredAdapter();
+
+        if (productType == ProductType.Actis || productType == ProductType.Generator) {
+            deviceListView.expandGroup(0);
+        }
 
         showDevelopmentProgressDialog();
     }
@@ -184,9 +202,13 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         if (deviceStore.getDevices() != null) {
             for (Device device : deviceStore.getDevices()) {
                 if (device.getModel().contains(ANDROID_DEVICE_TYPE_LABEL)) {
-                    typeSet.add(ANDROID_DEVICE_TYPE_LABEL);
+                    if (filterProductType(device.getType())) {
+                        typeSet.add(ANDROID_DEVICE_TYPE_LABEL);
+                    }
                 } else {
-                    typeSet.add(device.getType());
+                    if (filterProductType(device.getType())) {
+                        typeSet.add(device.getType());
+                    }
                 }
             }
         }
@@ -208,7 +230,9 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
 
         ArrayList<Device> devices = new ArrayList<>();
         for (Device device : deviceStore.getDevices()) {
-            devices.add(device);
+            if (filterProductType(device.getType())) {
+                devices.add(device);
+            }
         }
 
         List<String> androidDevices = new ArrayList<>();
@@ -323,6 +347,29 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
                 startActivity(loadDeviceCurrentLocationActivityIntent);
                 break;
         }
+    }
+
+    private boolean filterProductType(String deviceType) {
+        switch (productType) {
+            case Actis:
+                if (deviceType.equals(AppController.ACTIS_DEVICE_TYPE)) {
+                    return true;
+                }
+                break;
+            case Monitoring:
+                if (deviceType.equals(AppController.T5_DEVICE_TYPE) ||
+                        deviceType.equals(AppController.T6_DEVICE_TYPE)) {
+                    return true;
+                }
+                break;
+            case Generator:
+                if (deviceType.equals(AppController.GENERATOR_DEVICE_TYPE)) {
+                    return true;
+                }
+                break;
+        }
+
+        return false;
     }
 
     ////

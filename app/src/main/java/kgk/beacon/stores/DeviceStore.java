@@ -49,8 +49,8 @@ public class DeviceStore extends Store {
         switch (action.getType()) {
             case HttpActions.DEVICE_LIST_RESPONSE:
                 JSONArray devicesJson = (JSONArray) action.getData().get(ActionCreator.KEY_DEVICES);
-                devices = generateDeviceListActisOnly(devicesJson);
-                // devices = generateDeviceList(devicesJson);
+                // devices = generateDeviceListActisOnly(devicesJson);
+                devices = generateDeviceList(devicesJson);
                 break;
         }
     }
@@ -91,7 +91,7 @@ public class DeviceStore extends Store {
         Device testGenerator = new Device();
         testGenerator.setId("0101010101");
         testGenerator.setModel("Test Generator");
-        testGenerator.setType("Generator");
+        testGenerator.setType(AppController.GENERATOR_DEVICE_TYPE);
         devices.add(testGenerator);
 
         return devices;

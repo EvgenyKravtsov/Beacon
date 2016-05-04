@@ -47,6 +47,7 @@ import kgk.beacon.util.lbscoordinatesvalidator.ActisCoordinatesValidatorFromNetw
 import kgk.beacon.util.lbscoordinatesvalidator.LbsCoordinatesValidator;
 import kgk.beacon.view.actis.InformationFragment;
 import kgk.beacon.view.general.DeviceListActivity;
+import kgk.beacon.view.general.ProductActivity;
 import kgk.beacon.view.general.event.StartActivityEvent;
 
 /**
@@ -475,7 +476,13 @@ public class VolleyHttpClient implements Response.ErrorListener {
             try {
                 JSONArray devices = responseJson.getJSONArray("data");
                 ActionCreator.getInstance(dispatcher).receiveDeviceListResponse(devices);
-                StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
+
+                StartActivityEvent event = new StartActivityEvent(ProductActivity.class);
+
+                // TODO Commented for testing purpose
+                // StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
+
+
                 event.setLoginSuccessful(true);
                 EventBus.getDefault().post(event);
             } catch (JSONException e) {
@@ -814,6 +821,12 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
                 } catch (XmlPullParserException xppe) {
                     xppe.printStackTrace();
+
+                    ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();
+                    event.setServerDate(serverDate);
+                    event.setLatitude(0);
+                    event.setLongitude(0);
+                    EventBus.getDefault().post(event);
                 }
             }
         }).start();

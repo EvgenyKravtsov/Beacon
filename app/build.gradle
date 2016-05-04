@@ -36,5 +36,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'ch.acra:acra:4.5.0'
 
+
     testCompile 'junit:junit:4.12'
 }
