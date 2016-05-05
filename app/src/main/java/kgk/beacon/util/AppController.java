@@ -16,6 +16,7 @@ import org.acra.sender.HttpSender;
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
 import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.model.product.ProductType;
 import kgk.beacon.networking.VolleyHttpClient;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.stores.T5Store;
@@ -74,6 +75,7 @@ public class AppController extends Application {
     private long activeDeviceId;
     private String activeDeviceType;
     private String activeDeviceModel;
+    private ProductType activeProductType;
 
     private boolean demoMode;
 
@@ -124,6 +126,14 @@ public class AppController extends Application {
 
     public void setActiveDeviceModel(String activeDeviceModel) {
         this.activeDeviceModel = activeDeviceModel;
+    }
+
+    public ProductType getActiveProductType() {
+        return activeProductType;
+    }
+
+    public void setActiveProductType(ProductType activeProductType) {
+        this.activeProductType = activeProductType;
     }
 
     /** Проверка наличия на устройстве интернет-соединения */

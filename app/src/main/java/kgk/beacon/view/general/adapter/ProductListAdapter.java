@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public interface OnItemClickListener {
 
-        public void onClick(Product product);
+        void onClick(Product product);
     }
 
     ////
@@ -58,9 +57,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         Product product = products.get(position);
-        viewHolder.productImage.setImageDrawable(product.getImage());
         viewHolder.productTitle.setText(product.getTitle());
-        viewHolder.productDescription.setText(product.getDescription());
     }
 
     @Override
@@ -96,17 +93,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public static class ViewHolder extends  RecyclerView.ViewHolder {
 
-        public ImageView productImage;
         public TextView productTitle;
-        public TextView productDescription;
 
         ////
 
         public ViewHolder(View itemView) {
             super(itemView);
-            productImage = (ImageView) itemView.findViewById(R.id.productImage);
             productTitle = (TextView) itemView.findViewById(R.id.productTitle);
-            productDescription = (TextView) itemView.findViewById(R.id.productDescription);
         }
     }
 }

@@ -2,36 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginStart="20dp">
+    android:layout_marginTop="20dp">
 
-    <ImageView
+    <!-- <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/dummy_image_placeholder"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/productImage"/>
+        android:id="@+id/productImage"/> -->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/productTitle"
         tools:text="Title" />
 
-    <TextView
+    <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/productDescription"
-        tools:text="Description" />
+        tools:text="Description" /> -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/actis_app_orange_accent"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

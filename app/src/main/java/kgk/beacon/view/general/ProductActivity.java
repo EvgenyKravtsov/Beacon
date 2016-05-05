@@ -16,6 +16,7 @@ import kgk.beacon.R;
 import kgk.beacon.model.product.Product;
 import kgk.beacon.model.product.ProductFactory;
 import kgk.beacon.model.product.ProductType;
+import kgk.beacon.util.AppController;
 import kgk.beacon.view.general.adapter.ProductListAdapter;
 
 public class ProductActivity extends AppCompatActivity {
@@ -76,13 +77,13 @@ public class ProductActivity extends AppCompatActivity {
 
                         switch (product.getProductType()) {
                             case Actis:
-                                startDeviceListActivityIntent.putExtra(KEY_PRODUCT_TYPE, ProductType.Actis);
+                                AppController.getInstance().setActiveProductType(ProductType.Actis);
                                 break;
                             case Monitoring:
-                                startDeviceListActivityIntent.putExtra(KEY_PRODUCT_TYPE, ProductType.Monitoring);
+                                AppController.getInstance().setActiveProductType(ProductType.Monitoring);
                                 break;
                             case Generator:
-                                startDeviceListActivityIntent.putExtra(KEY_PRODUCT_TYPE, ProductType.Generator);
+                                AppController.getInstance().setActiveProductType(ProductType.Generator);
                                 break;
                         }
 

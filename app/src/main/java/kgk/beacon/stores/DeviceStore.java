@@ -1,5 +1,7 @@
 package kgk.beacon.stores;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,6 +115,9 @@ public class DeviceStore extends Store {
 
             if (deviceJson.getString("type_name").equals(AppController.ACTIS_DEVICE_TYPE)) {
                 device.setType(deviceJson.getString("type_name"));
+
+                // TODO Delete test code
+                Log.d(TAG, deviceJson.toString(4));
             } else {
                 device.setType(deviceJson.getBoolean("isT6") ? AppController.T6_DEVICE_TYPE : AppController.T5_DEVICE_TYPE);
             }

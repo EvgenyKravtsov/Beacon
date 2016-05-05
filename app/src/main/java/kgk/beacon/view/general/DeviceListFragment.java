@@ -66,12 +66,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Intent startIntent = getActivity().getIntent();
-
-        if (startIntent != null) {
-            productType = (ProductType) startIntent.getSerializableExtra(ProductActivity.KEY_PRODUCT_TYPE);
-        }
+        productType = AppController.getInstance().getActiveProductType();
     }
 
     @Override

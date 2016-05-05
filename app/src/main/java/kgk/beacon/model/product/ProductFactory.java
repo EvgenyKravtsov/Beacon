@@ -28,7 +28,7 @@ public class ProductFactory {
         actisProduct.setProductType(ProductType.Actis);
         actisProduct.setImage(AppController.getInstance()
                 .getResources().getDrawable(R.drawable.dummy_image_placeholder));
-        actisProduct.setTitle("ACTIS PRODUCT TITLE");
+        actisProduct.setTitle("Актис");
         actisProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
                 "ornare ex, nec elementum enim cursus vitae. Pellentesque habitant morbi tristique " +
@@ -43,7 +43,7 @@ public class ProductFactory {
         monitoringProduct.setProductType(ProductType.Monitoring);
         monitoringProduct.setImage(AppController.getInstance()
                 .getResources().getDrawable(R.drawable.dummy_image_placeholder));
-        monitoringProduct.setTitle("MONITORING PRODUCT TITLE");
+        monitoringProduct.setTitle("Мониторинг");
         monitoringProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
                 "ornare ex, nec elementum enim cursus vitae. Pellentesque habitant morbi tristique " +
@@ -59,7 +59,7 @@ public class ProductFactory {
         generatorProduct.setProductType(ProductType.Generator);
         generatorProduct.setImage(AppController.getInstance()
                 .getResources().getDrawable(R.drawable.dummy_image_placeholder));
-        generatorProduct.setTitle("GENERATOR PRODUCT TITLE");
+        generatorProduct.setTitle("Генератор");
         generatorProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
                 "ornare ex, nec elementum enim cursus vitae. Pellentesque habitant morbi tristique " +
