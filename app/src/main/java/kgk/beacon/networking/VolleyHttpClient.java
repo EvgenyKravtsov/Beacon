@@ -32,6 +32,7 @@ import kgk.beacon.actions.HttpActions;
 import kgk.beacon.actions.event.ToggleSearchModeEvent;
 import kgk.beacon.database.ActisDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.model.DataForDetailReportRequest;
 import kgk.beacon.model.Signal;
 import kgk.beacon.model.T5Packet;
 import kgk.beacon.model.T6Packet;
@@ -141,7 +142,8 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
                 event.setStatus(DownloadDataStatus.Started);
                 EventBus.getDefault().post(event);
-                detailReportRequest();
+                detailReportRequest(
+                        (DataForDetailReportRequest) action.getData().get(ActionCreator.KEY_DATA_FOR_DETAIL_REPORT_REQUEST));
                 break;
             case HttpActions.GENERATOR_SEND_MANUAL_MODE_COMMAND:
                 sendManualModeRequestToGenerator();
@@ -424,26 +426,36 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     /** Отправка запроса на получение детального отчета */
-    private void detailReportRequest() {
+    private void detailReportRequest(DataForDetailReportRequest data) {
         String requestUrlParameters = "?"
                 + "apikey=uadev11"
                 + "&rtype=json"
-                + "&datefrom=1453593600"
-                + "&dateto=1453680000"
-                + "&delta=30"
-                + "&offsetUTC=180"
+                + "&datefrom=" + data.getDataMap().get(DataForDetailReportRequest.DATAKEY_DATE_FROM)
+                + "&dateto=" + data.getDataMap().get(DataForDetailReportRequest.DATAKEY_DATE_TO)
+                + "&delta=" + data.getDataMap().get(DataForDetailReportRequest.DATAKEY_DELTA)
+                + "&offsetUTC=" + data.getDataMap().get(DataForDetailReportRequest.DATAKEY_OFFSET_UTC)
                 + "&deviceID=" + AppController.getInstance().getActiveDeviceId();
+
+        // TODO Delete test code
+        Log.d(TAG, DETAIL_REPORT_URL + requestUrlParameters);
 
         DetailReportRequest request = new DetailReportRequest(Request.Method.POST,
                 DETAIL_REPORT_URL + requestUrlParameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
+                        // TODO Delete test code
+                        Log.d(TAG, response);
+
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             processDetailReportResponse(responseJson);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            DownloadDataInProgressEvent event = new DownloadDataInProgressEvent();
+                            event.setStatus(DownloadDataStatus.DeviceNotFound);
+                            EventBus.getDefault().post(event);
                         }
                     }
                 },
@@ -527,6 +539,10 @@ public class VolleyHttpClient implements Response.ErrorListener {
                                     for (int i = 0; i < responseDataJson.length(); i++) {
                                         signals.add(Signal.signalFromJson(responseDataJson.getJSONObject(i)));
                                     }
+
+                                    // TODO Delete test code
+                                    Log.d("DOOM", signals.size() + "");
+
                                     LbsCoordinatesValidator validator = new ActisCoordinatesValidatorFromNetwork(signals);
                                     validator.validate();
                                 } catch (JSONException je) {
@@ -649,9 +665,14 @@ public class VolleyHttpClient implements Response.ErrorListener {
                                 stopArray.getJSONObject(0).getDouble("lng")));
                     }
                 } catch (JSONException e) {
+                    e.printStackTrace();
                     Log.d(TAG, "JSON Exception at processDetailReportResponse()");
                 }
             }
+
+            DownloadDataInProgressEvent downloadEvent = new DownloadDataInProgressEvent();
+            downloadEvent.setStatus(DownloadDataStatus.Success);
+            EventBus.getDefault().post(downloadEvent);
 
             PacketsForDetailReportEvent event = new PacketsForDetailReportEvent();
             event.setCoordinatesForMoving(coordinatesMovingForDetailReport);
@@ -808,9 +829,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                         if (Calendar.getInstance().getTimeInMillis() - startTime > 5000) {
                             break;
                         }
-
-                        // TODO Delete test code
-                        Log.d(TAG, "Stall here");
                     }
 
                     ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();

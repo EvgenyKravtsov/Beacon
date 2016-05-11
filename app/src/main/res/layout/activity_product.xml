@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Title here"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:textColor="@android:color/black"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/toolbarTitle" />
@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
+        android:background="#ffffffff"
         android:id="@+id/productList" />
 
 </LinearLayout>

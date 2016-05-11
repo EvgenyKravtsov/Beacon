@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityDeviceCurrentLocation_drawerLayout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/actis_app_toolbar_background"
+            android:id="@+id/actisApp_toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Title here"
+                    android:textSize="30sp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/toolbar_title" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/actis_app_green_accent" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/activityDeviceCurrentLocation_mapContainer" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:id="@+id/activityDeviceCurrentLocation_navigationDrawer"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:background="#FFFFFFFF">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/kgk_logo"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FFEB9C53"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityDeviceCurrentLocation_deviceModelLabel"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:textSize="24sp"
+            android:textColor="#FFEB9C53" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityDeviceCurrentLocation_deviceIdLabel"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:textSize="24sp"
+            android:textColor="#FFEB9C53" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FFEB9C53"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityDeviceCurrentLocation_locationButton"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/device_current_location_menu_button_selector"
+            android:text="@string/location_button_label"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:singleLine="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityDeviceCurrentLocation_trackButton"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/device_current_location_menu_button_selector"
+            android:text="@string/daily_track_button_label"
+            android:textSize="20sp"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/activityDeviceCurrentLocation_reportButton"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/device_current_location_menu_button_selector"
+            android:text="@string/report_button_label"
+            android:textSize="20sp"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>

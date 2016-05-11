@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TimePicker
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:calendarViewShown="false"
+    android:timePickerMode="spinner"
+    android:id="@+id/detail_report_activity_time_picker"
+    tools:ignore="UnusedAttribute">
+
+</TimePicker>

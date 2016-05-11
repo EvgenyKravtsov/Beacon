@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.model.DataForDetailReportRequest;
 import kgk.beacon.model.Signal;
 
 /**
@@ -31,6 +32,7 @@ public class ActionCreator {
     public static final String KEY_TO_DATE = "key_to_date";
     public static final String KEY_LAST_STATE_PACKET = "key_last_state_packet";
     public static final String KEY_PACKETS_FOR_TRACK = "key_packets_for_track";
+    public static final String KEY_DATA_FOR_DETAIL_REPORT_REQUEST = "key_data_for_detail_report_request";
 
     public static final String KEY_VALIDATION_SERVER_DATE = "key_validation_server_time";
     public static final String KEY_VALIDATION_MCC = "key_validation_mcc";
@@ -163,8 +165,9 @@ public class ActionCreator {
     }
 
     /** Отправить запрос на получение детального отчета по устройству КГК */
-    public void sendDetailReportRequest() {
-        dispatcher.dispatch(HttpActions.DETAIL_REPORT_REQUEST);
+    public void sendDetailReportRequest(DataForDetailReportRequest data) {
+        dispatcher.dispatch(HttpActions.DETAIL_REPORT_REQUEST,
+                KEY_DATA_FOR_DETAIL_REPORT_REQUEST, data);
     }
 
     /** Отправить запрос для получения координат по LBS данным */

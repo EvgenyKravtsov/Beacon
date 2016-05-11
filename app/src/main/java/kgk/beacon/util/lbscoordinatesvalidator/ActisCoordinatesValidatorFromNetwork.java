@@ -106,7 +106,12 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
                 for (Signal signal : signals) {
                     actisDatabaseDao.insertSignal(signal);
                 }
-                actionCreator.updateLastSignal(actisDatabaseDao.getLastSignalsByDeviceId(1).get(0));
+
+                try {
+                    actionCreator.updateLastSignal(actisDatabaseDao.getLastSignalsByDeviceId(1).get(0));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         databaseWriterThread.start();
@@ -114,6 +119,10 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
 
     /** Отправить запросы на проверки координат местоположения */
     private void sendValidationRequests() {
+
+        // TODO Delete test code
+        Log.d("DOOM", signalsToValidate.size() + " V");
+
         signalsToValidateCount = signalsToValidate.size();
         signalsValidated = 0;
         EventBus.getDefault().register(this);

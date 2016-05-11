@@ -70,9 +70,6 @@
     <string name="on_actis_search_turned_on_message">Search on query has been sent. Actis beacon will send coordinates every 20 minutes after receiving command</string>
     <string name="on_actis_search_turned_off_message">Search off query has been sent</string>
 
-    <!-- Strings for DeviceCurrentLocationActivity -->
-    <string name="device_current_location_activity_action_bar_title">Device location</string>
-
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Period</string>
     <string name="track_button_label">Track</string>
@@ -115,7 +112,8 @@
     <string name="settings_gprs_spinner_on">On</string>
     <string name="settings_gprs_spinner_off">Off</string>
 
-    <!-- Strings for DeviceCurrentLocationActivity -->
+    <!-- Strings for MonitoringActivity -->
+    <string name="monitoring_activity_toolbar_title">Location</string>
     <string name="daily_track_button_label">Track for day</string>
     <string name="current_location_button_label">Current Location</string>
     <string name="report_button_label">Detailed report</string>
@@ -128,6 +126,12 @@
     <string name="satellite_map">Satellite</string>
     <string name="hybrid_map">Hybrid</string>
     <string name="google_map">Google</string>
+
+    <!-- Strings for DetailReportActivity -->
+    <string name="detail_report_activity_toolbar_title">Detail report</string>
+    <string name="building_detail_report_label">Period</string>
+    <string name="delta_hint">Minimal stop time (sec)</string>
+    <string name="offset_hint">Time offset in UTC (min)</string>
 
     <!-- Strings for HelpScreen -->
     <string name="help_screen_title">Help</string>

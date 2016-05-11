@@ -37,7 +37,7 @@ import kgk.beacon.stores.ActisStore;
 import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.util.AppController;
 import kgk.beacon.view.actis.InformationActivity;
-import kgk.beacon.view.devices.DeviceCurrentLocationActivity;
+import kgk.beacon.view.devices.activity.MonitoringActivity;
 import kgk.beacon.view.general.adapter.DeviceListAdapter;
 import kgk.beacon.view.generator.activity.MainActivity;
 
@@ -95,7 +95,8 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
             deviceListView.expandGroup(0);
         }
 
-        showDevelopmentProgressDialog();
+        // TODO Change development dialog behaviour
+        // showDevelopmentProgressDialog();
     }
 
     @Override
@@ -338,7 +339,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
                 break;
             case AppController.T5_DEVICE_TYPE:
             case AppController.T6_DEVICE_TYPE:
-                Intent loadDeviceCurrentLocationActivityIntent = new Intent(getActivity(), DeviceCurrentLocationActivity.class);
+                Intent loadDeviceCurrentLocationActivityIntent = new Intent(getActivity(), MonitoringActivity.class);
                 startActivity(loadDeviceCurrentLocationActivityIntent);
                 break;
         }

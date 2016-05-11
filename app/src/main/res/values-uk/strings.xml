@@ -71,10 +71,6 @@
     <string name="on_actis_search_turned_on_message">Команда включения Автопоиска отправлена. Ожидайте сообщения с координатами устройства каждые 20 минут</string>
     <string name="on_actis_search_turned_off_message">Команда выключения Автопоиска отправлена</string>
 
-    <!-- Strings for DeviceCurrentLocationActivity -->
-    <string name="device_current_location_activity_action_bar_title">
-Місцеположення пристрою</string>
-
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Період</string>
     <string name="track_button_label">Трек</string>
@@ -117,7 +113,8 @@
     <string name="settings_gprs_spinner_on">Вкл</string>
     <string name="settings_gprs_spinner_off">Викл</string>
 
-    <!-- Strings for DeviceCurrentLocationActivity -->
+    <!-- Strings for MonitoringActivity -->
+    <string name="monitoring_activity_toolbar_title">Місцеположення</string>
     <string name="daily_track_button_label">Трек за день</string>
     <string name="current_location_button_label">Місцеположення</string>
     <string name="report_button_label">Детальний звіт</string>
@@ -130,6 +127,12 @@
     <string name="satellite_map">Супутник</string>
     <string name="hybrid_map">Гібрид</string>
     <string name="google_map">Google</string>
+
+    <!-- Strings for DetailReportActivity -->
+    <string name="detail_report_activity_toolbar_title">Детальный отчет</string>
+    <string name="building_detail_report_label">Период</string>
+    <string name="delta_hint">Минимальное время остановки (сек)</string>
+    <string name="offset_hint">Смещение времени от UTC (мин)</string>
 
     <!-- Strings for HelpScreen -->
     <string name="help_screen_title">Допомога</string>
