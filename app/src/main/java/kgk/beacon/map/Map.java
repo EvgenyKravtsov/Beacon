@@ -45,4 +45,6 @@ public interface Map {
 
     /** Активировать кнопку управления полноэкранным режимом карты */
     void turnOnFullscreenButton();
+
+    int getCurrentZoom();
 }

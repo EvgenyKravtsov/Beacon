@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/osMapFragment_mapView"
-        android:layerType="software" />
+        android:layerType="software"
+        tools:ignore="UnusedAttribute" />
 
     <Button
         android:layout_width="50dp"
@@ -18,8 +20,7 @@
         android:layout_gravity="top|end"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:elevation="12dp" />
+        android:layout_marginTop="10dp" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -29,9 +30,21 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:elevation="12dp"
+        android:layout_marginBottom="70dp"
         android:visibility="gone"
-        android:id="@+id/fragmentOsmMap_fullscreenButton" />
+        android:id="@+id/fragmentOsmMap_fullscreenButton"
+        android:contentDescription="@string/map_button_label" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/on_map_button_selector"
+        android:id="@+id/fragmentOsmMap_centerButton"
+        android:src="@drawable/center_map_icon"
+        android:contentDescription="@string/map_button_label" />
 
 </FrameLayout>

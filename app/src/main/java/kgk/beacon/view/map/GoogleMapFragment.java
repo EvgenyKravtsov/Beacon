@@ -28,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,6 +50,7 @@ import kgk.beacon.map.event.MapReadyForUseEvent;
 import kgk.beacon.model.Signal;
 import kgk.beacon.util.DateFormatter;
 import kgk.beacon.util.ImageProcessor;
+import kgk.beacon.view.actis.event.CenterMapEvent;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
 /**
@@ -57,13 +59,12 @@ import kgk.beacon.view.actis.event.FullscreenEvent;
 public class GoogleMapFragment extends Fragment implements Map,
                                                            OnMapReadyCallback {
 
-    // TODO Handle google not load map event
-
     private static final String TAG = GoogleMapFragment.class.getSimpleName();
 
     private GoogleMap googleMap;
     private Marker signalInfoMarker;
     private ImageButton fullscreenButton;
+    private ImageButton centerButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -93,6 +94,14 @@ public class GoogleMapFragment extends Fragment implements Map,
                 FullscreenEvent event = new FullscreenEvent();
                 event.setFullscreenButton(button);
                 EventBus.getDefault().post(event);
+            }
+        });
+
+        centerButton = (ImageButton) view.findViewById(R.id.fragmentGoogleMap_centerButton);
+        centerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new CenterMapEvent());
             }
         });
 
@@ -316,7 +325,12 @@ public class GoogleMapFragment extends Fragment implements Map,
 
     @Override
     public void addCircleZone(double latitude, double longitude, int radius) {
-
+        googleMap.addCircle(new CircleOptions()
+                .center(new LatLng(latitude, longitude))
+                .radius(radius)
+                .strokeColor(getResources().getColor(R.color.main_brand_pink))
+                .strokeWidth(2.0f)
+                .fillColor(getResources().getColor(R.color.main_brand_pink_transparent)));
     }
 
     @Override
@@ -327,6 +341,12 @@ public class GoogleMapFragment extends Fragment implements Map,
     @Override
     public void turnOnFullscreenButton() {
         fullscreenButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public int getCurrentZoom() {
+        CameraPosition cameraPosition = googleMap.getCameraPosition();
+        return (int) cameraPosition.zoom;
     }
 
     ////

@@ -25,9 +25,22 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="100dp"
-        android:elevation="12dp"
+        android:layout_marginBottom="156dp"
         android:visibility="gone"
-        android:id="@+id/fragmentGoogleMap_fullscreenButton" />
+        android:id="@+id/fragmentGoogleMap_fullscreenButton"
+        android:contentDescription="@string/map_button_label" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/on_map_button_selector"
+        android:src="@drawable/center_map_icon"
+        android:scaleType="center"
+        android:id="@+id/fragmentGoogleMap_centerButton"
+        android:contentDescription="@string/map_button_label" />
 
 </FrameLayout>

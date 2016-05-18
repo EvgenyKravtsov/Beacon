@@ -34,6 +34,7 @@ import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.networking.gcm.GCMClientManager;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.AppController;
+import kgk.beacon.view.actis.event.CenterMapEvent;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
 /**
@@ -183,9 +184,13 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         if (signal != null) {
             map.addCustomMarkerPoint(signal.getDirection(), signal.getLatitude(), signal.getLongitude());
             map.moveCamera(signal.getLatitude(), signal.getLongitude(), 13);
+
+            if (signal.getSatellites() == 0) {
+                map.addCircleZone(signal.getLatitude(), signal.getLongitude(), Map.DEFAULT_CIRCLE_ZONE_RADIUS);
+            }
         }
 
-        map.addSignalInfoMarker(signal);
+        // map.addSignalInfoMarker(signal);
     }
 
     /** Обновить показания значка батареи */
@@ -216,10 +221,12 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
     }
 
     private void showDownloadDataDialog() {
-        downloadDataDialog = new ProgressDialog(this);
-        downloadDataDialog.setTitle(getString(R.string.download_data_progress_dialog_title));
-        downloadDataDialog.setMessage(getString(R.string.download_data_progress_dialog_message));
-        downloadDataDialog.show();
+        if (downloadDataDialog == null) {
+            downloadDataDialog = new ProgressDialog(this);
+            downloadDataDialog.setTitle(getString(R.string.download_data_progress_dialog_title));
+            downloadDataDialog.setMessage(getString(R.string.download_data_progress_dialog_message));
+            downloadDataDialog.show();
+        }
     }
 
     ////
@@ -275,6 +282,11 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
             fullscreenButton.setImageDrawable(getResources().getDrawable(R.drawable.fullscreen_enter_icon_grey));
             fragmentContainer.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void onEventMainThread(CenterMapEvent event) {
+        Signal signal = actisStore.getSignal();
+        map.moveCamera(signal.getLatitude(), signal.getLongitude(), map.getCurrentZoom());
     }
 
     public void onEventMainThread(DownloadDataInProgressEvent event) {

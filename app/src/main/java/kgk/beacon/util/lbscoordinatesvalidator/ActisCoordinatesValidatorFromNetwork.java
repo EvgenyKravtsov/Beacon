@@ -1,7 +1,5 @@
 package kgk.beacon.util.lbscoordinatesvalidator;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -83,6 +81,8 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
             if (firstSignal.getActisDate() == signalToCompare.getActisDate()) {
                 if (firstSignal.getDate() != signalToCompare.getDate()) {
                     signalsToValidate.add(firstSignal);
+                    firstSignal.setLbsDeteceted(true);
+                    firstSignal.setSatellites(0);
                 }
             }
         }
@@ -92,6 +92,8 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
             Signal nextSignal = signals.get(i + 1);
             if (signal.getActisDate() == nextSignal.getActisDate() && nextSignal.getCellId() != null) {
                 signalsToValidate.add(nextSignal);
+                nextSignal.setLbsDeteceted(true);
+                nextSignal.setSatellites(0);
             }
         }
         signals.removeAll(signalsToValidate);
@@ -119,10 +121,6 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
 
     /** Отправить запросы на проверки координат местоположения */
     private void sendValidationRequests() {
-
-        // TODO Delete test code
-        Log.d("DOOM", signalsToValidate.size() + " V");
-
         signalsToValidateCount = signalsToValidate.size();
         signalsValidated = 0;
         EventBus.getDefault().register(this);
@@ -150,12 +148,6 @@ public class ActisCoordinatesValidatorFromNetwork implements LbsCoordinatesValid
                     signalToChange.setLatitude(event.getLatitude());
                     signalToChange.setLongitude(event.getLongitude());
                 }
-
-                signalToChange.setLbsDeteceted(true);
-                signalToChange.setSatellites(0);
-
-                // TODO Delete test code
-                Log.d(TAG, "LBS Validated");
             }
         }
 

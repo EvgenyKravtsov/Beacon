@@ -27,6 +27,7 @@ import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.overlays.MapEventsOverlay;
 import org.osmdroid.bonuspack.overlays.MapEventsReceiver;
+import org.osmdroid.bonuspack.overlays.Polygon;
 import org.osmdroid.bonuspack.overlays.Polyline;
 import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
@@ -55,6 +56,7 @@ import kgk.beacon.map.osm.XYTileSourceKGK;
 import kgk.beacon.model.Signal;
 import kgk.beacon.util.DateFormatter;
 import kgk.beacon.util.ImageProcessor;
+import kgk.beacon.view.actis.event.CenterMapEvent;
 import kgk.beacon.view.actis.event.FullscreenEvent;
 
 /**
@@ -69,6 +71,7 @@ public class OSMMapFragment extends Fragment implements Map {
     private MapClickListener mapClickListener;
     private MarkerClickListener markerClickListener;
     private ImageButton fullscreenButton;
+    private ImageButton centerButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -115,6 +118,14 @@ public class OSMMapFragment extends Fragment implements Map {
                 FullscreenEvent event = new FullscreenEvent();
                 event.setFullscreenButton(button);
                 EventBus.getDefault().post(event);
+            }
+        });
+
+        centerButton = (ImageButton) view.findViewById(R.id.fragmentOsmMap_centerButton);
+        centerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new CenterMapEvent());
             }
         });
 
@@ -373,7 +384,13 @@ public class OSMMapFragment extends Fragment implements Map {
 
     @Override
     public void addCircleZone(double latitude, double longitude, int radius) {
-
+        Polygon circle = new Polygon(getActivity());
+        circle.setPoints(Polygon.pointsAsCircle(new GeoPoint(latitude, longitude), radius));
+        circle.setStrokeColor(getResources().getColor(R.color.main_brand_pink));
+        circle.setStrokeWidth(2.0f);
+        circle.setFillColor(getResources().getColor(R.color.main_brand_pink_transparent));
+        map.getOverlays().add(circle);
+        map.invalidate();
     }
 
     @Override
@@ -388,6 +405,11 @@ public class OSMMapFragment extends Fragment implements Map {
     @Override
     public void turnOnFullscreenButton() {
         fullscreenButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public int getCurrentZoom() {
+        return map.getZoomLevel();
     }
 
     ////

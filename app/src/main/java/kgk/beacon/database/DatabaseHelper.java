@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // TODO Increment database version before release
 
     private static final String DATABASE_NAME = "signal_database";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     static final String TABLE_SIGNAL = "table_signal";
     static final String COLUMN_ID = "_id";

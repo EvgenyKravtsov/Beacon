@@ -70,6 +70,8 @@ public class AppController extends Application {
     public static final String T5_DEVICE_TYPE = "T5";
     public static final String GENERATOR_DEVICE_TYPE = "Generator";
 
+    public static String currentUserLogin;
+
     private static AppController instance;
 
     private long activeDeviceId;

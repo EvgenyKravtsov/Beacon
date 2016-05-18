@@ -69,6 +69,7 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
     private MapClickListener mapClickListener;
     private MarkerClickListener markerClickListener;
     private ImageButton fullscreenButton;
+    private ImageButton centerButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -117,6 +118,9 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
                 EventBus.getDefault().post(event);
             }
         });
+
+        centerButton = (ImageButton) view.findViewById(R.id.fragmentOsmMap_centerButton);
+        centerButton.setVisibility(View.GONE);
 
         return view;
     }
@@ -426,6 +430,11 @@ public class OSMMapFragmentForActis extends Fragment implements Map {
     @Override
     public void turnOnFullscreenButton() {
         fullscreenButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public int getCurrentZoom() {
+        return 0;
     }
 
     ////

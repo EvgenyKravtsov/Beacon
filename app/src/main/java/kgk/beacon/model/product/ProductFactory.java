@@ -28,7 +28,7 @@ public class ProductFactory {
         actisProduct.setProductType(ProductType.Actis);
         actisProduct.setImage(AppController.getInstance()
                 .getResources().getDrawable(R.drawable.dummy_image_placeholder));
-        actisProduct.setTitle("Актис");
+        actisProduct.setTitle("Actis");
         actisProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
                 "ornare ex, nec elementum enim cursus vitae. Pellentesque habitant morbi tristique " +

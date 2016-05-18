@@ -23,6 +23,7 @@ import kgk.beacon.map.event.MapChangeEvent;
 import kgk.beacon.map.event.MapReadyForUseEvent;
 import kgk.beacon.model.Signal;
 import kgk.beacon.stores.ActisStore;
+import kgk.beacon.view.actis.event.CenterMapEvent;
 
 /**
  * Экран с полноразмерной картой
@@ -156,6 +157,10 @@ public class MapCustomActivity extends AppCompatActivity implements MapClickList
 
         map.moveCamera(signal.getLatitude(), signal.getLongitude(), 13);
 
+        if (signal.getSatellites() == 0) {
+            map.addCircleZone(signal.getLatitude(), signal.getLongitude(), Map.DEFAULT_CIRCLE_ZONE_RADIUS);
+        }
+
 //        LatLng cameraCoordinates = MapManager.getCameraCoordinates();
 //        int cameraZoom = MapManager.getCameraZoom();
 //        if (cameraCoordinates != null && cameraZoom != 0) {
@@ -179,5 +184,9 @@ public class MapCustomActivity extends AppCompatActivity implements MapClickList
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, mapFragment)
                 .commit();
+    }
+
+    public void onEventMainThread(CenterMapEvent event) {
+        map.moveCamera(signal.getLatitude(), signal.getLongitude(), map.getCurrentZoom());
     }
 }

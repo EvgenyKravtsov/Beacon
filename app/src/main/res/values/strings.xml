@@ -69,6 +69,7 @@
     <string name="on_actis_query_success_message">Location query has been sent. Awaiting coordinates from Actis beacon</string>
     <string name="on_actis_search_turned_on_message">Search on query has been sent. Actis beacon will send coordinates every 20 minutes after receiving command</string>
     <string name="on_actis_search_turned_off_message">Search off query has been sent</string>
+    <string name="balance_view_label">Balance:</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Period</string>
@@ -150,12 +151,39 @@
         by polyline. The signals are from history list. To see detailed information about a signal
         you can tap on corresponding marker</string>
     <string name="auto_search_description_title">Autosearch</string>
-    <string name="auto_search_description">Turning the lock switch enables and disables automatic search mode for your Actis beacon — device starts to send coordinates every 20 minutes.\n\n
-            @1 — Autosearch mode enabled;\n
-            @2 — Awaiting confirmation from beacon;\n
-            @3 — Autosearch mode disabled;\n\n
-            To enable Autosearch mode move switch to right. @4 ----> @5 ----> @6\n\n
-            To disable Autosearch mode move switch to left. @7 ----> @8 ----> @9</string>
+    <string name="auto_search_description">В режиме Автопоиск устройство каждые 20 минут
+        выходит на связь и отправляет координаты своего местоположения.\n\n
+
+        Включение режима Автопоиск\n\n
+        @1\n\n
+
+        Для включения режима Автопоиск сдвиньте ползунок с изображением
+        серого замка вправо. При этом цвет замка изменится на желтый. В
+        зависимости от настроек устройства, время ожидания включения режима
+        Автопоиск может составить от 1 минуты до 24 часов. В течение указанного
+        промежутка времени цвет замка будет оставаться желтым. В момент
+        включения режима Автопоиск цвет замка изменится на зеленый.\n\n
+
+        Выключение режима Автопоиск\n\n
+        @2\n\n
+
+        Для выключения режима Автопоиск сдвиньте ползунок с изображением
+        зеленого замка влево. Цвет замка изменится на желтый. В зависимости от
+        момента отправки команды устройству, время ожидания выключения
+        режима Автопоиск составит от 1 до 20 минут. В течение указанного
+        промежутка времени цвет замка будет оставаться желтым. В момент
+        выключения режима Автопоиск цвет замка изменится на серый.
+    </string>
+    <string name="auto_search_on_label">Включение режима Автопоиск</string>
+    <string name="auto_search_off_label">Выключение режима Автопоиск</string>
+    <string name="turning_on_word">включения</string>
+    <string name="turning_off_word">выключения</string>
+    <string name="grey_word_1">серого</string>
+    <string name="grey_word_2">серый</string>
+    <string name="yellow_word_1">желтый</string>
+    <string name="yellow_word_2">желтым</string>
+    <string name="green_word_1">зеленый</string>
+    <string name="green_word_2">зеленого</string>
 
     <!-- Strings for Language Settings -->
     <string name="login_menu_language_setting_label">Language</string>

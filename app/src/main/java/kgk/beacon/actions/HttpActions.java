@@ -27,6 +27,8 @@ public interface HttpActions {
 
     String ACTIS_COORDINATES_VALIDATION_REQUEST = "actis_coordinates_validation_request";
 
+    String GET_USER_INFO_REQUEST = "get_user_info_request";
+
     String GENERATOR_SEND_MANUAL_MODE_COMMAND = "generator_send_manual_mode_command";
 
     String GENERATOR_SEND_AUTO_MODE_COMMAND = "generator_send_auto_mode_command";

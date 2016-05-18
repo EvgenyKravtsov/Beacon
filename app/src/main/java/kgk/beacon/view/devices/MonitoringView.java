@@ -35,4 +35,6 @@ public interface MonitoringView {
     void dismissDownloadProgressDialog();
 
     void showToastMessage(String message);
+
+    void centerMap(double latitude, double longitude);
 }

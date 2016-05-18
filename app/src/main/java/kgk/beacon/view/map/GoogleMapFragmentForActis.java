@@ -62,6 +62,7 @@ public class GoogleMapFragmentForActis extends Fragment implements Map,
     private GoogleMap googleMap;
     private Marker signalInfoMarker;
     private ImageButton fullscreenButton;
+    private ImageButton centerButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -93,6 +94,9 @@ public class GoogleMapFragmentForActis extends Fragment implements Map,
                 EventBus.getDefault().post(event);
             }
         });
+
+        centerButton = (ImageButton) view.findViewById(R.id.fragmentGoogleMap_centerButton);
+        centerButton.setVisibility(View.GONE);
 
         return view;
     }
@@ -345,6 +349,11 @@ public class GoogleMapFragmentForActis extends Fragment implements Map,
     @Override
     public void turnOnFullscreenButton() {
         fullscreenButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public int getCurrentZoom() {
+        return 0;
     }
 
     ////

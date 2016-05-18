@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -80,9 +79,6 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
         if (presenter == null) {
             presenter = new MonitoringPresenter(this);
         }
-
-        // TODO Delete test code
-        Log.d(TAG, "on Start");
     }
 
     @Override
@@ -219,6 +215,11 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void centerMap(double latitude, double longitude) {
+        map.moveCamera(latitude, longitude, map.getCurrentZoom());
+    }
+
     ////
 
     @OnClick(R.id.activityDeviceCurrentLocation_locationButton)
@@ -258,10 +259,6 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
 
     @OnClick(R.id.activityDeviceCurrentLocation_reportButton)
     public void onReportButtonClick(View view) {
-        // TODO New logic under construction
-        // isTrackShown = true;
-        // presenter.sendDetailReportRequest();
-
         Intent startDetailtReportActivity = new Intent(this, DetailReportActivity.class);
         startActivityForResult(startDetailtReportActivity, 1);
         drawerLayout.closeDrawer(GravityCompat.START);

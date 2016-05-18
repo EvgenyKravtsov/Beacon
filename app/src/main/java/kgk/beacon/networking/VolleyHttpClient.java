@@ -36,6 +36,7 @@ import kgk.beacon.model.DataForDetailReportRequest;
 import kgk.beacon.model.Signal;
 import kgk.beacon.model.T5Packet;
 import kgk.beacon.model.T6Packet;
+import kgk.beacon.networking.event.BalanceResponseReceived;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
 import kgk.beacon.networking.event.SearchModeStatusEvent;
@@ -56,17 +57,20 @@ import kgk.beacon.view.general.event.StartActivityEvent;
  */
 public class VolleyHttpClient implements Response.ErrorListener {
 
+    // TODO Return api instead of dev12
+
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
-    private static final String AUTHENTICATION_URL = "http://api.trezub.ru/api2/beacon/authorize";
-    private static final String DEVICE_LIST_URL = "http://api.trezub.ru/api2/beacon/getdeviceslist?all=1"; //monitor.kgk-global.com
-    private static final String GET_LAST_STATE_URL = "http://api.trezub.ru/api2/beacon/getdeviceinfo";
-    private static final String GET_LAST_SIGNALS_URL = "http://api.trezub.ru/api2/beacon/getpackets";
-    private static final String QUERY_BEACON_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdrequestinfo";
-    private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdtogglefind";
-    private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettingssms";
+    private static final String AUTHENTICATION_URL = "http://dev12.trezub.ru/api2/beacon/authorize";
+    private static final String DEVICE_LIST_URL = "http://dev12.trezub.ru/api2/beacon/getdeviceslist?all=1"; //monitor.kgk-global.com
+    private static final String GET_LAST_STATE_URL = "http://dev12.trezub.ru/api2/beacon/getdeviceinfo";
+    private static final String GET_LAST_SIGNALS_URL = "http://dev12.trezub.ru/api2/beacon/getpackets";
+    private static final String QUERY_BEACON_REQUEST_URL = "http://dev12.trezub.ru/api2/beacon/cmdrequestinfo";
+    private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://dev12.trezub.ru/api2/beacon/cmdtogglefind";
+    private static final String SETTINGS_REQUEST_URL = "http://dev12.trezub.ru/api2/beacon/cmdsetsettingssms";
     // private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettings";
-    private static final String DETAIL_REPORT_URL = "http://api.trezub.ru/api2/reports/getroute/";
-    private static final String ACTIS_CONFIG_URL = "http://api.trezub.ru/api2/beacon/getactisconfig";
+    private static final String DETAIL_REPORT_URL = "http://dev12.trezub.ru/api2/reports/getroute/";
+    private static final String ACTIS_CONFIG_URL = "http://dev12.trezub.ru/api2/beacon/getactisconfig";
+    private static final String GET_USER_INFO_URL = "http://dev12.trezub.ru/api2/beacon/getuserinfo"; //
 
     private static final String OPEN_CELL_ID_GET_URL = "http://opencellid.org/cell/get";
     private static final String OPEN_CELL_ID_API_KEY = "635c0e4c-afd3-4272-a0ac-66275f6a9c1b";
@@ -145,6 +149,9 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 detailReportRequest(
                         (DataForDetailReportRequest) action.getData().get(ActionCreator.KEY_DATA_FOR_DETAIL_REPORT_REQUEST));
                 break;
+            case HttpActions.GET_USER_INFO_REQUEST:
+                getUserInfoRequest();
+                break;
             case HttpActions.GENERATOR_SEND_MANUAL_MODE_COMMAND:
                 sendManualModeRequestToGenerator();
                 break;
@@ -172,7 +179,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     /** Отправка запроса на авторизацию */
-    private void authenticationRequest(String login, final String password) {
+    private void authenticationRequest(final String login, final String password) {
         final AuthenticationRequest request = new AuthenticationRequest(Request.Method.POST,
                 AUTHENTICATION_URL,
                 new Response.Listener<String>() {
@@ -180,7 +187,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                     public void onResponse(String response) {
                         try {
                             JSONObject responseJson = new JSONObject(response);
-                            processAuthenticationResponseJson(responseJson);
+                            processAuthenticationResponseJson(responseJson, login);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -436,18 +443,11 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 + "&offsetUTC=" + data.getDataMap().get(DataForDetailReportRequest.DATAKEY_OFFSET_UTC)
                 + "&deviceID=" + AppController.getInstance().getActiveDeviceId();
 
-        // TODO Delete test code
-        Log.d(TAG, DETAIL_REPORT_URL + requestUrlParameters);
-
         DetailReportRequest request = new DetailReportRequest(Request.Method.POST,
                 DETAIL_REPORT_URL + requestUrlParameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        // TODO Delete test code
-                        Log.d(TAG, response);
-
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             processDetailReportResponse(responseJson);
@@ -466,12 +466,38 @@ public class VolleyHttpClient implements Response.ErrorListener {
         requestQueue.add(request);
     }
 
+    private void getUserInfoRequest() {
+        GetUserInfoRequest request = new GetUserInfoRequest(GET_USER_INFO_URL,
+                new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        processGetUserInfoResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        // TODO Delete test code
+                        Log.d("USER INFO", "error - " + error.getMessage());
+                    }
+                });
+
+        request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
+        requestQueue.add(request);
+    }
+
     /** Обработка результатов запроса на авторизацию */
-    private void processAuthenticationResponseJson(JSONObject responseJson) throws JSONException {
+    private void processAuthenticationResponseJson(JSONObject responseJson,
+                                                   String login) throws JSONException {
         if (responseJson.getBoolean("status")) {
             String[] parsedCookie = ((String) responseJson.get("Cookie")).split(";");
             phpSessId = parsedCookie[0];
             deviceListRequest(phpSessId);
+
+            AppController.currentUserLogin = login;
         } else {
             StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
             event.setLoginSuccessful(false);
@@ -539,9 +565,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
                                     for (int i = 0; i < responseDataJson.length(); i++) {
                                         signals.add(Signal.signalFromJson(responseDataJson.getJSONObject(i)));
                                     }
-
-                                    // TODO Delete test code
-                                    Log.d("DOOM", signals.size() + "");
 
                                     LbsCoordinatesValidator validator = new ActisCoordinatesValidatorFromNetwork(signals);
                                     validator.validate();
@@ -685,9 +708,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
     /** Обработка результатов запроса на получение текущих настроек устройства Actis */
     private void processGetSettingsRequest(JSONObject dataJson) {
-        // TODO Delete test code
-        Log.d(TAG, dataJson.toString());
-
         try {
             Boolean status = dataJson.getBoolean("status");
             if (status) {
@@ -721,6 +741,19 @@ public class VolleyHttpClient implements Response.ErrorListener {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void processGetUserInfoResponse(JSONObject response) {
+        try {
+            double balance = response.getDouble("balance");
+
+            BalanceResponseReceived event = new BalanceResponseReceived();
+            event.setResultCode(0);
+            event.setBalance(Double.toString(balance));
+            EventBus.getDefault().post(event);
+        } catch (JSONException je) {
+            je.printStackTrace();
         }
     }
 
@@ -789,8 +822,11 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO Delete test code
-                        Log.d(TAG, "Both requests failed");
+                        ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();
+                        event.setServerDate(serverDate);
+                        event.setLatitude(0);
+                        event.setLongitude(0);
+                        EventBus.getDefault().post(event);
                     }
                 });
 

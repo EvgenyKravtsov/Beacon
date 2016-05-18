@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
@@ -122,54 +122,78 @@ public class HelpActivity extends AppCompatActivity {
     private SpannableStringBuilder prepareImagedString(String sourceString) {
         int index1 = sourceString.indexOf("@1");
         int index2 = sourceString.indexOf("@2");
-        int index3 = sourceString.indexOf("@3");
-        int index4 = sourceString.indexOf("@4");
-        int index5 = sourceString.indexOf("@5");
-        int index6 = sourceString.indexOf("@6");
-        int index7 = sourceString.indexOf("@7");
-        int index8 = sourceString.indexOf("@8");
-        int index9 = sourceString.indexOf("@9");
 
-        String targetString = getString(R.string.auto_search_description_title);
+        List<String> stringsToBold = new ArrayList<>();
+        stringsToBold.add(getString(R.string.auto_search_description_title));
+        stringsToBold.add(getString(R.string.auto_search_on_label));
+        stringsToBold.add(getString(R.string.auto_search_off_label));
+        stringsToBold.add(getString(R.string.turning_on_word));
+        stringsToBold.add(getString(R.string.turning_off_word));
+        stringsToBold.add(getString(R.string.grey_word_1));
+        stringsToBold.add(getString(R.string.grey_word_2));
+        stringsToBold.add(getString(R.string.yellow_word_1));
+        stringsToBold.add(getString(R.string.yellow_word_2));
+        stringsToBold.add(getString(R.string.green_word_1));
+        stringsToBold.add(getString(R.string.green_word_2));
+
+        List<String> stringsToGrey = new ArrayList<>();
+        stringsToGrey.add(getString(R.string.grey_word_1));
+        stringsToGrey.add(getString(R.string.grey_word_2));
+
+        List<String> stringsToYellow = new ArrayList<>();
+        stringsToYellow.add(getString(R.string.yellow_word_1));
+        stringsToYellow.add(getString(R.string.yellow_word_2));
+
+        List<String> stringsToGreen = new ArrayList<>();
+        stringsToGreen.add(getString(R.string.green_word_1));
+        stringsToGreen.add(getString(R.string.green_word_2));
+
+
         List<Integer> boldIndexes = new ArrayList<>();
-
-        int boldEntriesCounter = 0;
-        while (boldEntriesCounter != -1) {
-            boldEntriesCounter = sourceString.indexOf(targetString, boldEntriesCounter);
-
-            Log.d(TAG, " " + boldEntriesCounter);
-
-            if (boldEntriesCounter != -1) {
-                boldIndexes.add(boldEntriesCounter);
-                boldEntriesCounter += targetString.length();
-            }
-        }
-
         SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append(sourceString);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_grey_thumb_with_lock),
-                index1, index1 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_yellow_thumb_with_lock),
-                index2, index2 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_green_thumb_with_lock),
-                index3, index3 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_grey_thumb_with_lock),
-                index4, index4 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_yellow_thumb_with_lock),
-                index5, index5 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_green_thumb_with_lock),
-                index6, index6 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_green_thumb_with_lock),
-                index7, index7 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_yellow_thumb_with_lock),
-                index8, index8 + 2, ImageSpan.ALIGN_BASELINE);
-        builder.setSpan(new ImageSpan(this, R.drawable.search_custom_switch_grey_thumb_with_lock),
-                index9, index9 + 2, ImageSpan.ALIGN_BASELINE);
 
-        for (int boldIndex : boldIndexes) {
-            StyleSpan boldStyle = new StyleSpan(Typeface.BOLD);
-            builder.setSpan(boldStyle, boldIndex, boldIndex + targetString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        for (String stringToBold : stringsToBold) {
+            int boldEntriesCounter = 0;
+            while (boldEntriesCounter != -1) {
+                boldEntriesCounter = sourceString.indexOf(stringToBold, boldEntriesCounter);
+
+                if (boldEntriesCounter != -1) {
+                    boldIndexes.add(boldEntriesCounter);
+                    boldEntriesCounter += stringToBold.length();
+                }
+            }
+
+            for (int boldIndex : boldIndexes) {
+                StyleSpan boldStyle = new StyleSpan(Typeface.BOLD);
+                builder.setSpan(boldStyle, boldIndex, boldIndex + stringToBold.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+                if (stringsToGrey.contains(stringToBold)) {
+                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources()
+                            .getColor(R.color.actis_app_toolbar_background));
+                    builder.setSpan(colorSpan, boldIndex, boldIndex + stringToBold.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                }
+
+                if (stringsToYellow.contains(stringToBold)) {
+                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources()
+                            .getColor(R.color.actis_app_yellow_accent));
+                    builder.setSpan(colorSpan, boldIndex, boldIndex + stringToBold.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                }
+
+                if (stringsToGreen.contains(stringToBold)) {
+                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources()
+                            .getColor(R.color.battery_text_color));
+                    builder.setSpan(colorSpan, boldIndex, boldIndex + stringToBold.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                }
+            }
+
+            boldIndexes.clear();
         }
+
+        builder.setSpan(new ImageSpan(this, R.drawable.search_on_scheme),
+                index1, index1 + 2, ImageSpan.ALIGN_BASELINE);
+        builder.setSpan(new ImageSpan(this, R.drawable.search_off_scheme),
+                index2, index2 + 2, ImageSpan.ALIGN_BASELINE);
 
         return builder;
     }

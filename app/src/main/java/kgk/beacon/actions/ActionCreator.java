@@ -184,6 +184,10 @@ public class ActionCreator {
                 KEY_VALIDATION_LAC, lacHex);
     }
 
+    public void sendGetUserInfoRequest() {
+        dispatcher.dispatch(HttpActions.GET_USER_INFO_REQUEST);
+    }
+
     //// Generator actions
 
     public void sendManualModeCommandToGenerator() {

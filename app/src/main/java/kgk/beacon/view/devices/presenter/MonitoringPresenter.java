@@ -24,11 +24,14 @@ import kgk.beacon.stores.PacketsForTrackReadyEvent;
 import kgk.beacon.stores.T5Store;
 import kgk.beacon.stores.T6Store;
 import kgk.beacon.util.AppController;
+import kgk.beacon.view.actis.event.CenterMapEvent;
 import kgk.beacon.view.devices.MonitoringView;
 
 public class MonitoringPresenter {
 
     private MonitoringView view;
+    private double latitude;
+    private double longitude;
 
     ////
 
@@ -74,12 +77,16 @@ public class MonitoringPresenter {
                 direction = t6Store.getLastStatePacket().getDirection();
                 latitude = t6Store.getLastStatePacket().getLatitude();
                 longitude = t6Store.getLastStatePacket().getLongitude();
+                this.latitude = t6Store.getLastStatePacket().getLatitude();
+                this.longitude = t6Store.getLastStatePacket().getLongitude();
                 break;
             case AppController.T5_DEVICE_TYPE:
                 T5Store t5Store = T5Store.getInstance(Dispatcher.getInstance(EventBus.getDefault()));
                 direction = t5Store.getLastStatePacket().getDirection();
                 latitude = t5Store.getLastStatePacket().getLatitude();
                 longitude = t5Store.getLastStatePacket().getLongitude();
+                this.latitude = t5Store.getLastStatePacket().getLatitude();
+                this.longitude = t5Store.getLastStatePacket().getLongitude();
                 break;
         }
 
@@ -106,6 +113,8 @@ public class MonitoringPresenter {
             int direction = t6Store.getLastStatePacket().getDirection();
             double latitude = t6Store.getLastStatePacket().getLatitude();
             double longitude = t6Store.getLastStatePacket().getLongitude();
+            this.latitude = t6Store.getLastStatePacket().getLatitude();
+            this.longitude = t6Store.getLastStatePacket().getLongitude();
             view.clearMap();
             view.addCustomMarkerPoint(direction, latitude, longitude);
             LatLng cameraCoordinates = MapManager.getCameraCoordinates();
@@ -124,6 +133,8 @@ public class MonitoringPresenter {
             int direction = t5Store.getLastStatePacket().getDirection();
             double latitude = t5Store.getLastStatePacket().getLatitude();
             double longitude = t5Store.getLastStatePacket().getLongitude();
+            this.latitude = t5Store.getLastStatePacket().getLatitude();
+            this.longitude = t5Store.getLastStatePacket().getLongitude();
             view.clearMap();
             view.addCustomMarkerPoint(direction, latitude, longitude);
             LatLng cameraCoordinates = MapManager.getCameraCoordinates();
@@ -205,5 +216,9 @@ public class MonitoringPresenter {
                 view.showToastMessage(context.getString(R.string.no_data_for_device_message));
                 break;
         }
+    }
+
+    public void onEventMainThread(CenterMapEvent event) {
+        view.centerMap(latitude, longitude);
     }
 }

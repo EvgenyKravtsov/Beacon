@@ -30,6 +30,7 @@ import kgk.beacon.actions.ActionCreator;
 import kgk.beacon.actions.event.ToggleSearchModeEvent;
 import kgk.beacon.database.ActisDatabaseDao;
 import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.networking.event.BalanceResponseReceived;
 import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
 import kgk.beacon.networking.event.SearchModeStatusEvent;
 import kgk.beacon.stores.ActisStore;
@@ -41,6 +42,8 @@ import kgk.beacon.util.AppController;
 public class InformationFragment extends Fragment implements DialogInterface.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
+    // TODO Save search button state in RAM
+
     public static final String TAG = InformationFragment.class.getSimpleName();
 
     public static final String KEY_QUERY_CONTROL_DATE = "key_query_control_date";
@@ -50,16 +53,19 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 
     private static final String KEY_SEARCH_SWITCH = "key_search_switch";
     private static final String KEY_SEARCH_MODE_AWAITING = "key_search_mode_awaiting";
+    private static final String KEY_BALANCE = "key_balance";
 
     @Bind(R.id.informationFragment_searchButton) RelativeLayout searchButtonFrame;
     @Bind(R.id.switchCustomSearch) SwitchCompat switchCustomSearch;
     @Bind(R.id.searchButtonTextView) TextView searchButtonTextView;
+    @Bind(R.id.information_fragment_balance_view) TextView balanceTextView;
 
     private Dispatcher dispatcher;
     private ActionCreator actionCreator;
     private ActisStore actisStore;
 
     private boolean searchSwitch;
+
     private boolean searchSwitchActivated;
 
     @Override
@@ -77,6 +83,7 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         dispatcher.register(this);
         ActionCreator.getInstance(Dispatcher.getInstance(EventBus.getDefault())).getLastSignalDateFromDatabase();
         actionCreator.sendGetSettingsRequest();
+        refreshBalanceView();
     }
 
     @Override
@@ -111,7 +118,6 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         }
     }
 
-    // TODO For search command state control
     public void onEventMainThread(SearchModeStatusEvent event) {
         long deviceId = AppController.getInstance().getActiveDeviceId();
 
@@ -136,98 +142,11 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
     }
 
-    ////
-
-    private void initFluxDependencies() {
-        dispatcher = Dispatcher.getInstance(EventBus.getDefault());
-        actionCreator = ActionCreator.getInstance(dispatcher);
-        actisStore = ActisStore.getInstance(dispatcher);
-    }
-
-    private void showDemoWarningDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.ActisAlertDialogStyle);
-        builder.setTitle(getString(R.string.development_progress_dialog_title))
-                .setMessage(getString(R.string.demo_warning_dialog_message))
-                .setPositiveButton(android.R.string.ok, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void showQueryTooEarlyDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.ActisAlertDialogStyle);
-        builder.setTitle(getString(R.string.development_progress_dialog_title))
-                .setMessage(getString(R.string.query_too_early_dialog_message))
-                .setPositiveButton(android.R.string.ok, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    // TODO For search command control only on device
-//    private void setupSearchButton() {
-//        long deviceId = AppController.getInstance().getActiveDeviceId();
-//        boolean savedStatus = AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_SWITCH);
-//        changeStateSearchButton(savedStatus);
-//    }
-
-    /** Инициализация кнопки поиска */
-    // TODO For search command state control
-    private void setupSearchButton() {
-        switchCustomSearch.setOnCheckedChangeListener(this);
-        long deviceId = AppController.getInstance().getActiveDeviceId();
-        if (Calendar.getInstance().getTimeInMillis() / 1000 >
-                AppController.loadLongValueFromSharedPreferences(deviceId + KEY_SEARCH_EXPIRE_DATE)) {
-            AppController.saveBooleanValueToSharedPreferences(deviceId + KEY_SEARCH_MODE_AWAITING, false);
-        }
-        if (AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_MODE_AWAITING)) {
-            changeStateSearchButton(
-                    AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_SWITCH));
-//            searchButtonFrame.setBackgroundDrawable(getResources()
-//                    .getDrawable(R.drawable.actis_search_button_frame_yellow));
-            switchCustomSearch.setThumbDrawable(getResources()
-                    .getDrawable(R.drawable.search_custom_switch_yellow_thumb_with_lock));
-        }
-    }
-
-    /** Изменить графическое состояние свича без обратного вызова метода смены логического состояния */
-    private void changeStateSearchButton(boolean state) {
-        switchCustomSearch.setOnCheckedChangeListener(null);
-        switchCustomSearch.setChecked(state);
-        switchCustomSearch.setThumbDrawable(getResources()
-                .getDrawable(state ?
-                        R.drawable.search_custom_switch_green_thumb_with_lock :
-                        R.drawable.search_custom_switch_grey_thumb_with_lock));
-        searchButtonFrame.setBackgroundDrawable(getResources()
-                .getDrawable(state ?
-                        R.drawable.actis_search_button_frame_pressed :
-                        R.drawable.actis_menu_button_background));
-        switchCustomSearch.setOnCheckedChangeListener(this);
-
-        if (!switchCustomSearch.isChecked()) {
-            checkQueryButton();
-        }
-    }
-
-    /** Проверить доступность кнопки отправки разового запроса на определение местороложения */
-    private void checkQueryButton() {
-        long deviceId = AppController.getInstance().getActiveDeviceId();
-
-        if (AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_CONTROL_DATE)
-                == ActisDatabaseDao.getInstance(getActivity()).getLastSignalDate()) {
-            if (Calendar.getInstance().getTimeInMillis() / 1000 <
-                    AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
-                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
-                return;
-            }
-        }
-
-        searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
-    }
-
-    private void showAlertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null);
-        builder.create().show();
+    public void onEventMainThread(BalanceResponseReceived event) {
+        String balance = event.getBalance();
+        AppController.saveStringValueToSharedPreferences(
+                AppController.currentUserLogin + KEY_BALANCE, balance);
+        balanceTextView.setText(balance);
     }
 
     ////
@@ -261,24 +180,6 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         actionCreator.sendQueryBeaconRequest();
     }
 
-    // TODO For search command control only on device
-//    @OnLongClick(R.id.informationFragment_searchButton)
-//    public boolean onLongClickSearchButton(View view) {
-//        if (AppController.getInstance().isDemoMode()) {
-//            showDemoWarningDialog();
-//            return false;
-//        }
-//
-//        Vibrator vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE) ;
-//        vibe.vibrate(50);
-//
-//        switchCustomSearch.setClickable(true);
-//        searchSwitchActivated = true;
-//
-//        return true;
-//    }
-
-    // TODO For search command state control
     @OnLongClick(R.id.informationFragment_searchButton)
     public boolean onLongClickSearchButton(View view) {
         if (AppController.getInstance().isDemoMode()) {
@@ -344,14 +245,6 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         }
     }
 
-    // TODO For search command control only on device
-//    @Override
-//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//        actionCreator.sendToggleSearchModeRequest(isChecked);
-//        changeStateSearchButton(isChecked);
-//    }
-
-    // TODO For search command state control
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         actionCreator.sendToggleSearchModeRequest(isChecked);
@@ -365,5 +258,101 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
 
         switchCustomSearch.setClickable(false);
         searchSwitchActivated = false;
+    }
+
+    ////
+
+    private void initFluxDependencies() {
+        dispatcher = Dispatcher.getInstance(EventBus.getDefault());
+        actionCreator = ActionCreator.getInstance(dispatcher);
+        actisStore = ActisStore.getInstance(dispatcher);
+    }
+
+    private void showDemoWarningDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.ActisAlertDialogStyle);
+        builder.setTitle(getString(R.string.development_progress_dialog_title))
+                .setMessage(getString(R.string.demo_warning_dialog_message))
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showQueryTooEarlyDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.ActisAlertDialogStyle);
+        builder.setTitle(getString(R.string.development_progress_dialog_title))
+                .setMessage(getString(R.string.query_too_early_dialog_message))
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /** Инициализация кнопки поиска */
+    private void setupSearchButton() {
+        switchCustomSearch.setOnCheckedChangeListener(this);
+        long deviceId = AppController.getInstance().getActiveDeviceId();
+        if (Calendar.getInstance().getTimeInMillis() / 1000 >
+                AppController.loadLongValueFromSharedPreferences(deviceId + KEY_SEARCH_EXPIRE_DATE)) {
+            AppController.saveBooleanValueToSharedPreferences(deviceId + KEY_SEARCH_MODE_AWAITING, false);
+        }
+        if (AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_MODE_AWAITING)) {
+            changeStateSearchButton(
+                    AppController.loadBooleanValueFromSharedPreferences(deviceId + KEY_SEARCH_SWITCH));
+            switchCustomSearch.setThumbDrawable(getResources()
+                    .getDrawable(R.drawable.search_custom_switch_yellow_thumb_with_lock));
+        }
+    }
+
+    /** Изменить графическое состояние свича без обратного вызова метода смены логического состояния */
+    private void changeStateSearchButton(boolean state) {
+        switchCustomSearch.setOnCheckedChangeListener(null);
+        switchCustomSearch.setChecked(state);
+        switchCustomSearch.setThumbDrawable(getResources()
+                .getDrawable(state ?
+                        R.drawable.search_custom_switch_green_thumb_with_lock :
+                        R.drawable.search_custom_switch_grey_thumb_with_lock));
+        searchButtonFrame.setBackgroundDrawable(getResources()
+                .getDrawable(state ?
+                        R.drawable.actis_search_button_frame_pressed :
+                        R.drawable.actis_menu_button_background));
+        switchCustomSearch.setOnCheckedChangeListener(this);
+
+        if (!switchCustomSearch.isChecked()) {
+            checkQueryButton();
+        }
+    }
+
+    /** Проверить доступность кнопки отправки разового запроса на определение местороложения */
+    private void checkQueryButton() {
+        long deviceId = AppController.getInstance().getActiveDeviceId();
+
+        if (AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_CONTROL_DATE)
+                == ActisDatabaseDao.getInstance(getActivity()).getLastSignalDate()) {
+            if (Calendar.getInstance().getTimeInMillis() / 1000 <
+                    AppController.loadLongValueFromSharedPreferences(deviceId + KEY_QUERY_EXPIRE_DATE)) {
+                searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_search_button_frame_pressed));
+                return;
+            }
+        }
+
+        searchButtonFrame.setBackgroundDrawable(getResources().getDrawable(R.drawable.actis_menu_button_background));
+    }
+
+    private void showAlertDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null);
+        builder.create().show();
+    }
+
+    private void refreshBalanceView() {
+        String balance = AppController.loadStringValueFromSharedPreferences(
+                AppController.currentUserLogin + KEY_BALANCE);
+
+        if (balance.equals("default")) {
+            balance = "-";
+        }
+
+        balanceTextView.setText(balance);
+        actionCreator.sendGetUserInfoRequest();
     }
 }
