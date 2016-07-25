@@ -1,22 +1,19 @@
 package kgk.beacon.view.devices.activity;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +31,6 @@ import kgk.beacon.map.MapManager;
 import kgk.beacon.model.DataForDetailReportRequest;
 import kgk.beacon.model.UniversalPacket;
 import kgk.beacon.util.AppController;
-import kgk.beacon.util.DateFormatter;
 import kgk.beacon.view.devices.MonitoringView;
 import kgk.beacon.view.devices.presenter.MonitoringPresenter;
 
@@ -46,7 +42,7 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
     private  static final String TAG = MonitoringActivity.class.getSimpleName();
 
     @Bind(R.id.activityDeviceCurrentLocation_drawerLayout) DrawerLayout drawerLayout;
-    @Bind(R.id.activityDeviceCurrentLocation_trackButton) Button trackButton;
+    // @Bind(R.id.activityDeviceCurrentLocation_trackButton) Button trackButton;
     @Bind(R.id.activityDeviceCurrentLocation_deviceModelLabel) TextView deviceModelLabel;
     @Bind(R.id.activityDeviceCurrentLocation_deviceIdLabel) TextView deviceIdLabel;
     @Bind(R.id.actisApp_toolbar) Toolbar toolbar;
@@ -67,7 +63,9 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
         toolbar = (Toolbar) findViewById(R.id.actisApp_toolbar);
         setSupportActionBar(toolbar);
         setNavigationButtonIcon();
-        toolbarTitle.setText(getString(R.string.monitoring_activity_toolbar_title));
+        toolbarTitle.setText(generateActivityTitle());
+
+        // drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         initializeMap();
     }
@@ -222,40 +220,40 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
 
     ////
 
-    @OnClick(R.id.activityDeviceCurrentLocation_locationButton)
-    public void onLocationButtonClick(View view) {
-        isTrackShown = false;
-        map.clear();
-        presenter.sendLastStateForDeviceRequest();
-        drawerLayout.closeDrawers();
-    }
-
-    @OnClick(R.id.activityDeviceCurrentLocation_trackButton)
-    public void onTrackButtonClick(final View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final DatePicker picker = new DatePicker(this);
-
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            picker.setCalendarViewShown(false);
-        }
-
-        builder.setTitle(getString(R.string.date_picker_dialog_title))
-                .setView(picker)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int day = picker.getDayOfMonth();
-                        int month = picker.getMonth();
-                        int year = picker.getYear();
-                        long[] dates = DateFormatter.generateDateInterval(year, month, day);
-                        presenter.sendGetLastSignalsRequest(dates[0], dates[1]);
-                        drawerLayout.closeDrawers();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null);
-
-        builder.show();
-    }
+//    @OnClick(R.id.activityDeviceCurrentLocation_locationButton)
+//    public void onLocationButtonClick(View view) {
+//        isTrackShown = false;
+//        map.clear();
+//        presenter.sendLastStateForDeviceRequest();
+//        drawerLayout.closeDrawers();
+//    }
+//
+//    @OnClick(R.id.activityDeviceCurrentLocation_trackButton)
+//    public void onTrackButtonClick(final View view) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        final DatePicker picker = new DatePicker(this);
+//
+//        if (android.os.Build.VERSION.SDK_INT >= 11) {
+//            picker.setCalendarViewShown(false);
+//        }
+//
+//        builder.setTitle(getString(R.string.date_picker_dialog_title))
+//                .setView(picker)
+//                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        int day = picker.getDayOfMonth();
+//                        int month = picker.getMonth();
+//                        int year = picker.getYear();
+//                        long[] dates = DateFormatter.generateDateInterval(year, month, day);
+//                        presenter.sendGetLastSignalsRequest(dates[0], dates[1]);
+//                        drawerLayout.closeDrawers();
+//                    }
+//                })
+//                .setNegativeButton(android.R.string.cancel, null);
+//
+//        builder.show();
+//    }
 
     @OnClick(R.id.activityDeviceCurrentLocation_reportButton)
     public void onReportButtonClick(View view) {
@@ -301,5 +299,22 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
 
     protected void setNavigationButtonIcon() {
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.actis_navigation_menu_icon));
+    }
+
+    private String generateActivityTitle() {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        String divider = dpWidth >= 600 ? " " : "\n";
+
+        String deviceInfoSingleString = AppController.generateDeviceLabel(AppController.getInstance().getActiveDevice());
+        String[] deviceInfo = deviceInfoSingleString.split(" ");
+        String title = "";
+        for (int i = 0; i < deviceInfo.length; i++) {
+            if (i != deviceInfo.length - 1) {
+                title += deviceInfo[i] + divider;
+            }
+        }
+
+         return title.trim();
     }
 }

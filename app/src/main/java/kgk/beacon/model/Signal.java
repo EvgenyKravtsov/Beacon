@@ -14,6 +14,8 @@ import kgk.beacon.util.AppController;
 public class Signal implements Parcelable {
 
     private static final String TAG = Signal.class.getSimpleName();
+    private static final int BATTERY_MAX_VOLTAGE = 300;
+    private static final int BATTERY_MIN_VOLTAGE = 240;
 
     private long deviceId;
     private int mode;
@@ -202,11 +204,7 @@ public class Signal implements Parcelable {
             signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
             signal.setSatellites(signalJson.getInt("sat"));
 
-            if (paramsJson.getInt("BAT") < 200) {
-                signal.setCharge(0);
-            } else {
-                signal.setCharge(300 - paramsJson.getInt("BAT"));
-            }
+            signal.setCharge(getBatteryPercantage(paramsJson.getInt("BAT")));
 
             signal.setSpeed((int) signalJson.getDouble("speed"));
             signal.setDirection(signalJson.getInt("az"));
@@ -237,11 +235,7 @@ public class Signal implements Parcelable {
             signal.setBalance(paramsJson.getInt("SIM_BALANCE") / 1000);
             signal.setSatellites(signalJson.getInt("sat"));
 
-            if (paramsJson.getInt("BAT") < 200) {
-                signal.setCharge(0);
-            } else {
-                signal.setCharge(paramsJson.getInt("BAT") - 200);
-            }
+            signal.setCharge(getBatteryPercantage(paramsJson.getInt("BAT")));
 
             signal.setSpeed((int) signalJson.getDouble("speed"));
             signal.setDirection(signalJson.getInt("az"));
@@ -300,6 +294,14 @@ public class Signal implements Parcelable {
         dest.writeInt(speed);
         dest.writeInt(direction);
         dest.writeInt(temperature);
+    }
+
+    public static int getBatteryPercantage(int voltage) {
+        int result = 0;
+        if (voltage > BATTERY_MAX_VOLTAGE) result = 100;
+        else if (voltage < BATTERY_MIN_VOLTAGE) result = 0;
+        else result = (int) (((voltage - BATTERY_MIN_VOLTAGE) / (float)  (BATTERY_MAX_VOLTAGE - BATTERY_MIN_VOLTAGE))*100);
+        return result;
     }
 
     public static final Parcelable.Creator<Signal> CREATOR =

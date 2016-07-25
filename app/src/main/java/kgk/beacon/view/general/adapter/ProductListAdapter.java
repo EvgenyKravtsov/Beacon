@@ -1,12 +1,15 @@
 package kgk.beacon.view.general.adapter;
 
 import android.content.Context;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -58,6 +61,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         Product product = products.get(position);
         viewHolder.productTitle.setText(product.getTitle());
+        viewHolder.productImage.setImageDrawable(product.getImage());
     }
 
     @Override
@@ -68,11 +72,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     ////
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        View itemView = rv.findChildViewUnder(e.getX(), e.getY());
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent motionEvent) {
+        View itemView = rv.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
 
-        if (itemView != null && listener != null && gestureDetector.onTouchEvent(e)) {
-            listener.onClick(products.get(rv.getChildAdapterPosition(itemView)));
+        if (itemView != null) {
+            CardView cardView = (CardView) itemView.findViewById(R.id.product_item_view_card);
+
+            if (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                cardView.setCardElevation(16.0f);
+            } else if (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_UP) {
+                cardView.setCardElevation(2.0f);
+            }
+
+            if (itemView != null && listener != null && gestureDetector.onTouchEvent(motionEvent)) {
+                listener.onClick(products.get(rv.getChildAdapterPosition(itemView)));
+            }
         }
 
         return false;
@@ -94,12 +108,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public static class ViewHolder extends  RecyclerView.ViewHolder {
 
         public TextView productTitle;
+        public ImageView productImage;
 
         ////
 
         public ViewHolder(View itemView) {
             super(itemView);
             productTitle = (TextView) itemView.findViewById(R.id.productTitle);
+            productImage = (ImageView) itemView.findViewById(R.id.productImage);
         }
     }
 }

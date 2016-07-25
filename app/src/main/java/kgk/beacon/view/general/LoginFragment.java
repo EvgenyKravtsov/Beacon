@@ -65,7 +65,9 @@ public class LoginFragment extends Fragment {
 
     /** Запомнить данные для авторизации */
     private void saveLoginParametersToSharedPreferences() {
-        SharedPreferences loginAndPassword = getActivity().getSharedPreferences(APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences loginAndPassword = getActivity().getSharedPreferences(
+                APPLICATION_PREFERENCES,
+                Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = loginAndPassword.edit();
 
         editor.putBoolean(REMEMBER_ME_OPTION_KEY, rememberMeCheckBox.isChecked());
@@ -73,16 +75,20 @@ public class LoginFragment extends Fragment {
             editor.putString(LOGIN_RETRIEVE_KEY, loginField.getText().toString());
             editor.putString(PASSWORD_RETRIEVE_KEY, passwordField.getText().toString());
         }
+
         editor.apply();
     }
 
     /** Загрузить данные для авторизации */
     private void loadLoginParametersFromSharedPreferences() {
-        SharedPreferences loginAndPassword = getActivity().getSharedPreferences(APPLICATION_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences loginAndPassword = getActivity().getSharedPreferences(
+                APPLICATION_PREFERENCES,
+                Context.MODE_PRIVATE);
         rememberMeCheckBox.setChecked(loginAndPassword.getBoolean(REMEMBER_ME_OPTION_KEY, false));
 
         if (rememberMeCheckBox.isChecked()) {
-            if (loginAndPassword.contains(LOGIN_RETRIEVE_KEY) && loginAndPassword.contains(PASSWORD_RETRIEVE_KEY)) {
+            if (loginAndPassword.contains(LOGIN_RETRIEVE_KEY) &&
+                    loginAndPassword.contains(PASSWORD_RETRIEVE_KEY)) {
                 loginField.setText(loginAndPassword.getString("Login", ""));
                 passwordField.setText(loginAndPassword.getString("Password", ""));
             }

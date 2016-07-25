@@ -3,12 +3,14 @@ package kgk.beacon.view.actis;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +37,7 @@ import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
 import kgk.beacon.networking.event.SearchModeStatusEvent;
 import kgk.beacon.stores.ActisStore;
 import kgk.beacon.util.AppController;
+import kgk.beacon.util.HashProcessor;
 
 /**
  * Контроллер информационного экрана
@@ -43,6 +46,7 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
         CompoundButton.OnCheckedChangeListener {
 
     // TODO Save search button state in RAM
+    // TODO Check first loading logic
 
     public static final String TAG = InformationFragment.class.getSimpleName();
 
@@ -143,10 +147,15 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
     }
 
     public void onEventMainThread(BalanceResponseReceived event) {
+
+        // TODO Delete test code
+        Log.d("BALANCE", event.getBalance());
+
         String balance = event.getBalance();
         AppController.saveStringValueToSharedPreferences(
                 AppController.currentUserLogin + KEY_BALANCE, balance);
-        balanceTextView.setText(balance);
+        String currencyString = getString(R.string.currency_label);
+        balanceTextView.setText(String.format("%s %s", balance, currencyString));
     }
 
     ////
@@ -232,6 +241,21 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             }
         }
         return false;
+    }
+
+    @OnClick(R.id.fragmentInformation_balanceButton)
+    public void onClickBalanceButton() {
+        String password = HashProcessor.md5Hash("123098");
+
+        // TODO Delete test code
+        Log.d(TAG, password);
+
+
+        String url = "http://www.kgk-global.com/ru/pay?user_name=ru.dev17&user_password=" + password;
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+
+        // VolleyHttpClient.getInstance(getActivity()).sendBalanceRequest();
     }
 
     ////
@@ -352,7 +376,12 @@ public class InformationFragment extends Fragment implements DialogInterface.OnC
             balance = "-";
         }
 
-        balanceTextView.setText(balance);
+        String currencyString = getString(R.string.currency_label);
+
+        // TODO Delete test code
+        Log.d("BALANCE", String.format("%s %s", balance, currencyString));
+
+        balanceTextView.setText(String.format("%s %s", balance, currencyString));
         actionCreator.sendGetUserInfoRequest();
     }
 }

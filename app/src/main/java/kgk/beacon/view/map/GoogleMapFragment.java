@@ -134,7 +134,7 @@ public class GoogleMapFragment extends Fragment implements Map,
         viewHolder.signalDate.setText(DateFormatter.formatDate(new Date(signal.getDate() * 1000)));
         viewHolder.signalTime.setText(DateFormatter.formatTime(new Date(signal.getDate() * 1000)));
         viewHolder.satellitesCountTextView.setText(String.valueOf(signal.getSatellites()) + getString(R.string.list_item_satellites_sign));
-        viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed()) + getString(R.string.list_item_speed_sign));
+        viewHolder.speedCountTextView.setText(String.valueOf(signal.getSpeed()) + " " + getString(R.string.list_item_speed_sign));
         viewHolder.chargeCountTextView.setText(String.valueOf(signal.getCharge()) + "%");
         viewHolder.temperatureCountTextView.setText(String.valueOf(signal.getTemperature()) + getString(R.string.list_item_temperature_sign));
     }
@@ -273,7 +273,7 @@ public class GoogleMapFragment extends Fragment implements Map,
 
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int markerWidth = dpWidth >= 600 ? 210 : 170;
+        int markerWidth = dpWidth >= 600 ? 210 : 180;
         int markerHeight = dpWidth >= 600 ? 200 : 160;
 
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, markerWidth, getResources().getDisplayMetrics());

@@ -24,25 +24,10 @@ public class ProductFactory {
             deviceTypes.add(device.getType());
         }
 
-        Product actisProduct = new Product();
-        actisProduct.setProductType(ProductType.Actis);
-        actisProduct.setImage(AppController.getInstance()
-                .getResources().getDrawable(R.drawable.dummy_image_placeholder));
-        actisProduct.setTitle("Actis");
-        actisProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-                " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
-                "ornare ex, nec elementum enim cursus vitae. Pellentesque habitant morbi tristique " +
-                "senectus et netus et malesuada fames ac turpis egestas. Aenean ut finibus sem. " +
-                "Pellentesque eget fermentum nisl.");
-        if (deviceTypes.contains(AppController.ACTIS_DEVICE_TYPE)) {
-            actisProduct.setStatus(true);
-        }
-        products.add(actisProduct);
-
         Product monitoringProduct = new Product();
         monitoringProduct.setProductType(ProductType.Monitoring);
         monitoringProduct.setImage(AppController.getInstance()
-                .getResources().getDrawable(R.drawable.dummy_image_placeholder));
+                .getResources().getDrawable(R.drawable.monitoring_product_icon));
         monitoringProduct.setTitle("Мониторинг");
         monitoringProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
@@ -55,11 +40,26 @@ public class ProductFactory {
         }
         products.add(monitoringProduct);
 
+        Product actisProduct = new Product();
+        actisProduct.setProductType(ProductType.Actis);
+        actisProduct.setImage(AppController.getInstance()
+                .getResources().getDrawable(R.drawable.actis_product_icon));
+        actisProduct.setTitle("Actis");
+        actisProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+                " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
+                "ornare ex, nec elementum enim cursus vitae. Pellentesque habitant morbi tristique " +
+                "senectus et netus et malesuada fames ac turpis egestas. Aenean ut finibus sem. " +
+                "Pellentesque eget fermentum nisl.");
+        if (deviceTypes.contains(AppController.ACTIS_DEVICE_TYPE)) {
+            actisProduct.setStatus(true);
+        }
+        products.add(actisProduct);
+
         Product generatorProduct = new Product();
         generatorProduct.setProductType(ProductType.Generator);
         generatorProduct.setImage(AppController.getInstance()
-                .getResources().getDrawable(R.drawable.dummy_image_placeholder));
-        generatorProduct.setTitle("Генератор");
+                .getResources().getDrawable(R.drawable.generator_product_icon));
+        generatorProduct.setTitle("Автомат ввода резерва");
         generatorProduct.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                 " Ut gravida eros tortor, at dapibus nulla commodo tincidunt. Phasellus posuere " +
                 "ornare ex, nec elementum enim cursus vitae. Pellentesque habitant morbi tristique " +

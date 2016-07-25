@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -135,7 +136,20 @@ public class InformationActivity extends AppCompatActivity implements MapClickLi
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.actis_navigation_menu_icon));
 
-        String title = AppController.getInstance().getActiveDeviceId() + "";
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        String divider = dpWidth >= 600 ? " " : "\n";
+
+        String deviceInfoSingleString = AppController.generateDeviceLabel(AppController.getInstance().getActiveDevice());
+        String[] deviceInfo = deviceInfoSingleString.split(" ");
+        String title = "";
+        for (int i = 0; i < deviceInfo.length; i++) {
+            if (i != deviceInfo.length - 1) {
+                title += deviceInfo[i] + divider;
+            }
+        }
+
+        title = title.trim();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");

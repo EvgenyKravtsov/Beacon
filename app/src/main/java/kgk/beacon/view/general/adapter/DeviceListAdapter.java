@@ -1,6 +1,7 @@
 package kgk.beacon.view.general.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,18 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
+import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.model.Device;
+import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.view.general.DeviceListScreen;
 
 /** Платформенный адаптер для отображения списка устройств */
 public class DeviceListAdapter extends BaseExpandableListAdapter
         implements ExpandableListView.OnChildClickListener {
+
+    private static final String TAG = DeviceListAdapter.class.getSimpleName();
 
     private Context context;
     private DeviceListScreen screen;
@@ -45,12 +52,31 @@ public class DeviceListAdapter extends BaseExpandableListAdapter
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild,
                                         View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item_devices, parent, false);
         }
 
-        TextView deviceTextView = (TextView) convertView.findViewById(R.id.listItemDevices_deviceTextView);
-        deviceTextView.setText((String) getChild(groupPosition, childPosition));
+        TextView deviceTextView = (TextView) convertView
+                .findViewById(R.id.listItemDevices_deviceTextView);
+        TextView idTextView = (TextView) convertView.findViewById(R.id.listItemDevices_id);
+
+        // TODO Delete test code
+        Log.d(TAG, getChild(groupPosition, childPosition).toString());
+
+        String[] deviceInfo = ((String) getChild(groupPosition, childPosition)).split(" ");
+        String info = "";
+        String id = "";
+        for (int i = 0; i < deviceInfo.length; i++) {
+            if (i == deviceInfo.length - 1) {
+                id = deviceInfo[i];
+            } else {
+                info += deviceInfo[i] + " ";
+            }
+        }
+
+        deviceTextView.setText(info);
+        idTextView.setText(id);
 
         return convertView;
     }
@@ -105,7 +131,21 @@ public class DeviceListAdapter extends BaseExpandableListAdapter
     @Override
     public boolean onChildClick(ExpandableListView parent, View view,
                                 int groupPosition, int childPosition, long id) {
-        screen.onListItemClick((String) getChild(groupPosition, childPosition));
+
+        Device chosenDevice = new Device();
+
+        String[] deviceInfo = ((String) getChild(groupPosition, childPosition)).split(" ");
+        String deviceId = deviceInfo[deviceInfo.length - 1];
+
+        List<Device> devices = DeviceStore
+                .getInstance(Dispatcher.getInstance(EventBus.getDefault())).getDevices();
+        for (Device device : devices) {
+            if (device.getId().equals(deviceId)) {
+                chosenDevice = device;
+            }
+        }
+
+        screen.onListItemClick((String) getChild(groupPosition, childPosition), chosenDevice);
         return  true;
     }
 }

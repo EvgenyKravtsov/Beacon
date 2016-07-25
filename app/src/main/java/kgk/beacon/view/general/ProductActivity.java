@@ -3,6 +3,7 @@ package kgk.beacon.view.general;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -67,7 +68,10 @@ public class ProductActivity extends AppCompatActivity {
     private void prepareProductList() {
         productListRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        productListRecyclerView.setLayoutManager(layoutManager);
+
+        // TODO Set proper layout manager
+        productListRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
         ProductListAdapter adapter = new ProductListAdapter(this,
                 ProductFactory.provideProductList(),
                 new ProductListAdapter.OnItemClickListener() {

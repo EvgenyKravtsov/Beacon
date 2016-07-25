@@ -19,10 +19,12 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
@@ -49,7 +51,6 @@ import kgk.beacon.util.lbscoordinatesvalidator.ActisCoordinatesValidatorFromNetw
 import kgk.beacon.util.lbscoordinatesvalidator.LbsCoordinatesValidator;
 import kgk.beacon.view.actis.InformationFragment;
 import kgk.beacon.view.general.DeviceListActivity;
-import kgk.beacon.view.general.ProductActivity;
 import kgk.beacon.view.general.event.StartActivityEvent;
 
 /**
@@ -57,20 +58,18 @@ import kgk.beacon.view.general.event.StartActivityEvent;
  */
 public class VolleyHttpClient implements Response.ErrorListener {
 
-    // TODO Return api instead of dev12
-
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
-    private static final String AUTHENTICATION_URL = "http://dev12.trezub.ru/api2/beacon/authorize";
-    private static final String DEVICE_LIST_URL = "http://dev12.trezub.ru/api2/beacon/getdeviceslist?all=1"; //monitor.kgk-global.com
-    private static final String GET_LAST_STATE_URL = "http://dev12.trezub.ru/api2/beacon/getdeviceinfo";
-    private static final String GET_LAST_SIGNALS_URL = "http://dev12.trezub.ru/api2/beacon/getpackets";
-    private static final String QUERY_BEACON_REQUEST_URL = "http://dev12.trezub.ru/api2/beacon/cmdrequestinfo";
-    private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://dev12.trezub.ru/api2/beacon/cmdtogglefind";
-    private static final String SETTINGS_REQUEST_URL = "http://dev12.trezub.ru/api2/beacon/cmdsetsettingssms";
+    private static final String AUTHENTICATION_URL = "http://api.trezub.ru/api2/beacon/authorize";
+    private static final String DEVICE_LIST_URL = "http://api.trezub.ru/api2/beacon/getdeviceslist?all=1"; //monitor.kgk-global.com
+    private static final String GET_LAST_STATE_URL = "http://api.trezub.ru/api2/beacon/getdeviceinfo";
+    private static final String GET_LAST_SIGNALS_URL = "http://api.trezub.ru/api2/beacon/getpackets";
+    private static final String QUERY_BEACON_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdrequestinfo";
+    private static final String TOGGLE_SEARCH_MODE_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdtogglefind";
+    private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettingssms";
     // private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettings";
-    private static final String DETAIL_REPORT_URL = "http://dev12.trezub.ru/api2/reports/getroute/";
-    private static final String ACTIS_CONFIG_URL = "http://dev12.trezub.ru/api2/beacon/getactisconfig";
-    private static final String GET_USER_INFO_URL = "http://dev12.trezub.ru/api2/beacon/getuserinfo"; //
+    private static final String DETAIL_REPORT_URL = "http://api.trezub.ru/api2/reports/getroute/";
+    private static final String ACTIS_CONFIG_URL = "http://api.trezub.ru/api2/beacon/getactisconfig";
+    private static final String GET_USER_INFO_URL = "http://api.trezub.ru/api2/beacon/getuserinfo";
 
     private static final String OPEN_CELL_ID_GET_URL = "http://opencellid.org/cell/get";
     private static final String OPEN_CELL_ID_API_KEY = "635c0e4c-afd3-4272-a0ac-66275f6a9c1b";
@@ -173,9 +172,34 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 int mnc = (int) action.getData().get(ActionCreator.KEY_VALIDATION_MNC);
                 String cellIdHex = (String) action.getData().get(ActionCreator.KEY_VALIDATION_CELL_ID);
                 String lacHex = (String) action.getData().get(ActionCreator.KEY_VALIDATION_LAC);
-                openCellIdRequest(serverDate, mcc, mnc, cellIdHex, lacHex);
+                yandexLbsLocationRequest(serverDate, mcc, mnc, cellIdHex, lacHex);
                 break;
         }
+    }
+
+    public void sendBalanceRequest() {
+        BalanceRequest request = new BalanceRequest(Request.Method.POST,
+                "http://www.kgk-global.com/ru/pay?user_name=ru.dev17&user_password=123098",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        // TODO Delete test code
+                        Log.d(TAG, response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        // TODO Delete test code
+                        Log.d(TAG, error.toString());
+                    }
+                });
+
+        request.setPhpSessId(phpSessId);
+        setRetryPolicy(request);
+        requestQueue.add(request);
     }
 
     /** Отправка запроса на авторизацию */
@@ -283,6 +307,10 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
         request.setPhpSessId(phpSessId);
         setRetryPolicy(request);
+
+        // TODO Delete test code
+        Log.d(TAG, "Last State Request Sent");
+
         requestQueue.add(request);
     }
 
@@ -404,6 +432,9 @@ public class VolleyHttpClient implements Response.ErrorListener {
         EventBus.getDefault().post(event);
     }
 
+    // TODO Add default value for detail report
+    // TODO Add groups menu afte picking monitoring
+
     /** Отправка запроса на получение последнего актуального местоположения */
     private void lastStateForDeviceRequest() {
         if (!AppController.getInstance().isNetworkAvailable()) {
@@ -443,6 +474,9 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 + "&offsetUTC=" + data.getDataMap().get(DataForDetailReportRequest.DATAKEY_OFFSET_UTC)
                 + "&deviceID=" + AppController.getInstance().getActiveDeviceId();
 
+        // TODO Delete test code
+        Log.d(TAG, DETAIL_REPORT_URL + requestUrlParameters);
+
         DetailReportRequest request = new DetailReportRequest(Request.Method.POST,
                 DETAIL_REPORT_URL + requestUrlParameters,
                 new Response.Listener<String>() {
@@ -467,11 +501,19 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void getUserInfoRequest() {
+
+        // TODO Delete test code
+        Log.d("BALANCE", GET_USER_INFO_URL);
+
         GetUserInfoRequest request = new GetUserInfoRequest(GET_USER_INFO_URL,
                 new JSONObject(),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        // TODO Delete test code
+                        Log.d("BALANCE", response.toString());
+
                         processGetUserInfoResponse(response);
                     }
                 },
@@ -480,7 +522,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
                     public void onErrorResponse(VolleyError error) {
 
                         // TODO Delete test code
-                        Log.d("USER INFO", "error - " + error.getMessage());
+                        Log.d("BALANCE", error.toString());
                     }
                 });
 
@@ -509,16 +551,20 @@ public class VolleyHttpClient implements Response.ErrorListener {
 
     /** Обработка результатов запроса на получение списка устройств пользователя */
     private void processDeviceListResponseJson(JSONObject responseJson) throws JSONException {
-        Log.d(TAG, responseJson.toString());
+
+        // TODO Delete test code
+        Log.d(TAG, responseJson.toString(4));
+
         if (responseJson.getBoolean("status")) {
             try {
                 JSONArray devices = responseJson.getJSONArray("data");
                 ActionCreator.getInstance(dispatcher).receiveDeviceListResponse(devices);
 
-                StartActivityEvent event = new StartActivityEvent(ProductActivity.class);
 
                 // TODO Commented for testing purpose
-                // StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
+//                StartActivityEvent event = new StartActivityEvent(ProductActivity.class);
+
+                 StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
 
 
                 event.setLoginSuccessful(true);
@@ -745,8 +791,13 @@ public class VolleyHttpClient implements Response.ErrorListener {
     }
 
     private void processGetUserInfoResponse(JSONObject response) {
+
+        // TODO Delete test code
+        Log.d("BALANCE", response.toString());
+
         try {
-            double balance = response.getDouble("balance");
+            JSONObject data = response.getJSONObject("data");
+            double balance = data.getDouble("balance");
 
             BalanceResponseReceived event = new BalanceResponseReceived();
             event.setResultCode(0);
@@ -788,6 +839,10 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 });
 
         setRetryPolicy(request);
+
+        // TODO Delete test code
+        Log.d(TAG, "OpenCellId request send successful");
+
         requestQueue.add(request);
     }
 
@@ -831,11 +886,19 @@ public class VolleyHttpClient implements Response.ErrorListener {
                 });
 
         setRetryPolicy(request);
+
+        // TODO Delete test code
+        Log.d(TAG, "Yandex cell request send successful");
+
         requestQueue.add(request);
     }
 
     /** Парсинг результатов запроса в Yandex на определение координат по базовым станциям */
     private void parseYnadexLbsResponse(final long serverDate, final String response) {
+
+        // TODO Delete test code
+        Log.d(TAG, response);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -843,28 +906,44 @@ public class VolleyHttpClient implements Response.ErrorListener {
                     double latitude = 0;
                     double longitude = 0;
 
-                    XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
-                    parser.setInput(new ByteArrayInputStream(response.getBytes()), null);
+                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                    factory.setNamespaceAware(true);
+                    XmlPullParser parser = factory.newPullParser();
+                    parser.setInput(new StringReader(response));
+                    //parser.setInput(new ByteArrayInputStream(response.getBytes()), null);
 
                     long startTime = Calendar.getInstance().getTimeInMillis();
 
                     int xmlEvent = parser.getEventType();
+
+                    // TODO Delete test code
+                    Log.d(TAG, "XML Event - " + xmlEvent);
+
                     while (xmlEvent != XmlPullParser.END_DOCUMENT) {
                         String name = parser.getName();
 
                         switch (xmlEvent) {
                             case XmlPullParser.START_TAG:
+
+                                // TODO Delete test code
+                                Log.d(TAG, "Yandex START_TAG");
+
                                 break;
                             case XmlPullParser.END_TAG:
                                 if (name.equals("coordinates")) {
                                     latitude = Double.parseDouble(parser.getAttributeValue(null, "latitude"));
                                     longitude = Double.parseDouble(parser.getAttributeValue(null, "longitude"));
+
+                                    // TODO Delete test code
+                                    Log.d(TAG, "From yandex - " + latitude + "  " + longitude);
                                 }
                         }
 
                         if (Calendar.getInstance().getTimeInMillis() - startTime > 5000) {
                             break;
                         }
+
+                        xmlEvent = parser.next();
                     }
 
                     ValidatedCoordinatesReceivedEvent event = new ValidatedCoordinatesReceivedEvent();
@@ -881,6 +960,8 @@ public class VolleyHttpClient implements Response.ErrorListener {
                     event.setLatitude(0);
                     event.setLongitude(0);
                     EventBus.getDefault().post(event);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
                 }
             }
         }).start();
@@ -895,20 +976,31 @@ public class VolleyHttpClient implements Response.ErrorListener {
         return new Runnable() {
             @Override
             public void run() {
-                // TODO Uncomment when work ok Monitoring app
-//                while (true) {
-//                    if (AppController.getInstance().getActiveDeviceType() != null) {
-//                        if (AppController.getInstance().getActiveDeviceType().equals(AppController.T6_DEVICE_TYPE) ||
-//                                AppController.getInstance().getActiveDeviceType().equals(AppController.T5_DEVICE_TYPE)) {
-//                            try {
-//                                getLastStateRequest();
-//                                TimeUnit.SECONDS.sleep(30);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//                }
+                while (true) {
+                    if (AppController.getInstance().getActiveDeviceType() != null) {
+                        if (AppController.getInstance().getActiveDeviceType().equals(AppController.T6_DEVICE_TYPE) ||
+                                AppController.getInstance().getActiveDeviceType().equals(AppController.T5_DEVICE_TYPE)) {
+                            try {
+                                getLastStateRequest();
+                                TimeUnit.SECONDS.sleep(30);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            try {
+                                TimeUnit.SECONDS.sleep(30);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                        try {
+                            TimeUnit.SECONDS.sleep(30);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         };
     }

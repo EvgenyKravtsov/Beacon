@@ -80,37 +80,71 @@
         android:background="@color/actis_app_orange_accent" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:gravity="center_vertical">
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="4dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/balance_view_label"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="51dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:id="@+id/information_fragment_balance_view"
-            tools:text="1347.56 r." />
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/balance_view_label"
+                android:textSize="17sp"
+                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:id="@+id/balance_label" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="@android:color/black"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@+id/balance_label"
+                android:layout_toEndOf="@+id/balance_label"
+                android:id="@+id/information_fragment_balance_view"
+                tools:text="1347.56 r." />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="51dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="85dp"
+            android:layout_marginStart="85dp"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/payment_action_label"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:background="@drawable/actis_menu_button_selector"
+            android:textColor="@drawable/actis_menu_button_text_selector"
+            android:id="@+id/fragmentInformation_balanceButton" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/actis_app_orange_accent" />
+        android:background="@color/actis_app_orange_accent"
+        android:visibility="gone" />
 
 </LinearLayout>

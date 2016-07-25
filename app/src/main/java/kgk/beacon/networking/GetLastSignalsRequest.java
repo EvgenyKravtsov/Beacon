@@ -33,6 +33,7 @@ public class GetLastSignalsRequest extends StringRequest {
     }
 
     public static String makeUrl(String baseUrl, long fromDate, long toDate) {
+        // TODO Delete test code
         Log.d(TAG, baseUrl + "?"
                 + "device" + "=" + AppController.getInstance().getActiveDeviceId() + "&"
                 + "from" + "=" + fromDate + "&"

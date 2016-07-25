@@ -93,6 +93,14 @@ public class DeviceStore extends Store {
         Device testGenerator = new Device();
         testGenerator.setId("0101010101");
         testGenerator.setModel("Test Generator");
+        testGenerator.setCivilModel("DENZEL DB6000E");
+        testGenerator.setMark("DENZEL");
+        testGenerator.setStateNumber("DENZEL");
+
+        ArrayList<String> testGeneratorGroupList = new ArrayList<>();
+        testGeneratorGroupList.add("generator_test");
+        testGenerator.setGroups(testGeneratorGroupList);
+
         testGenerator.setType(AppController.GENERATOR_DEVICE_TYPE);
         devices.add(testGenerator);
 
@@ -106,6 +114,9 @@ public class DeviceStore extends Store {
         try {
             device.setId(deviceJson.getString("id"));
             device.setModel(deviceJson.getString("type_name"));
+            device.setCivilModel(deviceJson.getString("model"));
+            device.setMark(deviceJson.getString("marka"));
+            device.setStateNumber(deviceJson.getString("gosnum"));
 
             JSONArray groupsArray = deviceJson.getJSONArray("groups");
             for (int i = 0; i < groupsArray.length(); i++) {

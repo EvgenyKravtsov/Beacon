@@ -97,7 +97,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp" />
 
-        <Button
+        <!-- <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/activityDeviceCurrentLocation_locationButton"
@@ -109,9 +109,9 @@
             android:gravity="start|center_vertical"
             android:paddingLeft="24dp"
             android:paddingStart="24dp"
-            android:singleLine="false" />
+            android:singleLine="false" /> -->
 
-        <Button
+        <!-- <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/activityDeviceCurrentLocation_trackButton"
@@ -122,7 +122,7 @@
             android:gravity="start|center_vertical"
             android:paddingLeft="24dp"
             android:paddingStart="24dp"
-            android:textAllCaps="false" />
+            android:textAllCaps="false" /> -->
 
         <Button
             android:layout_width="match_parent"

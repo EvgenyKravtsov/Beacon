@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,10 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TODO For Actis only release
+         AppController.getInstance().setActiveProductType(ProductType.Actis);
+
         productType = AppController.getInstance().getActiveProductType();
     }
 
@@ -95,7 +100,6 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
             deviceListView.expandGroup(0);
         }
 
-        // TODO Change development dialog behaviour
         // showDevelopmentProgressDialog();
     }
 
@@ -106,21 +110,25 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
     }
 
     @Override
-    public void onListItemClick(String deviceInfo) {
-        String[] modelNameSplitted = deviceInfo.split("  ");
-        String deviceIdAsString = modelNameSplitted[modelNameSplitted.length - 1];
-        Device activeDevice = new Device();
-        for (Device device : deviceStore.getDevices()) {
-            if (device.getId().equals(deviceIdAsString)) {
-                activeDevice = device;
-            }
-        }
+    public void onListItemClick(String deviceInfo, Device chosenDevice) {
+//        String[] modelNameSplitted = deviceInfo.split("  ");
+//        String deviceIdAsString = modelNameSplitted[modelNameSplitted.length - 1];
+//        Device activeDevice = new Device();
+//        for (Device device : deviceStore.getDevices()) {
+//            if (device.getId().equals(deviceIdAsString)) {
+//                activeDevice = device;
+//            }
+//        }
 
-        AppController.getInstance().setActiveDeviceId(Long.parseLong(activeDevice.getId()));
-        AppController.getInstance().setActiveDeviceType(activeDevice.getType());
-        AppController.getInstance().setActiveDeviceModel(activeDevice.getModel());
+        // TODO Delete test code
+        Log.d(TAG, chosenDevice.toString());
 
-        String model = activeDevice.getModel();
+        AppController.getInstance().setActiveDevice(chosenDevice);
+        AppController.getInstance().setActiveDeviceId(Long.parseLong(chosenDevice.getId()));
+        AppController.getInstance().setActiveDeviceType(chosenDevice.getType());
+        AppController.getInstance().setActiveDeviceModel(chosenDevice.getModel());
+
+        String model = chosenDevice.getModel();
         if (model.equals(AppController.ACTIS_DEVICE_NAME)) {
             updateLastSignalFromDatabase();
             //ActionCreator.getInstance(Dispatcher.getInstance(EventBus.getDefault())).getLastSignalDateFromDatabase();
@@ -167,7 +175,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
     private void setPreferredAdapter() {
         DeviceListAdapter adapter;
 
-        if (typeButton.isChecked()) {
+        if (!typeButton.isChecked()) {
             adapter = prepareAdapterByType();
         } else {
             adapter = prepareAdapterByGroup();
@@ -236,7 +244,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         while (iterator.hasNext()) {
             Device device = iterator.next();
             if (device.getModel().contains(ANDROID_DEVICE_TYPE_LABEL)) {
-                androidDevices.add(device.getId());
+                androidDevices.add(AppController.generateDeviceLabel(device));
                 iterator.remove();
             }
         }
@@ -248,7 +256,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
 
                 for (Device device : devices) {
                     if (device.getType().equals(type)) {
-                        deviceGroup.add(device.getId());
+                        deviceGroup.add(AppController.generateDeviceLabel(device));
                     }
                 }
 
@@ -265,9 +273,14 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
 
         ArrayList<Device> devices = deviceStore.getDevices();
         if (devices != null) {
+
             for (Device device : devices) {
-                for (String groupName : device.getGroups()) {
-                    groupSet.add(groupName);
+
+                if (filterProductType(device.getType())) {
+
+                    for (String groupName : device.getGroups()) {
+                        groupSet.add(groupName);
+                    }
                 }
             }
         }
@@ -294,7 +307,9 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
             for (Device device : devices) {
                 for (String groupName : device.getGroups()) {
                     if (groupName.equals(group)) {
-                        deviceGroup.add(device.getModel() + "  " + device.getId());
+                        if (filterProductType(device.getType())) {
+                            deviceGroup.add(AppController.generateDeviceLabel(device));
+                        }
                     }
                 }
             }

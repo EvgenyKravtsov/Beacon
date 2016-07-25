@@ -71,12 +71,15 @@
     <string name="on_actis_search_turned_on_message">Команда включения Автопоиска отправлена. Ожидайте сообщения с координатами устройства каждые 20 минут</string>
     <string name="on_actis_search_turned_off_message">Команда выключения Автопоиска отправлена</string>
     <string name="balance_view_label">Баланс:</string>
+    <string name="preparing_data_message">Подготовка данных</string>
+    <string name="payment_action_label">Пополнить</string>
+    <string name="currency_label">руб.</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Період</string>
     <string name="track_button_label">Трек</string>
     <string name="list_item_satellites_sign">сп</string>
-    <string name="list_item_speed_sign">км/г</string>
+    <string name="list_item_speed_sign"> км/г</string>
     <string name="list_item_temperature_sign">°C</string>
     <string name="list_item_voltage_sign">В</string>
     <string name="list_item_balance_sign">р</string>
@@ -142,7 +145,7 @@
     <string name="search_function_description">Кнопка <b>Пошук</b> - служить для включення/вимикання режиму <b>Пошук</b>.
         Після включення режиму <b>Пошук</b> пристрій кожні 20 хвилин виходить на зв\'язок і відправляє координати свого місця розташування.
         Для виходу з режиму <b>Пошук</b> необхідно повторно натиснути кнопку <b>Пошук</b>.</string>
-    <string name="history_screen_description">Вікно <b>Історія</b> - містить інформацію про останні 10 сигналах, які прийшли з пристрою.
+    <string name="history_screen_description">Вікно <b>Історія</b> - содержит информацию о всех сигналах, які прийшли з пристрою.
         Ця інформація відображається у вигляді складеного списку дат. При виборі конкретної дати будуть показані всі сигнали за цю дату.</string>
     <string name="from_history_screen_navigation_description">З вікна історії можна перейти в вікно
         вибору періоду (кнопка <b>Період</b>) і вікно відображення треку (кнопка <b>Трек</b>).</string>
@@ -187,6 +190,15 @@
     <string name="yellow_word_2">желтым</string>
     <string name="green_word_1">зеленый</string>
     <string name="green_word_2">зеленого</string>
+    <string name="lbs_description_title">Определение координат устройства по вышкам GSM</string>
+    <string name="lbs_description">Это режим, при котором координаты объекта (устройства)
+        определяются по базовым станциям оператора сотовой связи.
+        Данный режим используется в случае неустойчивого или полного отсутствия сигнала со спутников
+        GPS/GLONASS (например, при нахождении объекта (устройства) на подземной стоянке, в бетонном
+        паркинге, в цельнометаллическом гараже).
+        Зона предполагаемого местонахождения объекта (устройства) выделяется на карте
+        полупрозрачным кругом розового цвета (радиусом 800 м) с центром в месте нахождения
+        базовой станции оператора сотовой связи.</string>
 
     <!-- Strings for Language Settings -->
     <string name="login_menu_language_setting_label">Мова інтерфейсу</string>
@@ -206,7 +218,7 @@
     <string name="direction_north_west">СЗ</string>
 
     <!-- Generator strings -->
-    <string name="activity_generator_main_main_image_description">Генератор</string>
+    <string name="activity_generator_main_main_image_description">Автомат ввода резерва</string>
     <string name="toolbar_generator_main_working_time_label">Час роботи:</string>
     <string name="toolbar_generator_main_history_button_label">
 Істрія</string>

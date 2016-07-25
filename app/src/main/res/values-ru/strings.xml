@@ -71,12 +71,15 @@
     <string name="on_actis_search_turned_on_message">Команда включения Автопоиска отправлена. Ожидайте сообщения с координатами устройства каждые 20 минут после того, как Актис примет команду</string>
     <string name="on_actis_search_turned_off_message">Команда выключения Автопоиска отправлена</string>
     <string name="balance_view_label">Баланс:</string>
+    <string name="preparing_data_message">Подготовка данных</string>
+    <string name="payment_action_label">Пополнить</string>
+    <string name="currency_label">руб.</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Период</string>
     <string name="track_button_label">Трек</string>
     <string name="list_item_satellites_sign">сп</string>
-    <string name="list_item_speed_sign">км/ч</string>
+    <string name="list_item_speed_sign"> км/ч</string>
     <string name="list_item_temperature_sign">°C</string>
     <string name="list_item_voltage_sign">В</string>
     <string name="list_item_balance_sign">р</string>
@@ -141,7 +144,7 @@
     <string name="search_function_description">Кнопка <b>Поиск</b> — служит для включения/выключения режима <b>Поиск</b>.
         После включения режима <b>Поиск</b> устройство каждые 20 минут выходит на связь и отправляет координаты своего местоположения.
         Для выключения режима <b>Поиск</b> необходимо повторно нажать кнопку <b>Поиск</b>.</string>
-    <string name="history_screen_description">Окно <b>История</b> — содержит информацию о последних 10 сигналах, пришедших с устройства.
+    <string name="history_screen_description">Окно <b>История</b> — содержит информацию о всех сигналах, пришедших с устройства.
         Эта информация отображается в виде составного списка дат. При выборе конкретной даты будут показаны все сигналы за эту дату.</string>
     <string name="from_history_screen_navigation_description">Из окна истории можно перейти в окно выбора периода (кнопка <b>Период</b>) и окно отображения трека (кнопка <b>Трек</b>).</string>
     <string name="period_screen_description">Окно <b>Период</b> — позволяет выбрать временной промежуток, за который необходимо просмотреть сигналы, поступившие от устройства.
@@ -181,6 +184,15 @@
     <string name="yellow_word_2">желтым</string>
     <string name="green_word_1">зеленый</string>
     <string name="green_word_2">зеленого</string>
+    <string name="lbs_description_title">Определение координат устройства по вышкам GSM</string>
+    <string name="lbs_description">Это режим, при котором координаты объекта (устройства)
+        определяются по базовым станциям оператора сотовой связи.
+        Данный режим используется в случае неустойчивого или полного отсутствия сигнала со спутников
+        GPS/GLONASS (например, при нахождении объекта (устройства) на подземной стоянке, в бетонном
+        паркинге, в цельнометаллическом гараже).
+        Зона предполагаемого местонахождения объекта (устройства) выделяется на карте
+        полупрозрачным кругом розового цвета (радиусом 800 м) с центром в месте нахождения
+        базовой станции оператора сотовой связи.</string>
 
     <!-- Strings for Language Settings -->
     <string name="login_menu_language_setting_label">Язык интерфейса</string>
@@ -200,7 +212,7 @@
     <string name="direction_north_west">СЗ</string>
 
     <!-- Generator strings -->
-    <string name="activity_generator_main_main_image_description">Генератор</string>
+    <string name="activity_generator_main_main_image_description">Автомат ввода резерва</string>
     <string name="toolbar_generator_main_working_time_label">Время работы:</string>
     <string name="toolbar_generator_main_history_button_label">История</string>
     <string name="toolbar_generator_main_status_label_online">онлайн</string>

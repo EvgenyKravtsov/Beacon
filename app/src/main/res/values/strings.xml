@@ -70,12 +70,15 @@
     <string name="on_actis_search_turned_on_message">Search on query has been sent. Actis beacon will send coordinates every 20 minutes after receiving command</string>
     <string name="on_actis_search_turned_off_message">Search off query has been sent</string>
     <string name="balance_view_label">Balance:</string>
+    <string name="preparing_data_message">Подготовка данных</string>
+    <string name="payment_action_label">Пополнить</string>
+    <string name="currency_label">rub.</string>
 
     <!-- Strings for HistoryFragment -->
     <string name="select_period_button_label">Period</string>
     <string name="track_button_label">Track</string>
     <string name="list_item_satellites_sign">sat</string>
-    <string name="list_item_speed_sign">km/h</string>
+    <string name="list_item_speed_sign"> km/h</string>
     <string name="list_item_temperature_sign">°C</string>
     <string name="list_item_voltage_sign">V</string>
     <string name="list_item_balance_sign">rub</string>
@@ -184,6 +187,15 @@
     <string name="yellow_word_2">желтым</string>
     <string name="green_word_1">зеленый</string>
     <string name="green_word_2">зеленого</string>
+    <string name="lbs_description_title">Определение координат устройства по вышкам GSM</string>
+    <string name="lbs_description">Это режим, при котором координаты объекта (устройства)
+        определяются по базовым станциям оператора сотовой связи.
+        Данный режим используется в случае неустойчивого или полного отсутствия сигнала со спутников
+        GPS/GLONASS (например, при нахождении объекта (устройства) на подземной стоянке, в бетонном
+        паркинге, в цельнометаллическом гараже).
+        Зона предполагаемого местонахождения объекта (устройства) выделяется на карте
+        полупрозрачным кругом розового цвета (радиусом 800 м) с центром в месте нахождения
+        базовой станции оператора сотовой связи.</string>
 
     <!-- Strings for Language Settings -->
     <string name="login_menu_language_setting_label">Language</string>

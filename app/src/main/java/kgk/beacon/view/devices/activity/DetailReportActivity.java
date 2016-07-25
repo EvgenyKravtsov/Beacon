@@ -33,6 +33,10 @@ import kgk.beacon.view.devices.presenter.DetailReportPresenter;
 
 public class DetailReportActivity extends AppCompatActivity implements DetailReportView {
 
+    private static final int MINIMAL_DELTA = 30;
+
+    ////
+
     @Bind(R.id.actisApp_toolbar) Toolbar toolbar;
     @Bind(R.id.toolbar_title) TextView toolbarTitle;
     @Bind(R.id.detail_report_activity_from_date_button) Button fromDateButton;
@@ -69,6 +73,7 @@ public class DetailReportActivity extends AppCompatActivity implements DetailRep
     protected void onStart() {
         super.onStart();
         presenter = new DetailReportPresenter();
+        maintainInitialState();
     }
 
     @Override
@@ -230,6 +235,22 @@ public class DetailReportActivity extends AppCompatActivity implements DetailRep
         setSupportActionBar(toolbar);
         toolbarTitle.setText(getString(R.string.detail_report_activity_toolbar_title));
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.actis_navigation_menu_icon));
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void maintainInitialState() {
+        Calendar currentDate = Calendar.getInstance();
+
+        int currentYear = currentDate.get(Calendar.YEAR);
+        int currentMonth = currentDate.get(Calendar.MONTH);
+        int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
+        setFromDate(currentYear, currentMonth, currentDay);
+        setToDate(currentYear, currentMonth, currentDay);
+
+        deltaField.setText(Integer.toString(MINIMAL_DELTA));
+        offsetUtcField.setText(Integer.toString(presenter.calculateOffsetUtc()));
+
     }
 
     private void setFromDate(int year, int month, int day) {

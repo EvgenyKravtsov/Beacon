@@ -132,6 +132,7 @@ public class LoginActivity extends SingleFragmentActivity {
                 getBaseContext().getResources().getDisplayMetrics());
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
 
@@ -146,7 +147,6 @@ public class LoginActivity extends SingleFragmentActivity {
             float y = event.getRawY() + w.getTop() - scrCoordinates[1];
 
             if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom()) ) {
-
                 InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
             }

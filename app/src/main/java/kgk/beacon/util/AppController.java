@@ -16,6 +16,7 @@ import org.acra.sender.HttpSender;
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
 import kgk.beacon.dispatcher.Dispatcher;
+import kgk.beacon.model.Device;
 import kgk.beacon.model.product.ProductType;
 import kgk.beacon.networking.VolleyHttpClient;
 import kgk.beacon.stores.ActisStore;
@@ -68,12 +69,13 @@ public class AppController extends Application {
     public static final String ACTIS_DEVICE_TYPE = "Actis";
     public static final String T6_DEVICE_TYPE = "T6";
     public static final String T5_DEVICE_TYPE = "T5";
-    public static final String GENERATOR_DEVICE_TYPE = "Generator";
+    public static final String GENERATOR_DEVICE_TYPE = "Генератор";
 
     public static String currentUserLogin;
 
     private static AppController instance;
 
+    private Device activeDevice;
     private long activeDeviceId;
     private String activeDeviceType;
     private String activeDeviceModel;
@@ -136,6 +138,14 @@ public class AppController extends Application {
 
     public void setActiveProductType(ProductType activeProductType) {
         this.activeProductType = activeProductType;
+    }
+
+    public Device getActiveDevice() {
+        return activeDevice;
+    }
+
+    public void setActiveDevice(Device activeDevice) {
+        this.activeDevice = activeDevice;
     }
 
     /** Проверка наличия на устройстве интернет-соединения */
@@ -214,5 +224,13 @@ public class AppController extends Application {
         }
 
         return AppController.getInstance().getString(R.string.direction_north);
+    }
+
+    public static String generateDeviceLabel(Device device) {
+        if (device.getMark().equals(device.getStateNumber())) {
+            return device.getCivilModel() + " " + device.getId();
+        }
+        return device.getCivilModel() + " " + device.getStateNumber() +
+                " " + device.getId();
     }
 }

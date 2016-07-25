@@ -7,6 +7,9 @@ public class Device {
 
     private String id;
     private String model;
+    private String civilModel;
+    private String mark;
+    private String stateNumber;
     private String type;
     private ArrayList<String> groups = new ArrayList<>();
 
@@ -24,6 +27,30 @@ public class Device {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public String getCivilModel() {
+        return civilModel;
+    }
+
+    public void setCivilModel(String civilModel) {
+        this.civilModel = civilModel;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public String getStateNumber() {
+        return stateNumber;
+    }
+
+    public void setStateNumber(String stateNumber) {
+        this.stateNumber = stateNumber;
     }
 
     public String getType() {
@@ -46,6 +73,8 @@ public class Device {
     public String toString() {
         return  "id - " + id + "\n"
                 + "model - " + model
+                + "mark - " + mark
+                + "state number - " + stateNumber
                 + "type - " + type;
     }
 }

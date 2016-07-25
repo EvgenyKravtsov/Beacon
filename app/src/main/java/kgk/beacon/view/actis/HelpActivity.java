@@ -31,6 +31,7 @@ public class HelpActivity extends AppCompatActivity {
     public static final String HISTORY_SCREEN = "history_screen";
     public static final String PERIOD_SCREEN = "period_screen";
     public static final String TRACK_SCREEN = "track_screen";
+    public static final String MAP_SCREEN = "map_screen";
 
     private static final String TAG = HelpActivity.class.getSimpleName();
 
@@ -92,6 +93,10 @@ public class HelpActivity extends AppCompatActivity {
         trackEntry.setTitle(getString(R.string.track_button_label));
         trackEntry.setBody(getText(R.string.track_screen_description));
 
+        HelpEntry lbsEntry = new HelpEntry();
+        lbsEntry.setTitle(getString(R.string.lbs_description_title));
+        lbsEntry.setBody(getString(R.string.lbs_description));
+
 
         if (screenName != null) {
             switch (screenName) {
@@ -99,6 +104,7 @@ public class HelpActivity extends AppCompatActivity {
                     helpEntryList.add(historyEntry);
                     helpEntryList.add(searchEntry);
                     helpEntryList.add(autosearchEntry);
+                    helpEntryList.add(lbsEntry);
                     break;
                 case HISTORY_SCREEN:
                     helpEntryList.add(historyEntry);
@@ -110,7 +116,10 @@ public class HelpActivity extends AppCompatActivity {
                     break;
                 case TRACK_SCREEN:
                     helpEntryList.add(trackEntry);
+                    helpEntryList.add(lbsEntry);
                     break;
+                case MAP_SCREEN:
+                    helpEntryList.add(lbsEntry);
             }
         }
 

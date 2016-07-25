@@ -1,5 +1,6 @@
 package kgk.beacon.view.actis;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
 import kgk.beacon.dispatcher.Dispatcher;
@@ -83,6 +85,7 @@ public class MapCustomActivity extends AppCompatActivity implements MapClickList
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.actis_navigation_menu_icon));
         toolbarTitle.setText(getString(R.string.map_custom_action_bar_label));
+        helpToolbarButton = (ImageButton) findViewById(R.id.helpToolbarButton);
     }
 
     private void initFluxDependencies() {
@@ -188,5 +191,14 @@ public class MapCustomActivity extends AppCompatActivity implements MapClickList
 
     public void onEventMainThread(CenterMapEvent event) {
         map.moveCamera(signal.getLatitude(), signal.getLongitude(), map.getCurrentZoom());
+    }
+
+    ////
+
+    @OnClick(R.id.helpToolbarButton)
+    public void onClickHelpToolbarButton(View view) {
+        Intent helpScreenIntent = new Intent(this, HelpActivity.class);
+        helpScreenIntent.putExtra(HelpActivity.KEY_SCREEN_NAME, HelpActivity.MAP_SCREEN);
+        startActivity(helpScreenIntent);
     }
 }
