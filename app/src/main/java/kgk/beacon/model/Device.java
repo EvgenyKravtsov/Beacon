@@ -11,6 +11,7 @@ public class Device {
     private String mark;
     private String stateNumber;
     private String type;
+    private int typeInt;
     private ArrayList<String> groups = new ArrayList<>();
 
     public String getId() {
@@ -59,6 +60,14 @@ public class Device {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getTypeInt() {
+        return typeInt;
+    }
+
+    public void setTypeInt(int typeInt) {
+        this.typeInt = typeInt;
     }
 
     public ArrayList<String> getGroups() {

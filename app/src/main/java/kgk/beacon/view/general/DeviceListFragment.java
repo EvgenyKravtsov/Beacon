@@ -69,7 +69,7 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
         super.onCreate(savedInstanceState);
 
         // TODO For Actis only release
-         AppController.getInstance().setActiveProductType(ProductType.Actis);
+        // AppController.getInstance().setActiveProductType(ProductType.Actis);
 
         productType = AppController.getInstance().getActiveProductType();
     }

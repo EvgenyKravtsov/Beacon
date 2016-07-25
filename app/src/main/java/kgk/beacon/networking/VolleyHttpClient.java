@@ -51,6 +51,7 @@ import kgk.beacon.util.lbscoordinatesvalidator.ActisCoordinatesValidatorFromNetw
 import kgk.beacon.util.lbscoordinatesvalidator.LbsCoordinatesValidator;
 import kgk.beacon.view.actis.InformationFragment;
 import kgk.beacon.view.general.DeviceListActivity;
+import kgk.beacon.view.general.ProductActivity;
 import kgk.beacon.view.general.event.StartActivityEvent;
 
 /**
@@ -432,9 +433,6 @@ public class VolleyHttpClient implements Response.ErrorListener {
         EventBus.getDefault().post(event);
     }
 
-    // TODO Add default value for detail report
-    // TODO Add groups menu afte picking monitoring
-
     /** Отправка запроса на получение последнего актуального местоположения */
     private void lastStateForDeviceRequest() {
         if (!AppController.getInstance().isNetworkAvailable()) {
@@ -559,14 +557,7 @@ public class VolleyHttpClient implements Response.ErrorListener {
             try {
                 JSONArray devices = responseJson.getJSONArray("data");
                 ActionCreator.getInstance(dispatcher).receiveDeviceListResponse(devices);
-
-
-                // TODO Commented for testing purpose
-//                StartActivityEvent event = new StartActivityEvent(ProductActivity.class);
-
-                 StartActivityEvent event = new StartActivityEvent(DeviceListActivity.class);
-
-
+                StartActivityEvent event = new StartActivityEvent(ProductActivity.class);
                 event.setLoginSuccessful(true);
                 EventBus.getDefault().post(event);
             } catch (JSONException e) {

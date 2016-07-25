@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -80,6 +82,7 @@ public class AppController extends Application {
     private String activeDeviceType;
     private String activeDeviceModel;
     private ProductType activeProductType;
+    private Handler uiHandler;
 
     private boolean demoMode;
 
@@ -88,6 +91,7 @@ public class AppController extends Application {
         super.onCreate();
         ACRA.init(this);
         instance = this;
+        uiHandler = new Handler(Looper.getMainLooper());
         VolleyHttpClient.getInstance(this);
         registerSignalStore();
     }
@@ -232,5 +236,11 @@ public class AppController extends Application {
         }
         return device.getCivilModel() + " " + device.getStateNumber() +
                 " " + device.getId();
+    }
+
+    ////
+
+    public static void runOnUiThread(Runnable runnable) {
+        instance.uiHandler.post(runnable);
     }
 }
