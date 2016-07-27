@@ -11,6 +11,11 @@ public class MonitoringEntity {
     private double longitude;
     private long lastUpdateTimestamp; // unix seconds
     private MonitoringEntityStatus status;
+    private double speed;
+    private String gsm;
+    private int satellites;
+    private boolean engineIgnited;
+
     private boolean displayEnabled;
 
 
@@ -75,6 +80,38 @@ public class MonitoringEntity {
 
     public void setStatus(MonitoringEntityStatus status) {
         this.status = status;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public String getGsm() {
+        return gsm;
+    }
+
+    public void setGsm(String gsm) {
+        this.gsm = gsm;
+    }
+
+    public int getSatellites() {
+        return satellites;
+    }
+
+    public void setSatellites(int satellites) {
+        this.satellites = satellites;
+    }
+
+    public boolean isEngineIgnited() {
+        return engineIgnited;
+    }
+
+    public void setEngineIgnited(boolean engineIgnited) {
+        this.engineIgnited = engineIgnited;
     }
 
     public boolean isDisplayEnabled() {

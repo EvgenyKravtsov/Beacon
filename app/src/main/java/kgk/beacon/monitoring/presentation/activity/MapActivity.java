@@ -167,6 +167,13 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
 
+        activeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onActiveTextViewClick();
+            }
+        });
+
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +267,11 @@ public class MapActivity extends AppCompatActivity implements
     private void onProfileMenuButtonClick() {
         menuEnabled = false;
         Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void onActiveTextViewClick() {
+        Intent intent = new Intent(this, MonitoringEntityActivity.class);
         startActivity(intent);
     }
 }

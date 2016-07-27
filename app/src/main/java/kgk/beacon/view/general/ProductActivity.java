@@ -130,6 +130,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity1.setLongitude(43.170776);
         monitoringEntity1.setStatus(MonitoringEntityStatus.OFFLINE);
         monitoringEntity1.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity1.setSpeed(30);
+        monitoringEntity1.setGsm("GOOD");
+        monitoringEntity1.setSatellites(7);
+        monitoringEntity1.setEngineIgnited(true);
         monitoringEntity1.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity1);
 
@@ -143,6 +147,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity2.setLongitude(48.658447);
         monitoringEntity2.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity2.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity2.setSpeed(30);
+        monitoringEntity2.setGsm("GOOD");
+        monitoringEntity2.setSatellites(7);
+        monitoringEntity2.setEngineIgnited(true);
         monitoringEntity2.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity2);
 
@@ -156,6 +164,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity3.setLongitude(46.461182);
         monitoringEntity3.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity3.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity3.setSpeed(30);
+        monitoringEntity3.setGsm("GOOD");
+        monitoringEntity3.setSatellites(7);
+        monitoringEntity3.setEngineIgnited(true);
         monitoringEntity3.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity3);
 
@@ -169,6 +181,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity4.setLongitude(59.919434);
         monitoringEntity4.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity4.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity4.setSpeed(30);
+        monitoringEntity4.setGsm("GOOD");
+        monitoringEntity4.setSatellites(7);
+        monitoringEntity4.setEngineIgnited(true);
         monitoringEntity4.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity4);
 
@@ -182,6 +198,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity5.setLongitude(76.398926);
         monitoringEntity5.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity5.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity5.setSpeed(30);
+        monitoringEntity5.setGsm("GOOD");
+        monitoringEntity5.setSatellites(7);
+        monitoringEntity5.setEngineIgnited(true);
         monitoringEntity5.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity5);
 
@@ -202,6 +222,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity1.setLongitude(43.170776);
         monitoringEntity1.setStatus(MonitoringEntityStatus.OFFLINE);
         monitoringEntity1.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity1.setSpeed(30);
+        monitoringEntity1.setGsm("GOOD");
+        monitoringEntity1.setSatellites(7);
+        monitoringEntity1.setEngineIgnited(true);
         monitoringEntity1.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity1);
 
@@ -215,6 +239,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity2.setLongitude(48.658447);
         monitoringEntity2.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity2.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity2.setSpeed(30);
+        monitoringEntity2.setGsm("GOOD");
+        monitoringEntity2.setSatellites(7);
+        monitoringEntity2.setEngineIgnited(true);
         monitoringEntity2.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity2);
 
@@ -228,6 +256,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity3.setLongitude(46.461182);
         monitoringEntity3.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity3.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity3.setSpeed(30);
+        monitoringEntity3.setGsm("GOOD");
+        monitoringEntity3.setSatellites(7);
+        monitoringEntity3.setEngineIgnited(true);
         monitoringEntity3.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity3);
 
@@ -241,6 +273,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity4.setLongitude(59.919434);
         monitoringEntity4.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity4.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity4.setSpeed(30);
+        monitoringEntity4.setGsm("GOOD");
+        monitoringEntity4.setSatellites(7);
+        monitoringEntity4.setEngineIgnited(true);
         monitoringEntity4.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity4);
 
@@ -254,6 +290,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity5.setLongitude(76.398926);
         monitoringEntity5.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity5.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity5.setSpeed(30);
+        monitoringEntity5.setGsm("GOOD");
+        monitoringEntity5.setSatellites(7);
+        monitoringEntity5.setEngineIgnited(true);
         monitoringEntity5.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity5);
 
@@ -267,6 +307,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity6.setLongitude(43.324585);
         monitoringEntity6.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity6.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity6.setSpeed(30);
+        monitoringEntity6.setGsm("GOOD");
+        monitoringEntity6.setSatellites(7);
+        monitoringEntity6.setEngineIgnited(true);
         monitoringEntity6.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity6);
 
@@ -280,6 +324,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity7.setLongitude(41.325073);
         monitoringEntity7.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity7.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity7.setSpeed(30);
+        monitoringEntity7.setGsm("GOOD");
+        monitoringEntity7.setSatellites(7);
+        monitoringEntity7.setEngineIgnited(true);
         monitoringEntity7.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity7);
 
@@ -292,7 +340,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity8.setLatitude(44.134913);
         monitoringEntity8.setLongitude(43.346558);
         monitoringEntity8.setStatus(MonitoringEntityStatus.OFFLINE);
-        monitoringEntity8.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity8.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);monitoringEntity1.setSpeed(30);
+        monitoringEntity8.setGsm("GOOD");
+        monitoringEntity8.setSatellites(7);
+        monitoringEntity8.setEngineIgnited(true);
         monitoringEntity8.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity8);
 
@@ -306,6 +357,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity9.setLongitude(46.367798);
         monitoringEntity9.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity9.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity9.setSpeed(30);
+        monitoringEntity9.setGsm("GOOD");
+        monitoringEntity9.setSatellites(7);
+        monitoringEntity9.setEngineIgnited(true);
         monitoringEntity9.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity9);
 
@@ -319,6 +374,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity10.setLongitude(43.192749);
         monitoringEntity10.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity10.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity10.setSpeed(30);
+        monitoringEntity10.setGsm("GOOD");
+        monitoringEntity10.setSatellites(7);
+        monitoringEntity10.setEngineIgnited(true);
         monitoringEntity10.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity10);
 
@@ -332,6 +391,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity11.setLongitude(49.11438);
         monitoringEntity11.setStatus(MonitoringEntityStatus.OFFLINE);
         monitoringEntity11.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity11.setSpeed(30);
+        monitoringEntity11.setGsm("GOOD");
+        monitoringEntity11.setSatellites(7);
+        monitoringEntity11.setEngineIgnited(true);
         monitoringEntity11.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity11);
 
@@ -345,6 +408,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity12.setLongitude(46.598511);
         monitoringEntity12.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity12.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity12.setSpeed(30);
+        monitoringEntity12.setGsm("GOOD");
+        monitoringEntity12.setSatellites(7);
+        monitoringEntity12.setEngineIgnited(true);
         monitoringEntity12.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity12);
 
@@ -358,6 +425,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity13.setLongitude(49.509888);
         monitoringEntity13.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity13.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity13.setSpeed(30);
+        monitoringEntity13.setGsm("GOOD");
+        monitoringEntity13.setSatellites(7);
+        monitoringEntity13.setEngineIgnited(true);
         monitoringEntity13.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity13);
 
@@ -371,6 +442,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity14.setLongitude(55.090942);
         monitoringEntity14.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity14.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity14.setSpeed(30);
+        monitoringEntity14.setGsm("GOOD");
+        monitoringEntity14.setSatellites(7);
+        monitoringEntity14.setEngineIgnited(true);
         monitoringEntity14.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity14);
 
@@ -384,6 +459,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity15.setLongitude(54.860229);
         monitoringEntity15.setStatus(MonitoringEntityStatus.OFFLINE);
         monitoringEntity15.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity15.setSpeed(30);
+        monitoringEntity15.setGsm("GOOD");
+        monitoringEntity15.setSatellites(7);
+        monitoringEntity15.setEngineIgnited(true);
         monitoringEntity15.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity15);
 
@@ -397,6 +476,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity16.setLongitude(57.55188);
         monitoringEntity16.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity16.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity16.setSpeed(30);
+        monitoringEntity16.setGsm("GOOD");
+        monitoringEntity16.setSatellites(7);
+        monitoringEntity16.setEngineIgnited(true);
         monitoringEntity16.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity16);
 
@@ -410,6 +493,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity17.setLongitude(61.452026);
         monitoringEntity17.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity17.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity17.setSpeed(30);
+        monitoringEntity17.setGsm("GOOD");
+        monitoringEntity17.setSatellites(7);
+        monitoringEntity17.setEngineIgnited(true);
         monitoringEntity17.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity17);
 
@@ -423,6 +510,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity18.setLongitude(72.279053);
         monitoringEntity18.setStatus(MonitoringEntityStatus.OFFLINE);
         monitoringEntity18.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity18.setSpeed(30);
+        monitoringEntity18.setGsm("GOOD");
+        monitoringEntity18.setSatellites(7);
+        monitoringEntity18.setEngineIgnited(true);
         monitoringEntity18.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity18);
 
@@ -436,6 +527,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity19.setLongitude(85.638428);
         monitoringEntity19.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity19.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity19.setSpeed(30);
+        monitoringEntity19.setGsm("GOOD");
+        monitoringEntity19.setSatellites(7);
+        monitoringEntity19.setEngineIgnited(true);
         monitoringEntity19.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity19);
 
@@ -449,6 +544,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity20.setLongitude(95.83374);
         monitoringEntity20.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity20.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity20.setSpeed(30);
+        monitoringEntity20.setGsm("GOOD");
+        monitoringEntity20.setSatellites(7);
+        monitoringEntity20.setEngineIgnited(true);
         monitoringEntity20.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity20);
 
@@ -462,6 +561,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity21.setLongitude(96.295166);
         monitoringEntity21.setStatus(MonitoringEntityStatus.OFFLINE);
         monitoringEntity21.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity21.setSpeed(30);
+        monitoringEntity21.setGsm("GOOD");
+        monitoringEntity21.setSatellites(7);
+        monitoringEntity21.setEngineIgnited(true);
         monitoringEntity21.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity21);
 
@@ -475,6 +578,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity22.setLongitude(109.610596);
         monitoringEntity22.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity22.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity22.setSpeed(30);
+        monitoringEntity22.setGsm("GOOD");
+        monitoringEntity22.setSatellites(7);
+        monitoringEntity22.setEngineIgnited(true);
         monitoringEntity22.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity22);
 
@@ -488,6 +595,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity23.setLongitude(114.620361);
         monitoringEntity23.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity23.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity23.setSpeed(30);
+        monitoringEntity23.setGsm("GOOD");
+        monitoringEntity23.setSatellites(7);
+        monitoringEntity23.setEngineIgnited(true);
         monitoringEntity23.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity23);
 
@@ -501,6 +612,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity24.setLongitude(94.932861);
         monitoringEntity24.setStatus(MonitoringEntityStatus.STOPPED);
         monitoringEntity24.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity24.setSpeed(30);
+        monitoringEntity24.setGsm("GOOD");
+        monitoringEntity24.setSatellites(7);
+        monitoringEntity24.setEngineIgnited(true);
         monitoringEntity24.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity24);
 
@@ -514,6 +629,10 @@ public class ProductActivity extends AppCompatActivity {
         monitoringEntity25.setLongitude(87.154541);
         monitoringEntity25.setStatus(MonitoringEntityStatus.IN_MOTION);
         monitoringEntity25.setLastUpdateTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);
+        monitoringEntity25.setSpeed(30);
+        monitoringEntity25.setGsm("GOOD");
+        monitoringEntity25.setSatellites(7);
+        monitoringEntity25.setEngineIgnited(true);
         monitoringEntity25.setDisplayEnabled(true);
         monitoringEntities.add(monitoringEntity25);
 

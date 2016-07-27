@@ -200,6 +200,10 @@
             android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".monitoring.presentation.activity.MonitoringEntityActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
