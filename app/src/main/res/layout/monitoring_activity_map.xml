@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.google.android.gms.maps.MapView
@@ -47,5 +47,54 @@
             android:id="@+id/monitoring_activity_center_on_active_button" />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp">
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/monitoring_activity_quick_report_button" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/monitoring_activity_quick_report_button"
+            android:layout_toEndOf="@+id/monitoring_activity_quick_report_button"
+            android:layout_toLeftOf="@+id/monitoring_activity_menu_button"
+            android:layout_toStartOf="@+id/monitoring_activity_menu_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:background="@android:color/black"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:id="@+id/monitoring_activity_active_text_view"
+            tools:text="State Number" />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/monitoring_activity_menu_button" />
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/monitoring_activity_map_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:id="@+id/monitoring_activity_menu_layout" />
 
 </RelativeLayout>

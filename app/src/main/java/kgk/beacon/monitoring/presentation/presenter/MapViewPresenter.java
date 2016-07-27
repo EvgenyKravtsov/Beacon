@@ -1,19 +1,20 @@
 package kgk.beacon.monitoring.presentation.presenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.domain.interactor.GetActiveMonitoringEntity;
 import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntities;
+import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntityById;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
-import kgk.beacon.monitoring.presentation.model.MapEntity;
 import kgk.beacon.monitoring.presentation.view.MapView;
 import kgk.beacon.util.AppController;
 
 public class MapViewPresenter implements
         GetMonitoringEntities.Listener,
-        GetActiveMonitoringEntity.Listener {
+        GetActiveMonitoringEntity.Listener,
+        GetMonitoringEntityById.Listener {
 
     private MapView view;
 
@@ -29,35 +30,40 @@ public class MapViewPresenter implements
         this.view = null;
     }
 
-    public void requestMapEntities() {
-        GetMonitoringEntities getMonitoringEntities = new GetMonitoringEntities();
-        getMonitoringEntities.setListener(this);
-        InteractorThreadPool.getInstance().execute(getMonitoringEntities);
+    public void requestMonitoringEntities() {
+        GetMonitoringEntities interactor = new GetMonitoringEntities();
+        interactor.setListener(this);
+        InteractorThreadPool.getInstance().execute(interactor);
     }
 
-    public void requestActiveMapEntity() {
-        GetActiveMonitoringEntity getActiveMonitoringEntity = new GetActiveMonitoringEntity();
-        getActiveMonitoringEntity.setListener(this);
-        InteractorThreadPool.getInstance().execute(getActiveMonitoringEntity);
+    public void requestActiveMonitoringEntity() {
+        GetActiveMonitoringEntity interactor = new GetActiveMonitoringEntity();
+        interactor.setListener(this);
+        InteractorThreadPool.getInstance().execute(interactor);
+    }
+
+    public void requestMonitoringEntityById(long id) {
+        GetMonitoringEntityById interactor = new GetMonitoringEntityById(
+                id,
+                DependencyInjection.provideMonitoringManager()
+        );
+
+        interactor.setListener(this);
+        InteractorThreadPool.getInstance().execute(interactor);
     }
 
     ////
 
     @Override
-    public void onMonitoringEntitiesRetreived(List<MonitoringEntity> monitoringEntities) {
-        final List<MapEntity> mapEntities = new ArrayList<>();
-        for (MonitoringEntity monitoringEntity : monitoringEntities) {
-            mapEntities.add(new MapEntity(monitoringEntity));
-        }
-
+    public void onMonitoringEntitiesRetreived(final List<MonitoringEntity> monitoringEntities) {
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                view.showMapEntities(mapEntities);
+                view.showMonitoringEntities(monitoringEntities);
             }
         });
 
-        requestActiveMapEntity();
+        requestActiveMonitoringEntity();
     }
 
     @Override
@@ -65,7 +71,18 @@ public class MapViewPresenter implements
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                view.centerOnMapEntity(new MapEntity(activeMonitoringEntity));
+                view.setActiveMonitoringEntity(activeMonitoringEntity);
+            }
+        });
+    }
+
+    @Override
+    public void onMonitoringEntityRetreived(final MonitoringEntity monitoringEntity) {
+        DependencyInjection.provideMonitoringManager().setActiveMonitoringEntity(monitoringEntity);
+        AppController.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.setActiveMonitoringEntity(monitoringEntity);
             }
         });
     }
