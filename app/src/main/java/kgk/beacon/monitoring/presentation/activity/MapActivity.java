@@ -33,6 +33,7 @@ public class MapActivity extends AppCompatActivity implements
     private Button menuButton;
     private Button hideMenuButton;
     private Button chooseVehicleMenuButton;
+    private Button profileMenuButton;
     private TextView activeTextView;
     private LinearLayout menuLayout;
 
@@ -122,11 +123,16 @@ public class MapActivity extends AppCompatActivity implements
         trafficButton = (Button) findViewById(R.id.monitoring_activity_map_traffic_button);
         zoomInButton = (Button) findViewById(R.id.monitoring_activity_map_zoom_in_button);
         zoomOutButton = (Button) findViewById(R.id.monitoring_activity_map_zoom_out_button);
-        menuButton = (Button) findViewById(R.id.monitoring_activity_menu_button);
-        hideMenuButton = (Button) findViewById(R.id.monitoring_activity_menu_hide_button);
 
+        menuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_button);
+        hideMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_hide_button);
         chooseVehicleMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_choose_vehicle_button);
+        profileMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_profile_button);
+
         centerOnActiveButton = (Button)
                 findViewById(R.id.monitoring_activity_center_on_active_button);
 
@@ -153,12 +159,14 @@ public class MapActivity extends AppCompatActivity implements
                 onZoomOutButtonClick();
             }
         });
+
         centerOnActiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onCenterOnActiveButtonClick();
             }
         });
+
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,10 +179,18 @@ public class MapActivity extends AppCompatActivity implements
                 onHideMenuButtonClick();
             }
         });
+
         chooseVehicleMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onChooseVehicleButtonClick();
+            }
+        });
+
+        profileMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onProfileMenuButtonClick();
             }
         });
     }
@@ -238,6 +254,12 @@ public class MapActivity extends AppCompatActivity implements
     private void onChooseVehicleButtonClick() {
         menuEnabled = false;
         Intent intent = new Intent(MapActivity.this, MonitoringListActivity.class);
+        startActivity(intent);
+    }
+
+    private void onProfileMenuButtonClick() {
+        menuEnabled = false;
+        Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
 }
