@@ -34,6 +34,9 @@ public class MapActivity extends AppCompatActivity implements
     private Button hideMenuButton;
     private Button chooseVehicleMenuButton;
     private Button profileMenuButton;
+    private Button helpMenuButton;
+    private Button aboutMenuButton;
+    private Button settingsMenuButton;
     private TextView activeTextView;
     private LinearLayout menuLayout;
 
@@ -132,6 +135,12 @@ public class MapActivity extends AppCompatActivity implements
                 findViewById(R.id.monitoring_activity_menu_choose_vehicle_button);
         profileMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_profile_button);
+        helpMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_help_button);
+        aboutMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_about_button);
+        settingsMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_settings_button);
 
         centerOnActiveButton = (Button)
                 findViewById(R.id.monitoring_activity_center_on_active_button);
@@ -198,6 +207,26 @@ public class MapActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 onProfileMenuButtonClick();
+            }
+        });
+
+        helpMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onHelpMenuButtonClick();
+            }
+        });
+        aboutMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAboutMenuButtonClick();
+            }
+        });
+
+        settingsMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSettingsMenuButtonClick();
             }
         });
     }
@@ -267,6 +296,24 @@ public class MapActivity extends AppCompatActivity implements
     private void onProfileMenuButtonClick() {
         menuEnabled = false;
         Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void onHelpMenuButtonClick() {
+        menuEnabled = false;
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
+    }
+
+    private void onAboutMenuButtonClick() {
+        menuEnabled = false;
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    private void onSettingsMenuButtonClick() {
+        menuEnabled = false;
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

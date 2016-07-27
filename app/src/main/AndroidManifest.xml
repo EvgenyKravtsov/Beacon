@@ -204,6 +204,18 @@
             android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".monitoring.presentation.activity.HelpActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".monitoring.presentation.activity.AboutActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".monitoring.presentation.activity.SettingsActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

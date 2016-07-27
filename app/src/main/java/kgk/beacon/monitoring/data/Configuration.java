@@ -7,4 +7,8 @@ public interface Configuration {
     MapType loadDefaultMapType();
 
     void saveDefaultMapType(MapType mapType);
+
+    boolean loadMarkerInformationEnabled();
+
+    void saveMarkerInformationEnabled(boolean enabled);
 }

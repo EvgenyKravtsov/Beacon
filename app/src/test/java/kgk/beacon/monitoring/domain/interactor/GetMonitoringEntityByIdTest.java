@@ -61,8 +61,8 @@ public class GetMonitoringEntityByIdTest {
 
     private List<MonitoringEntity> generateMonitoringEntityList() {
         List<MonitoringEntity> monitoringEntities = new ArrayList<>();
-        monitoringEntities.add(new MonitoringEntity(1, "aaa"));
-        monitoringEntities.add(new MonitoringEntity(2, "bbb"));
+        monitoringEntities.add(new MonitoringEntity(1, "aaa", "111", "111"));
+        monitoringEntities.add(new MonitoringEntity(2, "bbb", "222", "222"));
         return monitoringEntities;
     }
 }

@@ -13,6 +13,8 @@ public class SharedPreferencesDao implements Configuration {
     private static final String DEFAULT_MAP_KEY = "default_map";
     private static final int DEFAULT_MAP_DEFAULT = 1;
     private static final int GOOGLE_MAP_CODE = 1;
+    private static final String MARKER_INFORMATION_ENABLED_KEY = "marker_information_enabled";
+    private static final boolean DEFAULT_MARKER_INFORMATION_ENABLED = true;
 
     private SharedPreferences sharedPreferences;
 
@@ -48,6 +50,16 @@ public class SharedPreferencesDao implements Configuration {
                 break;
         }
         saveInt(DEFAULT_MAP_KEY, mapCode);
+    }
+
+    @Override
+    public boolean loadMarkerInformationEnabled() {
+        return loadBoolean(MARKER_INFORMATION_ENABLED_KEY, DEFAULT_MARKER_INFORMATION_ENABLED);
+    }
+
+    @Override
+    public void saveMarkerInformationEnabled(boolean enabled) {
+        saveBoolean(MARKER_INFORMATION_ENABLED_KEY, enabled);
     }
 
     ////
