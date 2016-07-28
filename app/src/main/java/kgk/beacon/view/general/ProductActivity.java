@@ -120,11 +120,15 @@ public class ProductActivity extends AppCompatActivity {
     private List<MonitoringEntity> prepareMockListMonitoringEntities5() {
         List<MonitoringEntity> monitoringEntities = new ArrayList<>();
 
+        List<String> groupNames1 = new ArrayList<>();
+        groupNames1.add("test_group_1");
+
         MonitoringEntity monitoringEntity1 = new MonitoringEntity(
                 1,
                 "Mercedes-Benz",
                 "S600 AMG",
-                "E844EB177"
+                "E844EB177",
+                groupNames1
         );
         monitoringEntity1.setLatitude(32.314991);
         monitoringEntity1.setLongitude(43.170776);
@@ -141,7 +145,8 @@ public class ProductActivity extends AppCompatActivity {
                 2,
                 "Opel",
                 "Astra",
-                "K333KK09"
+                "K333KK09",
+                groupNames1
         );
         monitoringEntity2.setLatitude(32.417066);
         monitoringEntity2.setLongitude(48.658447);
@@ -158,7 +163,8 @@ public class ProductActivity extends AppCompatActivity {
                 3,
                 "VAZ",
                 "Седан Баклажан",
-                "A001MP100"
+                "A001MP100",
+                groupNames1
         );
         monitoringEntity3.setLatitude(38.117272);
         monitoringEntity3.setLongitude(46.461182);
@@ -175,7 +181,8 @@ public class ProductActivity extends AppCompatActivity {
                 4,
                 "Bugatti",
                 "Veyron Super Sport",
-                "H387TB99"
+                "H387TB99",
+                groupNames1
         );
         monitoringEntity4.setLatitude(35.960223);
         monitoringEntity4.setLongitude(59.919434);
@@ -192,7 +199,8 @@ public class ProductActivity extends AppCompatActivity {
                 5,
                 "Kawasaki",
                 "Ninja 300",
-                "C834TX199"
+                "C834TX199",
+                groupNames1
         );
         monitoringEntity5.setLatitude(41.574361);
         monitoringEntity5.setLongitude(76.398926);
@@ -212,11 +220,25 @@ public class ProductActivity extends AppCompatActivity {
     private List<MonitoringEntity> prepareMockListMonitoringEntities25() {
         List<MonitoringEntity> monitoringEntities = new ArrayList<>();
 
+        List<String> groupNames1 = new ArrayList<>();
+        groupNames1.add("test_group_1");
+        List<String> groupNames2 = new ArrayList<>();
+        groupNames2.add("test_group_2");
+        List<String> groupNames3 = new ArrayList<>();
+        groupNames3.add("test_group_3");
+        List<String> groupNames4 = new ArrayList<>();
+        groupNames4.add("test_group_4");
+        List<String> groupNames5 = new ArrayList<>();
+        groupNames5.add("test_group_1");
+        groupNames5.add("test_group_5");
+
+
         MonitoringEntity monitoringEntity1 = new MonitoringEntity(
                 1,
                 "Mercedes-Benz",
                 "S600 AMG",
-                "E844EB177"
+                "E844EB177",
+                groupNames1
         );
         monitoringEntity1.setLatitude(32.314991);
         monitoringEntity1.setLongitude(43.170776);
@@ -233,7 +255,8 @@ public class ProductActivity extends AppCompatActivity {
                 2,
                 "Opel",
                 "Astra",
-                "K333KK09"
+                "K333KK09",
+                groupNames1
         );
         monitoringEntity2.setLatitude(32.417066);
         monitoringEntity2.setLongitude(48.658447);
@@ -250,7 +273,8 @@ public class ProductActivity extends AppCompatActivity {
                 3,
                 "VAZ",
                 "Седан Баклажан",
-                "A001MP100"
+                "A001MP100",
+                groupNames1
         );
         monitoringEntity3.setLatitude(38.117272);
         monitoringEntity3.setLongitude(46.461182);
@@ -267,7 +291,8 @@ public class ProductActivity extends AppCompatActivity {
                 4,
                 "Bugatti",
                 "Veyron Super Sport",
-                "H387TB99"
+                "H387TB99",
+                groupNames1
         );
         monitoringEntity4.setLatitude(35.960223);
         monitoringEntity4.setLongitude(59.919434);
@@ -284,7 +309,8 @@ public class ProductActivity extends AppCompatActivity {
                 5,
                 "Kawasaki",
                 "Ninja 300",
-                "C834TX199"
+                "C834TX199",
+                groupNames1
         );
         monitoringEntity5.setLatitude(41.574361);
         monitoringEntity5.setLongitude(76.398926);
@@ -301,7 +327,8 @@ public class ProductActivity extends AppCompatActivity {
                 6,
                 "Chevrolet",
                 "Lacetti",
-                "E844HB03"
+                "E844HB03",
+                groupNames2
         );
         monitoringEntity6.setLatitude(42.851806);
         monitoringEntity6.setLongitude(43.324585);
@@ -318,7 +345,8 @@ public class ProductActivity extends AppCompatActivity {
                 7,
                 "Opel",
                 "Mokka",
-                "K333CC09"
+                "K333CC09",
+                groupNames2
         );
         monitoringEntity7.setLatitude(43.826601);
         monitoringEntity7.setLongitude(41.325073);
@@ -335,7 +363,8 @@ public class ProductActivity extends AppCompatActivity {
                 8,
                 "Alfa Romeo",
                 "4C",
-                "C001CC111"
+                "C001CC111",
+                groupNames2
         );
         monitoringEntity8.setLatitude(44.134913);
         monitoringEntity8.setLongitude(43.346558);
@@ -351,7 +380,8 @@ public class ProductActivity extends AppCompatActivity {
                 9,
                 "Chevrolet",
                 "Corvette",
-                "A687TT99"
+                "A687TT99",
+                groupNames2
         );
         monitoringEntity9.setLatitude(45.652448);
         monitoringEntity9.setLongitude(46.367798);
@@ -368,7 +398,8 @@ public class ProductActivity extends AppCompatActivity {
                 10,
                 "Honda",
                 "NSX",
-                "A999AA77"
+                "A999AA77",
+                groupNames2
         );
         monitoringEntity10.setLatitude(47.761484);
         monitoringEntity10.setLongitude(43.192749);
@@ -385,7 +416,8 @@ public class ProductActivity extends AppCompatActivity {
                 11,
                 "Lamborghini",
                 "Huracan",
-                "E834EA177"
+                "E834EA177",
+                groupNames3
         );
         monitoringEntity11.setLatitude(49.030665);
         monitoringEntity11.setLongitude(49.11438);
@@ -402,7 +434,8 @@ public class ProductActivity extends AppCompatActivity {
                 12,
                 "Jeep",
                 "Wrangler",
-                "K333BB09"
+                "K333BB09",
+                groupNames3
         );
         monitoringEntity12.setLatitude(53.034607);
         monitoringEntity12.setLongitude(46.598511);
@@ -419,7 +452,8 @@ public class ProductActivity extends AppCompatActivity {
                 13,
                 "Land Rover",
                 "Defender Classic",
-                "E003KX102"
+                "E003KX102",
+                groupNames3
         );
         monitoringEntity13.setLatitude(53.540307);
         monitoringEntity13.setLongitude(49.509888);
@@ -436,7 +470,8 @@ public class ProductActivity extends AppCompatActivity {
                 14,
                 "Ford",
                 "F150",
-                "C387CC99"
+                "C387CC99",
+                groupNames3
         );
         monitoringEntity14.setLatitude(52.908902);
         monitoringEntity14.setLongitude(55.090942);
@@ -453,7 +488,8 @@ public class ProductActivity extends AppCompatActivity {
                 15,
                 "Yamaha",
                 "YBR 150",
-                "C134HH199"
+                "C134HH199",
+                groupNames3
         );
         monitoringEntity15.setLatitude(56.212814);
         monitoringEntity15.setLongitude(54.860229);
@@ -470,7 +506,8 @@ public class ProductActivity extends AppCompatActivity {
                 16,
                 "ВАЗ",
                 "2105",
-                "A874AA177"
+                "A874AA177",
+                groupNames4
         );
         monitoringEntity16.setLatitude(58.390197);
         monitoringEntity16.setLongitude(57.55188);
@@ -487,7 +524,8 @@ public class ProductActivity extends AppCompatActivity {
                 17,
                 "Jaguar",
                 "XJ",
-                "A333BC09"
+                "A333BC09",
+                groupNames4
         );
         monitoringEntity17.setLatitude(60.228903);
         monitoringEntity17.setLongitude(61.452026);
@@ -504,7 +542,8 @@ public class ProductActivity extends AppCompatActivity {
                 18,
                 "Jaguar",
                 "F-Type",
-                "A999MP100"
+                "A999MP100",
+                groupNames4
         );
         monitoringEntity18.setLatitude(62.764783);
         monitoringEntity18.setLongitude(72.279053);
@@ -521,7 +560,8 @@ public class ProductActivity extends AppCompatActivity {
                 19,
                 "Lotus",
                 "Elise",
-                "T143OP99"
+                "T143OP99",
+                groupNames4
         );
         monitoringEntity19.setLatitude(66.748577);
         monitoringEntity19.setLongitude(85.638428);
@@ -538,7 +578,8 @@ public class ProductActivity extends AppCompatActivity {
                 20,
                 "Aston Martin",
                 "DB9",
-                "E777EE203"
+                "E777EE203",
+                groupNames4
         );
         monitoringEntity20.setLatitude(71.698194);
         monitoringEntity20.setLongitude(95.83374);
@@ -555,7 +596,8 @@ public class ProductActivity extends AppCompatActivity {
                 21,
                 "Mercedes-Benz",
                 "A45",
-                "E321EH177"
+                "E321EH177",
+                groupNames5
         );
         monitoringEntity21.setLatitude(75.039013);
         monitoringEntity21.setLongitude(96.295166);
@@ -572,7 +614,8 @@ public class ProductActivity extends AppCompatActivity {
                 22,
                 "Dacia",
                 "Duster",
-                "K444CC09"
+                "K444CC09",
+                groupNames5
         );
         monitoringEntity22.setLatitude(72.906723);
         monitoringEntity22.setLongitude(109.610596);
@@ -589,7 +632,8 @@ public class ProductActivity extends AppCompatActivity {
                 23,
                 "ZAZ",
                 "Sub-Zero",
-                "B002MP100"
+                "B002MP100",
+                groupNames5
         );
         monitoringEntity23.setLatitude(68.479926);
         monitoringEntity23.setLongitude(114.620361);
@@ -606,7 +650,8 @@ public class ProductActivity extends AppCompatActivity {
                 24,
                 "McLaren",
                 "P13",
-                "H987KK99"
+                "H987KK99",
+                groupNames5
         );
         monitoringEntity24.setLatitude(54.316523);
         monitoringEntity24.setLongitude(94.932861);
@@ -623,7 +668,8 @@ public class ProductActivity extends AppCompatActivity {
                 25,
                 "KTM",
                 "Duke 250",
-                "H556TX177"
+                "H556TX177",
+                groupNames5
         );
         monitoringEntity25.setLatitude(46.362093);
         monitoringEntity25.setLongitude(87.154541);

@@ -6,15 +6,18 @@ import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.domain.interactor.GetActiveMonitoringEntity;
 import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntities;
 import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntityById;
+import kgk.beacon.monitoring.domain.interactor.GetMonitroingEntityGroups;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
+import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.presentation.view.MapView;
 import kgk.beacon.util.AppController;
 
 public class MapViewPresenter implements
         GetMonitoringEntities.Listener,
         GetActiveMonitoringEntity.Listener,
-        GetMonitoringEntityById.Listener {
+        GetMonitoringEntityById.Listener,
+        GetMonitroingEntityGroups.Listener {
 
     private MapView view;
 
@@ -31,7 +34,8 @@ public class MapViewPresenter implements
     }
 
     public void requestMonitoringEntities() {
-        GetMonitoringEntities interactor = new GetMonitoringEntities();
+        GetMonitoringEntities interactor =
+                new GetMonitoringEntities(DependencyInjection.provideMonitoringManager());
         interactor.setListener(this);
         InteractorThreadPool.getInstance().execute(interactor);
     }
@@ -48,6 +52,12 @@ public class MapViewPresenter implements
                 DependencyInjection.provideMonitoringManager()
         );
 
+        interactor.setListener(this);
+        InteractorThreadPool.getInstance().execute(interactor);
+    }
+
+    public void requestMonitoringEntityGroupsCount() {
+        GetMonitroingEntityGroups interactor = new GetMonitroingEntityGroups();
         interactor.setListener(this);
         InteractorThreadPool.getInstance().execute(interactor);
     }
@@ -83,6 +93,18 @@ public class MapViewPresenter implements
             @Override
             public void run() {
                 view.setActiveMonitoringEntity(monitoringEntity);
+            }
+        });
+    }
+
+    @Override
+    public void onMonitoringEntityGroupRetreived(List<MonitoringEntityGroup> groups) {
+        final int count = groups.size();
+
+        AppController.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.toggleChooseGroupMenuButton(count > 1);
             }
         });
     }

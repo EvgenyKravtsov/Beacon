@@ -15,4 +15,6 @@ public interface MapView {
     void toggleCenterOnActiveControl(boolean enabled);
 
     void monitoringEntityChosen(long id);
+
+    void toggleChooseGroupMenuButton(boolean enabled);
 }

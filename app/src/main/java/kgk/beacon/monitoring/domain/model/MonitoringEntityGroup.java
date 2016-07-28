@@ -17,6 +17,16 @@ public class MonitoringEntityGroup {
 
     ////
 
+    public String getName() {
+        return name;
+    }
+
+    public List<MonitoringEntity> getMonitoringEntities() {
+        return monitoringEntities;
+    }
+
+    ////
+
     public void add(MonitoringEntity monitoringEntity) {
         monitoringEntities.add(monitoringEntity);
     }

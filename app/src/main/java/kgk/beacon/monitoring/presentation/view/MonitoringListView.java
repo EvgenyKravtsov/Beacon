@@ -6,5 +6,7 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 
 public interface MonitoringListView {
 
-    void showMonitoringEntities(List<MonitoringEntity> monitoringEntities);
+    void showMonitoringEntities(
+            List<MonitoringEntity> monitoringEntities,
+            MonitoringEntity activeMonitoringEntity);
 }

@@ -60,9 +60,15 @@ public class GetMonitoringEntityByIdTest {
     ////
 
     private List<MonitoringEntity> generateMonitoringEntityList() {
+        List<String> group1 = new ArrayList<>();
+        group1.add("group1");
+        List<String> group2 = new ArrayList<>();
+        group2.add("group2");
+
         List<MonitoringEntity> monitoringEntities = new ArrayList<>();
-        monitoringEntities.add(new MonitoringEntity(1, "aaa", "111", "111"));
-        monitoringEntities.add(new MonitoringEntity(2, "bbb", "222", "222"));
+        monitoringEntities.add(new MonitoringEntity(1, "aaa", "111", "111", group1));
+        monitoringEntities.add(new MonitoringEntity(2, "bbb", "222", "222", group1));
+        monitoringEntities.add(new MonitoringEntity(3, "ccc", "333", "333", group2));
         return monitoringEntities;
     }
 }

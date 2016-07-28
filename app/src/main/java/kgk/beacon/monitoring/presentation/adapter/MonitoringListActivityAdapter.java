@@ -1,6 +1,7 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,19 +19,21 @@ import java.util.List;
 import java.util.Locale;
 
 import kgk.beacon.R;
-import kgk.beacon.monitoring.DependencyInjection;
+import kgk.beacon.monitoring.domain.interactor.SetActiveMonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
+import kgk.beacon.monitoring.presentation.activity.MapActivity;
 
-public class MonitoringListActivityRecyclerAdapter extends
-        RecyclerView.Adapter<MonitoringListActivityRecyclerAdapter.ViewHolder> {
+public class MonitoringListActivityAdapter extends
+        RecyclerView.Adapter<MonitoringListActivityAdapter.ViewHolder> {
 
     private List<MonitoringEntity> monitoringEntities;
+    private MonitoringEntity activeMonitoringEntity;
     private Activity activity;
 
     ////
 
-    public MonitoringListActivityRecyclerAdapter(Activity activity) {
+    public MonitoringListActivityAdapter(Activity activity) {
         this.activity = activity;
     }
 
@@ -38,6 +41,10 @@ public class MonitoringListActivityRecyclerAdapter extends
 
     public void setMonitoringEntities(List<MonitoringEntity> monitoringEntities) {
         this.monitoringEntities = new ArrayList<>(monitoringEntities);
+    }
+
+    public void setActiveMonitoringEntity(MonitoringEntity activeMonitoringEntity) {
+        this.activeMonitoringEntity = activeMonitoringEntity;
     }
 
     public void sortByAlphabet() {
@@ -91,8 +98,6 @@ public class MonitoringListActivityRecyclerAdapter extends
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MonitoringEntity monitoringEntity = monitoringEntities.get(holder.getAdapterPosition());
-        MonitoringEntity activeMonitoringEntity = DependencyInjection.provideMonitoringManager()
-                .getActiveMonitoringEntity();
 
         holder.nameTextView.setText(
                 String.format("%s %s %s",
@@ -114,25 +119,57 @@ public class MonitoringListActivityRecyclerAdapter extends
             }
         });
 
-        holder.informationLayout.setBackgroundColor(makeBackgroundColor(
-                monitoringEntity.getId() == activeMonitoringEntity.getId()));
         holder.informationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Making cahnges in model in UI thread is nessesary here, because
-                // i need to guarantee, that active entity have been chaned before going
-                // to map activity
-                DependencyInjection.provideMonitoringManager()
-                        .setActiveMonitoringEntity(monitoringEntity);
-                monitoringEntity.setDisplayEnabled(true);
-                activity.finish();
+                onClickInformationLayout(monitoringEntity);
             }
         });
+
+        holder.informationLayout.setBackgroundColor(makeBackgroundColor(
+                activeMonitoringEntity != null &&
+                monitoringEntity.getId() == activeMonitoringEntity.getId()));
     }
 
     @Override
     public int getItemCount() {
         return monitoringEntities.size();
+    }
+
+    ////
+
+    private String makeStatusString(MonitoringEntityStatus status) {
+        String statusString;
+        switch (status) {
+            case IN_MOTION:
+                statusString = "M";
+                break;
+            case STOPPED:
+                statusString = "S";
+                break;
+            case OFFLINE:
+                statusString = "O";
+                break;
+            default:
+                statusString = "O";
+        }
+        return statusString;
+    }
+
+    private int makeBackgroundColor(boolean active) {
+        if (active) return activity.getResources().getColor(android.R.color.darker_gray);
+        else return activity.getResources().getColor(android.R.color.white);
+    }
+
+    private void onClickInformationLayout(MonitoringEntity monitoringEntity) {
+        // Making changes in model in UI thread is nessesary here, because
+        // i need to guarantee, that active entity have been chaned before going
+        // to map activity
+        SetActiveMonitoringEntity interactor = new SetActiveMonitoringEntity(monitoringEntity);
+        interactor.execute();
+        monitoringEntity.setDisplayEnabled(true);
+        Intent intent = new Intent(activity, MapActivity.class);
+        activity.startActivity(intent);
     }
 
     ////
@@ -161,30 +198,5 @@ public class MonitoringListActivityRecyclerAdapter extends
             hideButton = (Button)
                     itemView.findViewById(R.id.monitoring_activity_list_item_hide_button);
         }
-    }
-
-    ////
-
-    private String makeStatusString(MonitoringEntityStatus status) {
-        String statusString;
-        switch (status) {
-            case IN_MOTION:
-                statusString = "M";
-                break;
-            case STOPPED:
-                statusString = "S";
-                break;
-            case OFFLINE:
-                statusString = "O";
-                break;
-            default:
-                statusString = "O";
-        }
-        return statusString;
-    }
-
-    private int makeBackgroundColor(boolean active) {
-        if (active) return activity.getResources().getColor(android.R.color.darker_gray);
-        else return activity.getResources().getColor(android.R.color.white);
     }
 }

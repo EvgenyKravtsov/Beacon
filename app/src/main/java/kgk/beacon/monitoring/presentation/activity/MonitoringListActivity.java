@@ -14,7 +14,7 @@ import java.util.List;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
-import kgk.beacon.monitoring.presentation.adapter.MonitoringListActivityRecyclerAdapter;
+import kgk.beacon.monitoring.presentation.adapter.MonitoringListActivityAdapter;
 import kgk.beacon.monitoring.presentation.presenter.MonitoringListViewPresenter;
 import kgk.beacon.monitoring.presentation.view.MonitoringListView;
 
@@ -29,8 +29,9 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     private SearchView searchView;
 
     private MonitoringListViewPresenter presenter;
-    private MonitoringListActivityRecyclerAdapter adapter;
+    private MonitoringListActivityAdapter adapter;
     private List<MonitoringEntity> monitoringEntities;
+    private MonitoringEntity activeMonitoringEntity;
 
     ////
 
@@ -64,10 +65,16 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     ////
 
     @Override
-    public void showMonitoringEntities(List<MonitoringEntity> monitoringEntities) {
+    public void showMonitoringEntities(
+            List<MonitoringEntity> monitoringEntities,
+            MonitoringEntity activeMonitoringEntity) {
+
         this.monitoringEntities = monitoringEntities;
-        adapter = new MonitoringListActivityRecyclerAdapter(this);
+        this.activeMonitoringEntity = activeMonitoringEntity;
+
+        adapter = new MonitoringListActivityAdapter(this);
         adapter.setMonitoringEntities(this.monitoringEntities);
+        adapter.setActiveMonitoringEntity(this.activeMonitoringEntity);
         recyclerView.setAdapter(adapter);
 
         if (monitoringEntities.size() > SEARCH_DISPLAY_CRITERIA) {
@@ -79,7 +86,7 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     ////
 
     private void initViews() {
-        recyclerView = (RecyclerView) findViewById(R.id.main_activity_list_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.monitoring_activity_list_recycler_view);
 
         alphabetOrderButton = (Button)
                 findViewById(R.id.monitoring_activity_list_alphabet_order_button);

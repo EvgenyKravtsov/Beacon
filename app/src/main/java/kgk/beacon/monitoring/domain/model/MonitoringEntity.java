@@ -1,11 +1,14 @@
 package kgk.beacon.monitoring.domain.model;
 
+import java.util.List;
+
 public class MonitoringEntity {
 
     private final long id;
     private final String mark;
     private final String model;
     private final String stateNumber;
+    private final List<String> groupNames;
 
     private double latitude;
     private double longitude;
@@ -25,11 +28,13 @@ public class MonitoringEntity {
     public MonitoringEntity(long id,
                             String mark,
                             String model,
-                            String stateNumber) {
+                            String stateNumber,
+                            List<String> groupNames) {
         this.id = id;
         this.mark = mark;
         this.model = model;
         this.stateNumber = stateNumber;
+        this.groupNames = groupNames;
     }
 
     ////
@@ -48,6 +53,10 @@ public class MonitoringEntity {
 
     public String getStateNumber() {
         return stateNumber;
+    }
+
+    public List<String> getGroupNames() {
+        return groupNames;
     }
 
     public double getLatitude() {

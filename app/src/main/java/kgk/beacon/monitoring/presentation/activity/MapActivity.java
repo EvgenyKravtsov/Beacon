@@ -33,6 +33,7 @@ public class MapActivity extends AppCompatActivity implements
     private Button menuButton;
     private Button hideMenuButton;
     private Button chooseVehicleMenuButton;
+    private Button chooseVehicleGroupMenuButton;
     private Button profileMenuButton;
     private Button helpMenuButton;
     private Button aboutMenuButton;
@@ -67,6 +68,7 @@ public class MapActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         presenter.requestMonitoringEntities();
+        presenter.requestMonitoringEntityGroupsCount();
         menuLayout.setVisibility(View.GONE);
     }
 
@@ -115,6 +117,12 @@ public class MapActivity extends AppCompatActivity implements
         presenter.requestMonitoringEntityById(id);
     }
 
+    @Override
+    public void toggleChooseGroupMenuButton(boolean enabled) {
+        int visibility = enabled ? View.VISIBLE : View.GONE;
+        chooseVehicleGroupMenuButton.setVisibility(visibility);
+    }
+
     ////
 
     private void initViews(Bundle savedInstanceState) {
@@ -133,6 +141,8 @@ public class MapActivity extends AppCompatActivity implements
                 findViewById(R.id.monitoring_activity_menu_hide_button);
         chooseVehicleMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_choose_vehicle_button);
+        chooseVehicleGroupMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_choose_vehicle_group_button);
         profileMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_profile_button);
         helpMenuButton = (Button)
@@ -200,6 +210,13 @@ public class MapActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 onChooseVehicleButtonClick();
+            }
+        });
+
+        chooseVehicleGroupMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChooseVehicleGroupMenuButtonClick();
             }
         });
 
@@ -290,6 +307,12 @@ public class MapActivity extends AppCompatActivity implements
     private void onChooseVehicleButtonClick() {
         menuEnabled = false;
         Intent intent = new Intent(MapActivity.this, MonitoringListActivity.class);
+        startActivity(intent);
+    }
+
+    private void onChooseVehicleGroupMenuButtonClick() {
+        menuEnabled = false;
+        Intent intent = new Intent(MapActivity.this, MonitoringGroupListActivity.class);
         startActivity(intent);
     }
 

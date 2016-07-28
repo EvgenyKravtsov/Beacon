@@ -23,12 +23,13 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
 
     private GoogleMap map;
     private boolean trafficEnabled;
-    private List<MonitoringEntityMarker> markers;
+    private List<MonitoringEntityGoogleMarker> markers;
 
     ////
 
-    public GoogleMapAdapter(kgk.beacon.monitoring.presentation.view.MapView mapView,
-                            MapView googleMapView) {
+    public GoogleMapAdapter(
+            kgk.beacon.monitoring.presentation.view.MapView mapView,
+            MapView googleMapView) {
         this.mapView = mapView;
         this.googleMapView = googleMapView;
         this.markers = new ArrayList<>();
@@ -51,7 +52,7 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
         long id = monitoringEntity.getId();
         LatLng latLng = new LatLng(monitoringEntity.getLatitude(), monitoringEntity.getLongitude());
         Marker marker = map.addMarker(new MarkerOptions().position(latLng));
-        markers.add(new MonitoringEntityMarker(id, marker));
+        markers.add(new MonitoringEntityGoogleMarker(id, marker));
     }
 
     @Override
@@ -73,7 +74,7 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     @Override
     public void centerOnCoordinates(double latitude, double longitude) {
         map.animateCamera(CameraUpdateFactory
-                .newLatLngZoom(new LatLng(latitude, longitude), map.getCameraPosition().zoom));
+                .newLatLngZoom(new LatLng(latitude, longitude), 7));
     }
 
     @Override
@@ -99,9 +100,9 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        for (MonitoringEntityMarker monitoringEntityMarker : markers) {
-            if (monitoringEntityMarker.getMarker().equals(marker)) {
-                mapView.monitoringEntityChosen(monitoringEntityMarker.getId());
+        for (MonitoringEntityGoogleMarker monitoringEntityGoogleMarker : markers) {
+            if (monitoringEntityGoogleMarker.getMarker().equals(marker)) {
+                mapView.monitoringEntityChosen(monitoringEntityGoogleMarker.getId());
             }
         }
         return true;
@@ -109,14 +110,14 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
 
     ////
 
-    public class MonitoringEntityMarker {
+    public class MonitoringEntityGoogleMarker {
 
         private final long id;
         private final Marker marker;
 
         ////
 
-        public MonitoringEntityMarker(long id, Marker marker) {
+        public MonitoringEntityGoogleMarker(long id, Marker marker) {
             this.id = id;
             this.marker = marker;
         }

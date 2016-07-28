@@ -1,12 +1,17 @@
 package kgk.beacon.monitoring.domain.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MonitoringManager {
 
     private static MonitoringManager instance;
 
     private User user;
+    private List<MonitoringEntityGroup> monitoringEntityGroups;
+    private MonitoringEntityGroup activeMonitoringEntityGroup;
     private List<MonitoringEntity> monitoringEntities;
     private MonitoringEntity activeMonitoringEntity;
 
@@ -28,12 +33,26 @@ public class MonitoringManager {
         user.setContacts("+1 (111) 111-22-33");
         user.setBalance(666.01);
 
+        monitoringEntityGroups = sortMonitoringEntitiesByGroup(monitoringEntities);
+
         this.monitoringEntities = monitoringEntities;
         activeMonitoringEntity = this.monitoringEntities.get(this.monitoringEntities.size() - 1);
     }
 
     public User getUser() {
         return user;
+    }
+
+    public List<MonitoringEntityGroup> getMonitoringEntityGroups() {
+        return monitoringEntityGroups;
+    }
+
+    public MonitoringEntityGroup getActiveMonitoringEntityGroup() {
+        return activeMonitoringEntityGroup;
+    }
+
+    public void setActiveMonitoringEntityGroup(MonitoringEntityGroup activeMonitoringEntityGroup) {
+        this.activeMonitoringEntityGroup = activeMonitoringEntityGroup;
     }
 
     public List<MonitoringEntity> getMonitoringEntities() {
@@ -46,5 +65,34 @@ public class MonitoringManager {
 
     public void setActiveMonitoringEntity(MonitoringEntity activeMonitoringEntity) {
         this.activeMonitoringEntity = activeMonitoringEntity;
+    }
+
+    ////
+
+    private List<MonitoringEntityGroup> sortMonitoringEntitiesByGroup(
+            List<MonitoringEntity> monitoringEntities) {
+
+        Set<String> groupNames = new HashSet<>();
+        for (MonitoringEntity monitoringEntity : monitoringEntities) {
+            for (String groupName : monitoringEntity.getGroupNames()) {
+                groupNames.add(groupName);
+            }
+        }
+
+        List<MonitoringEntityGroup> groups = new ArrayList<>();
+        for (String groupName : groupNames) {
+            MonitoringEntityGroup group = new MonitoringEntityGroup(groupName);
+            groups.add(group);
+        }
+
+        for (MonitoringEntity monitoringEntity : monitoringEntities) {
+            for (MonitoringEntityGroup group : groups) {
+                if (monitoringEntity.getGroupNames().contains(group.getName())) {
+                    group.add(monitoringEntity);
+                }
+            }
+        }
+
+        return groups;
     }
 }
