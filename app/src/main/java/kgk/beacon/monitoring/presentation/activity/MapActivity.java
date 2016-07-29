@@ -31,6 +31,10 @@ public class MapActivity extends AppCompatActivity implements
     private Button zoomOutButton;
     private Button centerOnActiveButton;
     private Button menuButton;
+    private Button kgkMapMenuButton;
+    private Button yandexMapMenuButton;
+    private Button googleMapMenuButton;
+    private Button satelliteMapMenuButton;
     private Button hideMenuButton;
     private Button chooseVehicleMenuButton;
     private Button chooseVehicleGroupMenuButton;
@@ -84,6 +88,11 @@ public class MapActivity extends AppCompatActivity implements
     public void showMonitoringEntities(List<MonitoringEntity> monitoringEntities) {
         if (monitoringEntities != null && monitoringEntities.size() > 0) {
             mapAdapter.clearMap();
+
+            Configuration configuration = DependencyInjection.provideConfiguration();
+            MapType mapType = configuration.loadDefaultMapType();
+            mapAdapter.setMapType(mapType);
+
             for (MonitoringEntity monitoringEntity : monitoringEntities) {
                 if (monitoringEntity.isDisplayEnabled()) mapAdapter.showMapEntity(monitoringEntity);
             }
@@ -137,6 +146,14 @@ public class MapActivity extends AppCompatActivity implements
 
         menuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_button);
+        kgkMapMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_kgk_map_button);
+        yandexMapMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_yandex_map_button);
+        googleMapMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_google_map_button);
+        satelliteMapMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_satellite_map_button);
         hideMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_hide_button);
         chooseVehicleMenuButton = (Button)
@@ -199,27 +216,43 @@ public class MapActivity extends AppCompatActivity implements
                 onMenuButtonClick();
             }
         });
-        hideMenuButton.setOnClickListener(new View.OnClickListener() {
+        kgkMapMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onHideMenuButtonClick();
+                onClickKgkMapMenuButton();
             }
         });
 
+        yandexMapMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickYandexMapMenuButton();
+            }
+        });
+        googleMapMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickGoogleMapMenuButton();
+            }
+        });
+        satelliteMapMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCLickSatelliteMapMenuButton();
+            }
+        });
         chooseVehicleMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onChooseVehicleButtonClick();
             }
         });
-
         chooseVehicleGroupMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onChooseVehicleGroupMenuButtonClick();
             }
         });
-
         profileMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,6 +272,12 @@ public class MapActivity extends AppCompatActivity implements
                 onAboutMenuButtonClick();
             }
         });
+        hideMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onHideMenuButtonClick();
+            }
+        });
 
         settingsMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,18 +288,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void initMap() {
-        Configuration configuration = DependencyInjection.provideConfiguration();
-        MapType mapType = configuration.loadDefaultMapType();
-
-        switch (mapType) {
-            case GOOGLE:
-                googleMapView.setVisibility(View.VISIBLE);
-                mapAdapter = new GoogleMapAdapter(this, googleMapView);
-                break;
-            default:
-                googleMapView.setVisibility(View.VISIBLE);
-                mapAdapter = new GoogleMapAdapter(this, googleMapView);
-        }
+        mapAdapter = new GoogleMapAdapter(this, googleMapView);
     }
 
     private void bindPresenter() {
@@ -298,10 +326,24 @@ public class MapActivity extends AppCompatActivity implements
         menuLayout.setVisibility(visibility);
     }
 
-    private void onHideMenuButtonClick() {
-        menuEnabled = !menuEnabled;
-        int visibility = menuEnabled ? View.VISIBLE : View.GONE;
-        menuLayout.setVisibility(visibility);
+    private void onClickKgkMapMenuButton() {
+        mapAdapter.setMapType(MapType.KGK);
+        presenter.saveDefaultMapType(MapType.KGK);
+    }
+
+    private void onClickYandexMapMenuButton() {
+        mapAdapter.setMapType(MapType.YANDEX);
+        presenter.saveDefaultMapType(MapType.YANDEX);
+    }
+
+    private void onClickGoogleMapMenuButton() {
+        mapAdapter.setMapType(MapType.GOOGLE);
+        presenter.saveDefaultMapType(MapType.GOOGLE);
+    }
+
+    private void onCLickSatelliteMapMenuButton() {
+        mapAdapter.setMapType(MapType.SATELLITE);
+        presenter.saveDefaultMapType(MapType.SATELLITE);
     }
 
     private void onChooseVehicleButtonClick() {
@@ -338,6 +380,12 @@ public class MapActivity extends AppCompatActivity implements
         menuEnabled = false;
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    private void onHideMenuButtonClick() {
+        menuEnabled = !menuEnabled;
+        int visibility = menuEnabled ? View.VISIBLE : View.GONE;
+        menuLayout.setVisibility(visibility);
     }
 
     private void onActiveTextViewClick() {

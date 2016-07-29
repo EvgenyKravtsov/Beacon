@@ -8,8 +8,10 @@ import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntities;
 import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntityById;
 import kgk.beacon.monitoring.domain.interactor.GetMonitroingEntityGroups;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
+import kgk.beacon.monitoring.domain.interactor.SetDefaultMapTypeSetting;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
+import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.view.MapView;
 import kgk.beacon.util.AppController;
 
@@ -59,6 +61,11 @@ public class MapViewPresenter implements
     public void requestMonitoringEntityGroupsCount() {
         GetMonitroingEntityGroups interactor = new GetMonitroingEntityGroups();
         interactor.setListener(this);
+        InteractorThreadPool.getInstance().execute(interactor);
+    }
+
+    public void saveDefaultMapType(MapType mapType) {
+        SetDefaultMapTypeSetting interactor = new SetDefaultMapTypeSetting(mapType);
         InteractorThreadPool.getInstance().execute(interactor);
     }
 

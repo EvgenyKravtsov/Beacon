@@ -8,7 +8,6 @@
     <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:id="@+id/monitoring_activity_map_google_map" />
 
     <Button

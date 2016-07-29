@@ -61,8 +61,17 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
                 (boolean) dataMap.get(SettingsViewPresenter.MERKER_INFORMATION_ENABLED);
 
         switch (defaultMapType) {
+            case KGK:
+                mapRadioGroup.check(R.id.monitoring_activity_settings_marker_kgk_radio_button);
+                break;
+            case YANDEX:
+                mapRadioGroup.check(R.id.monitoring_activity_settings_marker_yandex_radio_button);
+                break;
             case GOOGLE:
                 mapRadioGroup.check(R.id.monitoring_activity_settings_marker_google_radio_button);
+                break;
+            case SATELLITE:
+                mapRadioGroup.check(R.id.monitoring_activity_settings_marker_satellite_radio_button);
                 break;
         }
 
@@ -107,8 +116,17 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
 
     private void onMapRadioGroupItemChecked(int checkedId) {
         switch (checkedId) {
+            case R.id.monitoring_activity_settings_marker_kgk_radio_button:
+                presenter.saveDefaultMapType(MapType.KGK);
+                break;
+            case R.id.monitoring_activity_settings_marker_yandex_radio_button:
+                presenter.saveDefaultMapType(MapType.YANDEX);
+                break;
             case R.id.monitoring_activity_settings_marker_google_radio_button:
                 presenter.saveDefaultMapType(MapType.GOOGLE);
+                break;
+            case R.id.monitoring_activity_settings_marker_satellite_radio_button:
+                presenter.saveDefaultMapType(MapType.SATELLITE);
                 break;
         }
     }

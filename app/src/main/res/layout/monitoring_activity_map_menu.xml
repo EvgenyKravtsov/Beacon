@@ -15,6 +15,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="10dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:text="KGK"
+            android:id="@+id/monitoring_activity_menu_kgk_map_button" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:text="Yandex"
+            android:id="@+id/monitoring_activity_menu_yandex_map_button" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:text="Google"
+            android:id="@+id/monitoring_activity_menu_google_map_button" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:text="Satellite"
+            android:id="@+id/monitoring_activity_menu_satellite_map_button" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:baselineAligned="false">
 
         <LinearLayout

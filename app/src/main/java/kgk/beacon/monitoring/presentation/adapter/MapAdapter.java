@@ -1,6 +1,7 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
+import kgk.beacon.monitoring.presentation.model.MapType;
 
 public interface MapAdapter {
 
@@ -13,6 +14,8 @@ public interface MapAdapter {
     void zoomOut();
 
     void centerOnCoordinates(double latitude, double longitude);
+
+    void setMapType(MapType mapType);
 
     void clearMap();
 }

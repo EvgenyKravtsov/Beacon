@@ -21,8 +21,26 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="KGK"
+            android:id="@+id/monitoring_activity_settings_marker_kgk_radio_button"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yandex"
+            android:id="@+id/monitoring_activity_settings_marker_yandex_radio_button"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Google"
             android:id="@+id/monitoring_activity_settings_marker_google_radio_button"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Satellite"
+            android:id="@+id/monitoring_activity_settings_marker_satellite_radio_button"/>
 
     </RadioGroup>
 

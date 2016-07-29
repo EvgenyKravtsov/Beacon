@@ -1,5 +1,7 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -9,11 +11,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
+import kgk.beacon.monitoring.presentation.model.MapType;
+import kgk.beacon.util.YandexMapUtils;
 
 public class GoogleMapAdapter implements OnMapReadyCallback,
         MapAdapter, GoogleMap.OnCameraChangeListener, GoogleMap.OnMarkerClickListener {
@@ -22,6 +33,8 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     private final MapView googleMapView;
 
     private GoogleMap map;
+    private TileOverlay kgkTileOverlay;
+    private TileOverlay yandexTileOverlay;
     private boolean trafficEnabled;
     private List<MonitoringEntityGoogleMarker> markers;
 
@@ -74,7 +87,48 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     @Override
     public void centerOnCoordinates(double latitude, double longitude) {
         map.animateCamera(CameraUpdateFactory
-                .newLatLngZoom(new LatLng(latitude, longitude), 7));
+                .newLatLngZoom(new LatLng(latitude, longitude), 4));
+    }
+
+    @Override
+    public void setMapType(MapType mapType) {
+        if (map == null) return;
+        if (kgkTileOverlay != null) kgkTileOverlay.remove();
+        if (yandexTileOverlay != null) yandexTileOverlay.remove();
+
+        switch (mapType) {
+            case KGK:
+                map.setMapType(GoogleMap.MAP_TYPE_NONE);
+                kgkTileOverlay = map.addTileOverlay(prepareKgkMap());
+                break;
+            case YANDEX:
+                map.setMapType(GoogleMap.MAP_TYPE_NONE);
+
+                // TODO Delete test code
+                map.clear();
+
+                yandexTileOverlay = map.addTileOverlay(prepareYandexMap());
+
+                // TODO Delete test code
+                for (MonitoringEntityGoogleMarker googleMarker : markers) {
+                    LatLng latLng = googleMarker.getMarker().getPosition();
+                    double[] geoCoordinates = new double[] {latLng.latitude, latLng.longitude};
+                    double[] mercCoordinates = YandexMapUtils.mercatorToGeo(geoCoordinates);
+                    LatLng mercLatLng = new LatLng(mercCoordinates[0], mercCoordinates[1]);
+                    Log.d("debug", "lat = " + mercLatLng.latitude + " | long = " + mercLatLng.longitude);
+                    Marker marker = map.addMarker(new MarkerOptions().position(mercLatLng));
+                }
+
+                break;
+            case GOOGLE:
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                break;
+            case SATELLITE:
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                break;
+            default:
+                setMapType(MapType.KGK);
+        }
     }
 
     @Override
@@ -106,6 +160,68 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
             }
         }
         return true;
+    }
+
+    ////
+
+    private TileOverlayOptions prepareKgkMap() {
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public URL getTileUrl(int x, int y, int zoom) {
+
+                String urlString = String.format(
+                        Locale.ROOT,
+                        "http://map2.kgk-global.com/tiles/tile.py/get?z=%d&x=%d&y=%d",
+                        zoom, x, y);
+
+                if (!checkTileExists(x, y, zoom)) {
+                    return null;
+                }
+
+                try {
+                    return new URL(urlString);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+            }
+        };
+
+        TileOverlayOptions tileOverlayOptions = new TileOverlayOptions().tileProvider(tileProvider);
+        tileOverlayOptions.fadeIn(false);
+        return tileOverlayOptions;
+    }
+
+    private TileOverlayOptions prepareYandexMap() {
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public URL getTileUrl(int x, int y, int zoom) {
+
+                String urlString = String.format(
+                        Locale.ROOT,
+                        "http://vec02.maps.yandex.net/tiles?l=map&v=4.4.9&x=%d&y=%d&z=%d&lang=ru-RU",
+                        x, y, zoom);
+
+                if (!checkTileExists(x, y, zoom)) {
+                    return null;
+                }
+
+                try {
+                    return new URL(urlString);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+            }
+        };
+
+        TileOverlayOptions tileOverlayOptions = new TileOverlayOptions().tileProvider(tileProvider);
+        tileOverlayOptions.fadeIn(false);
+        return tileOverlayOptions;
+    }
+
+    private boolean checkTileExists(int x, int y, int zoom) {
+        int minZoom = 1;
+        int maxZoom = 18;
+        return !(zoom < minZoom || zoom > maxZoom);
     }
 
     ////
