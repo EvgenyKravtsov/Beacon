@@ -24,6 +24,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
@@ -38,6 +39,10 @@ import kgk.beacon.model.DataForDetailReportRequest;
 import kgk.beacon.model.Signal;
 import kgk.beacon.model.T5Packet;
 import kgk.beacon.model.T6Packet;
+import kgk.beacon.monitoring.MonitoringHttpClient;
+import kgk.beacon.monitoring.domain.model.MonitoringEntity;
+import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
+import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.networking.event.BalanceResponseReceived;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
@@ -57,7 +62,7 @@ import kgk.beacon.view.general.event.StartActivityEvent;
 /**
  * Реализация менеджера http-запросов на базе библиотеки Google Volley
  */
-public class VolleyHttpClient implements Response.ErrorListener {
+public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpClient {
 
     private static final String TAG = VolleyHttpClient.class.getSimpleName();
     private static final String AUTHENTICATION_URL = "http://api.trezub.ru/api2/beacon/authorize";
@@ -85,7 +90,11 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private Dispatcher dispatcher;
     private RequestQueue requestQueue;
 
+    private Listener listener;
+
     private String phpSessId;
+
+    ////
 
     private VolleyHttpClient(Context context) {
         this.context = context;
@@ -202,6 +211,104 @@ public class VolleyHttpClient implements Response.ErrorListener {
         setRetryPolicy(request);
         requestQueue.add(request);
     }
+
+    ////
+
+    @Override
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void requestUser() {
+
+        User user = new User(AppController.currentUserLogin);
+        if (listener != null) listener.onUserRetreived(user);
+
+        // TODO Make additions to server API
+//        GetUserInfoRequest request = new GetUserInfoRequest(GET_USER_INFO_URL,
+//                new JSONObject(),
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//
+//                        // TODO Delete test code
+//                        Log.d("debug", response.toString());
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                        // TODO Delete test code
+//                        Log.d("BALANCE", error.toString());
+//                    }
+//                });
+//
+//        request.setPhpSessId(phpSessId);
+//        setRetryPolicy(request);
+//        requestQueue.add(request);
+    }
+
+    @Override
+    public void updateMonitoringEntities(final List<MonitoringEntity> monitoringEntities) {
+
+        final RequestCounter counter = new RequestCounter();
+
+        for (final MonitoringEntity monitoringEntity : monitoringEntities) {
+            GetLastStateRequest request = new GetLastStateRequest(Request.Method.GET,
+                    String.format(Locale.ROOT,
+                            "%s?device=%d",
+                            GET_LAST_STATE_URL,
+                            monitoringEntity.getId()),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            // TODO Delete test code
+                            Log.d("debug", response);
+
+                            try {
+                                JSONObject responseJson = new JSONObject(response);
+                                JSONObject dataJson = responseJson.getJSONObject("data");
+
+                                monitoringEntity.setLatitude(dataJson.getDouble("lat"));
+                                monitoringEntity.setLongitude(dataJson.getDouble("lng"));
+                                monitoringEntity.setLastUpdateTimestamp(
+                                        Calendar.getInstance().getTimeInMillis());
+
+                                monitoringEntity.setStatus(MonitoringEntityStatus.IN_MOTION);
+                                monitoringEntity.setSpeed(dataJson.getDouble("speed"));
+                                monitoringEntity.setGsm("OK");
+                                monitoringEntity.setSatellites(dataJson.getInt("sat"));
+                                monitoringEntity.setEngineIgnited(true);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            counter.increment();
+                            if (counter.count == monitoringEntities.size() && listener != null) {
+                                listener.onMonitoringEntitiesUpdated();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            counter.increment();
+                        }
+                    });
+
+
+
+            request.setPhpSessId(phpSessId);
+            setRetryPolicy(request);
+            requestQueue.add(request);
+        }
+    }
+
+    ////
 
     /** Отправка запроса на авторизацию */
     private void authenticationRequest(final String login, final String password) {
@@ -1007,4 +1114,17 @@ public class VolleyHttpClient implements Response.ErrorListener {
     private void sendSwitchOnRequestToGenerator() {}
 
     private void sendSwitchOffRequestToGenerator() {}
+
+    ////
+
+    public class RequestCounter {
+
+        private int count;
+
+        ////
+
+        public void increment() {
+            count++;
+        }
+    }
 }

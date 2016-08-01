@@ -64,8 +64,22 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     public void showMapEntity(MonitoringEntity monitoringEntity) {
         long id = monitoringEntity.getId();
         LatLng latLng = new LatLng(monitoringEntity.getLatitude(), monitoringEntity.getLongitude());
-        Marker marker = map.addMarker(new MarkerOptions().position(latLng));
-        markers.add(new MonitoringEntityGoogleMarker(id, marker));
+
+        if (markers != null) {
+            boolean redrawn = false;
+            for (MonitoringEntityGoogleMarker marker : markers) {
+                if (marker.getId() == id) {
+                    marker.getMarker().remove();
+                    marker.setMarker(map.addMarker(new MarkerOptions().position(latLng)));
+                    redrawn = true;
+                }
+            }
+
+            if (!redrawn)
+            markers.add(new MonitoringEntityGoogleMarker(
+                    id,
+                    map.addMarker(new MarkerOptions().position(latLng))));
+        }
     }
 
     @Override
@@ -87,7 +101,7 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     @Override
     public void centerOnCoordinates(double latitude, double longitude) {
         map.animateCamera(CameraUpdateFactory
-                .newLatLngZoom(new LatLng(latitude, longitude), 4));
+                .newLatLngZoom(new LatLng(latitude, longitude), map.getCameraPosition().zoom));
     }
 
     @Override
@@ -229,7 +243,8 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     public class MonitoringEntityGoogleMarker {
 
         private final long id;
-        private final Marker marker;
+
+        private Marker marker;
 
         ////
 
@@ -246,6 +261,10 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
 
         public Marker getMarker() {
             return marker;
+        }
+
+        public void setMarker(Marker marker) {
+            this.marker = marker;
         }
     }
 }

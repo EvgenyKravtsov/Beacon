@@ -11,4 +11,16 @@ public interface Configuration {
     boolean loadMarkerInformationEnabled();
 
     void saveMarkerInformationEnabled(boolean enabled);
+
+    String loadActiveMonitoringEntityGroup();
+
+    void saveActiveMonitoringEntityGroup(String groupName);
+
+    long loadActiveMonitoringEntity();
+
+    void saveActiveMonitoringEntity(long id);
+
+    boolean loadDisplayEnabled(long id);
+
+    void saveDisplayEnabled(long id, boolean enabled);
 }

@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Locale;
 
 import kgk.beacon.R;
+import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.interactor.SetActiveMonitoringEntity;
+import kgk.beacon.monitoring.domain.interactor.SetDisplayEnabled;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.presentation.activity.MapActivity;
@@ -115,6 +117,12 @@ public class MonitoringListActivityAdapter extends
             @Override
             public void onClick(View v) {
                 monitoringEntity.setDisplayEnabled(!monitoringEntity.isDisplayEnabled());
+
+                SetDisplayEnabled interactor = new SetDisplayEnabled(
+                        monitoringEntity,
+                        !monitoringEntity.isDisplayEnabled());
+                InteractorThreadPool.getInstance().execute(interactor);
+
                 holder.hideButton.setText(monitoringEntity.isDisplayEnabled() ? "D" : "N");
             }
         });

@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.presentation.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +46,10 @@ public class MapActivity extends AppCompatActivity implements
     private TextView activeTextView;
     private LinearLayout menuLayout;
 
+    // Dialogs
+    private ProgressDialog downloadDataProgressDialog;
+    private boolean initialyLoaded;
+
     private MapViewPresenter presenter;
     private MapAdapter mapAdapter;
     private MonitoringEntity activeMonitoringEntity;
@@ -73,6 +78,10 @@ public class MapActivity extends AppCompatActivity implements
         super.onResume();
         presenter.requestMonitoringEntities();
         presenter.requestMonitoringEntityGroupsCount();
+        presenter.requestMonitoringEntitiesUpdate();
+
+        if (!initialyLoaded) toggleDownloadDataProgressDialog(true);
+
         menuLayout.setVisibility(View.GONE);
     }
 
@@ -97,6 +106,16 @@ public class MapActivity extends AppCompatActivity implements
                 if (monitoringEntity.isDisplayEnabled()) mapAdapter.showMapEntity(monitoringEntity);
             }
         }
+
+        if (!initialyLoaded) {
+            mapAdapter.centerOnCoordinates(
+                    activeMonitoringEntity.getLatitude(),
+                    activeMonitoringEntity.getLongitude()
+            );
+        }
+
+        toggleDownloadDataProgressDialog(false);
+        initialyLoaded = true;
     }
 
     @Override
@@ -296,8 +315,26 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void unbindPresenter() {
-        if (presenter != null) presenter.unbindView();
+        if (presenter != null)  {
+            presenter.stopMonitoringEntitiesUpdate();
+            presenter.unbindView();
+        }
         presenter = null;
+    }
+
+    private void toggleDownloadDataProgressDialog(boolean enabled) {
+        if (enabled) {
+            if (downloadDataProgressDialog == null) {
+                downloadDataProgressDialog = new ProgressDialog(this);
+            }
+
+            downloadDataProgressDialog.setMessage("Downloading data");
+            downloadDataProgressDialog.setCanceledOnTouchOutside(false);
+            downloadDataProgressDialog.show();
+
+        } else {
+            if (downloadDataProgressDialog != null) downloadDataProgressDialog.hide();
+        }
     }
 
     //// Control callbacks

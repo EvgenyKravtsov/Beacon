@@ -1,6 +1,7 @@
 package kgk.beacon.monitoring.presentation.presenter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.domain.interactor.GetActiveMonitoringEntity;
@@ -9,6 +10,7 @@ import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntityById;
 import kgk.beacon.monitoring.domain.interactor.GetMonitroingEntityGroups;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.interactor.SetDefaultMapTypeSetting;
+import kgk.beacon.monitoring.domain.interactor.UpdateMonitoringEntities;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.presentation.model.MapType;
@@ -19,9 +21,13 @@ public class MapViewPresenter implements
         GetMonitoringEntities.Listener,
         GetActiveMonitoringEntity.Listener,
         GetMonitoringEntityById.Listener,
-        GetMonitroingEntityGroups.Listener {
+        GetMonitroingEntityGroups.Listener,
+        UpdateMonitoringEntities.Listener {
+
+    private static final int MONITORING_UPDATE_FREQUENCY = 10; // Seconds
 
     private MapView view;
+    private boolean updateThreadStatus;
 
     ////
 
@@ -64,6 +70,31 @@ public class MapViewPresenter implements
         InteractorThreadPool.getInstance().execute(interactor);
     }
 
+    public void requestMonitoringEntitiesUpdate() {
+        updateThreadStatus = true;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (updateThreadStatus) {
+                    UpdateMonitoringEntities interactor = new UpdateMonitoringEntities();
+                    interactor.setListener(MapViewPresenter.this);
+                    InteractorThreadPool.getInstance().execute(interactor);
+
+                    try {
+                        TimeUnit.SECONDS.sleep(MONITORING_UPDATE_FREQUENCY);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public void stopMonitoringEntitiesUpdate() {
+        updateThreadStatus = false;
+    }
+
     public void saveDefaultMapType(MapType mapType) {
         SetDefaultMapTypeSetting interactor = new SetDefaultMapTypeSetting(mapType);
         InteractorThreadPool.getInstance().execute(interactor);
@@ -73,13 +104,6 @@ public class MapViewPresenter implements
 
     @Override
     public void onMonitoringEntitiesRetreived(final List<MonitoringEntity> monitoringEntities) {
-        AppController.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                view.showMonitoringEntities(monitoringEntities);
-            }
-        });
-
         requestActiveMonitoringEntity();
     }
 
@@ -96,6 +120,7 @@ public class MapViewPresenter implements
     @Override
     public void onMonitoringEntityRetreived(final MonitoringEntity monitoringEntity) {
         DependencyInjection.provideMonitoringManager().setActiveMonitoringEntity(monitoringEntity);
+        DependencyInjection.provideConfiguration().saveActiveMonitoringEntity(monitoringEntity.getId());
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -105,13 +130,25 @@ public class MapViewPresenter implements
     }
 
     @Override
-    public void onMonitoringEntityGroupRetreived(List<MonitoringEntityGroup> groups) {
+    public void onMonitoringEntityGroupsRetreived(List<MonitoringEntityGroup> groups) {
         final int count = groups.size();
 
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 view.toggleChooseGroupMenuButton(count > 1);
+            }
+        });
+    }
+
+    @Override
+    public void onMonitoringEntitiesUpdated(final List<MonitoringEntity> monitoringEntities) {
+        if (view == null) return;
+
+        AppController.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.showMonitoringEntities(monitoringEntities);
             }
         });
     }

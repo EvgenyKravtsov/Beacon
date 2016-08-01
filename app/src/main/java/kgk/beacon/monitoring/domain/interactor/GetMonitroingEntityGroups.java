@@ -9,7 +9,7 @@ public class GetMonitroingEntityGroups implements Interactor {
 
     public interface Listener {
 
-        void onMonitoringEntityGroupRetreived(List<MonitoringEntityGroup> groups);
+        void onMonitoringEntityGroupsRetreived(List<MonitoringEntityGroup> groups);
     }
 
     ////
@@ -28,6 +28,6 @@ public class GetMonitroingEntityGroups implements Interactor {
     public void execute() {
         MonitoringManager monitoringManager = MonitoringManager.getInstance();
         List<MonitoringEntityGroup> groups = monitoringManager.getMonitoringEntityGroups();
-        if (listener != null) listener.onMonitoringEntityGroupRetreived(groups);
+        if (listener != null) listener.onMonitoringEntityGroupsRetreived(groups);
     }
 }

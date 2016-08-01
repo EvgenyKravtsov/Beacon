@@ -10,6 +10,8 @@ public class SharedPreferencesDao implements Configuration {
 
     private static final String SHARED_PREFERENCES = "monitoring_shared_preferences";
 
+    private static final String USER_NAME = AppController.currentUserLogin;
+
     private static final String DEFAULT_MAP_KEY = "default_map";
     private static final int DEFAULT_MAP_DEFAULT = 1;
     private static final int KGK_MAP_CODE = 1;
@@ -18,6 +20,13 @@ public class SharedPreferencesDao implements Configuration {
     private static final int SATELLITE_MAP_CODE = 4;
     private static final String MARKER_INFORMATION_ENABLED_KEY = "marker_information_enabled";
     private static final boolean DEFAULT_MARKER_INFORMATION_ENABLED = true;
+    private static final String ACTIVE_MONITORING_ENTITY_GROUP_KEY = "active_monitoring_entrity_group";
+    private static final String ACTIVE_MONITORING_ENTITY_GROUP_DEFAILT = null;
+    private static final String ACTIVE_MONITORING_ENTITY_KEY = "active_monitoring_entity";
+    private static final long ACTIVE_MONITORING_ENTITY_DEFAULT = 0;
+    private static final String DISPLAY_ENABLED_KEY = "display_enabled";
+    private static final boolean DISPLAY_ENABLED_DEFAULT = true;
+
 
     private SharedPreferences sharedPreferences;
 
@@ -32,7 +41,7 @@ public class SharedPreferencesDao implements Configuration {
 
     @Override
     public MapType loadDefaultMapType() {
-        int mapCode = loadInt(DEFAULT_MAP_KEY, DEFAULT_MAP_DEFAULT);
+        int mapCode = loadInt(DEFAULT_MAP_KEY + USER_NAME, DEFAULT_MAP_DEFAULT);
         switch (mapCode) {
             case KGK_MAP_CODE:
                 return MapType.KGK;
@@ -67,17 +76,50 @@ public class SharedPreferencesDao implements Configuration {
                 mapCode = KGK_MAP_CODE;
                 break;
         }
-        saveInt(DEFAULT_MAP_KEY, mapCode);
+        saveInt(DEFAULT_MAP_KEY + USER_NAME, mapCode);
     }
 
     @Override
     public boolean loadMarkerInformationEnabled() {
-        return loadBoolean(MARKER_INFORMATION_ENABLED_KEY, DEFAULT_MARKER_INFORMATION_ENABLED);
+        return loadBoolean(
+                MARKER_INFORMATION_ENABLED_KEY + USER_NAME,
+                DEFAULT_MARKER_INFORMATION_ENABLED);
     }
 
     @Override
     public void saveMarkerInformationEnabled(boolean enabled) {
-        saveBoolean(MARKER_INFORMATION_ENABLED_KEY, enabled);
+        saveBoolean(MARKER_INFORMATION_ENABLED_KEY + USER_NAME, enabled);
+    }
+
+    @Override
+    public String loadActiveMonitoringEntityGroup() {
+        return loadString(ACTIVE_MONITORING_ENTITY_GROUP_KEY + USER_NAME,
+                ACTIVE_MONITORING_ENTITY_GROUP_DEFAILT);
+    }
+
+    @Override
+    public void saveActiveMonitoringEntityGroup(String groupName) {
+        saveString(ACTIVE_MONITORING_ENTITY_GROUP_KEY + USER_NAME, groupName);
+    }
+
+    @Override
+    public long loadActiveMonitoringEntity() {
+        return loadLong(ACTIVE_MONITORING_ENTITY_KEY + USER_NAME, ACTIVE_MONITORING_ENTITY_DEFAULT);
+    }
+
+    @Override
+    public void saveActiveMonitoringEntity(long id) {
+        saveLong(ACTIVE_MONITORING_ENTITY_KEY + USER_NAME, id);
+    }
+
+    @Override
+    public boolean loadDisplayEnabled(long id) {
+        return loadBoolean(DISPLAY_ENABLED_KEY + id, DISPLAY_ENABLED_DEFAULT);
+    }
+
+    @Override
+    public void saveDisplayEnabled(long id, boolean enabled) {
+        saveBoolean(DISPLAY_ENABLED_KEY + id, enabled);
     }
 
     ////

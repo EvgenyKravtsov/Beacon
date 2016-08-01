@@ -37,7 +37,7 @@ public class MonitoringGroupListViewPresenter
     ////
 
     @Override
-    public void onMonitoringEntityGroupRetreived(List<MonitoringEntityGroup> groups) {
+    public void onMonitoringEntityGroupsRetreived(List<MonitoringEntityGroup> groups) {
         this.groups = groups;
         requestActiveMonitoringEntityGroup();
     }

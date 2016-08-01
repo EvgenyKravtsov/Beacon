@@ -28,10 +28,8 @@ public class MonitoringManager {
 
     ////
 
-    public void init(List<MonitoringEntity> monitoringEntities) {
-        user = new User("FakeUser");
-        user.setContacts("+1 (111) 111-22-33");
-        user.setBalance(666.01);
+    public void init(User user, List<MonitoringEntity> monitoringEntities) {
+        this.user = user;
 
         monitoringEntityGroups = sortMonitoringEntitiesByGroup(monitoringEntities);
 
