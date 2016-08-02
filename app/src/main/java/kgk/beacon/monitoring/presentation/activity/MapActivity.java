@@ -40,11 +40,13 @@ public class MapActivity extends AppCompatActivity implements
     private Button chooseVehicleMenuButton;
     private Button chooseVehicleGroupMenuButton;
     private Button profileMenuButton;
+    private Button routeReportSettingsMenuButton;
     private Button helpMenuButton;
     private Button aboutMenuButton;
     private Button settingsMenuButton;
     private TextView activeTextView;
     private LinearLayout menuLayout;
+    private Button quickReportButton;
 
     // Dialogs
     private ProgressDialog downloadDataProgressDialog;
@@ -96,11 +98,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public void showMonitoringEntities(List<MonitoringEntity> monitoringEntities) {
         if (monitoringEntities != null && monitoringEntities.size() > 0) {
-            mapAdapter.clearMap();
-
-            Configuration configuration = DependencyInjection.provideConfiguration();
-            MapType mapType = configuration.loadDefaultMapType();
-            mapAdapter.setMapType(mapType);
+            mapAdapter.clearMarkers();
 
             for (MonitoringEntity monitoringEntity : monitoringEntities) {
                 if (monitoringEntity.isDisplayEnabled()) mapAdapter.showMapEntity(monitoringEntity);
@@ -108,6 +106,11 @@ public class MapActivity extends AppCompatActivity implements
         }
 
         if (!initialyLoaded) {
+
+            Configuration configuration = DependencyInjection.provideConfiguration();
+            MapType mapType = configuration.loadDefaultMapType();
+            mapAdapter.setMapType(mapType);
+
             mapAdapter.centerOnCoordinates(
                     activeMonitoringEntity.getLatitude(),
                     activeMonitoringEntity.getLongitude()
@@ -181,6 +184,8 @@ public class MapActivity extends AppCompatActivity implements
                 findViewById(R.id.monitoring_activity_menu_choose_vehicle_group_button);
         profileMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_profile_button);
+        routeReportSettingsMenuButton = (Button)
+                findViewById(R.id.monitoring_activity_menu_route_report_settings_button);
         helpMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_help_button);
         aboutMenuButton = (Button)
@@ -193,6 +198,9 @@ public class MapActivity extends AppCompatActivity implements
 
         activeTextView = (TextView) findViewById(R.id.monitoring_activity_active_text_view);
         menuLayout = (LinearLayout) findViewById(R.id.monitoring_activity_menu_layout);
+
+        quickReportButton = (Button)
+                findViewById(R.id.monitoring_activity_quick_report_button);
     }
 
     private void initListeners() {
@@ -278,6 +286,12 @@ public class MapActivity extends AppCompatActivity implements
                 onProfileMenuButtonClick();
             }
         });
+        routeReportSettingsMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRouteReportSettingsMenuButtonClick();
+            }
+        });
 
         helpMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,6 +316,13 @@ public class MapActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 onSettingsMenuButtonClick();
+            }
+        });
+
+        quickReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onQuickReportButtonClick();
             }
         });
     }
@@ -401,6 +422,11 @@ public class MapActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    private void onRouteReportSettingsMenuButtonClick() {
+        Intent intent = new Intent(this, RouteReportSettingsActivity.class);
+        startActivity(intent);
+    }
+
     private void onHelpMenuButtonClick() {
         menuEnabled = false;
         Intent intent = new Intent(this, HelpActivity.class);
@@ -428,6 +454,10 @@ public class MapActivity extends AppCompatActivity implements
     private void onActiveTextViewClick() {
         Intent intent = new Intent(this, MonitoringEntityActivity.class);
         startActivity(intent);
+    }
+
+    private void onQuickReportButtonClick() {
+        presenter.requestQuickReport();
     }
 }
 

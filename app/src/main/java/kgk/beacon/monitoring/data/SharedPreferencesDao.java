@@ -3,6 +3,9 @@ package kgk.beacon.monitoring.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Date;
+import java.util.TimeZone;
+
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.util.AppController;
 
@@ -26,7 +29,8 @@ public class SharedPreferencesDao implements Configuration {
     private static final long ACTIVE_MONITORING_ENTITY_DEFAULT = 0;
     private static final String DISPLAY_ENABLED_KEY = "display_enabled";
     private static final boolean DISPLAY_ENABLED_DEFAULT = true;
-
+    private static final String ZOOM_LEVEL_KEY = "zoom_level_key";
+    private static final float ZOOM_LEVEL_DEFAULT = 10;
 
     private SharedPreferences sharedPreferences;
 
@@ -122,6 +126,23 @@ public class SharedPreferencesDao implements Configuration {
         saveBoolean(DISPLAY_ENABLED_KEY + id, enabled);
     }
 
+    @Override
+    public float loadZoomLevel() {
+        return loadFloat(ZOOM_LEVEL_KEY + USER_NAME, ZOOM_LEVEL_DEFAULT);
+    }
+
+    @Override
+    public void saveZoomLevel(float zoomLevel) {
+        saveFloat(ZOOM_LEVEL_KEY + USER_NAME, zoomLevel);
+    }
+
+    @Override
+    public int calculateOffsetUtc() {
+        TimeZone timeZone = TimeZone.getDefault();
+        Date currentDate = new Date();
+        return timeZone.getOffset(currentDate.getTime()) / 1000 / 60;
+    }
+
     ////
 
     private void saveLong(String key, long value) {
@@ -162,5 +183,15 @@ public class SharedPreferencesDao implements Configuration {
 
     private String loadString(String key, String defaultValue) {
         return sharedPreferences.getString(key, defaultValue);
+    }
+
+    private void saveFloat(String key, float value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(key, value);
+        editor.apply();
+    }
+
+    private float loadFloat(String key, float defaultValue) {
+        return sharedPreferences.getFloat(key, defaultValue);
     }
 }

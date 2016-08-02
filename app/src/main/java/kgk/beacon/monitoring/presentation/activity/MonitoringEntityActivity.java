@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.presentation.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -146,6 +147,7 @@ public class MonitoringEntityActivity extends AppCompatActivity implements Monit
     //// Control callbacks
 
     private void onRouteReportButtonClick() {
-
+        Intent intent = new Intent(this, RouteReportSettingsActivity.class);
+        startActivity(intent);
     }
 }

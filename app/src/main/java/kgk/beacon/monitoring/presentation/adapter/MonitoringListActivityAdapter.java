@@ -99,7 +99,7 @@ public class MonitoringListActivityAdapter extends
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final MonitoringEntity monitoringEntity = monitoringEntities.get(holder.getAdapterPosition());
+        final MonitoringEntity monitoringEntity = monitoringEntities.get(position);
 
         holder.nameTextView.setText(
                 String.format("%s %s %s",
@@ -120,7 +120,7 @@ public class MonitoringListActivityAdapter extends
 
                 SetDisplayEnabled interactor = new SetDisplayEnabled(
                         monitoringEntity,
-                        !monitoringEntity.isDisplayEnabled());
+                        monitoringEntity.isDisplayEnabled());
                 InteractorThreadPool.getInstance().execute(interactor);
 
                 holder.hideButton.setText(monitoringEntity.isDisplayEnabled() ? "D" : "N");
@@ -148,6 +148,7 @@ public class MonitoringListActivityAdapter extends
 
     private String makeStatusString(MonitoringEntityStatus status) {
         String statusString;
+
         switch (status) {
             case IN_MOTION:
                 statusString = "M";
@@ -161,6 +162,7 @@ public class MonitoringListActivityAdapter extends
             default:
                 statusString = "O";
         }
+
         return statusString;
     }
 

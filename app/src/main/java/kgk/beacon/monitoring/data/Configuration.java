@@ -23,4 +23,10 @@ public interface Configuration {
     boolean loadDisplayEnabled(long id);
 
     void saveDisplayEnabled(long id, boolean enabled);
+
+    float loadZoomLevel();
+
+    void saveZoomLevel(float zoomLevel);
+
+    int calculateOffsetUtc();
 }

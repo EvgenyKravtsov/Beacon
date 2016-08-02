@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import kgk.beacon.monitoring.DependencyInjection;
+import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.util.YandexMapUtils;
@@ -32,6 +34,7 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     private final kgk.beacon.monitoring.presentation.view.MapView mapView;
     private final MapView googleMapView;
 
+    private Configuration configuration;
     private GoogleMap map;
     private TileOverlay kgkTileOverlay;
     private TileOverlay yandexTileOverlay;
@@ -45,6 +48,7 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
             MapView googleMapView) {
         this.mapView = mapView;
         this.googleMapView = googleMapView;
+        this.configuration = DependencyInjection.provideConfiguration();
         this.markers = new ArrayList<>();
         this.googleMapView.getMapAsync(this);
     }
@@ -91,17 +95,20 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     @Override
     public void zoomIn() {
         map.animateCamera(CameraUpdateFactory.zoomIn());
+        configuration.saveZoomLevel(map.getCameraPosition().zoom);
     }
 
     @Override
     public void zoomOut() {
         map.animateCamera(CameraUpdateFactory.zoomOut());
+        configuration.saveZoomLevel(map.getCameraPosition().zoom);
     }
 
     @Override
     public void centerOnCoordinates(double latitude, double longitude) {
         map.animateCamera(CameraUpdateFactory
-                .newLatLngZoom(new LatLng(latitude, longitude), map.getCameraPosition().zoom));
+                .newLatLngZoom(new LatLng(latitude, longitude),
+                        configuration.loadZoomLevel()));
     }
 
     @Override
@@ -148,6 +155,18 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     @Override
     public void clearMap() {
         if (map != null) map.clear();
+    }
+
+    @Override
+    public void clearMarkers() {
+
+        if (markers == null) return;
+
+        for (MonitoringEntityGoogleMarker marker : markers) {
+            marker.getMarker().remove();
+        }
+
+        markers.clear();
     }
 
     ////

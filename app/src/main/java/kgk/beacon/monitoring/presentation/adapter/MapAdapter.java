@@ -18,4 +18,6 @@ public interface MapAdapter {
     void setMapType(MapType mapType);
 
     void clearMap();
+
+    void clearMarkers();
 }

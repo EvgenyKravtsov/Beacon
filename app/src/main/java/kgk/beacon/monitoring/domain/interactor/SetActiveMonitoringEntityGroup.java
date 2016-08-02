@@ -20,7 +20,10 @@ public class SetActiveMonitoringEntityGroup implements Interactor {
     public void execute() {
         MonitoringManager monitoringManager = MonitoringManager.getInstance();
         monitoringManager.setActiveMonitoringEntityGroup(monitoringEntityGroup);
-        DependencyInjection.provideConfiguration()
-                .saveActiveMonitoringEntityGroup(monitoringEntityGroup.getName());
+
+        if (monitoringEntityGroup != null) {
+            DependencyInjection.provideConfiguration()
+                    .saveActiveMonitoringEntityGroup(monitoringEntityGroup.getName());
+        }
     }
 }

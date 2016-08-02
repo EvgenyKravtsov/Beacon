@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.presentation.presenter;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -8,11 +9,15 @@ import kgk.beacon.monitoring.domain.interactor.GetActiveMonitoringEntity;
 import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntities;
 import kgk.beacon.monitoring.domain.interactor.GetMonitoringEntityById;
 import kgk.beacon.monitoring.domain.interactor.GetMonitroingEntityGroups;
+import kgk.beacon.monitoring.domain.interactor.GetRouteReport;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.interactor.SetDefaultMapTypeSetting;
 import kgk.beacon.monitoring.domain.interactor.UpdateMonitoringEntities;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
+import kgk.beacon.monitoring.domain.model.MonitoringManager;
+import kgk.beacon.monitoring.domain.model.RouteReport;
+import kgk.beacon.monitoring.domain.model.RouteReportParameters;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.view.MapView;
 import kgk.beacon.util.AppController;
@@ -22,7 +27,8 @@ public class MapViewPresenter implements
         GetActiveMonitoringEntity.Listener,
         GetMonitoringEntityById.Listener,
         GetMonitroingEntityGroups.Listener,
-        UpdateMonitoringEntities.Listener {
+        UpdateMonitoringEntities.Listener,
+        GetRouteReport.Listener {
 
     private static final int MONITORING_UPDATE_FREQUENCY = 10; // Seconds
 
@@ -91,6 +97,34 @@ public class MapViewPresenter implements
         }).start();
     }
 
+    public void requestQuickReport() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        long fromDateTimestamp = calendar.getTimeInMillis() / 1000;
+
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 0);
+
+        long toDateTimestamp = calendar.getTimeInMillis() / 1000;
+
+        RouteReportParameters parameters = new RouteReportParameters(
+                fromDateTimestamp,
+                toDateTimestamp,
+                30,
+                DependencyInjection.provideConfiguration().calculateOffsetUtc(),
+                MonitoringManager.getInstance().getActiveMonitoringEntity().getId());
+
+        GetRouteReport interactor = new GetRouteReport(parameters);
+        interactor.setListener(this);
+        InteractorThreadPool.getInstance().execute(interactor);
+    }
+
     public void stopMonitoringEntitiesUpdate() {
         updateThreadStatus = false;
     }
@@ -112,7 +146,7 @@ public class MapViewPresenter implements
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                view.setActiveMonitoringEntity(activeMonitoringEntity);
+                if (view != null) view.setActiveMonitoringEntity(activeMonitoringEntity);
             }
         });
     }
@@ -143,13 +177,16 @@ public class MapViewPresenter implements
 
     @Override
     public void onMonitoringEntitiesUpdated(final List<MonitoringEntity> monitoringEntities) {
-        if (view == null) return;
-
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                view.showMonitoringEntities(monitoringEntities);
+                if (view != null) view.showMonitoringEntities(monitoringEntities);
             }
         });
+    }
+
+    @Override
+    public void onRouteReportRetreived(RouteReport routeReport) {
+
     }
 }

@@ -77,6 +77,12 @@
                 android:text="Profile"
                 android:id="@+id/monitoring_activity_menu_profile_button" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Route Report Settings"
+                android:id="@+id/monitoring_activity_menu_route_report_settings_button" />
+
         </LinearLayout>
 
         <LinearLayout

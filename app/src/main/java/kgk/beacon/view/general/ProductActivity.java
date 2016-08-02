@@ -32,6 +32,7 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
+import kgk.beacon.monitoring.domain.model.RouteReport;
 import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.monitoring.presentation.activity.MapActivity;
 import kgk.beacon.networking.VolleyHttpClient;
@@ -176,21 +177,27 @@ public class ProductActivity extends AppCompatActivity {
                         }
                     }
 
-                    for (MonitoringEntity monitoringEntity : monitoringManager.getMonitoringEntities()) {
-                        long activeMonitoringEntityId = configuration.loadActiveMonitoringEntity();
+                    long activeMonitoringEntityId = configuration.loadActiveMonitoringEntity();
 
-                        if (activeMonitoringEntityId == 0) {
-                            if (monitoringManager.getActiveMonitoringEntityGroup() == null) {
-                                monitoringManager.setActiveMonitoringEntity(
-                                        monitoringManager.getMonitoringEntities().get(0));
-                            } else {
-                                monitoringManager.setActiveMonitoringEntity(
-                                        monitoringManager.getMonitoringEntityGroups().get(0)
-                                        .getMonitoringEntities().get(0)
-                                );
-                            }
+                    // TODO Delete test code
+                    Log.d("debug", "active id form SP = " + activeMonitoringEntityId);
+
+
+                    if (activeMonitoringEntityId == 0) {
+                        if (monitoringManager.getActiveMonitoringEntityGroup() == null) {
+                            monitoringManager.setActiveMonitoringEntity(
+                                    monitoringManager.getMonitoringEntities().get(0));
                         } else {
-                            monitoringManager.setActiveMonitoringEntity(monitoringEntity);
+                            monitoringManager.setActiveMonitoringEntity(
+                                    monitoringManager.getMonitoringEntityGroups().get(0)
+                                            .getMonitoringEntities().get(0)
+                            );
+                        }
+                    } else {
+                        for (MonitoringEntity monitoringEntity : monitoringManager.getMonitoringEntities()) {
+                            if (monitoringEntity.getId() == activeMonitoringEntityId) {
+                                monitoringManager.setActiveMonitoringEntity(monitoringEntity);
+                            }
                         }
                     }
 
@@ -202,6 +209,11 @@ public class ProductActivity extends AppCompatActivity {
 
             @Override
             public void onMonitoringEntitiesUpdated() {
+
+            }
+
+            @Override
+            public void onRouteReportReceived(RouteReport routeReport) {
 
             }
         });

@@ -42,6 +42,7 @@ import kgk.beacon.model.T6Packet;
 import kgk.beacon.monitoring.MonitoringHttpClient;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
+import kgk.beacon.monitoring.domain.model.RouteReportParameters;
 import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.networking.event.BalanceResponseReceived;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
@@ -306,6 +307,16 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
             setRetryPolicy(request);
             requestQueue.add(request);
         }
+    }
+
+    @Override
+    public void requestRouteReport(RouteReportParameters parameters) {
+
+        // TODO Delete test code
+        Log.d("debug", "Sending route report request");
+        Log.d("debug", "From - " + parameters.getFromDateTimestamp());
+        Log.d("debug", "To - " + parameters.getToDateTimestamp());
+        Log.d("debug", "ID = " + parameters.getId());
     }
 
     ////
