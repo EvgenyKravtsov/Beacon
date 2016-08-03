@@ -224,6 +224,10 @@
             android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".monitoring.presentation.activity.RouteReportActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

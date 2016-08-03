@@ -3,6 +3,7 @@ package kgk.beacon.monitoring.domain.interactor;
 import kgk.beacon.monitoring.MonitoringHttpClient;
 import kgk.beacon.monitoring.domain.model.RouteReport;
 import kgk.beacon.monitoring.domain.model.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.networking.VolleyHttpClient;
 import kgk.beacon.util.AppController;
 
@@ -37,8 +38,22 @@ public class GetRouteReport implements Interactor {
     public void execute() {
         MonitoringHttpClient httpClient = VolleyHttpClient.getInstance(AppController.getInstance());
 
-        // TODO Delete test code
-        httpClient.setListener(null);
+        httpClient.setListener(new MonitoringHttpClient.Listener() {
+            @Override
+            public void onUserRetreived(User user) {
+
+            }
+
+            @Override
+            public void onMonitoringEntitiesUpdated() {
+
+            }
+
+            @Override
+            public void onRouteReportReceived(RouteReport routeReport) {
+                if (listener != null) listener.onRouteReportRetreived(routeReport);
+            }
+        });
 
         httpClient.requestRouteReport(parameters);
     }

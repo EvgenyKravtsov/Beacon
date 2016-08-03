@@ -42,6 +42,7 @@ import kgk.beacon.model.T6Packet;
 import kgk.beacon.monitoring.MonitoringHttpClient;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
+import kgk.beacon.monitoring.domain.model.RouteReport;
 import kgk.beacon.monitoring.domain.model.RouteReportParameters;
 import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.networking.event.BalanceResponseReceived;
@@ -265,10 +266,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-                            // TODO Delete test code
-                            Log.d("debug", response);
-
                             try {
                                 JSONObject responseJson = new JSONObject(response);
                                 JSONObject dataJson = responseJson.getJSONObject("data");
@@ -317,6 +314,40 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
         Log.d("debug", "From - " + parameters.getFromDateTimestamp());
         Log.d("debug", "To - " + parameters.getToDateTimestamp());
         Log.d("debug", "ID = " + parameters.getId());
+
+        String requestUrlParameters = "?"
+                + "apikey=uadev11"
+                + "&rtype=json"
+                + "&datefrom=" + parameters.getFromDateTimestamp()
+                + "&dateto=" + parameters.getToDateTimestamp()
+                + "&delta=" + parameters.getStopTime()
+                + "&offsetUTC=" + parameters.getOffsetUtc()
+                + "&deviceID=" + parameters.getId();
+
+        // TODO Delete test code
+        Log.d("debug", DETAIL_REPORT_URL + requestUrlParameters);
+
+        DetailReportRequest request = new DetailReportRequest(Request.Method.GET,
+                DETAIL_REPORT_URL + requestUrlParameters,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        // TODO Delete test code
+                        Log.d("debug", response);
+                        if (listener != null) listener.onRouteReportReceived(new RouteReport());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        setRetryPolicy(request);
+        request.setPhpSessId(phpSessId);
+        requestQueue.add(request);
     }
 
     ////

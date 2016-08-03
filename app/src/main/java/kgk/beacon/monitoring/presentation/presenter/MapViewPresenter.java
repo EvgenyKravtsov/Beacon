@@ -186,7 +186,12 @@ public class MapViewPresenter implements
     }
 
     @Override
-    public void onRouteReportRetreived(RouteReport routeReport) {
-
+    public void onRouteReportRetreived(final RouteReport routeReport) {
+        AppController.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (view != null) view.navigateToRouteReportView(routeReport);
+            }
+        });
     }
 }

@@ -17,6 +17,7 @@ import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
+import kgk.beacon.monitoring.domain.model.RouteReport;
 import kgk.beacon.monitoring.presentation.adapter.GoogleMapAdapter;
 import kgk.beacon.monitoring.presentation.adapter.MapAdapter;
 import kgk.beacon.monitoring.presentation.model.MapType;
@@ -152,6 +153,13 @@ public class MapActivity extends AppCompatActivity implements
     public void toggleChooseGroupMenuButton(boolean enabled) {
         int visibility = enabled ? View.VISIBLE : View.GONE;
         chooseVehicleGroupMenuButton.setVisibility(visibility);
+    }
+
+    @Override
+    public void navigateToRouteReportView(RouteReport routeReport) {
+        Intent intent = new Intent(this, RouteReportActivity.class);
+        intent.putExtra("extra_route_report", routeReport);
+        if (routeReport != null) startActivity(intent);
     }
 
     ////

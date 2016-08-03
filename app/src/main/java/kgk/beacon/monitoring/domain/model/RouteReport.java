@@ -1,4 +1,6 @@
 package kgk.beacon.monitoring.domain.model;
 
-public class RouteReport {
+import java.io.Serializable;
+
+public class RouteReport implements Serializable {
 }
