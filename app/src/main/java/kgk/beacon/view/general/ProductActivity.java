@@ -26,13 +26,12 @@ import kgk.beacon.model.product.Product;
 import kgk.beacon.model.product.ProductFactory;
 import kgk.beacon.model.product.ProductType;
 import kgk.beacon.monitoring.DependencyInjection;
-import kgk.beacon.monitoring.MonitoringHttpClient;
+import kgk.beacon.monitoring.network.MonitoringHttpClient;
 import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
-import kgk.beacon.monitoring.domain.model.RouteReport;
 import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.monitoring.presentation.activity.MapActivity;
 import kgk.beacon.networking.VolleyHttpClient;
@@ -209,11 +208,6 @@ public class ProductActivity extends AppCompatActivity {
 
             @Override
             public void onMonitoringEntitiesUpdated() {
-
-            }
-
-            @Override
-            public void onRouteReportReceived(RouteReport routeReport) {
 
             }
         });

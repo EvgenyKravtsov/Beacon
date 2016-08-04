@@ -17,7 +17,7 @@ import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
-import kgk.beacon.monitoring.domain.model.RouteReport;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.presentation.adapter.GoogleMapAdapter;
 import kgk.beacon.monitoring.presentation.adapter.MapAdapter;
 import kgk.beacon.monitoring.presentation.model.MapType;
@@ -158,7 +158,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public void navigateToRouteReportView(RouteReport routeReport) {
         Intent intent = new Intent(this, RouteReportActivity.class);
-        intent.putExtra("extra_route_report", routeReport);
+        intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
         if (routeReport != null) startActivity(intent);
     }
 
@@ -465,6 +465,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void onQuickReportButtonClick() {
+        // TODO Show download indicator
         presenter.requestQuickReport();
     }
 }

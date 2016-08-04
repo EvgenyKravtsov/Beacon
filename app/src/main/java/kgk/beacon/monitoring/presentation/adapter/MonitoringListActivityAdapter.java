@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
@@ -97,6 +97,7 @@ public class MonitoringListActivityAdapter extends
                 .inflate(R.layout.monitoring_activity_list_item, parent, false));
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MonitoringEntity monitoringEntity = monitoringEntities.get(position);
@@ -107,7 +108,7 @@ public class MonitoringListActivityAdapter extends
                         monitoringEntity.getModel(),
                         monitoringEntity.getStateNumber()));
         holder.dateTextView.setText(
-                new SimpleDateFormat("dd:MM:yyyy", Locale.ROOT)
+                new SimpleDateFormat("dd:MM:yyyy")
                         .format(new Date(monitoringEntity.getLastUpdateTimestamp())));
 
 

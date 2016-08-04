@@ -39,12 +39,12 @@ import kgk.beacon.model.DataForDetailReportRequest;
 import kgk.beacon.model.Signal;
 import kgk.beacon.model.T5Packet;
 import kgk.beacon.model.T6Packet;
-import kgk.beacon.monitoring.MonitoringHttpClient;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
-import kgk.beacon.monitoring.domain.model.RouteReport;
-import kgk.beacon.monitoring.domain.model.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.domain.model.User;
+import kgk.beacon.monitoring.network.MonitoringHttpClient;
+import kgk.beacon.monitoring.network.RouteReportJsonParser;
 import kgk.beacon.networking.event.BalanceResponseReceived;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
@@ -93,6 +93,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     private RequestQueue requestQueue;
 
     private Listener listener;
+    private RouteReportListener routeReportListener;
 
     private String phpSessId;
 
@@ -222,6 +223,11 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     }
 
     @Override
+    public void setRouteReportListener(RouteReportListener listener) {
+        this.routeReportListener = listener;
+    }
+
+    @Override
     public void requestUser() {
 
         User user = new User(AppController.currentUserLogin);
@@ -307,12 +313,13 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     }
 
     @Override
-    public void requestRouteReport(RouteReportParameters parameters) {
+    public void requestRouteReport(final RouteReportParameters parameters) {
 
         // TODO Delete test code
         Log.d("debug", "Sending route report request");
         Log.d("debug", "From - " + parameters.getFromDateTimestamp());
         Log.d("debug", "To - " + parameters.getToDateTimestamp());
+        Log.d("debug", "Offset - " + parameters.getOffsetUtc());
         Log.d("debug", "ID = " + parameters.getId());
 
         String requestUrlParameters = "?"
@@ -333,9 +340,18 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                     @Override
                     public void onResponse(String response) {
 
-                        // TODO Delete test code
-                        Log.d("debug", response);
-                        if (listener != null) listener.onRouteReportReceived(new RouteReport());
+                        try {
+                            new RouteReportJsonParser(parameters.getId()).parse(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            // TODO Notify user
+                        }
+
+
+
+                        if (listener != null) {
+                            routeReportListener.onRouteReportReceived(null);
+                        }
                     }
                 },
                 new Response.ErrorListener() {

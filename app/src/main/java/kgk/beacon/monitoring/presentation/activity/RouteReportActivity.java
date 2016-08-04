@@ -3,7 +3,10 @@ package kgk.beacon.monitoring.presentation.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -11,10 +14,17 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
 
-import kgk.beacon.R;
-import kgk.beacon.monitoring.domain.model.RouteReport;
+import java.util.Calendar;
 
-public class RouteReportActivity extends AppCompatActivity {
+import kgk.beacon.R;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
+import kgk.beacon.monitoring.presentation.adapter.RouteReportDaysListAdapter;
+import kgk.beacon.monitoring.presentation.view.RouteReportView;
+
+public class RouteReportActivity extends AppCompatActivity
+        implements RouteReportView {
+
+    public static final String EXTRA_ROUTE_REPORT = "extra_route_report";
 
     // Views
     private MapView googleMapView;
@@ -28,7 +38,9 @@ public class RouteReportActivity extends AppCompatActivity {
     private TextView currenrEventSatellitesTextView;
     private LinearLayout detailedInformationLayout;
     private SeekBar dateSeekBar;
-    private RecyclerView detailedInformationRecyclerView;
+    private RecyclerView eventsRecyclerView;
+
+    private RouteReport routeReport;
 
     ////
 
@@ -39,13 +51,24 @@ public class RouteReportActivity extends AppCompatActivity {
 
         Intent startingIntent = getIntent();
         RouteReport routeReport = (RouteReport)
-                startingIntent.getSerializableExtra("extra_route_report");
+                startingIntent.getSerializableExtra(EXTRA_ROUTE_REPORT);
 
         if (routeReport == null) finish();
+        else this.routeReport = routeReport;
 
         initViews(savedInstanceState);
         initListeners();
         initMap();
+        initDaysRecyclerView();
+    }
+
+    ////
+
+    @Override
+    public void toggleDayDisplay(Calendar day, boolean enabled) {
+
+        // TODO Delete test code
+        Log.d("debug", "toggleDayDisplay ::called");
     }
 
     ////
@@ -78,8 +101,8 @@ public class RouteReportActivity extends AppCompatActivity {
                 findViewById(R.id.monitoring_activity_route_report_detailed_information_layout);
         dateSeekBar = (SeekBar)
                 findViewById(R.id.monitoring_activity_route_report_date_seek_bar);
-        detailedInformationRecyclerView = (RecyclerView)
-                findViewById(R.id.monitoring_activity_route_report_detailed_information_recycler_view);
+        eventsRecyclerView = (RecyclerView)
+                findViewById(R.id.monitoring_activity_route_report_events_recycler_view);
     }
 
     private void initListeners() {
@@ -89,4 +112,21 @@ public class RouteReportActivity extends AppCompatActivity {
     private void initMap() {
 
     }
+
+    private void initDaysRecyclerView() {
+        daysRecyclerView.setHasFixedSize(true);
+        daysRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        );
+
+        RouteReportDaysListAdapter adapter = new RouteReportDaysListAdapter(
+                this,
+                routeReport.getDays()
+        );
+
+        daysRecyclerView.setAdapter(adapter);
+        daysRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    //// Control callbacks
 }

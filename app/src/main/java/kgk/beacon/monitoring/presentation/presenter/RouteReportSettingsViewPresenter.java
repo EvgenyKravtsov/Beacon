@@ -2,8 +2,8 @@ package kgk.beacon.monitoring.presentation.presenter;
 
 import kgk.beacon.monitoring.domain.interactor.GetRouteReport;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
-import kgk.beacon.monitoring.domain.model.RouteReport;
-import kgk.beacon.monitoring.domain.model.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.presentation.view.RouteReportSettingsView;
 
 public class RouteReportSettingsViewPresenter

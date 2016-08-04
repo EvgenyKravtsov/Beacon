@@ -19,7 +19,7 @@ import java.util.Locale;
 import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
-import kgk.beacon.monitoring.domain.model.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.presentation.presenter.RouteReportSettingsViewPresenter;
 import kgk.beacon.monitoring.presentation.view.RouteReportSettingsView;
 

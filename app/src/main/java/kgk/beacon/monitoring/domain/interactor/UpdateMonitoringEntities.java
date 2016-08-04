@@ -2,10 +2,9 @@ package kgk.beacon.monitoring.domain.interactor;
 
 import java.util.List;
 
-import kgk.beacon.monitoring.MonitoringHttpClient;
+import kgk.beacon.monitoring.network.MonitoringHttpClient;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
-import kgk.beacon.monitoring.domain.model.RouteReport;
 import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.networking.VolleyHttpClient;
 import kgk.beacon.util.AppController;
@@ -58,11 +57,6 @@ public class UpdateMonitoringEntities implements Interactor {
                         monitoringManager.getActiveMonitoringEntityGroup()
                                 .getMonitoringEntities()
                 );
-            }
-
-            @Override
-            public void onRouteReportReceived(RouteReport routeReport) {
-
             }
         });
 

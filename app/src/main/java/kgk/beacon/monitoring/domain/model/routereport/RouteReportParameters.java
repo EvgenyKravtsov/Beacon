@@ -1,4 +1,4 @@
-package kgk.beacon.monitoring.domain.model;
+package kgk.beacon.monitoring.domain.model.routereport;
 
 public class RouteReportParameters {
 
