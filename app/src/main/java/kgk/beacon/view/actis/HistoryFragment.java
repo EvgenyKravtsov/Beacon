@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -268,7 +267,12 @@ public class HistoryFragment extends Fragment implements DialogInterface.OnClick
 
         @SuppressLint("SetTextI18n")
         @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        public View getChildView(
+                int groupPosition,
+                int childPosition,
+                boolean isLastChild,
+                View convertView,
+                ViewGroup parent) {
             ViewHolderHistoryFragment viewHolder;
 
             if (convertView == null) {

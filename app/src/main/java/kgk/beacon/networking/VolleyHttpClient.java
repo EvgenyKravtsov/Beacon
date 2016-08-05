@@ -41,6 +41,7 @@ import kgk.beacon.model.T5Packet;
 import kgk.beacon.model.T6Packet;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.monitoring.network.MonitoringHttpClient;
@@ -339,18 +340,14 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         try {
-                            new RouteReportJsonParser(parameters.getId()).parse(response);
+                            RouteReport routeReport =
+                                    new RouteReportJsonParser(parameters.getId()).parse(response);
+                            if (listener != null)
+                                routeReportListener.onRouteReportReceived(routeReport);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // TODO Notify user
-                        }
-
-
-
-                        if (listener != null) {
-                            routeReportListener.onRouteReportReceived(null);
                         }
                     }
                 },

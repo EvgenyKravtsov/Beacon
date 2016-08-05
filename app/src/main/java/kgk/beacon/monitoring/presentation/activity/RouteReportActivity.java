@@ -12,13 +12,21 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.google.android.gms.maps.MapView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.presentation.adapter.RouteReportDaysListAdapter;
+import kgk.beacon.monitoring.presentation.adapter.eventlistadapter.EventsListObject;
+import kgk.beacon.monitoring.presentation.adapter.eventlistadapter.RouteReportEventsListAdapter;
 import kgk.beacon.monitoring.presentation.view.RouteReportView;
 
 public class RouteReportActivity extends AppCompatActivity
@@ -60,6 +68,7 @@ public class RouteReportActivity extends AppCompatActivity
         initListeners();
         initMap();
         initDaysRecyclerView();
+        initEventsRecyclerView();
     }
 
     ////
@@ -119,14 +128,51 @@ public class RouteReportActivity extends AppCompatActivity
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         );
 
+        List<Calendar> dates = new ArrayList<>();
+
+        for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date(entry.getKey() * 1000));
+            dates.add(0, calendar);
+        }
+
         RouteReportDaysListAdapter adapter = new RouteReportDaysListAdapter(
                 this,
-                routeReport.getDays()
+                dates
         );
 
         daysRecyclerView.setAdapter(adapter);
         daysRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    //// Control callbacks
+    private void initEventsRecyclerView() {
+        eventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        RouteReportEventsListAdapter adapter =
+                new RouteReportEventsListAdapter(this, daysToParentObjects());
+
+        adapter.setCustomParentAnimationViewId(R.id.monitoring_activty_route_report_list_header_title);
+        adapter.setParentClickableViewAnimationDefaultDuration();
+        adapter.setParentAndIconExpandOnClick(true);
+
+        eventsRecyclerView.setAdapter(adapter);
+    }
+
+    private List<ParentObject> daysToParentObjects() {
+        List<ParentObject> parentObjects = new ArrayList<>();
+
+        for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
+            ParentObject parentObject = new EventsListObject(entry.getKey());
+            parentObject.setChildObjectList(routeReportsEventToObjects(entry.getValue()));
+            parentObjects.add(parentObject);
+        }
+
+        return parentObjects;
+    }
+
+    private List<Object> routeReportsEventToObjects(List<RouteReportEvent> events) {
+        List<Object> objects = new ArrayList<>();
+        for (RouteReportEvent event : events) objects.add(event);
+        return objects;
+    }
 }

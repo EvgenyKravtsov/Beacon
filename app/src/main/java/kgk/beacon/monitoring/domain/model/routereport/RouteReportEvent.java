@@ -1,10 +1,12 @@
 package kgk.beacon.monitoring.domain.model.routereport;
 
-public abstract class RouteReportEvent {
+import java.io.Serializable;
 
-    private final long startTime; // unix timestamp
-    private final long endTime; // unix timestamp
-    private final long duration; // seconds
+public abstract class RouteReportEvent implements Serializable {
+
+    protected final long startTime; // unix timestamp
+    protected final long endTime; // unix timestamp
+    protected final long duration; // seconds
 
     ////
 

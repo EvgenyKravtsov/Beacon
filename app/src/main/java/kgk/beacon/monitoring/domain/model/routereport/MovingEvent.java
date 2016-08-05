@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.domain.model.routereport;
 
+import java.util.Date;
 import java.util.List;
 
 public class MovingEvent extends RouteReportEvent {
@@ -23,5 +24,38 @@ public class MovingEvent extends RouteReportEvent {
         this.latitude = latitude;
         this.longitude = longitude;
         this.signals = signals;
+    }
+
+    ////
+
+    public String getDetails() {
+        return details;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public List<MovingEventSignal> getSignals() {
+        return signals;
+    }
+
+    ////
+
+    @Override
+    public String toString() {
+        String str = "== Moving Event ==\n" +
+                "start - " + new Date(startTime) + "\n" +
+                "end - " + new Date(endTime) + "\n" +
+                "duration - " + duration + "\n" +
+                "details - " + details + "\n" +
+                "latitude - " + latitude + "\n" +
+                "longitude - " + longitude + "\n";
+        for (MovingEventSignal signal : signals) str += signal.toString();
+        return str;
     }
 }

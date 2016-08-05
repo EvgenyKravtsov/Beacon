@@ -1,5 +1,7 @@
 package kgk.beacon.monitoring.domain.model.routereport;
 
+import java.util.Date;
+
 public class ParkingEvent extends RouteReportEvent {
 
     private final String address;
@@ -22,5 +24,37 @@ public class ParkingEvent extends RouteReportEvent {
         this.latitude = latitude;
         this.longitude = longitude;
         this.csq = csq;
+    }
+
+    ////
+
+    public String getAddress() {
+        return address;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public int getCsq() {
+        return csq;
+    }
+
+    ////
+
+    @Override
+    public String toString() {
+        return "== Parking Event ==\n" +
+                "start - " + new Date(startTime) + "\n" +
+                "end - " + new Date(endTime) + "\n" +
+                "duration - " + duration + "\n" +
+                "address - " + address + "\n" +
+                "latitude - " + latitude + "\n" +
+                "longitude - " + longitude + "\n" +
+                "csq - " + csq;
     }
 }
