@@ -6,27 +6,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.google.android.gms.maps.MapView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.presentation.adapter.RouteReportDaysListAdapter;
-import kgk.beacon.monitoring.presentation.adapter.eventlistadapter.EventsListObject;
-import kgk.beacon.monitoring.presentation.adapter.eventlistadapter.RouteReportEventsListAdapter;
+import kgk.beacon.monitoring.presentation.adapter.RouteReportEventsListExpandableAdapter;
+import kgk.beacon.monitoring.presentation.adapter.RouteReportGoogleMapAdapter;
+import kgk.beacon.monitoring.presentation.adapter.RouteReportMapAdapter;
 import kgk.beacon.monitoring.presentation.view.RouteReportView;
 
 public class RouteReportActivity extends AppCompatActivity
@@ -46,9 +50,12 @@ public class RouteReportActivity extends AppCompatActivity
     private TextView currenrEventSatellitesTextView;
     private LinearLayout detailedInformationLayout;
     private SeekBar dateSeekBar;
-    private RecyclerView eventsRecyclerView;
+    private ExpandableListView eventsListView;
 
     private RouteReport routeReport;
+    private Map<Long, List<RouteReportEvent>> routeReportDays;
+    private RouteReportEventsListExpandableAdapter adapter;
+    private RouteReportMapAdapter mapAdapter;
 
     ////
 
@@ -68,16 +75,52 @@ public class RouteReportActivity extends AppCompatActivity
         initListeners();
         initMap();
         initDaysRecyclerView();
-        initEventsRecyclerView();
+        initEventsListView();
     }
 
     ////
 
     @Override
     public void toggleDayDisplay(Calendar day, boolean enabled) {
+        if (routeReportDays == null) {
+            routeReportDays = new HashMap<>();
+            for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet())
+                routeReportDays.put(entry.getKey(), entry.getValue());
+        }
 
-        // TODO Delete test code
-        Log.d("debug", "toggleDayDisplay ::called");
+        if (enabled) routeReportDays.put(
+                day.getTimeInMillis(),
+                routeReport.getDays().get(day.getTimeInMillis()));
+        else {
+            routeReportDays.remove(day.getTimeInMillis());
+            clearEventDetails();
+        }
+
+        adapter.setExpandableListTitle(getKeysFromDaysMap(routeReportDays));
+        adapter.setExpandableListDetail(routeReportDays);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showEventDetails(
+            String eventType,
+            double speed,
+            int csq,
+            int satellites) {
+
+        currentEventTextView.setText(eventType);
+
+        currentEventSpeedTextView.setText(
+                String.format(Locale.ROOT, "%.2f", speed)
+        );
+
+        currentEventGsmTextView.setText(
+                String.format(Locale.ROOT, "%d", csq)
+        );
+
+        currenrEventSatellitesTextView.setText(
+                String.format(Locale.ROOT, "%d", satellites)
+        );
     }
 
     ////
@@ -110,16 +153,39 @@ public class RouteReportActivity extends AppCompatActivity
                 findViewById(R.id.monitoring_activity_route_report_detailed_information_layout);
         dateSeekBar = (SeekBar)
                 findViewById(R.id.monitoring_activity_route_report_date_seek_bar);
-        eventsRecyclerView = (RecyclerView)
-                findViewById(R.id.monitoring_activity_route_report_events_recycler_view);
+        //eventsRecyclerView = (RecyclerView)
+        //        findViewById(R.id.monitoring_activity_route_report_events_recycler_view);
+        eventsListView = (ExpandableListView)
+                findViewById(R.id.monitoring_activity_route_report_events_list_view);
     }
 
     private void initListeners() {
+        zoomInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapAdapter.zoomIn();
+            }
+        });
 
+        zoomOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapAdapter.zoomOut();
+            }
+        });
+
+        currentEventLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibility = detailedInformationLayout.getVisibility();
+                if (visibility == View.VISIBLE) detailedInformationLayout.setVisibility(View.GONE);
+                if (visibility == View.GONE) detailedInformationLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void initMap() {
-
+        mapAdapter = new RouteReportGoogleMapAdapter(googleMapView);
     }
 
     private void initDaysRecyclerView() {
@@ -132,9 +198,11 @@ public class RouteReportActivity extends AppCompatActivity
 
         for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date(entry.getKey() * 1000));
+            calendar.setTime(new Date(entry.getKey()));
             dates.add(0, calendar);
         }
+
+        Collections.sort(dates);
 
         RouteReportDaysListAdapter adapter = new RouteReportDaysListAdapter(
                 this,
@@ -145,34 +213,31 @@ public class RouteReportActivity extends AppCompatActivity
         daysRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    private void initEventsRecyclerView() {
-        eventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void initEventsListView() {
+        adapter = new RouteReportEventsListExpandableAdapter(
+                this,
+                getKeysFromDaysMap(routeReport.getDays()),
+                routeReport.getDays()
+        );
 
-        RouteReportEventsListAdapter adapter =
-                new RouteReportEventsListAdapter(this, daysToParentObjects());
-
-        adapter.setCustomParentAnimationViewId(R.id.monitoring_activty_route_report_list_header_title);
-        adapter.setParentClickableViewAnimationDefaultDuration();
-        adapter.setParentAndIconExpandOnClick(true);
-
-        eventsRecyclerView.setAdapter(adapter);
+        eventsListView.setAdapter(adapter);
+        eventsListView.setOnChildClickListener(adapter);
     }
 
-    private List<ParentObject> daysToParentObjects() {
-        List<ParentObject> parentObjects = new ArrayList<>();
+    private List<Long> getKeysFromDaysMap(Map<Long, List<RouteReportEvent>> days) {
+        List<Long> keys = new ArrayList<>();
 
-        for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
-            ParentObject parentObject = new EventsListObject(entry.getKey());
-            parentObject.setChildObjectList(routeReportsEventToObjects(entry.getValue()));
-            parentObjects.add(parentObject);
+        for (Map.Entry<Long, List<RouteReportEvent>> entry : days.entrySet()) {
+            keys.add(entry.getKey());
         }
 
-        return parentObjects;
+        return keys;
     }
 
-    private List<Object> routeReportsEventToObjects(List<RouteReportEvent> events) {
-        List<Object> objects = new ArrayList<>();
-        for (RouteReportEvent event : events) objects.add(event);
-        return objects;
+    private void clearEventDetails() {
+        currentEventTextView.setText("");
+        currentEventSpeedTextView.setText("");
+        currentEventGsmTextView.setText("");
+        currenrEventSatellitesTextView.setText("");
     }
 }

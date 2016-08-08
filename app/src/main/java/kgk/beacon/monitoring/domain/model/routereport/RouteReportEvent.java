@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public abstract class RouteReportEvent implements Serializable {
 
-    protected final long startTime; // unix timestamp
-    protected final long endTime; // unix timestamp
+    protected final long startTime; // unix timestamp ms
+    protected final long endTime; // unix timestamp ms
     protected final long duration; // seconds
 
     ////

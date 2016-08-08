@@ -1,5 +1,7 @@
 package kgk.beacon.monitoring.network;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +51,10 @@ public class RouteReportJsonParser {
         );
 
         JSONArray eventList = dataById.getJSONArray("rows");
+
+        // TODO Delete test code
+        for (int i = 0; i < eventList.length(); i++) Log.d("debug", eventList.getJSONObject(i).toString());
+
         List<RouteReportEvent> events = new ArrayList<>();
 
         for (int i = 0; i < eventList.length(); i++) {
@@ -80,7 +86,7 @@ public class RouteReportJsonParser {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
 
-            long key = calendar.getTimeInMillis() / 1000;
+            long key = calendar.getTimeInMillis();
 
             if (days.get(key) == null) {
                 days.put(key, new ArrayList<RouteReportEvent>());

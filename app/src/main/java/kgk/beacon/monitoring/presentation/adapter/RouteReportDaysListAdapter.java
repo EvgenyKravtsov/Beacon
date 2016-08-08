@@ -79,6 +79,8 @@ public class RouteReportDaysListAdapter
 
             dayEnabledCheckBox = (CheckBox)
                     itemView.findViewById(R.id.monitoring_activity_route_report_days_list_item_day_enabled_check_box);
+            dayEnabledCheckBox.setChecked(true);
+
             dayTextView = (TextView)
                     itemView.findViewById(R.id.monitoring_activity_route_report_days_list_item_day_text_view);
         }

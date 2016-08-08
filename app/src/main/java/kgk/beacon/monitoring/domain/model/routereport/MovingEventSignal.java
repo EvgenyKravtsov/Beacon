@@ -20,6 +20,24 @@ public class MovingEventSignal implements Serializable {
 
     ////
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public int getCsq() {
+        return csq;
+    }
+
+    ////
+
     @Override
     public String toString() {
         return "**** Signal ****\n" +
