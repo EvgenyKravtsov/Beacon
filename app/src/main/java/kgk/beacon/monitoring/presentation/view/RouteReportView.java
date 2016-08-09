@@ -11,4 +11,6 @@ public interface RouteReportView {
             double speed,
             int csq,
             int satellites);
+
+    void mapReadyForUse();
 }

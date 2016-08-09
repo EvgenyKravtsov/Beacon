@@ -3,6 +3,7 @@ package kgk.beacon.monitoring.presentation.activity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,6 +20,7 @@ import java.util.Locale;
 import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.presentation.presenter.RouteReportSettingsViewPresenter;
 import kgk.beacon.monitoring.presentation.view.RouteReportSettingsView;
@@ -69,6 +71,15 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         unbindPresenter();
+    }
+
+    ////
+
+    @Override
+    public void navigateToRouteReportView(RouteReport routeReport) {
+        Intent intent = new Intent(this, RouteReportActivity.class);
+        intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
+        if (routeReport != null) startActivity(intent);
     }
 
     ////

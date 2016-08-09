@@ -128,6 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:max="86400000"
                 android:id="@+id/monitoring_activity_route_report_date_seek_bar" />
 
             <ExpandableListView
@@ -141,95 +142,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/monitoring_activity_route_report_detailed_information_layout"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:background="@android:color/white"
-        android:id="@+id/monitoring_activity_route_report_current_event_layout">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/monitoring_activity_route_report_current_event_text_view"
-            tools:text="Moving 01:45 - 19:45"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="Speed" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/monitoring_activity_route_report_current_event_speed_text_view"
-            tools:text="156 km/h"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="GSM"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/monitoring_activity_route_report_current_event_gsm_text_view"
-            tools:text="75"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="Satellites"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/monitoring_activity_route_report_current_event_satellites_text_view"
-            tools:text="8"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:background="@android:color/white"
-        android:visibility="gone"
-        android:id="@+id/monitoring_activity_route_report_detailed_information_layout">
-
-        <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:id="@+id/monitoring_activity_route_report_date_seek_bar" />
-
-        <ExpandableListView
-            android:id="@+id/monitoring_activity_route_report_events_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp" />
-
-    </LinearLayout> -->
 
 </RelativeLayout>

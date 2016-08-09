@@ -1,5 +1,7 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
@@ -10,5 +12,9 @@ public interface RouteReportMapAdapter {
 
     void zoomOut();
 
-    void showEvents(List<RouteReportEvent> events);
+    void centerMap(LatLng coordinates);
+
+    void showRouteReportDay(long date, List<RouteReportEvent> events);
+
+    void clearRouteReportDay(long date);
 }

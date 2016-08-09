@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class MovingEventSignal implements Serializable {
 
+    private final long time;
     private final double latitude;
     private final double longitude;
     private final double speed;
@@ -11,7 +12,8 @@ public class MovingEventSignal implements Serializable {
 
     ////
 
-    public MovingEventSignal(double latitude, double longitude, double speed, int csq) {
+    public MovingEventSignal(long time, double latitude, double longitude, double speed, int csq) {
+        this.time = time;
         this.latitude = latitude;
         this.longitude = longitude;
         this.speed = speed;
@@ -19,6 +21,10 @@ public class MovingEventSignal implements Serializable {
     }
 
     ////
+
+    public long getTime() {
+        return time;
+    }
 
     public double getLatitude() {
         return latitude;

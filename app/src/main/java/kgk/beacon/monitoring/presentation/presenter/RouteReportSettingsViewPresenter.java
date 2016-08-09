@@ -5,6 +5,7 @@ import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.presentation.view.RouteReportSettingsView;
+import kgk.beacon.util.AppController;
 
 public class RouteReportSettingsViewPresenter
         implements GetRouteReport.Listener {
@@ -32,7 +33,12 @@ public class RouteReportSettingsViewPresenter
     ////
 
     @Override
-    public void onRouteReportRetreived(RouteReport routeReport) {
-
+    public void onRouteReportRetreived(final RouteReport routeReport) {
+        AppController.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (view != null) view.navigateToRouteReportView(routeReport);
+            }
+        });
     }
 }

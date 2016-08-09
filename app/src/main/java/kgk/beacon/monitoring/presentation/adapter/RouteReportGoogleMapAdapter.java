@@ -4,6 +4,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
@@ -11,28 +12,42 @@ import com.google.android.gms.maps.model.UrlTileProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.data.Configuration;
+import kgk.beacon.monitoring.domain.model.routereport.MovingEvent;
+import kgk.beacon.monitoring.domain.model.routereport.ParkingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.presentation.model.MapType;
+import kgk.beacon.monitoring.presentation.model.MovingEventMapObject;
+import kgk.beacon.monitoring.presentation.model.ParkingEventMapObject;
+import kgk.beacon.monitoring.presentation.model.RouteReportMapObject;
+import kgk.beacon.monitoring.presentation.view.RouteReportView;
 
 public class RouteReportGoogleMapAdapter
-        implements RouteReportMapAdapter,
-        OnMapReadyCallback {
+        implements RouteReportMapAdapter, OnMapReadyCallback {
 
+    private RouteReportView view;
     private MapView mapView;
     private GoogleMap map;
     private TileOverlay kgkTileOverlay;
     private TileOverlay yandexTileOverlay;
     private Configuration configuration;
 
+    private Map<Long, List<RouteReportMapObject>> mapObjectsByDay;
+
     ////
 
-    public RouteReportGoogleMapAdapter(MapView mapView) {
+    public RouteReportGoogleMapAdapter(RouteReportView view, MapView mapView) {
         configuration = DependencyInjection.provideConfiguration();
+        mapObjectsByDay = new HashMap<>();
+
+        this.view = view;
         this.mapView = mapView;
         this.mapView.getMapAsync(this);
     }
@@ -43,7 +58,7 @@ public class RouteReportGoogleMapAdapter
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         setMapType(configuration.loadDefaultMapType());
-        map.moveCamera(CameraUpdateFactory.zoomTo(configuration.loadZoomLevel()));
+        view.mapReadyForUse();
     }
 
     ////
@@ -61,8 +76,39 @@ public class RouteReportGoogleMapAdapter
     }
 
     @Override
-    public void showEvents(List<RouteReportEvent> events) {
+    public void centerMap(LatLng coordinates) {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                coordinates,
+                configuration.loadZoomLevel()));
+    }
 
+    @Override
+    public void showRouteReportDay(long date, List<RouteReportEvent> events) {
+
+        List<RouteReportMapObject> mapObjects = new ArrayList<>();
+        for (RouteReportEvent event : events) {
+
+            if (event instanceof ParkingEvent) {
+                RouteReportMapObject mapObject = new ParkingEventMapObject(map, event);
+                mapObject.draw();
+                mapObjects.add(mapObject);
+            }
+
+            if (event instanceof MovingEvent) {
+                RouteReportMapObject mapObject = new MovingEventMapObject(map, event);
+                mapObject.draw();
+                mapObjects.add(mapObject);
+            }
+        }
+
+        mapObjectsByDay.put(date, mapObjects);
+    }
+
+    @Override
+    public void clearRouteReportDay(long date) {
+        List<RouteReportMapObject> mapObjects = mapObjectsByDay.get(date);
+        for (RouteReportMapObject mapObject : mapObjects) mapObject.clear();
+        mapObjectsByDay.remove(date);
     }
 
     ////

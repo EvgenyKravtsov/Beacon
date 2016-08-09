@@ -1,5 +1,7 @@
 package kgk.beacon.monitoring.domain.model.routereport;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,13 @@ public class MovingEvent extends RouteReportEvent {
 
     public List<MovingEventSignal> getSignals() {
         return signals;
+    }
+
+    ////
+
+    @Override
+    public LatLng getCoordinates() {
+        return new LatLng(latitude, longitude);
     }
 
     ////

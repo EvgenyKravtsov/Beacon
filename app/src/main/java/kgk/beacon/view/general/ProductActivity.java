@@ -26,13 +26,15 @@ import kgk.beacon.model.product.Product;
 import kgk.beacon.model.product.ProductFactory;
 import kgk.beacon.model.product.ProductType;
 import kgk.beacon.monitoring.DependencyInjection;
-import kgk.beacon.monitoring.network.MonitoringHttpClient;
 import kgk.beacon.monitoring.data.Configuration;
+import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
+import kgk.beacon.monitoring.domain.interactor.UpdateMonitoringEntities;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
 import kgk.beacon.monitoring.domain.model.User;
+import kgk.beacon.monitoring.network.MonitoringHttpClient;
 import kgk.beacon.monitoring.presentation.activity.MapActivity;
 import kgk.beacon.networking.VolleyHttpClient;
 import kgk.beacon.stores.DeviceStore;
@@ -164,41 +166,50 @@ public class ProductActivity extends AppCompatActivity {
         monitoringHttpClient.setListener(new MonitoringHttpClient.Listener() {
             @Override
             public void onUserRetreived(User user) {
+
                 monitoringManager = MonitoringManager.getInstance();
                 monitoringManager.init(user, monitoringEntities);
+
                 if (monitoringManager != null) {
-                    Intent intent = new Intent(ProductActivity.this, MapActivity.class);
-                    startActivity(intent);
 
-                    for (MonitoringEntityGroup group : monitoringManager.getMonitoringEntityGroups()) {
-                        if (group.getName().equals(configuration.loadActiveMonitoringEntityGroup())) {
-                            monitoringManager.setActiveMonitoringEntityGroup(group);
-                        }
-                    }
+                    UpdateMonitoringEntities interactor = new UpdateMonitoringEntities(
+                            monitoringManager.getMonitoringEntities());
 
-                    long activeMonitoringEntityId = configuration.loadActiveMonitoringEntity();
-
-                    // TODO Delete test code
-                    Log.d("debug", "active id form SP = " + activeMonitoringEntityId);
-
-
-                    if (activeMonitoringEntityId == 0) {
-                        if (monitoringManager.getActiveMonitoringEntityGroup() == null) {
-                            monitoringManager.setActiveMonitoringEntity(
-                                    monitoringManager.getMonitoringEntities().get(0));
-                        } else {
-                            monitoringManager.setActiveMonitoringEntity(
-                                    monitoringManager.getMonitoringEntityGroups().get(0)
-                                            .getMonitoringEntities().get(0)
-                            );
-                        }
-                    } else {
-                        for (MonitoringEntity monitoringEntity : monitoringManager.getMonitoringEntities()) {
-                            if (monitoringEntity.getId() == activeMonitoringEntityId) {
-                                monitoringManager.setActiveMonitoringEntity(monitoringEntity);
+                    interactor.setListener(new UpdateMonitoringEntities.Listener() {
+                        @Override
+                        public void onMonitoringEntitiesUpdated(List<MonitoringEntity> monitoringEntities) {
+                            for (MonitoringEntityGroup group : monitoringManager.getMonitoringEntityGroups()) {
+                                if (group.getName().equals(configuration.loadActiveMonitoringEntityGroup()))
+                                    monitoringManager.setActiveMonitoringEntityGroup(group);
                             }
+
+                            long activeMonitoringEntityId = configuration.loadActiveMonitoringEntity();
+
+                            if (activeMonitoringEntityId == 0) {
+                                if (monitoringManager.getActiveMonitoringEntityGroup() == null) {
+                                    monitoringManager.setActiveMonitoringEntity(
+                                            monitoringManager.getMonitoringEntities().get(0)
+                                    );
+                                } else {
+                                    monitoringManager.setActiveMonitoringEntity(
+                                            monitoringManager.getMonitoringEntityGroups().get(0)
+                                                    .getMonitoringEntities().get(0)
+                                    );
+                                }
+                            } else {
+                                for (MonitoringEntity monitoringEntity : monitoringManager.getMonitoringEntities()) {
+                                    if (monitoringEntity.getId() == activeMonitoringEntityId) {
+                                        monitoringManager.setActiveMonitoringEntity(monitoringEntity);
+                                    }
+                                }
+                            }
+
+                            Intent intent = new Intent(ProductActivity.this, MapActivity.class);
+                            startActivity(intent);
                         }
-                    }
+                    });
+
+                    InteractorThreadPool.getInstance().execute(interactor);
 
                 } else {
                     // TODO Notify user
@@ -207,9 +218,7 @@ public class ProductActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onMonitoringEntitiesUpdated() {
-
-            }
+            public void onMonitoringEntitiesUpdated() {}
         });
 
         monitoringHttpClient.requestUser();

@@ -60,6 +60,7 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
         map = googleMap;
         map.setOnCameraChangeListener(this);
         map.setOnMarkerClickListener(this);
+        mapView.mapReadyForUse();
     }
 
     ////

@@ -51,7 +51,6 @@ public class MapActivity extends AppCompatActivity implements
 
     // Dialogs
     private ProgressDialog downloadDataProgressDialog;
-    private boolean initialyLoaded;
 
     private MapViewPresenter presenter;
     private MapAdapter mapAdapter;
@@ -82,9 +81,6 @@ public class MapActivity extends AppCompatActivity implements
         presenter.requestMonitoringEntities();
         presenter.requestMonitoringEntityGroupsCount();
         presenter.requestMonitoringEntitiesUpdate();
-
-        if (!initialyLoaded) toggleDownloadDataProgressDialog(true);
-
         menuLayout.setVisibility(View.GONE);
     }
 
@@ -105,21 +101,6 @@ public class MapActivity extends AppCompatActivity implements
                 if (monitoringEntity.isDisplayEnabled()) mapAdapter.showMapEntity(monitoringEntity);
             }
         }
-
-        if (!initialyLoaded) {
-
-            Configuration configuration = DependencyInjection.provideConfiguration();
-            MapType mapType = configuration.loadDefaultMapType();
-            mapAdapter.setMapType(mapType);
-
-            mapAdapter.centerOnCoordinates(
-                    activeMonitoringEntity.getLatitude(),
-                    activeMonitoringEntity.getLongitude()
-            );
-        }
-
-        toggleDownloadDataProgressDialog(false);
-        initialyLoaded = true;
     }
 
     @Override
@@ -160,6 +141,13 @@ public class MapActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, RouteReportActivity.class);
         intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
         if (routeReport != null) startActivity(intent);
+    }
+
+    @Override
+    public void mapReadyForUse() {
+        Configuration configuration = DependencyInjection.provideConfiguration();
+        MapType mapType = configuration.loadDefaultMapType();
+        mapAdapter.setMapType(mapType);
     }
 
     ////
@@ -431,6 +419,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void onRouteReportSettingsMenuButtonClick() {
+        menuEnabled = false;
         Intent intent = new Intent(this, RouteReportSettingsActivity.class);
         startActivity(intent);
     }

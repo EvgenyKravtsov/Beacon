@@ -156,6 +156,7 @@ public class RouteReportJsonParser {
             JSONObject signalJson = track.getJSONObject(i);
 
             MovingEventSignal signal = new MovingEventSignal(
+                    signalJson.getLong("mktime") * 1000,
                     signalJson.getDouble("lat"),
                     signalJson.getDouble("lng"),
                     signalJson.getDouble("speed"),

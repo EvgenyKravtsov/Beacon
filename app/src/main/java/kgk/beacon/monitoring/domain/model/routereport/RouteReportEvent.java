@@ -1,5 +1,7 @@
 package kgk.beacon.monitoring.domain.model.routereport;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 public abstract class RouteReportEvent implements Serializable {
@@ -29,4 +31,6 @@ public abstract class RouteReportEvent implements Serializable {
     public long getDuration() {
         return duration;
     }
+
+    public abstract LatLng getCoordinates();
 }

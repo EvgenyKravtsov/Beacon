@@ -43,7 +43,9 @@ public class MonitoringListViewPresenter implements
     @Override
     public void onMonitoringEntitiesRetreived(final List<MonitoringEntity> monitoringEntities) {
         MonitoringListViewPresenter.this.monitoringEntities = monitoringEntities;
-        requestMonitoringEntitiesUpdate(monitoringEntities);
+        //requestMonitoringEntitiesUpdate(monitoringEntities);
+
+        requestActiveMonitroingEntity();
     }
 
     @Override
