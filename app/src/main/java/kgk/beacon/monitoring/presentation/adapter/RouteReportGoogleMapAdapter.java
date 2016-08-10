@@ -4,7 +4,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
@@ -38,7 +41,7 @@ public class RouteReportGoogleMapAdapter
     private TileOverlay kgkTileOverlay;
     private TileOverlay yandexTileOverlay;
     private Configuration configuration;
-
+    private Marker centeredEventMarker;
     private Map<Long, List<RouteReportMapObject>> mapObjectsByDay;
 
     ////
@@ -80,6 +83,11 @@ public class RouteReportGoogleMapAdapter
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 coordinates,
                 configuration.loadZoomLevel()));
+
+        if (centeredEventMarker != null) centeredEventMarker.remove();
+        centeredEventMarker = map.addMarker(new MarkerOptions()
+                .position(coordinates)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
     }
 
     @Override

@@ -144,6 +144,11 @@ public class RouteReportActivity extends AppCompatActivity
     }
 
     @Override
+    public void centerOnChosenEvent(double latitude, double longitude) {
+        mapAdapter.centerMap(new LatLng(latitude, longitude));
+    }
+
+    @Override
     public void mapReadyForUse() {
         for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet())
             mapAdapter.showRouteReportDay(entry.getKey(), entry.getValue());
@@ -219,13 +224,6 @@ public class RouteReportActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                long time = getClosestValue(1470517200000L + progress, sortedTimes);
-
-                // TODO Delete test code
-                Log.d("debug", "Progress = " + time);
-
-                LatLng coordinates = coordinatesByTime.get(time);
-                mapAdapter.centerMap(coordinates);
             }
 
             @Override
@@ -235,7 +233,15 @@ public class RouteReportActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = seekBar.getProgress();
 
+                long time = getClosestValue(1470517200000L + progress, sortedTimes);
+
+                // TODO Delete test code
+                Log.d("debug", "Progress = " + new Date(time).toString());
+
+                LatLng coordinates = coordinatesByTime.get(time);
+                mapAdapter.centerMap(coordinates);
             }
         });
     }
@@ -353,6 +359,10 @@ public class RouteReportActivity extends AppCompatActivity
             sortedTimes.add(entry.getKey());
         }
         Collections.sort(sortedTimes);
+
+        // TODO Delete test code
+        Log.d("debug", "first - " + new Date(sortedTimes.get(0)));
+        Log.d("debug", "last - " + new Date(sortedTimes.get(sortedTimes.size() - 1)));
     }
 
     private long getClosestValue(long value, List<Long> values) {
@@ -367,7 +377,7 @@ public class RouteReportActivity extends AppCompatActivity
 
             if (value < lastValue) {
                 hi = mid - 1;
-            } else if (value < lastValue) {
+            } else if (value > lastValue) {
                 lo = mid + 1;
             } else {
                 return lastValue;

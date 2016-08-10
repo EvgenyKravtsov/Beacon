@@ -193,6 +193,9 @@ public class RouteReportEventsListExpandableAdapter extends BaseExpandableListAd
         String timeEndString = dateFormat.format(new Date(event.getEndTime()));
 
         if (event instanceof ParkingEvent) {
+            view.centerOnChosenEvent(
+                    ((ParkingEvent) event).getLatitude(),
+                    ((ParkingEvent) event).getLongitude());
             view.showEventDetails(
                     "Parking " + timeStartString + " - " + timeEndString,
                     0,
@@ -205,6 +208,9 @@ public class RouteReportEventsListExpandableAdapter extends BaseExpandableListAd
         if (event instanceof MovingEvent) {
             MovingEventSignal signal = ((MovingEvent) event).getSignals().get(0);
 
+            view.centerOnChosenEvent(
+                    ((MovingEvent) event).getLatitude(),
+                    ((MovingEvent) event).getLongitude());
             view.showEventDetails(
                     "Moving " + timeStartString + " - " + timeEndString,
                     signal.getSpeed(),

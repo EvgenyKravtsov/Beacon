@@ -41,9 +41,9 @@ import kgk.beacon.model.T5Packet;
 import kgk.beacon.model.T6Packet;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
+import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
-import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.monitoring.network.MonitoringHttpClient;
 import kgk.beacon.monitoring.network.RouteReportJsonParser;
 import kgk.beacon.networking.event.BalanceResponseReceived;
@@ -265,51 +265,62 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
         final RequestCounter counter = new RequestCounter();
 
         for (final MonitoringEntity monitoringEntity : monitoringEntities) {
-            GetLastStateRequest request = new GetLastStateRequest(Request.Method.GET,
-                    String.format(Locale.ROOT,
-                            "%s?device=%d",
-                            GET_LAST_STATE_URL,
-                            monitoringEntity.getId()),
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject responseJson = new JSONObject(response);
-                                JSONObject dataJson = responseJson.getJSONObject("data");
+            Thread updateThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-                                monitoringEntity.setLatitude(dataJson.getDouble("lat"));
-                                monitoringEntity.setLongitude(dataJson.getDouble("lng"));
-                                monitoringEntity.setLastUpdateTimestamp(
-                                        Calendar.getInstance().getTimeInMillis());
+                    // TODO Delete test code
+                    Log.d("debug", "update request started at thread: " +
+                            Thread.currentThread().getId());
 
-                                monitoringEntity.setStatus(MonitoringEntityStatus.IN_MOTION);
-                                monitoringEntity.setSpeed(dataJson.getDouble("speed"));
-                                monitoringEntity.setGsm("OK");
-                                monitoringEntity.setSatellites(dataJson.getInt("sat"));
-                                monitoringEntity.setEngineIgnited(true);
+                    GetLastStateRequest request = new GetLastStateRequest(Request.Method.GET,
+                            String.format(Locale.ROOT,
+                                    "%s?device=%d",
+                                    GET_LAST_STATE_URL,
+                                    monitoringEntity.getId()),
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONObject responseJson = new JSONObject(response);
+                                        JSONObject dataJson = responseJson.getJSONObject("data");
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                                        monitoringEntity.setLatitude(dataJson.getDouble("lat"));
+                                        monitoringEntity.setLongitude(dataJson.getDouble("lng"));
+                                        monitoringEntity.setLastUpdateTimestamp(
+                                                Calendar.getInstance().getTimeInMillis());
 
-                            counter.increment();
-                            if (counter.count == monitoringEntities.size() && listener != null) {
-                                listener.onMonitoringEntitiesUpdated();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            counter.increment();
-                        }
-                    });
+                                        monitoringEntity.setStatus(MonitoringEntityStatus.IN_MOTION);
+                                        monitoringEntity.setSpeed(dataJson.getDouble("speed"));
+                                        monitoringEntity.setGsm("OK");
+                                        monitoringEntity.setSatellites(dataJson.getInt("sat"));
+                                        monitoringEntity.setEngineIgnited(true);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    counter.increment();
+                                    if (counter.count == monitoringEntities.size() && listener != null) {
+                                        listener.onMonitoringEntitiesUpdated();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    counter.increment();
+                                }
+                            });
 
 
 
-            request.setPhpSessId(phpSessId);
-            setRetryPolicy(request);
-            requestQueue.add(request);
+                    request.setPhpSessId(phpSessId);
+                    setRetryPolicy(request);
+                    requestQueue.add(request);
+                }
+            });
+            updateThread.start();
         }
     }
 

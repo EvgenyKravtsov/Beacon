@@ -12,5 +12,7 @@ public interface RouteReportView {
             int csq,
             int satellites);
 
+    void centerOnChosenEvent(double latitude, double longitude);
+
     void mapReadyForUse();
 }
