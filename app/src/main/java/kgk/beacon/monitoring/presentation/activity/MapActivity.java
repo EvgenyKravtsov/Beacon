@@ -1,11 +1,13 @@
 package kgk.beacon.monitoring.presentation.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,11 +30,11 @@ public class MapActivity extends AppCompatActivity implements
 
     // Views
     private MapView googleMapView;
-    private Button trafficButton;
-    private Button zoomInButton;
-    private Button zoomOutButton;
-    private Button centerOnActiveButton;
-    private Button menuButton;
+    private ImageButton trafficButton;
+    private ImageButton zoomInButton;
+    private ImageButton zoomOutButton;
+    private ImageButton centerOnActiveButton;
+    private ImageButton menuButton;
     private Button kgkMapMenuButton;
     private Button yandexMapMenuButton;
     private Button googleMapMenuButton;
@@ -47,10 +49,11 @@ public class MapActivity extends AppCompatActivity implements
     private Button settingsMenuButton;
     private TextView activeTextView;
     private LinearLayout menuLayout;
-    private Button quickReportButton;
+    private ImageButton quickReportButton;
 
-    // Dialogs
-    private ProgressDialog downloadDataProgressDialog;
+    // Animations
+    Animation fadeIn;
+    Animation fadeOut;
 
     private MapViewPresenter presenter;
     private MapAdapter mapAdapter;
@@ -65,6 +68,7 @@ public class MapActivity extends AppCompatActivity implements
         setContentView(R.layout.monitoring_activity_map);
 
         initViews(savedInstanceState);
+        initAnimations();
         initListeners();
         initMap();
     }
@@ -111,7 +115,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public void setActiveMonitoringEntity(MonitoringEntity monitoringEntity) {
         activeMonitoringEntity = monitoringEntity;
-        mapAdapter.centerOnCoordinates(
+        mapAdapter.centerOnCoordinatesAnimated(
                 activeMonitoringEntity.getLatitude(),
                 activeMonitoringEntity.getLongitude()
         );
@@ -121,8 +125,11 @@ public class MapActivity extends AppCompatActivity implements
 
     @Override
     public void toggleCenterOnActiveControl(boolean enabled) {
-        int visibility = enabled ? View.VISIBLE : View.GONE;
+        int visibility = enabled ? View.VISIBLE : View.INVISIBLE;
         centerOnActiveButton.setVisibility(visibility);
+
+        if (enabled) centerOnActiveButton.setClickable(true);
+        else centerOnActiveButton.setClickable(false);
     }
 
     @Override
@@ -158,11 +165,11 @@ public class MapActivity extends AppCompatActivity implements
         googleMapView.onCreate(savedInstanceState);
         googleMapView.onResume();
 
-        trafficButton = (Button) findViewById(R.id.monitoring_activity_map_traffic_button);
-        zoomInButton = (Button) findViewById(R.id.monitoring_activity_map_zoom_in_button);
-        zoomOutButton = (Button) findViewById(R.id.monitoring_activity_map_zoom_out_button);
+        trafficButton = (ImageButton) findViewById(R.id.monitoring_activity_map_traffic_button);
+        zoomInButton = (ImageButton) findViewById(R.id.monitoring_activity_map_zoom_in_button);
+        zoomOutButton = (ImageButton) findViewById(R.id.monitoring_activity_map_zoom_out_button);
 
-        menuButton = (Button)
+        menuButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_menu_button);
         kgkMapMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_kgk_map_button);
@@ -189,14 +196,19 @@ public class MapActivity extends AppCompatActivity implements
         settingsMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_settings_button);
 
-        centerOnActiveButton = (Button)
+        centerOnActiveButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_center_on_active_button);
 
         activeTextView = (TextView) findViewById(R.id.monitoring_activity_active_text_view);
         menuLayout = (LinearLayout) findViewById(R.id.monitoring_activity_menu_layout);
 
-        quickReportButton = (Button)
+        quickReportButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_quick_report_button);
+    }
+
+    private void initAnimations() {
+        fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
     }
 
     private void initListeners() {
@@ -339,21 +351,6 @@ public class MapActivity extends AppCompatActivity implements
         presenter = null;
     }
 
-    private void toggleDownloadDataProgressDialog(boolean enabled) {
-        if (enabled) {
-            if (downloadDataProgressDialog == null) {
-                downloadDataProgressDialog = new ProgressDialog(this);
-            }
-
-            downloadDataProgressDialog.setMessage("Downloading data");
-            downloadDataProgressDialog.setCanceledOnTouchOutside(false);
-            downloadDataProgressDialog.show();
-
-        } else {
-            if (downloadDataProgressDialog != null) downloadDataProgressDialog.hide();
-        }
-    }
-
     //// Control callbacks
 
     private void onTrafficButtonClick() {
@@ -369,7 +366,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void onCenterOnActiveButtonClick() {
-        mapAdapter.centerOnCoordinates(
+        mapAdapter.centerOnCoordinatesAnimated(
                 activeMonitoringEntity.getLatitude(),
                 activeMonitoringEntity.getLongitude());
     }

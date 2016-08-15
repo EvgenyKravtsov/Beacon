@@ -5,6 +5,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,8 +33,10 @@ import kgk.beacon.monitoring.presentation.model.ParkingEventMapObject;
 import kgk.beacon.monitoring.presentation.model.RouteReportMapObject;
 import kgk.beacon.monitoring.presentation.view.RouteReportView;
 
-public class RouteReportGoogleMapAdapter
-        implements RouteReportMapAdapter, OnMapReadyCallback {
+public class RouteReportGoogleMapAdapter implements
+        RouteReportMapAdapter,
+        OnMapReadyCallback,
+        GoogleMap.OnCameraChangeListener {
 
     private RouteReportView view;
     private MapView mapView;
@@ -117,6 +120,13 @@ public class RouteReportGoogleMapAdapter
         List<RouteReportMapObject> mapObjects = mapObjectsByDay.get(date);
         for (RouteReportMapObject mapObject : mapObjects) mapObject.clear();
         mapObjectsByDay.remove(date);
+    }
+
+    ////
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        configuration.saveZoomLevel(cameraPosition.zoom);
     }
 
     ////

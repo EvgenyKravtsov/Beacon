@@ -15,6 +15,8 @@ public interface MapAdapter {
 
     void centerOnCoordinates(double latitude, double longitude);
 
+    void centerOnCoordinatesAnimated(double latitude, double longitude);
+
     void setMapType(MapType mapType);
 
     void clearMap();

@@ -39,7 +39,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:overScrollMode="never"
             android:id="@+id/monitoring_activity_route_report_days_recycler_view" />
@@ -131,13 +131,19 @@
                 android:max="86400000"
                 android:id="@+id/monitoring_activity_route_report_date_seek_bar" />
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/monitoring_activity_route_report_events_list_view" />
+
+            <!--
             <ExpandableListView
                 android:id="@+id/monitoring_activity_route_report_events_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
                 android:divider="@android:color/darker_gray"
-                android:dividerHeight="0.5dp" />
+                android:dividerHeight="0.5dp" /> -->
 
         </LinearLayout>
 

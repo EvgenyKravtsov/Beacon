@@ -268,11 +268,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
             Thread updateThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-                    // TODO Delete test code
-                    Log.d("debug", "update request started at thread: " +
-                            Thread.currentThread().getId());
-
                     GetLastStateRequest request = new GetLastStateRequest(Request.Method.GET,
                             String.format(Locale.ROOT,
                                     "%s?device=%d",

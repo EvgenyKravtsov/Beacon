@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,14 +11,16 @@
         android:layout_height="match_parent"
         android:id="@+id/monitoring_activity_map_google_map" />
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <ImageButton
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_margin="10dp"
-        android:id="@+id/monitoring_activity_map_traffic_button" />
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/monitoring_traffic_button_icon"
+        android:id="@+id/monitoring_activity_map_traffic_button"
+        style="@style/MonitoringMapButton" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,40 +28,47 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true"
+        tools:ignore="UnusedAttribute">
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/monitoring_activity_map_zoom_in_button" />
+        <ImageButton
+            android:src="@drawable/monitoring_zoom_in_button_icon"
+            android:id="@+id/monitoring_activity_map_zoom_in_button"
+            style="@style/MonitoringMapButton" />
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/monitoring_activity_map_zoom_out_button" />
+        <ImageButton
+            android:src="@drawable/monitoring_zoom_out_button_icon"
+            android:id="@+id/monitoring_activity_map_zoom_out_button"
+            style="@style/MonitoringMapButton" />
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <ImageButton
             android:layout_marginTop="50dp"
-            android:visibility="gone"
-            android:id="@+id/monitoring_activity_center_on_active_button" />
+            android:visibility="invisible"
+            android:clickable="false"
+            android:src="@drawable/monitoring_target_button_icon"
+            android:id="@+id/monitoring_activity_center_on_active_button"
+            style="@style/MonitoringMapButton" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp">
+        android:layout_height="65dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_alignParentBottom="true">
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
+        <ImageButton
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/monitoring_activity_quick_report_button" />
+            android:src="@drawable/monitoring_quick_report_button_icon"
+            android:id="@+id/monitoring_activity_quick_report_button"
+            style="@style/MonitoringMapButton" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,19 +82,18 @@
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:background="@android:color/black"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:background="@drawable/monitoring_map_active_text_view_background_selector"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
             android:id="@+id/monitoring_activity_active_text_view"
             tools:text="State Number" />
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
+        <ImageButton
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/monitoring_activity_menu_button" />
+            android:src="@drawable/monitoring_menu_button_icon"
+            android:id="@+id/monitoring_activity_menu_button"
+            style="@style/MonitoringMapButton" />
 
     </RelativeLayout>
 

@@ -28,8 +28,11 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.util.YandexMapUtils;
 
-public class GoogleMapAdapter implements OnMapReadyCallback,
-        MapAdapter, GoogleMap.OnCameraChangeListener, GoogleMap.OnMarkerClickListener {
+public class GoogleMapAdapter implements
+        OnMapReadyCallback,
+        MapAdapter,
+        GoogleMap.OnCameraChangeListener,
+        GoogleMap.OnMarkerClickListener {
 
     private final kgk.beacon.monitoring.presentation.view.MapView mapView;
     private final MapView googleMapView;
@@ -107,6 +110,13 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
 
     @Override
     public void centerOnCoordinates(double latitude, double longitude) {
+        map.moveCamera(CameraUpdateFactory
+                .newLatLngZoom(new LatLng(latitude, longitude),
+                        configuration.loadZoomLevel()));
+    }
+
+    @Override
+    public void centerOnCoordinatesAnimated(double latitude, double longitude) {
         map.animateCamera(CameraUpdateFactory
                 .newLatLngZoom(new LatLng(latitude, longitude),
                         configuration.loadZoomLevel()));
@@ -182,6 +192,8 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
 
         if (bounds.contains(latLng)) mapView.toggleCenterOnActiveControl(false);
         else mapView.toggleCenterOnActiveControl(true);
+
+        configuration.saveZoomLevel(cameraPosition.zoom);
     }
 
     ////
@@ -199,18 +211,13 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
     ////
 
     private TileOverlayOptions prepareKgkMap() {
-        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+        TileProvider tileProvider = new UrlTileProvider(512, 512) {
             @Override
             public URL getTileUrl(int x, int y, int zoom) {
-
                 String urlString = String.format(
                         Locale.ROOT,
                         "http://map2.kgk-global.com/tiles/tile.py/get?z=%d&x=%d&y=%d",
                         zoom, x, y);
-
-                if (!checkTileExists(x, y, zoom)) {
-                    return null;
-                }
 
                 try {
                     return new URL(urlString);
@@ -235,10 +242,6 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
                         "http://vec02.maps.yandex.net/tiles?l=map&v=4.4.9&x=%d&y=%d&z=%d&lang=ru-RU",
                         x, y, zoom);
 
-                if (!checkTileExists(x, y, zoom)) {
-                    return null;
-                }
-
                 try {
                     return new URL(urlString);
                 } catch (MalformedURLException e) {
@@ -250,12 +253,6 @@ public class GoogleMapAdapter implements OnMapReadyCallback,
         TileOverlayOptions tileOverlayOptions = new TileOverlayOptions().tileProvider(tileProvider);
         tileOverlayOptions.fadeIn(false);
         return tileOverlayOptions;
-    }
-
-    private boolean checkTileExists(int x, int y, int zoom) {
-        int minZoom = 1;
-        int maxZoom = 18;
-        return !(zoom < minZoom || zoom > maxZoom);
     }
 
     ////

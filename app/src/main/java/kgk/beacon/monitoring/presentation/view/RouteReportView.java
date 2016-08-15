@@ -14,5 +14,7 @@ public interface RouteReportView {
 
     void centerOnChosenEvent(double latitude, double longitude);
 
+    void selectDay(long date);
+
     void mapReadyForUse();
 }

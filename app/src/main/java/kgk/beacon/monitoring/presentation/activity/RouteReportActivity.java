@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -34,7 +32,7 @@ import kgk.beacon.monitoring.domain.model.routereport.ParkingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.presentation.adapter.RouteReportDaysListAdapter;
-import kgk.beacon.monitoring.presentation.adapter.RouteReportEventsListExpandableAdapter;
+import kgk.beacon.monitoring.presentation.adapter.RouteReportEventsListAdapter;
 import kgk.beacon.monitoring.presentation.adapter.RouteReportGoogleMapAdapter;
 import kgk.beacon.monitoring.presentation.adapter.RouteReportMapAdapter;
 import kgk.beacon.monitoring.presentation.view.RouteReportView;
@@ -56,16 +54,15 @@ public class RouteReportActivity extends AppCompatActivity
     private TextView currenrEventSatellitesTextView;
     private LinearLayout detailedInformationLayout;
     private SeekBar dateSeekBar;
-    private ExpandableListView eventsListView;
+    private RecyclerView eventsListView;
 
     private RouteReport routeReport;
-    private Map<Long, List<RouteReportEvent>> routeReportDays;
-    private RouteReportEventsListExpandableAdapter adapter;
+    private RouteReportEventsListAdapter adapter;
     private RouteReportMapAdapter mapAdapter;
 
-    // TODO Delete test code
     private Map<Long, LatLng> coordinatesByTime;
     private List<Long> sortedTimes;
+    private long selectedDate;
 
     ////
 
@@ -81,9 +78,6 @@ public class RouteReportActivity extends AppCompatActivity
         if (routeReport == null) finish();
         else this.routeReport = routeReport;
 
-        // TODO Delete test code
-        testAlgo();
-
         initViews(savedInstanceState);
         initListeners();
         initMap();
@@ -95,30 +89,14 @@ public class RouteReportActivity extends AppCompatActivity
 
     @Override
     public void toggleDayDisplay(Calendar day, boolean enabled) {
-        if (routeReportDays == null) {
-            routeReportDays = new HashMap<>();
-            for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet())
-                routeReportDays.put(entry.getKey(), entry.getValue());
-        }
-
         if (enabled) {
-            routeReportDays.put(
-                    day.getTimeInMillis(),
-                    routeReport.getDays().get(day.getTimeInMillis()));
-
             mapAdapter.showRouteReportDay(
                     day.getTimeInMillis(),
                     routeReport.getDays().get(day.getTimeInMillis()));
         } else {
-            routeReportDays.remove(day.getTimeInMillis());
-            clearEventDetails();
-
             mapAdapter.clearRouteReportDay(day.getTimeInMillis());
+            clearEventDetails();
         }
-
-        adapter.setExpandableListTitle(getKeysFromDaysMap(routeReportDays));
-        adapter.setExpandableListDetail(routeReportDays);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -157,6 +135,15 @@ public class RouteReportActivity extends AppCompatActivity
             mapAdapter.centerMap(getLastEvent().getCoordinates());
     }
 
+    @Override
+    public void selectDay(long date) {
+        adapter.setEvents(routeReport.getDays().get(date));
+        adapter.notifyDataSetChanged();
+
+        prepareDataForSeekbar(date);
+        selectedDate = date;
+    }
+
     ////
 
     private void initViews(Bundle savedInstanceState) {
@@ -190,9 +177,7 @@ public class RouteReportActivity extends AppCompatActivity
                 findViewById(R.id.monitoring_activity_route_report_detailed_information_layout);
         dateSeekBar = (SeekBar)
                 findViewById(R.id.monitoring_activity_route_report_date_seek_bar);
-        //eventsRecyclerView = (RecyclerView)
-        //        findViewById(R.id.monitoring_activity_route_report_events_recycler_view);
-        eventsListView = (ExpandableListView)
+        eventsListView = (RecyclerView)
                 findViewById(R.id.monitoring_activity_route_report_events_list_view);
     }
 
@@ -234,12 +219,7 @@ public class RouteReportActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
-
-                long time = getClosestValue(1470517200000L + progress, sortedTimes);
-
-                // TODO Delete test code
-                Log.d("debug", "Progress = " + new Date(time).toString());
-
+                long time = getClosestValue(selectedDate + progress, sortedTimes);
                 LatLng coordinates = coordinatesByTime.get(time);
                 mapAdapter.centerMap(coordinates);
             }
@@ -276,24 +256,25 @@ public class RouteReportActivity extends AppCompatActivity
     }
 
     private void initEventsListView() {
-        adapter = new RouteReportEventsListExpandableAdapter(
-                this,
-                getKeysFromDaysMap(routeReport.getDays()),
-                routeReport.getDays()
-        );
+        eventsListView.setHasFixedSize(true);
+        eventsListView.setLayoutManager(new LinearLayoutManager(this));
 
-        eventsListView.setAdapter(adapter);
-        eventsListView.setOnChildClickListener(adapter);
-    }
+        List<Long> dates = new ArrayList<>();
 
-    private List<Long> getKeysFromDaysMap(Map<Long, List<RouteReportEvent>> days) {
-        List<Long> keys = new ArrayList<>();
-
-        for (Map.Entry<Long, List<RouteReportEvent>> entry : days.entrySet()) {
-            keys.add(entry.getKey());
+        for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
+            dates.add(entry.getKey());
         }
 
-        return keys;
+        Collections.sort(dates);
+        long lastDate = dates.get(dates.size() - 1);
+
+        adapter = new RouteReportEventsListAdapter(
+                this,
+                routeReport.getDays().get(lastDate));
+
+        eventsListView.setAdapter(adapter);
+        prepareDataForSeekbar(lastDate);
+        selectedDate = lastDate;
     }
 
     private void clearEventDetails() {
@@ -316,16 +297,11 @@ public class RouteReportActivity extends AppCompatActivity
         return events.get(events.size() - 1);
     }
 
+    private void prepareDataForSeekbar(long date) {
 
-
-
-
-
-
-    private void testAlgo() {
         coordinatesByTime = new HashMap<>();
 
-        List<RouteReportEvent> events = routeReport.getDays().get(1470517200000L);
+        List<RouteReportEvent> events = routeReport.getDays().get(date);
 
         for (RouteReportEvent event : events) {
 
@@ -359,10 +335,6 @@ public class RouteReportActivity extends AppCompatActivity
             sortedTimes.add(entry.getKey());
         }
         Collections.sort(sortedTimes);
-
-        // TODO Delete test code
-        Log.d("debug", "first - " + new Date(sortedTimes.get(0)));
-        Log.d("debug", "last - " + new Date(sortedTimes.get(sortedTimes.size() - 1)));
     }
 
     private long getClosestValue(long value, List<Long> values) {
@@ -375,13 +347,9 @@ public class RouteReportActivity extends AppCompatActivity
             int mid = (lo + hi) / 2;
             lastValue = values.get(mid);
 
-            if (value < lastValue) {
-                hi = mid - 1;
-            } else if (value > lastValue) {
-                lo = mid + 1;
-            } else {
-                return lastValue;
-            }
+            if (value < lastValue) hi = mid - 1;
+            else if (value > lastValue) lo = mid + 1;
+            else return lastValue;
         }
 
         return lastValue;
