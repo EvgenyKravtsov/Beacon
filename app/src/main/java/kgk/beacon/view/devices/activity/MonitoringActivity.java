@@ -114,9 +114,9 @@ public class MonitoringActivity extends AppCompatActivity implements MonitoringV
                 AppController.getInstance().setActiveDeviceType(null);
                 finish();
                 return true;
-            case R.id.menuDeviceCurrentLocation_menuButton:
-                drawerLayout.openDrawer(GravityCompat.START);
-                break;
+//            case R.id.menuDeviceCurrentLocation_menuButton:
+//                drawerLayout.openDrawer(GravityCompat.START);
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

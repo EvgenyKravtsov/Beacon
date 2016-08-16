@@ -289,6 +289,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                                         monitoringEntity.setSpeed(dataJson.getDouble("speed"));
                                         monitoringEntity.setGsm("OK");
                                         monitoringEntity.setSatellites(dataJson.getInt("sat"));
+                                        monitoringEntity.setDirection(dataJson.getInt("az"));
                                         monitoringEntity.setEngineIgnited(true);
 
                                     } catch (JSONException e) {

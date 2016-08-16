@@ -211,7 +211,7 @@ public class GoogleMapAdapter implements
     ////
 
     private TileOverlayOptions prepareKgkMap() {
-        TileProvider tileProvider = new UrlTileProvider(512, 512) {
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
             @Override
             public URL getTileUrl(int x, int y, int zoom) {
                 String urlString = String.format(

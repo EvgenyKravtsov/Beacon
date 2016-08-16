@@ -17,6 +17,7 @@ public class MonitoringEntity {
     private double speed;
     private String gsm;
     private int satellites;
+    private int direction;
     private boolean engineIgnited;
 
     private boolean displayEnabled;
@@ -113,6 +114,14 @@ public class MonitoringEntity {
 
     public void setSatellites(int satellites) {
         this.satellites = satellites;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
     public boolean isEngineIgnited() {

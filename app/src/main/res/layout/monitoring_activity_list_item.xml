@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_margin="2dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -12,19 +13,24 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@drawable/monitoring_general_background_selector"
         android:id="@+id/monitoring_activity_list_item_linear_information_layout"
         tools:ignore="RelativeOverlap">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
             android:id="@+id/monitoring_activity_list_item_name_text_view"
             tools:text="Model Name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/actis_app_text_color_hint"
             android:id="@+id/monitoring_activity_list_item_date_text_view"
             tools:text="15/23/2067 15:56:45" />
 

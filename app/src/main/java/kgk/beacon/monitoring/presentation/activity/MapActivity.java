@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
 
@@ -29,6 +28,7 @@ public class MapActivity extends AppCompatActivity implements
         kgk.beacon.monitoring.presentation.view.MapView {
 
     // Views
+    private SlidingUpPanelLayout slider;
     private MapView googleMapView;
     private ImageButton trafficButton;
     private ImageButton zoomInButton;
@@ -39,7 +39,7 @@ public class MapActivity extends AppCompatActivity implements
     private Button yandexMapMenuButton;
     private Button googleMapMenuButton;
     private Button satelliteMapMenuButton;
-    private Button hideMenuButton;
+    private ImageButton hideMenuButton;
     private Button chooseVehicleMenuButton;
     private Button chooseVehicleGroupMenuButton;
     private Button profileMenuButton;
@@ -48,17 +48,13 @@ public class MapActivity extends AppCompatActivity implements
     private Button aboutMenuButton;
     private Button settingsMenuButton;
     private TextView activeTextView;
-    private LinearLayout menuLayout;
+    private ScrollView menuButtonsLayout;
     private ImageButton quickReportButton;
-
-    // Animations
-    Animation fadeIn;
-    Animation fadeOut;
 
     private MapViewPresenter presenter;
     private MapAdapter mapAdapter;
     private MonitoringEntity activeMonitoringEntity;
-    private boolean menuEnabled;
+    private Button activeMenuMapButton;
 
     ////
 
@@ -68,7 +64,6 @@ public class MapActivity extends AppCompatActivity implements
         setContentView(R.layout.monitoring_activity_map);
 
         initViews(savedInstanceState);
-        initAnimations();
         initListeners();
         initMap();
     }
@@ -85,7 +80,7 @@ public class MapActivity extends AppCompatActivity implements
         presenter.requestMonitoringEntities();
         presenter.requestMonitoringEntityGroupsCount();
         presenter.requestMonitoringEntitiesUpdate();
-        menuLayout.setVisibility(View.GONE);
+        //menuLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -155,11 +150,39 @@ public class MapActivity extends AppCompatActivity implements
         Configuration configuration = DependencyInjection.provideConfiguration();
         MapType mapType = configuration.loadDefaultMapType();
         mapAdapter.setMapType(mapType);
+
+        switch (mapType) {
+            case KGK:
+                activeMenuMapButton = kgkMapMenuButton;
+                break;
+            case YANDEX:
+                activeMenuMapButton = yandexMapMenuButton;
+                break;
+            case GOOGLE:
+                activeMenuMapButton = googleMapMenuButton;
+                break;
+            case SATELLITE:
+                activeMenuMapButton = satelliteMapMenuButton;
+                break;
+        }
+
+        activeMenuMapButton.setBackgroundDrawable(
+                getResources().getDrawable(
+                        R.drawable.monitoring_menu_map_button_activated_background_selector));
     }
 
     ////
 
     private void initViews(Bundle savedInstanceState) {
+        menuButtonsLayout = (ScrollView)
+                findViewById(R.id.monitoring_activity_menu_buttons_layout);
+
+        slider = (SlidingUpPanelLayout)
+                findViewById(R.id.monitoring_activity_map_slider);
+        slider.setDragView(R.id.monitoring_activity_menu_hide_button);
+        slider.setScrollableView(menuButtonsLayout);
+        slider.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
         googleMapView = (MapView) findViewById(R.id.monitoring_activity_map_google_map);
         assert googleMapView != null;
         googleMapView.onCreate(savedInstanceState);
@@ -171,6 +194,7 @@ public class MapActivity extends AppCompatActivity implements
 
         menuButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_menu_button);
+
         kgkMapMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_kgk_map_button);
         yandexMapMenuButton = (Button)
@@ -179,7 +203,8 @@ public class MapActivity extends AppCompatActivity implements
                 findViewById(R.id.monitoring_activity_menu_google_map_button);
         satelliteMapMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_satellite_map_button);
-        hideMenuButton = (Button)
+
+        hideMenuButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_menu_hide_button);
         chooseVehicleMenuButton = (Button)
                 findViewById(R.id.monitoring_activity_menu_choose_vehicle_button);
@@ -200,18 +225,29 @@ public class MapActivity extends AppCompatActivity implements
                 findViewById(R.id.monitoring_activity_center_on_active_button);
 
         activeTextView = (TextView) findViewById(R.id.monitoring_activity_active_text_view);
-        menuLayout = (LinearLayout) findViewById(R.id.monitoring_activity_menu_layout);
 
         quickReportButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_quick_report_button);
     }
 
-    private void initAnimations() {
-        fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-        fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-    }
-
     private void initListeners() {
+        slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(
+                    View panel,
+                    SlidingUpPanelLayout.PanelState previousState,
+                    SlidingUpPanelLayout.PanelState newState) {
+
+                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED)
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            }
+        });
+
         trafficButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -351,6 +387,24 @@ public class MapActivity extends AppCompatActivity implements
         presenter = null;
     }
 
+    private void changeActiveMenuMapButton(Button activeButton) {
+        if (activeMenuMapButton == activeButton) return;
+
+        activeMenuMapButton.setBackgroundDrawable(
+                getResources().getDrawable(
+                        R.drawable.monitoring_general_background_selector
+                )
+        );
+
+        activeButton.setBackgroundDrawable(
+                getResources().getDrawable(
+                        R.drawable.monitoring_menu_map_button_activated_background_selector
+                )
+        );
+
+        activeMenuMapButton = activeButton;
+    }
+
     //// Control callbacks
 
     private void onTrafficButtonClick() {
@@ -372,77 +426,70 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void onMenuButtonClick() {
-        menuEnabled = !menuEnabled;
-        int visibility = menuEnabled ? View.VISIBLE : View.GONE;
-        menuLayout.setVisibility(visibility);
+        slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
     private void onClickKgkMapMenuButton() {
         mapAdapter.setMapType(MapType.KGK);
         presenter.saveDefaultMapType(MapType.KGK);
+        changeActiveMenuMapButton(kgkMapMenuButton);
     }
 
     private void onClickYandexMapMenuButton() {
         mapAdapter.setMapType(MapType.YANDEX);
         presenter.saveDefaultMapType(MapType.YANDEX);
+        changeActiveMenuMapButton(yandexMapMenuButton);
     }
 
     private void onClickGoogleMapMenuButton() {
         mapAdapter.setMapType(MapType.GOOGLE);
         presenter.saveDefaultMapType(MapType.GOOGLE);
+        changeActiveMenuMapButton(googleMapMenuButton);
     }
 
     private void onCLickSatelliteMapMenuButton() {
         mapAdapter.setMapType(MapType.SATELLITE);
         presenter.saveDefaultMapType(MapType.SATELLITE);
+        changeActiveMenuMapButton(satelliteMapMenuButton);
     }
 
     private void onChooseVehicleButtonClick() {
-        menuEnabled = false;
         Intent intent = new Intent(MapActivity.this, MonitoringListActivity.class);
         startActivity(intent);
     }
 
     private void onChooseVehicleGroupMenuButtonClick() {
-        menuEnabled = false;
         Intent intent = new Intent(MapActivity.this, MonitoringGroupListActivity.class);
         startActivity(intent);
     }
 
     private void onProfileMenuButtonClick() {
-        menuEnabled = false;
         Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
 
     private void onRouteReportSettingsMenuButtonClick() {
-        menuEnabled = false;
         Intent intent = new Intent(this, RouteReportSettingsActivity.class);
         startActivity(intent);
     }
 
     private void onHelpMenuButtonClick() {
-        menuEnabled = false;
         Intent intent = new Intent(this, HelpActivity.class);
         startActivity(intent);
     }
 
     private void onAboutMenuButtonClick() {
-        menuEnabled = false;
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 
     private void onSettingsMenuButtonClick() {
-        menuEnabled = false;
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
     private void onHideMenuButtonClick() {
-        menuEnabled = !menuEnabled;
-        int visibility = menuEnabled ? View.VISIBLE : View.GONE;
-        menuLayout.setVisibility(visibility);
+        slider.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     private void onActiveTextViewClick() {

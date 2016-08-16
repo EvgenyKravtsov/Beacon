@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +27,8 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
 
     // Views
     private RecyclerView recyclerView;
-    private Button alphabetOrderButton;
-    private Button statusOrderButton;
     private SearchView searchView;
+    private LinearLayout sortingModeButton;
 
     private MonitoringListViewPresenter presenter;
     private MonitoringListActivityAdapter adapter;
@@ -87,26 +89,17 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
 
     private void initViews() {
         recyclerView = (RecyclerView) findViewById(R.id.monitoring_activity_list_recycler_view);
-
-        alphabetOrderButton = (Button)
-                findViewById(R.id.monitoring_activity_list_alphabet_order_button);
-        statusOrderButton = (Button)
-                findViewById(R.id.monitoring_activity_list_status_order_button);
-
         searchView = (SearchView) findViewById(R.id.monitoring_activity_list_search_view);
+
+        sortingModeButton = (LinearLayout)
+                findViewById(R.id.monitoring_activity_list_sorting_mode_button);
     }
 
     private void initListeners() {
-        alphabetOrderButton.setOnClickListener(new View.OnClickListener() {
+        sortingModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                onAlphabetOrderButtonClick();
-            }
-        });
-        statusOrderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStatusOrderButtonClick();
+            public void onClick(View view) {
+                onSortingModeButtonClick();
             }
         });
     }
@@ -160,13 +153,29 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
 
     //// Control callbacks
 
-    private void onAlphabetOrderButtonClick() {
-        adapter.sortByAlphabet();
-        adapter.notifyDataSetChanged();
-    }
+    private void onSortingModeButtonClick() {
+        PopupMenu menu = new PopupMenu(this, sortingModeButton);
+        final MenuInflater inflater = menu.getMenuInflater();
+        inflater.inflate(R.menu.menu_monitoring_sorting_mode, menu.getMenu());
 
-    private void onStatusOrderButtonClick() {
-        adapter.sortByStatus();
-        adapter.notifyDataSetChanged();
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.monitoring_sorting_mode_alphabet:
+                        adapter.sortByAlphabet();
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case R.id.monitoring_sorting_mode_status:
+                        adapter.sortByStatus();
+                        adapter.notifyDataSetChanged();
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        menu.show();
     }
 }

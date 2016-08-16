@@ -75,4 +75,10 @@
         <item name="android:background">@drawable/monitoring_map_button_background_selector</item>
     </style>
 
+    <style name="MonitoringMenuGeneralButton">
+        <item name="android:background">@drawable/monitoring_general_background_selector</item>
+        <item name="android:textAllCaps" tools:ignore="NewApi">false</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>

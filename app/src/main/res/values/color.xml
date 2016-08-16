@@ -27,4 +27,8 @@
     <item name="actis_app_red_accent" type="color">#F9340E</item>
     <item name="actis_app_transparent_color" type="color">#00000000</item>
 
+    <!-- MONITORING MODULE -->
+    <item name="monitoring_light_gray" type="color">#EBECEC</item>
+    <item name="monitoring_dark_gray" type="color">#B8B8B8</item>
+
 </resources>

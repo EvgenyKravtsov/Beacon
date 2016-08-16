@@ -135,9 +135,9 @@ public class MonitoringListActivityAdapter extends
             }
         });
 
-        holder.informationLayout.setBackgroundColor(makeBackgroundColor(
+        holder.informationLayout.setBackgroundResource(makeBackground(
                 activeMonitoringEntity != null &&
-                monitoringEntity.getId() == activeMonitoringEntity.getId()));
+                        monitoringEntity.getId() == activeMonitoringEntity.getId()));
     }
 
     @Override
@@ -167,9 +167,9 @@ public class MonitoringListActivityAdapter extends
         return statusString;
     }
 
-    private int makeBackgroundColor(boolean active) {
-        if (active) return activity.getResources().getColor(android.R.color.darker_gray);
-        else return activity.getResources().getColor(android.R.color.white);
+    private int makeBackground(boolean active) {
+        if (active) return R.drawable.monitoring_menu_map_button_activated_background_selector;
+        else return R.drawable.monitoring_general_background_selector;
     }
 
     private void onClickInformationLayout(MonitoringEntity monitoringEntity) {
