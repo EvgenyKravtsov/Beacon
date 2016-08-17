@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="@dimen/standard_horizontal_padding"
     android:paddingLeft="@dimen/standard_horizontal_padding"
     android:paddingStart="@dimen/standard_horizontal_padding"
     android:paddingRight="@dimen/standard_horizontal_padding"
     android:paddingEnd="@dimen/standard_horizontal_padding"
     android:background="@color/monitoring_light_gray">
+
+    <include layout="@layout/monitoring_action_bar" />
 
     <android.support.v7.widget.SearchView
         android:layout_width="match_parent"

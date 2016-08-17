@@ -2,16 +2,22 @@ package kgk.beacon.monitoring.presentation.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -31,15 +37,21 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     private static final int MINIMAL_STOP_TIME = 30; // seconds
 
     // Views
+    private LinearLayout mainLayout;
+    private FrameLayout backButton;
+    private TextView actionBarTitleTextView;
     private Button fromDateButton;
     private Button fromTimeButton;
     private Button toDateButton;
     private Button toTimeButton;
     private Button extendedSettingsButton;
-    private LinearLayout extendedSettingsLayout;
+    private TableLayout extendedSettingsLayout;
     private EditText stopTimeEditText;
     private CheckBox noDataCheckBox;
     private Button makeReportButton;
+
+    // Dialogs
+    private ProgressDialog progressDialog;
 
     private RouteReportSettingsViewPresenter presenter;
     private boolean extendedSettingsDisplayed;
@@ -77,6 +89,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
 
     @Override
     public void navigateToRouteReportView(RouteReport routeReport) {
+        toggleProgressDialog(false);
         Intent intent = new Intent(this, RouteReportActivity.class);
         intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
         if (routeReport != null) startActivity(intent);
@@ -85,6 +98,13 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     ////
 
     private void initViews() {
+        mainLayout = (LinearLayout)
+                findViewById(R.id.monitoring_activity_route_report_settings_main_layout);
+
+        backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
+        actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
+        actionBarTitleTextView.setText("Route report settings");
+
         fromDateButton = (Button)
                 findViewById(R.id.monitoring_activity_route_report_settings_from_date_button);
         fromTimeButton = (Button)
@@ -110,7 +130,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
         extendedSettingsButton = (Button)
                 findViewById(R.id.monitoring_activity_route_report_extended_settings_button);
 
-        extendedSettingsLayout = (LinearLayout)
+        extendedSettingsLayout = (TableLayout)
                 findViewById(R.id.monitoring_activity_route_report_extended_settings_layout);
 
         assert extendedSettingsLayout != null;
@@ -132,6 +152,13 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     }
 
     private void initListeners() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonClick();
+            }
+        });
+
         fromDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,7 +251,28 @@ public class RouteReportSettingsActivity extends AppCompatActivity
         return fromDate.getTimeInMillis() < toDate.getTimeInMillis();
     }
 
+    private void toggleProgressDialog(boolean status) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Downloading data");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+
+        if (status) progressDialog.show();
+        else progressDialog.dismiss();
+    }
+
+    private void showSnackbar(String message) {
+        Snackbar snackbar = Snackbar.make(mainLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
     //// Control callbacks
+
+    private void onBackButtonClick() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 
     private void onFromDateButtonClick() {
         @SuppressLint("InflateParams") View datePicketView = getLayoutInflater()
@@ -324,8 +372,10 @@ public class RouteReportSettingsActivity extends AppCompatActivity
 
     private void onMakeReportButtonClick() {
 
-        // TODO Notify user - dates not valid
-        if (!isDatesValid()) return;
+        if (!isDatesValid()) {
+            showSnackbar("Dates not valid");
+            return;
+        }
 
         RouteReportParameters parameters = new RouteReportParameters(
                 fromDate.getTimeInMillis() / 1000,
@@ -334,6 +384,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
                 DependencyInjection.provideConfiguration().calculateOffsetUtc(),
                 MonitoringManager.getInstance().getActiveMonitoringEntity().getId());
 
+        toggleProgressDialog(true);
         presenter.sendRouteReportRequest(parameters);
     }
 }

@@ -3,10 +3,12 @@ package kgk.beacon.monitoring.presentation.activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -20,6 +22,8 @@ import kgk.beacon.view.general.LoginActivity;
 public class ProfileActivity extends AppCompatActivity implements ProfileView {
 
     // Views
+    private FrameLayout backButton;
+    private TextView actionBarTitleTextView;
     private TextView loginTextView;
     private TextView contactsTextView;
     private TextView balanceTextView;
@@ -60,13 +64,22 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
     @Override
     public void showUser(User user) {
         loginTextView.setText(user.getLogin());
-        contactsTextView.setText(user.getContacts());
-        balanceTextView.setText(String.format(Locale.ROOT, "%.2f", user.getBalance()));
+
+        // TODO Delete test code
+        contactsTextView.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam " +
+                "tincidunt nisl at leo facilisis euismod. Maecenas bibendum aliquam scelerisque. " +
+                "Cras pharetra eros a aliquam volutpat. Ut nec suscipit augue, vitae ullamcorper mi.");
+        //contactsTextView.setText(user.getContacts());
+        balanceTextView.setText(String.format(Locale.ROOT, "%.2f rub.", user.getBalance()));
     }
 
     ////
 
     private void initViews() {
+        backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
+        actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
+        actionBarTitleTextView.setText("Profile");
+
         loginTextView = (TextView)
                 findViewById(R.id.monitoring_activity_profile_login_text_view);
         contactsTextView = (TextView)
@@ -78,6 +91,12 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
     }
 
     private void initListeners() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonClick();
+            }
+        });
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +115,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
     }
 
     //// Control callbacks
+
+    private void onBackButtonClick() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 
     private void onSignOutButtonClicked() {
         Intent intent = new Intent(this, LoginActivity.class);

@@ -86,16 +86,16 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Profile"
+                android:text="Route Report Settings"
                 android:layout_marginBottom="4dp"
-                android:id="@+id/monitoring_activity_menu_profile_button"
+                android:id="@+id/monitoring_activity_menu_route_report_settings_button"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Route Report Settings"
+                android:text="Profile"
                 android:layout_marginBottom="4dp"
-                android:id="@+id/monitoring_activity_menu_route_report_settings_button"
+                android:id="@+id/monitoring_activity_menu_profile_button"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button

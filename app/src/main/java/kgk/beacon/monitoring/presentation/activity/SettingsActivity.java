@@ -1,10 +1,14 @@
 package kgk.beacon.monitoring.presentation.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.Map;
 
@@ -16,6 +20,8 @@ import kgk.beacon.monitoring.presentation.view.SettingsView;
 public class SettingsActivity extends AppCompatActivity implements SettingsView {
 
     // Views
+    private FrameLayout backButton;
+    private TextView actionBarTitleTextView;
     private RadioGroup mapRadioGroup;
     private CheckBox markerInformationCheckBox;
 
@@ -81,6 +87,10 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     ////
 
     private void initViews() {
+        backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
+        actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
+        actionBarTitleTextView.setText("Settings");
+
         mapRadioGroup = (RadioGroup)
                 findViewById(R.id.monitoring_activity_settings_marker_map_radio_group);
         markerInformationCheckBox = (CheckBox)
@@ -88,6 +98,13 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     }
 
     private void initListeners() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonClick();
+            }
+        });
+
         mapRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -113,6 +130,10 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     }
 
     //// Control callbacks
+
+    private void onBackButtonClick() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 
     private void onMapRadioGroupItemChecked(int checkedId) {
         switch (checkedId) {

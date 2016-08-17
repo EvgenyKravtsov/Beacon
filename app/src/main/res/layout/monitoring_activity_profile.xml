@@ -1,86 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:paddingLeft="@dimen/standard_horizontal_padding"
+    android:paddingStart="@dimen/standard_horizontal_padding"
+    android:paddingRight="@dimen/standard_horizontal_padding"
+    android:paddingEnd="@dimen/standard_horizontal_padding"
+    android:background="@color/monitoring_light_gray">
 
-    <LinearLayout
+    <include layout="@layout/monitoring_action_bar" />
+
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:shrinkColumns="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login:"
-            android:textSize="20sp" />
+        <TableRow android:layout_marginBottom="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/monitoring_activity_profile_login_text_view"
-            tools:text="Test User" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Login:"
+                style="@style/MonitoringStandardString" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:id="@+id/monitoring_activity_profile_login_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="Test User" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        </TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contacts:"
-            android:textSize="20sp" />
+        <TableRow android:layout_marginBottom="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/monitoring_activity_profile_contacts_text_view"
-            tools:text="+1 (111) 111-22-33" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Contacts:"
+                style="@style/MonitoringStandardString" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:id="@+id/monitoring_activity_profile_contacts_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="+1 (111) 111-22-33" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        </TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Balance:"
-            android:textSize="20sp" />
+        <TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/monitoring_activity_profile_balance_text_view"
-            tools:text="123.45" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Balance:"
+                style="@style/MonitoringStandardString" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:id="@+id/monitoring_activity_profile_balance_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="123.45" />
+
+        </TableRow>
+
+    </TableLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_gravity="center_horizontal"
         android:text="Sign Out"
-        android:id="@+id/monitoring_activity_profile_sign_out_button" />
+        android:id="@+id/monitoring_activity_profile_sign_out_button"
+        style="@style/MonitoringMenuGeneralButton" />
 
 </LinearLayout>

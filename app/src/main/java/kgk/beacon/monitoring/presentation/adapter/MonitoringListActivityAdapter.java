@@ -3,12 +3,14 @@ package kgk.beacon.monitoring.presentation.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +31,10 @@ import kgk.beacon.monitoring.presentation.activity.MapActivity;
 public class MonitoringListActivityAdapter extends
         RecyclerView.Adapter<MonitoringListActivityAdapter.ViewHolder> {
 
+    // Drawables
+    private Drawable monitoringEntityDisplayedIcon;
+    private Drawable monitoringEntityNotDisplayedIcon;
+
     private List<MonitoringEntity> monitoringEntities;
     private MonitoringEntity activeMonitoringEntity;
     private Activity activity;
@@ -37,6 +43,13 @@ public class MonitoringListActivityAdapter extends
 
     public MonitoringListActivityAdapter(Activity activity) {
         this.activity = activity;
+
+        monitoringEntityDisplayedIcon = activity.getResources().getDrawable(
+                R.drawable.monitoring_entity_displayed_icon
+        );
+        monitoringEntityNotDisplayedIcon = activity.getResources().getDrawable(
+                R.drawable.monitoring_entity_not_displayed_icon
+        );
     }
 
     ////
@@ -97,23 +110,26 @@ public class MonitoringListActivityAdapter extends
                 .inflate(R.layout.monitoring_activity_list_item, parent, false));
     }
 
-    @SuppressLint("SimpleDateFormat")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MonitoringEntity monitoringEntity = monitoringEntities.get(position);
 
         holder.nameTextView.setText(
-                String.format("%s %s %s",
+                String.format("%s %s",
                         monitoringEntity.getMark(),
-                        monitoringEntity.getModel(),
                         monitoringEntity.getStateNumber()));
         holder.dateTextView.setText(
-                new SimpleDateFormat("dd:MM:yyyy")
-                        .format(new Date(monitoringEntity.getLastUpdateTimestamp())));
+                generateSubStringForListItem(
+                        monitoringEntity.getLastUpdateTimestamp(),
+                        monitoringEntity.getStatus()));
 
+        prepareDirectionLayout(holder, monitoringEntity.getDirection());
 
-        holder.statusTextView.setText(makeStatusString(monitoringEntity.getStatus()));
-        holder.hideButton.setText(monitoringEntity.isDisplayEnabled() ? "D" : "N");
+        holder.hideButton.setImageDrawable(
+                monitoringEntity.isDisplayEnabled() ?
+                        monitoringEntityDisplayedIcon :
+                        monitoringEntityNotDisplayedIcon);
+
         holder.hideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +140,15 @@ public class MonitoringListActivityAdapter extends
                         monitoringEntity.isDisplayEnabled());
                 InteractorThreadPool.getInstance().execute(interactor);
 
-                holder.hideButton.setText(monitoringEntity.isDisplayEnabled() ? "D" : "N");
+                holder.hideButton.setImageDrawable(
+                        monitoringEntity.isDisplayEnabled() ?
+                                monitoringEntityDisplayedIcon :
+                                monitoringEntityNotDisplayedIcon);
+
+                holder.informationLayout.setBackgroundResource(
+                        monitoringEntity.isDisplayEnabled() ?
+                                R.drawable.monitoring_list_item_active_background_selector :
+                                R.drawable.monitoring_general_background_selector);
             }
         });
 
@@ -135,9 +159,10 @@ public class MonitoringListActivityAdapter extends
             }
         });
 
-        holder.informationLayout.setBackgroundResource(makeBackground(
-                activeMonitoringEntity != null &&
-                        monitoringEntity.getId() == activeMonitoringEntity.getId()));
+        holder.informationLayout.setBackgroundResource(
+                monitoringEntity.isDisplayEnabled() ?
+                R.drawable.monitoring_list_item_active_background_selector :
+                R.drawable.monitoring_general_background_selector);
     }
 
     @Override
@@ -183,31 +208,99 @@ public class MonitoringListActivityAdapter extends
         activity.startActivity(intent);
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private String generateSubStringForListItem(
+            long lastUpdateTimestamp,
+            MonitoringEntityStatus status) {
+
+        String statusString = "";
+        switch (status) {
+            case IN_MOTION: statusString = "moving"; break;
+            case STOPPED: statusString = "parking"; break;
+            case OFFLINE: statusString = "offline"; break;
+        }
+
+        Date date = new Date(lastUpdateTimestamp);
+
+        return String.format("%s, updated %s at %s",
+                statusString,
+                new SimpleDateFormat("dd.MM").format(date),
+                new SimpleDateFormat("HH:mm").format(date));
+    }
+
+    @SuppressLint("NewApi")
+    private void prepareDirectionLayout(ViewHolder holder, int direction) {
+        String[] directionLabes = {"NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+        int degrees = 22;
+        if (direction >= 0 && direction < 22) direction += 360;
+
+        for (int i = 0; degrees <= 337; i++) {
+            int degreesLimit = degrees + 45;
+
+            if (direction >= degrees && direction < degreesLimit) {
+                holder.directionTextView.setText(directionLabes[i]);
+                holder.directionImageView.setRotation(degreesLimit - (45 / 2));
+            }
+
+            degrees += 45;
+        }
+    }
+
     ////
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout informationLayout;
+        RelativeLayout informationLayout;
         TextView nameTextView;
         TextView dateTextView;
-        TextView statusTextView;
-        Button hideButton;
+        ImageView directionImageView;
+        TextView directionTextView;
+        ImageButton hideButton;
 
         ////
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            informationLayout = (LinearLayout)
-                    itemView.findViewById(R.id.monitoring_activity_list_item_linear_information_layout);
-            nameTextView = (TextView)
-                    itemView.findViewById(R.id.monitoring_activity_list_item_name_text_view);
-            dateTextView = (TextView)
-                    itemView.findViewById(R.id.monitoring_activity_list_item_date_text_view);
-            statusTextView = (TextView)
-                    itemView.findViewById(R.id.monitoring_activity_list_item_status_text_view);
-            hideButton = (Button)
-                    itemView.findViewById(R.id.monitoring_activity_list_item_hide_button);
+            informationLayout = (RelativeLayout) itemView
+                    .findViewById(R.id.monitoring_activity_list_item_linear_information_layout);
+            nameTextView = (TextView) itemView
+                    .findViewById(R.id.monitoring_activity_list_item_name_text_view);
+            dateTextView = (TextView) itemView
+                    .findViewById(R.id.monitoring_activity_list_item_date_text_view);
+            directionImageView = (ImageView) itemView
+                    .findViewById(R.id.monitoring_activity_list_item_direction_image_view);
+            directionTextView = (TextView) itemView
+                    .findViewById(R.id.monitoring_activity_list_item_direction_text_view);
+            hideButton = (ImageButton) itemView
+                    .findViewById(R.id.monitoring_activity_list_item_hide_button);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

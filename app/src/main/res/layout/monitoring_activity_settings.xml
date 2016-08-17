@@ -3,69 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingLeft="@dimen/standard_horizontal_padding"
+    android:paddingStart="@dimen/standard_horizontal_padding"
+    android:paddingRight="@dimen/standard_horizontal_padding"
+    android:paddingEnd="@dimen/standard_horizontal_padding"
+    android:background="@color/monitoring_light_gray">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <include layout="@layout/monitoring_action_bar" />
+
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Map"
-        android:textSize="24sp"
-        android:textStyle="bold"/>
+        android:shrinkColumns="1">
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/monitoring_activity_settings_marker_map_radio_group">
+        <TableRow android:layout_marginBottom="8dp">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="KGK"
-            android:id="@+id/monitoring_activity_settings_marker_kgk_radio_button"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Map:"
+                style="@style/MonitoringStandardString" />
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yandex"
-            android:id="@+id/monitoring_activity_settings_marker_yandex_radio_button"/>
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+                android:id="@+id/monitoring_activity_settings_marker_map_radio_group">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Google"
-            android:id="@+id/monitoring_activity_settings_marker_google_radio_button"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KGK"
+                    android:id="@+id/monitoring_activity_settings_marker_kgk_radio_button"/>
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Satellite"
-            android:id="@+id/monitoring_activity_settings_marker_satellite_radio_button"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yandex"
+                    android:id="@+id/monitoring_activity_settings_marker_yandex_radio_button"/>
 
-    </RadioGroup>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Google"
+                    android:id="@+id/monitoring_activity_settings_marker_google_radio_button"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Satellite"
+                    android:id="@+id/monitoring_activity_settings_marker_satellite_radio_button"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Additional marker info:"
-            android:textSize="24sp"
-            android:textStyle="bold"/>
+            </RadioGroup>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/monitoring_activity_settings_marker_information_checkbox" />
+        </TableRow>
 
-    </LinearLayout>
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Additional\nmarker info:"
+                android:maxLines="2"
+                style="@style/MonitoringStandardString" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_gravity="start|center_vertical"
+                android:id="@+id/monitoring_activity_settings_marker_information_checkbox" />
+
+        </TableRow>
+
+    </TableLayout>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package kgk.beacon.monitoring.presentation.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,13 +60,20 @@ public class MonitoringGroupListActivityAdapter extends
                 onListItemClick(group);
             }
         });
-        holder.layout.setBackgroundColor(makeBackgroundColor(
+
+        holder.layout.setBackgroundDrawable(makeBackground(
                 activeGroup != null &&
-                activeGroup.getName().equals(group.getName())));
+                        activeGroup.getName().equals(group.getName())
+        ));
 
         holder.nameTextView.setText(group.getName());
         holder.countTextView.setText(
-                String.format(Locale.ROOT, "%d", group.getMonitoringEntities().size()));
+                String.format(
+                        Locale.ROOT, "%d %s",
+                        group.getMonitoringEntities().size(),
+                        "devices"
+                )
+        );
     }
 
     @Override
@@ -86,9 +94,11 @@ public class MonitoringGroupListActivityAdapter extends
         activity.startActivity(intent);
     }
 
-    private int makeBackgroundColor(boolean active) {
-        if (active) return activity.getResources().getColor(android.R.color.darker_gray);
-        else return activity.getResources().getColor(android.R.color.white);
+    private Drawable makeBackground(boolean active) {
+        if (active) return activity.getResources()
+                .getDrawable(R.drawable.monitoring_list_item_active_background_selector);
+        else return activity.getResources()
+                .getDrawable(R.drawable.monitoring_general_background_selector);
     }
 
     ////

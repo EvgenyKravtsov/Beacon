@@ -189,43 +189,71 @@
         <!-- MONITORING MODULE -->
 
         <activity android:name=".monitoring.presentation.activity.MapActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:theme="@style/MonitoringModuleTheme"
             android:screenOrientation="portrait" />
 
         <activity android:name=".monitoring.presentation.activity.MonitoringListActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait" />
+            android:theme="@style/MonitoringModuleTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.ProfileActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait" />
+            android:theme="@style/MonitoringModuleTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.MonitoringEntityActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:theme="@style/MonitoringModuleTheme"
             android:screenOrientation="portrait" />
 
         <activity android:name=".monitoring.presentation.activity.HelpActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait" />
+            android:theme="@style/MonitoringModuleTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.AboutActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait" />
+            android:theme="@style/MonitoringModuleTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.SettingsActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait" />
+            android:theme="@style/MonitoringModuleTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.MonitoringGroupListActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait" />
+            android:theme="@style/MonitoringModuleTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.RouteReportSettingsActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait" />
+            android:theme="@style/MonitoringModuleTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.RouteReportActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:theme="@style/MonitoringModuleTheme"
             android:screenOrientation="portrait" />
 
     </application>

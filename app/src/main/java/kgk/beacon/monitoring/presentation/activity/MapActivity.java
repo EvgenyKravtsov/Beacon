@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.presentation.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
+import kgk.beacon.monitoring.domain.model.MonitoringManager;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.presentation.adapter.GoogleMapAdapter;
 import kgk.beacon.monitoring.presentation.adapter.MapAdapter;
@@ -51,6 +53,9 @@ public class MapActivity extends AppCompatActivity implements
     private ScrollView menuButtonsLayout;
     private ImageButton quickReportButton;
 
+    // Dialogs
+    private ProgressDialog progressDialog;
+
     private MapViewPresenter presenter;
     private MapAdapter mapAdapter;
     private MonitoringEntity activeMonitoringEntity;
@@ -80,7 +85,6 @@ public class MapActivity extends AppCompatActivity implements
         presenter.requestMonitoringEntities();
         presenter.requestMonitoringEntityGroupsCount();
         presenter.requestMonitoringEntitiesUpdate();
-        //menuLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -140,6 +144,7 @@ public class MapActivity extends AppCompatActivity implements
 
     @Override
     public void navigateToRouteReportView(RouteReport routeReport) {
+        toggleProgressDialog(false);
         Intent intent = new Intent(this, RouteReportActivity.class);
         intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
         if (routeReport != null) startActivity(intent);
@@ -169,6 +174,8 @@ public class MapActivity extends AppCompatActivity implements
         activeMenuMapButton.setBackgroundDrawable(
                 getResources().getDrawable(
                         R.drawable.monitoring_menu_map_button_activated_background_selector));
+
+        hackedMethod();
     }
 
     ////
@@ -405,6 +412,39 @@ public class MapActivity extends AppCompatActivity implements
         activeMenuMapButton = activeButton;
     }
 
+    // TODO Refactor hacked method
+    private void hackedMethod() {
+        MonitoringManager monitoringManager = MonitoringManager.getInstance();
+        List<MonitoringEntity> monitoringEntities;
+        if (monitoringManager.getActiveMonitoringEntityGroup() == null) {
+            monitoringEntities = monitoringManager.getMonitoringEntities();
+        } else {
+            monitoringEntities = monitoringManager
+                    .getActiveMonitoringEntityGroup()
+                    .getMonitoringEntities();
+        }
+
+        if (monitoringEntities != null && monitoringEntities.size() > 0) {
+            mapAdapter.clearMarkers();
+
+            for (MonitoringEntity monitoringEntity : monitoringEntities) {
+                if (monitoringEntity.isDisplayEnabled()) mapAdapter.showMapEntity(monitoringEntity);
+            }
+        }
+    }
+
+    private void toggleProgressDialog(boolean status) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Downloading data");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+
+        if (status) progressDialog.show();
+        else progressDialog.dismiss();
+    }
+
     //// Control callbacks
 
     private void onTrafficButtonClick() {
@@ -498,7 +538,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void onQuickReportButtonClick() {
-        // TODO Show download indicator
+        toggleProgressDialog(true);
         presenter.requestQuickReport();
     }
 }

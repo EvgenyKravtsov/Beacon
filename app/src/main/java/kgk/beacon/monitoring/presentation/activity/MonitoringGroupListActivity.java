@@ -2,12 +2,15 @@ package kgk.beacon.monitoring.presentation.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class MonitoringGroupListActivity extends AppCompatActivity
         implements MonitoringGroupListView {
 
     // Views
+    private FrameLayout backButton;
+    private TextView actionBarTitleTextView;
     private RecyclerView recyclerView;
     private Button allButton;
 
@@ -78,6 +83,10 @@ public class MonitoringGroupListActivity extends AppCompatActivity
     ////
 
     private void initViews() {
+        backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
+        actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
+        actionBarTitleTextView.setText("Choose device group");
+
         recyclerView = (RecyclerView)
                 findViewById(R.id.monitoring_activity_group_list_recycler_view);
         allButton = (Button)
@@ -85,6 +94,13 @@ public class MonitoringGroupListActivity extends AppCompatActivity
     }
 
     private void initListeners() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonClick();
+            }
+        });
+
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +125,10 @@ public class MonitoringGroupListActivity extends AppCompatActivity
     }
 
     //// Control callbacks
+
+    private void onBackButtonClick() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 
     private void onClickAllButton() {
         // Making changes in model in UI thread is nessesary here, because

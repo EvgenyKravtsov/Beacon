@@ -2,6 +2,7 @@ package kgk.beacon.monitoring.presentation.adapter;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -117,9 +118,10 @@ public class GoogleMapAdapter implements
 
     @Override
     public void centerOnCoordinatesAnimated(double latitude, double longitude) {
-        map.animateCamera(CameraUpdateFactory
-                .newLatLngZoom(new LatLng(latitude, longitude),
-                        configuration.loadZoomLevel()));
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(configuration.loadZoomLevel());
+        map.moveCamera(zoom);
+        map.animateCamera(center);
     }
 
     @Override

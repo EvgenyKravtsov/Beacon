@@ -1,155 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingLeft="@dimen/standard_horizontal_padding"
+    android:paddingStart="@dimen/standard_horizontal_padding"
+    android:paddingRight="@dimen/standard_horizontal_padding"
+    android:paddingEnd="@dimen/standard_horizontal_padding"
+    android:background="@color/monitoring_light_gray"
+    android:animateLayoutChanges="true"
+    tools:ignore="UnusedAttribute"
+    android:id="@+id/monitoring_activity_route_report_settings_main_layout">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <include layout="@layout/monitoring_action_bar" />
+
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp">
+        android:shrinkColumns="1">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="From"
-            android:layout_weight="5"
-            android:layout_gravity="center_vertical"
-            android:gravity="center" />
+        <TableRow android:layout_marginBottom="2dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="From:"
+                style="@style/MonitoringStandardString" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Date"
-                android:layout_weight="2"
                 android:id="@+id/monitoring_activity_route_report_settings_from_date_button"
+                style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
                 android:text="Time"
-                android:layout_weight="2"
                 android:id="@+id/monitoring_activity_route_report_settings_from_time_button"
+                style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
 
-        </LinearLayout>
+        </TableRow>
 
-    </LinearLayout>
+        <TableRow android:layout_marginBottom="2dp">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="To"
-            android:layout_weight="5"
-            android:layout_gravity="center_vertical"
-            android:gravity="center" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="To:"
+                style="@style/MonitoringStandardString" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Date"
-                android:layout_weight="2"
                 android:id="@+id/monitoring_activity_route_report_settings_to_date_button"
+                style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
                 android:text="Time"
-                android:layout_weight="2"
                 android:id="@+id/monitoring_activity_route_report_settings_to_time_button"
+                style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
 
-        </LinearLayout>
+        </TableRow>
 
-    </LinearLayout>
+    </TableLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
         android:text="Extended Settings"
-        android:id="@+id/monitoring_activity_route_report_extended_settings_button" />
+        android:id="@+id/monitoring_activity_route_report_extended_settings_button"
+        style="@style/MonitoringMenuGeneralButton" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
+        android:layout_marginTop="4dp"
+        android:padding="8dp"
+        android:shrinkColumns="1"
+        android:background="@drawable/monitoring_general_background"
         android:id="@+id/monitoring_activity_route_report_extended_settings_layout">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <TableRow>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Stop time:" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Stop time:"
+                style="@style/MonitoringStandardString" />
 
             <EditText
-                android:layout_width="40dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:hint="Seconds"
+                android:textSize="15sp"
                 android:id="@+id/monitoring_activity_route_report_stop_time_edit_text" />
 
-        </LinearLayout>
+        </TableRow>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <TableRow>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No data:" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="No data:"
+                style="@style/MonitoringStandardString" />
 
             <CheckBox
-                android:layout_width="40dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginStart="40dp"
+                android:layout_weight="1"
                 android:id="@+id/monitoring_activity_route_report_no_data_check_box" />
 
-        </LinearLayout>
+        </TableRow>
 
-    </LinearLayout>
+    </TableLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
         android:text="Make Report"
-        android:id="@+id/monitoring_activity_route_report_make_report_button" />
+        android:id="@+id/monitoring_activity_route_report_make_report_button"
+        style="@style/MonitoringMenuGeneralButton" />
 
 </LinearLayout>

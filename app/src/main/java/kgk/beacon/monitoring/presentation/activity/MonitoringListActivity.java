@@ -1,6 +1,7 @@
 package kgk.beacon.monitoring.presentation.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,9 @@ import android.support.v7.widget.SearchView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     private static final int SEARCH_DISPLAY_CRITERIA = 20; // List size
 
     // Views
+    private FrameLayout backButton;
+    private TextView actionBarTitleTextView;
     private RecyclerView recyclerView;
     private SearchView searchView;
     private LinearLayout sortingModeButton;
@@ -88,6 +93,10 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     ////
 
     private void initViews() {
+        backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
+        actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
+        actionBarTitleTextView.setText("Choose device");
+
         recyclerView = (RecyclerView) findViewById(R.id.monitoring_activity_list_recycler_view);
         searchView = (SearchView) findViewById(R.id.monitoring_activity_list_search_view);
 
@@ -96,6 +105,13 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     }
 
     private void initListeners() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonClick();
+            }
+        });
+
         sortingModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,6 +168,10 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     }
 
     //// Control callbacks
+
+    private void onBackButtonClick() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 
     private void onSortingModeButtonClick() {
         PopupMenu menu = new PopupMenu(this, sortingModeButton);

@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/standard_horizontal_padding"
+    android:paddingStart="@dimen/standard_horizontal_padding"
+    android:paddingRight="@dimen/standard_horizontal_padding"
+    android:paddingEnd="@dimen/standard_horizontal_padding"
+    android:background="@color/monitoring_light_gray">
+
+    <include layout="@layout/monitoring_action_bar" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="24dp"
+        android:paddingStart="24dp"
+        android:gravity="start|center_vertical"
+        android:background="@drawable/monitoring_general_background_selector"
+        android:text="Show all devices"
+        android:textAllCaps="false"
+        android:id="@+id/monitoring_activity_group_list_all_button"
+        tools:ignore="RtlSymmetry,UnusedAttribute" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
         android:scrollbars="vertical"
         android:id="@+id/monitoring_activity_group_list_recycler_view" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="All"
-        android:id="@+id/monitoring_activity_group_list_all_button" />
-
-</FrameLayout>
+</LinearLayout>

@@ -2,6 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/standard_horizontal_padding"
+    android:paddingStart="@dimen/standard_horizontal_padding"
+    android:paddingRight="@dimen/standard_horizontal_padding"
+    android:paddingEnd="@dimen/standard_horizontal_padding"
+    android:background="@color/monitoring_light_gray">
+
+    <include layout="@layout/monitoring_action_bar" />
 
 </LinearLayout>

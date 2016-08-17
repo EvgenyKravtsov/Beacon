@@ -3,59 +3,79 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="52dp"
     android:layout_margin="2dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical"
+        android:layout_toLeftOf="@+id/monitoring_activity_list_item_hide_button"
+        android:layout_toStartOf="@+id/monitoring_activity_list_item_hide_button"
         android:padding="8dp"
         android:background="@drawable/monitoring_general_background_selector"
         android:id="@+id/monitoring_activity_list_item_linear_information_layout"
         tools:ignore="RelativeOverlap">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:id="@+id/monitoring_activity_list_item_name_text_view"
-            tools:text="Model Name" />
+            android:orientation="vertical">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/monitoring_activity_list_item_name_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="Model Name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/monitoring_activity_list_item_date_text_view"
+                style="@style/ListItemSubString"
+                tools:text="15/23/2067 15:56:45" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/actis_app_text_color_hint"
-            android:id="@+id/monitoring_activity_list_item_date_text_view"
-            tools:text="15/23/2067 15:56:45" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/monitoring_entity_direction_icon"
+                android:id="@+id/monitoring_activity_list_item_direction_image_view" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/monitoring_activity_list_item_hide_button"
-        android:layout_toStartOf="@+id/monitoring_activity_list_item_hide_button"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:id="@+id/monitoring_activity_list_item_status_text_view"
-        tools:text="ON"
-        tools:ignore="RelativeOverlap" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="12sp"
+                android:textColor="@color/actis_app_text_color_hint"
+                android:id="@+id/monitoring_activity_list_item_direction_text_view"
+                tools:text="NE" />
 
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="52dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/monitoring_general_background_selector"
         android:id="@+id/monitoring_activity_list_item_hide_button" />
 
 </RelativeLayout>
