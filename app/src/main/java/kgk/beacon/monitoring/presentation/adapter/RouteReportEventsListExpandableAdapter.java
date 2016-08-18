@@ -196,12 +196,12 @@ public class RouteReportEventsListExpandableAdapter extends BaseExpandableListAd
             view.centerOnChosenEvent(
                     ((ParkingEvent) event).getLatitude(),
                     ((ParkingEvent) event).getLongitude());
-            view.showEventDetails(
-                    "Parking " + timeStartString + " - " + timeEndString,
-                    0,
-                    ((ParkingEvent) event).getCsq(),
-                    0
-            );
+//            view.showEventDetails(
+//                    "Parking " + timeStartString + " - " + timeEndString,
+//                    0,
+//                    ((ParkingEvent) event).getCsq(),
+//                    0
+//            );
         }
 
 
@@ -211,12 +211,12 @@ public class RouteReportEventsListExpandableAdapter extends BaseExpandableListAd
             view.centerOnChosenEvent(
                     ((MovingEvent) event).getLatitude(),
                     ((MovingEvent) event).getLongitude());
-            view.showEventDetails(
-                    "Moving " + timeStartString + " - " + timeEndString,
-                    signal.getSpeed(),
-                    signal.getCsq(),
-                    0
-            );
+//            view.showEventDetails(
+//                    "Moving " + timeStartString + " - " + timeEndString,
+//                    signal.getSpeed(),
+//                    signal.getCsq(),
+//                    0
+//            );
         }
 
         return false;

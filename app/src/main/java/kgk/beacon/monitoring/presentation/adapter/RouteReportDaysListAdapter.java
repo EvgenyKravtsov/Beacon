@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -27,6 +26,7 @@ public class RouteReportDaysListAdapter
 
     private long selectedDate;
     private RouteReportDaysListAdapter.ViewHolder selectedHolder;
+    private boolean isAlreadyLaunched;
 
     ////
 
@@ -58,19 +58,14 @@ public class RouteReportDaysListAdapter
 
         if (day.getTimeInMillis() == selectedDate) {
             selectedHolder = holder;
-
-            holder.itemLayout.setBackgroundColor(
-                    ((Activity) view).getResources().getColor(android.R.color.darker_gray)
-            );
+            holder.itemLayout.setBackgroundDrawable(
+                    ((Activity) view).getResources().getDrawable(
+                            R.drawable.monitoring_menu_map_button_activated_background_selector));
         } else {
-            holder.itemLayout.setBackgroundColor(
-                    ((Activity) view).getResources().getColor(android.R.color.white)
-            );
+            holder.itemLayout.setBackgroundDrawable(
+                    ((Activity) view).getResources().getDrawable(
+                            R.drawable.monitoring_general_background_selector));
         }
-
-        holder.dayTextView.setText(
-                new SimpleDateFormat("dd MMMM")
-                .format(day.getTime()));
 
         holder.dayEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -79,7 +74,16 @@ public class RouteReportDaysListAdapter
             }
         });
 
-        holder.selectButton.setOnClickListener(new View.OnClickListener() {
+        if (!isAlreadyLaunched && day.getTimeInMillis() == selectedDate) {
+            isAlreadyLaunched = true;
+            holder.dayEnabledCheckBox.setChecked(true);
+        }
+
+        holder.dateTextView.setText(
+                new SimpleDateFormat("dd MMMM")
+                        .format(day.getTime()));
+
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!holder.dayEnabledCheckBox.isChecked()) holder.dayEnabledCheckBox.setChecked(true);
@@ -99,26 +103,21 @@ public class RouteReportDaysListAdapter
 
         LinearLayout itemLayout;
         CheckBox dayEnabledCheckBox;
-        TextView dayTextView;
-        Button selectButton;
+        TextView dateTextView;
 
         ////
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            itemLayout = (LinearLayout)
-                    itemView.findViewById(R.id.monitoring_activity_route_report_days_list_item_layout);
+            itemLayout = (LinearLayout) itemView
+                    .findViewById(R.id.monitoring_activity_route_report_days_list_item_layout);
 
-            dayEnabledCheckBox = (CheckBox)
-                    itemView.findViewById(R.id.monitoring_activity_route_report_days_list_item_day_enabled_check_box);
-            dayEnabledCheckBox.setChecked(true);
+            dayEnabledCheckBox = (CheckBox) itemView
+                    .findViewById(R.id.monitoring_activity_route_report_days_list_item_day_enabled_check_box);
 
-            dayTextView = (TextView)
-                    itemView.findViewById(R.id.monitoring_activity_route_report_days_list_item_day_text_view);
-
-            selectButton = (Button)
-                    itemView.findViewById(R.id.monitoring_activity_route_report_days_list_item_day_select_button);
+            dateTextView = (TextView) itemView
+                    .findViewById(R.id.monitoring_activity_route_report_days_list_item_date_text_view);
         }
     }
 
@@ -128,13 +127,15 @@ public class RouteReportDaysListAdapter
             long date,
             RouteReportDaysListAdapter.ViewHolder holder) {
 
-        selectedHolder.itemLayout.setBackgroundColor(
-                ((Activity) view).getResources().getColor(android.R.color.white)
+        selectedHolder.itemLayout.setBackgroundDrawable(
+                ((Activity) view).getResources().getDrawable(
+                        R.drawable.monitoring_general_background_selector)
         );
 
         selectedHolder = holder;
-        holder.itemLayout.setBackgroundColor(
-                ((Activity) view).getResources().getColor(android.R.color.darker_gray)
+        selectedHolder.itemLayout.setBackgroundDrawable(
+                ((Activity) view).getResources().getDrawable(
+                        R.drawable.monitoring_menu_map_button_activated_background_selector)
         );
 
         view.selectDay(date);

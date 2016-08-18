@@ -361,7 +361,8 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        // TODO Notify user
+                        Log.d("debug", error.toString());
                     }
                 });
 

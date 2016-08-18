@@ -1,20 +1,23 @@
 package kgk.beacon.monitoring.presentation.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -43,16 +46,18 @@ public class RouteReportActivity extends AppCompatActivity
     public static final String EXTRA_ROUTE_REPORT = "extra_route_report";
 
     // Views
+    private SlidingUpPanelLayout slider;
+    private ImageButton backButton;
     private MapView googleMapView;
-    private Button zoomInButton;
-    private Button zoomOutButton;
+    private ImageButton zoomInButton;
+    private ImageButton zoomOutButton;
     private RecyclerView daysRecyclerView;
-    private LinearLayout currentEventLayout;
     private TextView currentEventTextView;
+    private TextView currentEventDateTextView;
     private TextView currentEventSpeedTextView;
     private TextView currentEventGsmTextView;
     private TextView currenrEventSatellitesTextView;
-    private LinearLayout detailedInformationLayout;
+    private TextView dateSeekBarTitle;
     private SeekBar dateSeekBar;
     private RecyclerView eventsListView;
 
@@ -102,11 +107,13 @@ public class RouteReportActivity extends AppCompatActivity
     @Override
     public void showEventDetails(
             String eventType,
+            String eventDate,
             double speed,
             int csq,
             int satellites) {
 
         currentEventTextView.setText(eventType);
+        currentEventDateTextView.setText(eventDate);
 
         currentEventSpeedTextView.setText(
                 String.format(Locale.ROOT, "%.2f", speed)
@@ -122,17 +129,20 @@ public class RouteReportActivity extends AppCompatActivity
     }
 
     @Override
+    public void showEventStartTime(long date) {
+        long progress = date - selectedDate;
+        dateSeekBar.setProgress((int) progress);
+    }
+
+    @Override
     public void centerOnChosenEvent(double latitude, double longitude) {
         mapAdapter.centerMap(new LatLng(latitude, longitude));
     }
 
     @Override
     public void mapReadyForUse() {
-        for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet())
-            mapAdapter.showRouteReportDay(entry.getKey(), entry.getValue());
-
-        if (getLastEvent().getCoordinates() != null)
-            mapAdapter.centerMap(getLastEvent().getCoordinates());
+        if (getFirstEvent().getCoordinates() != null)
+            mapAdapter.centerMap(getFirstEvent().getCoordinates());
     }
 
     @Override
@@ -144,9 +154,21 @@ public class RouteReportActivity extends AppCompatActivity
         selectedDate = date;
     }
 
+    @Override
+    public void clearEventDetails() {
+        currentEventTextView.setText("Event type");
+        currentEventDateTextView.setText("--");
+        currentEventSpeedTextView.setText("--");
+        currentEventGsmTextView.setText("--");
+        currenrEventSatellitesTextView.setText("--");
+    }
+
     ////
 
     private void initViews(Bundle savedInstanceState) {
+        slider = (SlidingUpPanelLayout) findViewById(R.id.monitoring_activity_route_report_slider);
+        backButton = (ImageButton) findViewById(R.id.monitoring_activity_route_report_back_button);
+
         googleMapView = (MapView)
                 findViewById(R.id.monitoring_activity_route_report_google_map);
 
@@ -154,34 +176,42 @@ public class RouteReportActivity extends AppCompatActivity
         googleMapView.onCreate(savedInstanceState);
         googleMapView.onResume();
 
-        zoomInButton = (Button)
+        zoomInButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_route_report_zoom_in_button);
-        zoomOutButton = (Button)
+        zoomOutButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_route_report_zoom_out_button);
 
         daysRecyclerView = (RecyclerView)
                 findViewById(R.id.monitoring_activity_route_report_days_recycler_view);
         if (routeReport.getDays().size() < 2) daysRecyclerView.setVisibility(View.GONE);
 
-        currentEventLayout = (LinearLayout)
-                findViewById(R.id.monitoring_activity_route_report_current_event_layout);
         currentEventTextView = (TextView)
                 findViewById(R.id.monitoring_activity_route_report_current_event_text_view);
+        currentEventDateTextView = (TextView)
+                findViewById(R.id.monitoring_activity_route_report_current_event_date_text_view);
         currentEventSpeedTextView = (TextView)
                 findViewById(R.id.monitoring_activity_route_report_current_event_speed_text_view);
         currentEventGsmTextView = (TextView)
                 findViewById(R.id.monitoring_activity_route_report_current_event_gsm_text_view);
         currenrEventSatellitesTextView = (TextView)
                 findViewById(R.id.monitoring_activity_route_report_current_event_satellites_text_view);
-        detailedInformationLayout = (LinearLayout)
-                findViewById(R.id.monitoring_activity_route_report_detailed_information_layout);
+        dateSeekBarTitle = (TextView)
+                findViewById(R.id.onitoring_activity_route_report_date_seek_bar_title);
         dateSeekBar = (SeekBar)
                 findViewById(R.id.monitoring_activity_route_report_date_seek_bar);
         eventsListView = (RecyclerView)
                 findViewById(R.id.monitoring_activity_route_report_events_list_view);
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void initListeners() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonClick();
+            }
+        });
+
         zoomInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,19 +226,11 @@ public class RouteReportActivity extends AppCompatActivity
             }
         });
 
-        currentEventLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int visibility = detailedInformationLayout.getVisibility();
-                if (visibility == View.VISIBLE) detailedInformationLayout.setVisibility(View.GONE);
-                if (visibility == View.GONE) detailedInformationLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
         dateSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                long time = selectedDate + progress;
+                dateSeekBarTitle.setText(new SimpleDateFormat("HH:mm").format(time));
             }
 
             @Override
@@ -220,8 +242,11 @@ public class RouteReportActivity extends AppCompatActivity
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
                 long time = getClosestValue(selectedDate + progress, sortedTimes);
+
                 LatLng coordinates = coordinatesByTime.get(time);
                 mapAdapter.centerMap(coordinates);
+
+                adapter.eventSelectedByTime(time);
             }
         });
     }
@@ -277,14 +302,7 @@ public class RouteReportActivity extends AppCompatActivity
         selectedDate = lastDate;
     }
 
-    private void clearEventDetails() {
-        currentEventTextView.setText("");
-        currentEventSpeedTextView.setText("");
-        currentEventGsmTextView.setText("");
-        currenrEventSatellitesTextView.setText("");
-    }
-
-    private RouteReportEvent getLastEvent() {
+    private RouteReportEvent getFirstEvent() {
         Set<Long> keySet = routeReport.getDays().keySet();
         long maxKey = 0;
 
@@ -294,7 +312,7 @@ public class RouteReportActivity extends AppCompatActivity
         }
 
         List<RouteReportEvent> events = routeReport.getDays().get(maxKey);
-        return events.get(events.size() - 1);
+        return events.get(0);
     }
 
     private void prepareDataForSeekbar(long date) {
@@ -354,4 +372,39 @@ public class RouteReportActivity extends AppCompatActivity
 
         return lastValue;
     }
+
+    //// Control callbacks
+
+    private void onBackButtonClick() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

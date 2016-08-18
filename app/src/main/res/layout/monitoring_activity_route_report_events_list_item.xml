@@ -1,94 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="8dp"
+    android:background="@drawable/monitoring_general_background_selector"
     android:id="@+id/monitoring_activity_route_report_events_list_item_layout">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:shrinkColumns="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:id="@+id/monitoring_activity_route_report_events_list_item_type_text_view"
-            tools:text="In motion" />
+        <TableRow android:layout_marginBottom="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/monitoring_activity_route_report_events_list_item_information_text_view"
-            tools:text="Blalalalva adlasld asdarf afase asf af faaweff"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/monitoring_activity_route_report_events_list_item_type_text_view"
+                tools:text="In motion"
+                style="@style/MonitoringStandardString" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:id="@+id/monitoring_activity_route_report_events_list_item_information_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="Blalalalva adlasld asdarf afase asf af faaweff" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        </TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="Start" />
+        <TableRow android:layout_marginBottom="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/monitoring_activity_route_report_events_list_start_text_view"
-            tools:text="10:52:00" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Start:"
+                style="@style/MonitoringStandardString" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:id="@+id/monitoring_activity_route_report_events_list_start_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="10:52:00" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        </TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="End" />
+        <TableRow android:layout_marginBottom="2dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/monitoring_activity_route_report_events_list_end_text_view"
-            tools:text="17:52:00" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="End:"
+                style="@style/MonitoringStandardString" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:id="@+id/monitoring_activity_route_report_events_list_end_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="17:52:00" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        </TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="Duration" />
+        <TableRow>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/monitoring_activity_route_report_events_list_duration_text_view"
-            tools:text="07:00:00" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Duration:"
+                style="@style/MonitoringStandardString" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:id="@+id/monitoring_activity_route_report_events_list_duration_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="07:00:00" />
+
+        </TableRow>
+
+    </TableLayout>
 
 </LinearLayout>

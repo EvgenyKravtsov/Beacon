@@ -210,7 +210,11 @@
 
         <activity android:name=".monitoring.presentation.activity.MonitoringEntityActivity"
             android:theme="@style/MonitoringModuleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
         <activity android:name=".monitoring.presentation.activity.HelpActivity"
             android:theme="@style/MonitoringModuleTheme"
@@ -254,7 +258,11 @@
 
         <activity android:name=".monitoring.presentation.activity.RouteReportActivity"
             android:theme="@style/MonitoringModuleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".monitoring.presentation.activity.MapActivity" />
+        </activity>
 
     </application>
 

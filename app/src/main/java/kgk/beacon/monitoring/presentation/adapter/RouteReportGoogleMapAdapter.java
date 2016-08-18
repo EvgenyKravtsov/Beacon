@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -83,9 +84,10 @@ public class RouteReportGoogleMapAdapter implements
 
     @Override
     public void centerMap(LatLng coordinates) {
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                coordinates,
-                configuration.loadZoomLevel()));
+        CameraUpdate center = CameraUpdateFactory.newLatLng(coordinates);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(configuration.loadZoomLevel());
+        map.moveCamera(zoom);
+        map.animateCamera(center);
 
         if (centeredEventMarker != null) centeredEventMarker.remove();
         centeredEventMarker = map.addMarker(new MarkerOptions()

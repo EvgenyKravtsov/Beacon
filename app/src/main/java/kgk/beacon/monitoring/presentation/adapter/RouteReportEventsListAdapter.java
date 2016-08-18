@@ -25,6 +25,7 @@ public class RouteReportEventsListAdapter
 
     private RouteReportView view;
     private List<RouteReportEvent> events;
+    private boolean isAlreadyLaunched;
 
     ////
 
@@ -65,13 +66,43 @@ public class RouteReportEventsListAdapter
         );
 
         if (event instanceof ParkingEvent) {
-            holder.typeTextView.setText("Parking");
+            holder.typeTextView.setText("Parking:");
             holder.informationTextView.setText(((ParkingEvent) event).getAddress());
         }
 
         if (event instanceof MovingEvent) {
-            holder.typeTextView.setText("Moving");
+            holder.typeTextView.setText("Moving:");
             holder.informationTextView.setText(((MovingEvent) event).getDetails());
+        }
+
+        if (!isAlreadyLaunched && events.indexOf(event) == 0) {
+            isAlreadyLaunched = true;
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            String timeStartString = dateFormat.format(new Date(event.getStartTime()));
+            String timeEndString = dateFormat.format(new Date(event.getEndTime()));
+
+            if (event instanceof ParkingEvent) {
+                view.showEventDetails(
+                        "Parking",
+                        timeStartString + " - " + timeEndString,
+                        0,
+                        ((ParkingEvent) event).getCsq(),
+                        0
+                );
+            }
+
+
+            if (event instanceof MovingEvent) {
+                MovingEventSignal signal = ((MovingEvent) event).getSignals().get(0);
+                view.showEventDetails(
+                        "Moving",
+                        timeStartString + " - " + timeEndString,
+                        signal.getSpeed(),
+                        signal.getCsq(),
+                        0
+                );
+            }
         }
 
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +116,46 @@ public class RouteReportEventsListAdapter
     @Override
     public int getItemCount() {
         return events.size();
+    }
+
+    ////
+
+    @SuppressLint("SimpleDateFormat")
+    public void eventSelectedByTime(long time) {
+        RouteReportEvent selectedEvent = null;
+        for (RouteReportEvent event : events)
+            if (time >= event.getStartTime() && time < event.getEndTime()) selectedEvent = event;
+
+        if (selectedEvent == null) {
+            view.clearEventDetails();
+            return;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String timeStartString = dateFormat.format(new Date(selectedEvent.getStartTime()));
+        String timeEndString = dateFormat.format(new Date(selectedEvent.getEndTime()));
+
+        if (selectedEvent instanceof ParkingEvent) {
+            view.showEventDetails(
+                    "Parking",
+                    timeStartString + " - " + timeEndString,
+                    0,
+                    ((ParkingEvent) selectedEvent).getCsq(),
+                    0
+            );
+        }
+
+
+        if (selectedEvent instanceof MovingEvent) {
+            MovingEventSignal signal = ((MovingEvent) selectedEvent).getSignals().get(0);
+            view.showEventDetails(
+                    "Moving",
+                    timeStartString + " - " + timeEndString,
+                    signal.getSpeed(),
+                    signal.getCsq(),
+                    0
+            );
+        }
     }
 
     ////
@@ -138,6 +209,7 @@ public class RouteReportEventsListAdapter
         return dateFormat.format(date);
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void onItemClick(RouteReportEvent event) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
@@ -149,7 +221,8 @@ public class RouteReportEventsListAdapter
                     ((ParkingEvent) event).getLatitude(),
                     ((ParkingEvent) event).getLongitude());
             view.showEventDetails(
-                    "Parking " + timeStartString + " - " + timeEndString,
+                    "Parking",
+                    timeStartString + " - " + timeEndString,
                     0,
                     ((ParkingEvent) event).getCsq(),
                     0
@@ -164,11 +237,14 @@ public class RouteReportEventsListAdapter
                     ((MovingEvent) event).getLatitude(),
                     ((MovingEvent) event).getLongitude());
             view.showEventDetails(
-                    "Moving " + timeStartString + " - " + timeEndString,
+                    "Moving",
+                    timeStartString + " - " + timeEndString,
                     signal.getSpeed(),
                     signal.getCsq(),
                     0
             );
         }
+
+        view.showEventStartTime(event.getStartTime());
     }
 }
