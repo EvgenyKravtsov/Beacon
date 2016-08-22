@@ -22,8 +22,6 @@ public class MonitoringEntity {
 
     private boolean displayEnabled;
 
-
-
     ////
 
     public MonitoringEntity(long id,
@@ -31,6 +29,7 @@ public class MonitoringEntity {
                             String model,
                             String stateNumber,
                             List<String> groupNames) {
+
         this.id = id;
         this.mark = mark;
         this.model = model;

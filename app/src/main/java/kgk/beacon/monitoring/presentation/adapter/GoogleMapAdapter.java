@@ -1,12 +1,21 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -23,10 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.presentation.model.MapType;
+import kgk.beacon.util.AppController;
+import kgk.beacon.util.ImageProcessor;
 import kgk.beacon.util.YandexMapUtils;
 
 public class GoogleMapAdapter implements
@@ -44,17 +56,21 @@ public class GoogleMapAdapter implements
     private TileOverlay yandexTileOverlay;
     private boolean trafficEnabled;
     private List<MonitoringEntityGoogleMarker> markers;
+    private boolean markersExtended;
 
     ////
 
     public GoogleMapAdapter(
             kgk.beacon.monitoring.presentation.view.MapView mapView,
             MapView googleMapView) {
+
         this.mapView = mapView;
         this.googleMapView = googleMapView;
         this.configuration = DependencyInjection.provideConfiguration();
         this.markers = new ArrayList<>();
         this.googleMapView.getMapAsync(this);
+
+        markersExtended = configuration.loadMarkerInformationEnabled();
     }
 
     ////
@@ -72,14 +88,18 @@ public class GoogleMapAdapter implements
     @Override
     public void showMapEntity(MonitoringEntity monitoringEntity) {
         long id = monitoringEntity.getId();
-        LatLng latLng = new LatLng(monitoringEntity.getLatitude(), monitoringEntity.getLongitude());
+
+        MarkerOptions markerOptions;
+        if (markersExtended) markerOptions = generateCustomMarkerExtended(monitoringEntity);
+        else markerOptions = generateCustomMarker(monitoringEntity);
 
         if (markers != null) {
             boolean redrawn = false;
             for (MonitoringEntityGoogleMarker marker : markers) {
                 if (marker.getId() == id) {
                     marker.getMarker().remove();
-                    marker.setMarker(map.addMarker(new MarkerOptions().position(latLng)));
+                    marker.setMarker(map.addMarker(markerOptions));
+
                     redrawn = true;
                 }
             }
@@ -87,7 +107,7 @@ public class GoogleMapAdapter implements
             if (!redrawn)
             markers.add(new MonitoringEntityGoogleMarker(
                     id,
-                    map.addMarker(new MarkerOptions().position(latLng))));
+                    map.addMarker(markerOptions)));
         }
     }
 
@@ -255,6 +275,81 @@ public class GoogleMapAdapter implements
         TileOverlayOptions tileOverlayOptions = new TileOverlayOptions().tileProvider(tileProvider);
         tileOverlayOptions.fadeIn(false);
         return tileOverlayOptions;
+    }
+
+    private BitmapDescriptor generateMarkerIcon(MonitoringEntity monitoringEntity) {
+        Context context = AppController.getInstance();
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater
+                .inflate(R.layout.map_custom_marker_point, null);
+
+        ImageView arrow = (ImageView) layout
+                .findViewById(R.id.mapCustomMarkerPoint_arrow);
+        if (android.os.Build.VERSION.SDK_INT >= 11)
+            arrow.setRotation((float) monitoringEntity.getDirection());
+
+        int width = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                25,
+                context.getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                25,
+                context.getResources().getDisplayMetrics());
+
+        Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
+        return BitmapDescriptorFactory.fromBitmap(markerBitmap);
+    }
+
+    private BitmapDescriptor generateMarkerExtendedIcon(MonitoringEntity monitoringEntity) {
+        Context context = AppController.getInstance();
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater
+                .inflate(R.layout.monitoring_activity_map_marker_extended, null);
+
+        ImageView arrow = (ImageView) layout
+                .findViewById(R.id.monitoring_activity_map_marker_extended_arrow_image_view);
+        if (android.os.Build.VERSION.SDK_INT >= 11) arrow.setRotation((float)
+                monitoringEntity.getDirection());
+
+        TextView informationTextView = (TextView) layout
+                .findViewById(R.id.monitoring_activity_map_marker_extended_information_text_view);
+        informationTextView.setText(String.format(
+                "%s %s",
+                monitoringEntity.getModel(),
+                monitoringEntity.getStateNumber()));
+
+        int width = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                500,
+                context.getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                25,
+                context.getResources().getDisplayMetrics());
+
+        Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
+        return BitmapDescriptorFactory.fromBitmap(markerBitmap);
+    }
+
+    private MarkerOptions generateCustomMarker(MonitoringEntity monitoringEntity) {
+        return new MarkerOptions()
+                .position(new LatLng(
+                                monitoringEntity.getLatitude(),
+                                monitoringEntity.getLongitude()))
+                .icon(generateMarkerIcon(monitoringEntity))
+                .anchor(0.5f, 0.5f);
+    }
+
+    private MarkerOptions generateCustomMarkerExtended(MonitoringEntity monitoringEntity) {
+        return new MarkerOptions()
+                .position(new LatLng(
+                        monitoringEntity.getLatitude(),
+                        monitoringEntity.getLongitude()))
+                .icon(generateMarkerExtendedIcon(monitoringEntity))
+                .anchor(0, 0.5f);
     }
 
     ////
