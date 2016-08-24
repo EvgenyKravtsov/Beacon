@@ -349,7 +349,7 @@ public class GoogleMapAdapter implements
                         monitoringEntity.getLatitude(),
                         monitoringEntity.getLongitude()))
                 .icon(generateMarkerExtendedIcon(monitoringEntity))
-                .anchor(0, 0.5f);
+                .anchor(0.05f, 0.5f);
     }
 
     ////

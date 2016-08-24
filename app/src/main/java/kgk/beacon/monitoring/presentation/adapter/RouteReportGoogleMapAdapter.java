@@ -1,10 +1,18 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,9 +31,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.routereport.MovingEvent;
+import kgk.beacon.monitoring.domain.model.routereport.MovingEventSignal;
 import kgk.beacon.monitoring.domain.model.routereport.ParkingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.presentation.model.MapType;
@@ -33,6 +43,8 @@ import kgk.beacon.monitoring.presentation.model.MovingEventMapObject;
 import kgk.beacon.monitoring.presentation.model.ParkingEventMapObject;
 import kgk.beacon.monitoring.presentation.model.RouteReportMapObject;
 import kgk.beacon.monitoring.presentation.view.RouteReportView;
+import kgk.beacon.util.AppController;
+import kgk.beacon.util.ImageProcessor;
 
 public class RouteReportGoogleMapAdapter implements
         RouteReportMapAdapter,
@@ -46,6 +58,7 @@ public class RouteReportGoogleMapAdapter implements
     private TileOverlay yandexTileOverlay;
     private Configuration configuration;
     private Marker centeredEventMarker;
+    private ParkingEventMapObject activeParkingEventMapObject;
     private Map<Long, List<RouteReportMapObject>> mapObjectsByDay;
 
     ////
@@ -65,6 +78,7 @@ public class RouteReportGoogleMapAdapter implements
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         setMapType(configuration.loadDefaultMapType());
+        map.setOnCameraChangeListener(this);
         view.mapReadyForUse();
     }
 
@@ -83,16 +97,60 @@ public class RouteReportGoogleMapAdapter implements
     }
 
     @Override
-    public void centerMap(LatLng coordinates) {
+    public void centerOnParkingEvent(ParkingEvent event) {
+        LatLng coordinates = new LatLng(event.getLatitude(), event.getLongitude());
         CameraUpdate center = CameraUpdateFactory.newLatLng(coordinates);
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(configuration.loadZoomLevel());
         map.moveCamera(zoom);
         map.animateCamera(center);
 
         if (centeredEventMarker != null) centeredEventMarker.remove();
-        centeredEventMarker = map.addMarker(new MarkerOptions()
-                .position(coordinates)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        if (activeParkingEventMapObject != null) activeParkingEventMapObject.stopFadeOut();
+
+        for (Map.Entry<Long, List<RouteReportMapObject>> entry : mapObjectsByDay.entrySet()) {
+            for (RouteReportMapObject mapObject : entry.getValue()) {
+                if (mapObject.getEvent() == event) {
+                    activeParkingEventMapObject = (ParkingEventMapObject) mapObject;
+                    ((ParkingEventMapObject) mapObject).startFadeOut();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void centerOnMovingEvent(MovingEvent event) {
+        LatLng coordinates = new LatLng(event.getLatitude(), event.getLongitude());
+        CameraUpdate center = CameraUpdateFactory.newLatLng(coordinates);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(configuration.loadZoomLevel());
+        map.moveCamera(zoom);
+        map.animateCamera(center);
+
+        if (centeredEventMarker != null) centeredEventMarker.remove();
+        if (activeParkingEventMapObject != null) activeParkingEventMapObject.stopFadeOut();
+
+        centeredEventMarker = map.addMarker(generateMovingEventMarker(
+                event.getLatitude(),
+                event.getLongitude(),
+                event.getSignals().get(0).getDirection()
+        ));
+    }
+
+    @Override
+    public void centerOnMovingEventSignal(MovingEventSignal signal) {
+        LatLng coordinates = new LatLng(signal.getLatitude(), signal.getLongitude());
+        CameraUpdate center = CameraUpdateFactory.newLatLng(coordinates);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(configuration.loadZoomLevel());
+        map.moveCamera(zoom);
+        map.animateCamera(center);
+
+        if (centeredEventMarker != null) centeredEventMarker.remove();
+        if (activeParkingEventMapObject != null) activeParkingEventMapObject.stopFadeOut();
+
+        centeredEventMarker = map.addMarker(generateMovingEventMarker(
+                signal.getLatitude(),
+                signal.getLongitude(),
+                signal.getDirection()
+        ));
     }
 
     @Override
@@ -221,5 +279,41 @@ public class RouteReportGoogleMapAdapter implements
         int minZoom = 1;
         int maxZoom = 18;
         return !(zoom < minZoom || zoom > maxZoom);
+    }
+
+    private BitmapDescriptor generateMovingEventMarkerIcon(int direction) {
+        Context context = AppController.getInstance();
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater
+                .inflate(R.layout.map_custom_marker_point, null);
+
+        ImageView arrow = (ImageView) layout
+                .findViewById(R.id.mapCustomMarkerPoint_arrow);
+        if (android.os.Build.VERSION.SDK_INT >= 11)
+            arrow.setRotation((float) direction);
+
+        int width = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                25,
+                context.getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                25,
+                context.getResources().getDisplayMetrics());
+
+        Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
+        return BitmapDescriptorFactory.fromBitmap(markerBitmap);
+    }
+
+    private MarkerOptions generateMovingEventMarker(
+            double latitude,
+            double longitude,
+            int direction) {
+
+        return new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .icon(generateMovingEventMarkerIcon(direction))
+                .anchor(0.5f, 0.5f);
     }
 }

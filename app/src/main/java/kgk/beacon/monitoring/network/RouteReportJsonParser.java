@@ -10,11 +10,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import kgk.beacon.monitoring.domain.model.routereport.MovingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.MovingEventSignal;
@@ -77,7 +79,16 @@ public class RouteReportJsonParser {
             }
         }
 
-        Map<Long, List<RouteReportEvent>> days = new HashMap<>();
+        Collections.sort(events, new Comparator<RouteReportEvent>() {
+            @Override
+            public int compare(RouteReportEvent event, RouteReportEvent t1) {
+                if (event.getStartTime() > t1.getStartTime()) return 1;
+                if (event.getStartTime() == t1.getStartTime()) return 0;
+                return -1;
+            }
+        });
+
+        SortedMap<Long, List<RouteReportEvent>> days = new TreeMap<>();
         Calendar calendar = Calendar.getInstance();
 
         for (RouteReportEvent event : events) {
@@ -160,11 +171,21 @@ public class RouteReportJsonParser {
                     signalJson.getDouble("lat"),
                     signalJson.getDouble("lng"),
                     signalJson.getDouble("speed"),
-                    signalJson.getInt("csq")
+                    signalJson.getInt("csq"),
+                    signalJson.getInt("az")
             );
 
             signals.add(signal);
         }
+
+        Collections.sort(signals, new Comparator<MovingEventSignal>() {
+            @Override
+            public int compare(MovingEventSignal movingEventSignal, MovingEventSignal t1) {
+                if (movingEventSignal.getTime() > t1.getTime()) return 1;
+                if (movingEventSignal.getTime() == t1.getTime()) return 0;
+                return -1;
+            }
+        });
 
         return new MovingEvent(
                 startDate.getTime(),

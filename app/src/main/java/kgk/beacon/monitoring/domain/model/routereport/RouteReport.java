@@ -3,20 +3,21 @@ package kgk.beacon.monitoring.domain.model.routereport;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 public class RouteReport implements Serializable {
 
-    private final Map<Long, List<RouteReportEvent>> days;
+    private final SortedMap<Long, List<RouteReportEvent>> days;
 
     ////
 
-    public RouteReport(Map<Long, List<RouteReportEvent>> days) {
+    public RouteReport(SortedMap<Long, List<RouteReportEvent>> days) {
         this.days = days;
     }
 
     ////
 
-    public Map<Long, List<RouteReportEvent>> getDays() {
+    public SortedMap<Long, List<RouteReportEvent>> getDays() {
         return days;
     }
 

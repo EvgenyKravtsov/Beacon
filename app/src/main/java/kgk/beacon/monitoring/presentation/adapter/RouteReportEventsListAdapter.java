@@ -29,7 +29,9 @@ public class RouteReportEventsListAdapter
 
     ////
 
-    public RouteReportEventsListAdapter(RouteReportView view, List<RouteReportEvent> events) {
+    public RouteReportEventsListAdapter(
+            RouteReportView view,
+            List<RouteReportEvent> events) {
         this.view = view;
         this.events = events;
     }
@@ -217,9 +219,7 @@ public class RouteReportEventsListAdapter
         String timeEndString = dateFormat.format(new Date(event.getEndTime()));
 
         if (event instanceof ParkingEvent) {
-            view.centerOnChosenEvent(
-                    ((ParkingEvent) event).getLatitude(),
-                    ((ParkingEvent) event).getLongitude());
+            view.centerOnParkingEvent((ParkingEvent) event);
             view.showEventDetails(
                     "Parking",
                     timeStartString + " - " + timeEndString,
@@ -233,9 +233,7 @@ public class RouteReportEventsListAdapter
         if (event instanceof MovingEvent) {
             MovingEventSignal signal = ((MovingEvent) event).getSignals().get(0);
 
-            view.centerOnChosenEvent(
-                    ((MovingEvent) event).getLatitude(),
-                    ((MovingEvent) event).getLongitude());
+            view.centerOnMovingEvent((MovingEvent) event);
             view.showEventDetails(
                     "Moving",
                     timeStartString + " - " + timeEndString,

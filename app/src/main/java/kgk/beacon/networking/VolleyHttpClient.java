@@ -285,6 +285,11 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                                         monitoringEntity.setLastUpdateTimestamp(
                                                 Calendar.getInstance().getTimeInMillis());
 
+                                        // TODO Write status logic
+                                        // IN_MOTION - if speed > 0
+                                        // PARKING - if speed == 0
+                                        // OFFLINE - if current_date - packet_date > 10 min
+
                                         monitoringEntity.setStatus(MonitoringEntityStatus.IN_MOTION);
                                         monitoringEntity.setSpeed(dataJson.getDouble("speed"));
                                         monitoringEntity.setGsm("OK");

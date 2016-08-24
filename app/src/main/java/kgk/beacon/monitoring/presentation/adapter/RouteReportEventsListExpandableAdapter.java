@@ -17,7 +17,6 @@ import java.util.Map;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.MovingEvent;
-import kgk.beacon.monitoring.domain.model.routereport.MovingEventSignal;
 import kgk.beacon.monitoring.domain.model.routereport.ParkingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.presentation.view.RouteReportView;
@@ -192,32 +191,32 @@ public class RouteReportEventsListExpandableAdapter extends BaseExpandableListAd
         String timeStartString = dateFormat.format(new Date(event.getStartTime()));
         String timeEndString = dateFormat.format(new Date(event.getEndTime()));
 
-        if (event instanceof ParkingEvent) {
-            view.centerOnChosenEvent(
-                    ((ParkingEvent) event).getLatitude(),
-                    ((ParkingEvent) event).getLongitude());
+//        if (event instanceof ParkingEvent) {
+//            view.centerOnChosenEvent(
+//                    ((ParkingEvent) event).getLatitude(),
+//                    ((ParkingEvent) event).getLongitude());
 //            view.showEventDetails(
 //                    "Parking " + timeStartString + " - " + timeEndString,
 //                    0,
 //                    ((ParkingEvent) event).getCsq(),
 //                    0
 //            );
-        }
+//        }
 
 
-        if (event instanceof MovingEvent) {
-            MovingEventSignal signal = ((MovingEvent) event).getSignals().get(0);
-
-            view.centerOnChosenEvent(
-                    ((MovingEvent) event).getLatitude(),
-                    ((MovingEvent) event).getLongitude());
+//        if (event instanceof MovingEvent) {
+//            MovingEventSignal signal = ((MovingEvent) event).getSignals().get(0);
+//
+//            view.centerOnChosenEvent(
+//                    ((MovingEvent) event).getLatitude(),
+//                    ((MovingEvent) event).getLongitude());
 //            view.showEventDetails(
 //                    "Moving " + timeStartString + " - " + timeEndString,
 //                    signal.getSpeed(),
 //                    signal.getCsq(),
 //                    0
 //            );
-        }
+//        }
 
         return false;
     }

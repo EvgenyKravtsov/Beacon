@@ -20,7 +20,7 @@ public class RouteReportParameters {
         this.fromDateTimestamp = fromDateTimestamp;
         this.toDateTimestamp = toDateTimestamp;
         this.stopTime = stopTime;
-        this.offsetUtc = offsetUtc;
+        this.offsetUtc = -offsetUtc;
         this.id = id;
     }
 

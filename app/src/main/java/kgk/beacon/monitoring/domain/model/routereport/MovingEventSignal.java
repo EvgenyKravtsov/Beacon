@@ -9,16 +9,26 @@ public class MovingEventSignal implements Serializable {
     private final double longitude;
     private final double speed;
     private final int csq;
+    private final int direction;
 
     ////
 
-    public MovingEventSignal(long time, double latitude, double longitude, double speed, int csq) {
+    public MovingEventSignal(
+            long time,
+            double latitude,
+            double longitude,
+            double speed,
+            int csq,
+            int direction) {
+
         this.time = time;
         this.latitude = latitude;
         this.longitude = longitude;
         this.speed = speed;
         this.csq = csq;
+        this.direction = direction;
     }
+
 
     ////
 
@@ -42,6 +52,10 @@ public class MovingEventSignal implements Serializable {
         return csq;
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
     ////
 
     @Override
@@ -50,6 +64,7 @@ public class MovingEventSignal implements Serializable {
                 "latitude - " + latitude + "\n" +
                 "longitude - " + longitude + "\n" +
                 "speed - " + speed + "\n" +
-                "csq - " + csq + "\n";
+                "csq - " + csq + "\n" +
+                "direction - " + direction;
     }
 }

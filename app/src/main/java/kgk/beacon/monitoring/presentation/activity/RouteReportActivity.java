@@ -14,19 +14,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.LatLng;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedMap;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.MovingEvent;
@@ -65,8 +62,7 @@ public class RouteReportActivity extends AppCompatActivity
     private RouteReportEventsListAdapter adapter;
     private RouteReportMapAdapter mapAdapter;
 
-    private Map<Long, LatLng> coordinatesByTime;
-    private List<Long> sortedTimes;
+    private List<Long> eventDatesForActiveDay;
     private long selectedDate;
 
     ////
@@ -86,8 +82,6 @@ public class RouteReportActivity extends AppCompatActivity
         initViews(savedInstanceState);
         initListeners();
         initMap();
-        initDaysRecyclerView();
-        initEventsListView();
     }
 
     ////
@@ -135,14 +129,30 @@ public class RouteReportActivity extends AppCompatActivity
     }
 
     @Override
-    public void centerOnChosenEvent(double latitude, double longitude) {
-        mapAdapter.centerMap(new LatLng(latitude, longitude));
+    public void centerOnParkingEvent(ParkingEvent event) {
+        mapAdapter.centerOnParkingEvent(event);
+    }
+
+    @Override
+    public void centerOnMovingEvent(MovingEvent event) {
+        mapAdapter.centerOnMovingEvent(event);
+    }
+
+    @Override
+    public void centerOnMovingEventSignal(MovingEventSignal signal) {
+        mapAdapter.centerOnMovingEventSignal(signal);
     }
 
     @Override
     public void mapReadyForUse() {
-        if (getFirstEvent().getCoordinates() != null)
-            mapAdapter.centerMap(getFirstEvent().getCoordinates());
+        initDaysRecyclerView();
+        initEventsListView();
+
+        RouteReportEvent event = getFirstEvent();
+        if (event.getCoordinates() != null) {
+            if (event instanceof ParkingEvent) mapAdapter.centerOnParkingEvent((ParkingEvent) event);
+            if (event instanceof MovingEvent) mapAdapter.centerOnMovingEvent((MovingEvent) event);
+        }
     }
 
     @Override
@@ -207,7 +217,7 @@ public class RouteReportActivity extends AppCompatActivity
     private void initListeners() {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 onBackButtonClick();
             }
         });
@@ -241,12 +251,33 @@ public class RouteReportActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
-                long time = getClosestValue(selectedDate + progress, sortedTimes);
-
-                LatLng coordinates = coordinatesByTime.get(time);
-                mapAdapter.centerMap(coordinates);
+                long time = getClosestValue(selectedDate + progress, eventDatesForActiveDay);
 
                 adapter.eventSelectedByTime(time);
+
+                for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
+                    for (RouteReportEvent event : entry.getValue()) {
+                        if (event.getStartTime() == time) {
+                            if (event instanceof ParkingEvent) {
+                                mapAdapter.centerOnParkingEvent((ParkingEvent) event);
+                                break;
+                            }
+                            if (event instanceof MovingEvent) {
+                                mapAdapter.centerOnMovingEvent((MovingEvent) event);
+                                break;
+                            }
+                        }
+
+                        if (event instanceof MovingEvent) {
+                            for (MovingEventSignal signal : ((MovingEvent) event).getSignals()) {
+                                if (signal.getTime() == time) {
+                                    mapAdapter.centerOnMovingEventSignal(signal);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         });
     }
@@ -266,10 +297,8 @@ public class RouteReportActivity extends AppCompatActivity
         for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date(entry.getKey()));
-            dates.add(0, calendar);
+            dates.add(calendar);
         }
-
-        Collections.sort(dates);
 
         RouteReportDaysListAdapter adapter = new RouteReportDaysListAdapter(
                 this,
@@ -284,75 +313,38 @@ public class RouteReportActivity extends AppCompatActivity
         eventsListView.setHasFixedSize(true);
         eventsListView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Long> dates = new ArrayList<>();
-
-        for (Map.Entry<Long, List<RouteReportEvent>> entry : routeReport.getDays().entrySet()) {
-            dates.add(entry.getKey());
-        }
-
-        Collections.sort(dates);
-        long lastDate = dates.get(dates.size() - 1);
-
-        adapter = new RouteReportEventsListAdapter(
-                this,
-                routeReport.getDays().get(lastDate));
+        SortedMap<Long, List<RouteReportEvent>> days = routeReport.getDays();
+        long lastDayDate = days.lastKey();
+        adapter = new RouteReportEventsListAdapter(this, days.get(days.lastKey()));
 
         eventsListView.setAdapter(adapter);
-        prepareDataForSeekbar(lastDate);
-        selectedDate = lastDate;
+        prepareDataForSeekbar(lastDayDate);
+        selectedDate = lastDayDate;
     }
 
     private RouteReportEvent getFirstEvent() {
-        Set<Long> keySet = routeReport.getDays().keySet();
-        long maxKey = 0;
-
-        for (long key : keySet) {
-            if (maxKey == 0) maxKey = key;
-            if (maxKey < key) maxKey = key;
-        }
-
-        List<RouteReportEvent> events = routeReport.getDays().get(maxKey);
+        List<RouteReportEvent> events = routeReport.getDays().get(routeReport.getDays().lastKey());
         return events.get(0);
     }
 
     private void prepareDataForSeekbar(long date) {
-
-        coordinatesByTime = new HashMap<>();
-
         List<RouteReportEvent> events = routeReport.getDays().get(date);
+        eventDatesForActiveDay = new ArrayList<>();
 
         for (RouteReportEvent event : events) {
-
             if (event instanceof ParkingEvent) {
-                coordinatesByTime.put(
-                        event.getStartTime(),
-                        new LatLng(
-                                ((ParkingEvent) event).getLatitude(),
-                                ((ParkingEvent) event).getLongitude()));
+                eventDatesForActiveDay.add(event.getStartTime());
             }
 
             if (event instanceof MovingEvent) {
                 List<MovingEventSignal> signals = ((MovingEvent) event).getSignals();
-
-                coordinatesByTime.put(
-                        event.getStartTime(),
-                        new LatLng(
-                                ((MovingEvent) event).getLatitude(),
-                                ((MovingEvent) event).getLongitude()));
+                eventDatesForActiveDay.add(event.getStartTime());
 
                 for (MovingEventSignal signal : signals) {
-                    coordinatesByTime.put(
-                            signal.getTime(),
-                            new LatLng(signal.getLatitude(), signal.getLongitude()));
+                    eventDatesForActiveDay.add(signal.getTime());
                 }
             }
         }
-
-        sortedTimes = new ArrayList<>();
-        for (Map.Entry<Long, LatLng> entry : coordinatesByTime.entrySet()) {
-            sortedTimes.add(entry.getKey());
-        }
-        Collections.sort(sortedTimes);
     }
 
     private long getClosestValue(long value, List<Long> values) {
