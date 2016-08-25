@@ -244,7 +244,7 @@ public class ProductActivity extends AppCompatActivity {
     private void toggleProgressDialog(boolean status) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Downloading data");
+            progressDialog.setMessage(getString(R.string.monitoring_downloading_data));
             progressDialog.setIndeterminate(true);
             progressDialog.setCanceledOnTouchOutside(false);
         }

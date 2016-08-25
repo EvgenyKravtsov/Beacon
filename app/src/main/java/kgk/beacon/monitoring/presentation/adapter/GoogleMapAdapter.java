@@ -281,13 +281,30 @@ public class GoogleMapAdapter implements
         Context context = AppController.getInstance();
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater
-                .inflate(R.layout.map_custom_marker_point, null);
 
-        ImageView arrow = (ImageView) layout
-                .findViewById(R.id.mapCustomMarkerPoint_arrow);
-        if (android.os.Build.VERSION.SDK_INT >= 11)
-            arrow.setRotation((float) monitoringEntity.getDirection());
+        View layout;
+        ImageView arrow;
+        switch (monitoringEntity.getStatus()) {
+            case IN_MOTION:
+                layout = inflater.inflate(R.layout.map_custom_marker_point, null);
+
+                arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
+                if (android.os.Build.VERSION.SDK_INT >= 11)
+                    arrow.setRotation((float) monitoringEntity.getDirection());
+
+                break;
+            case STOPPED:
+                layout = inflater.inflate(R.layout.map_custom_marker_point, null);
+
+                arrow = (ImageView) layout.findViewById(R.id.mapCustomMarkerPoint_arrow);
+                arrow.setVisibility(View.GONE);
+
+                break;
+            case OFFLINE:
+                layout = inflater.inflate(R.layout.map_custom_marker_point_offline, null);
+                break;
+            default: layout = inflater.inflate(R.layout.map_custom_marker_point_offline, null);
+        }
 
         int width = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -306,20 +323,55 @@ public class GoogleMapAdapter implements
         Context context = AppController.getInstance();
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater
-                .inflate(R.layout.monitoring_activity_map_marker_extended, null);
 
-        ImageView arrow = (ImageView) layout
-                .findViewById(R.id.monitoring_activity_map_marker_extended_arrow_image_view);
-        if (android.os.Build.VERSION.SDK_INT >= 11) arrow.setRotation((float)
-                monitoringEntity.getDirection());
+        View layout;
+        ImageView arrow;
+        TextView informationTextView;
+        switch (monitoringEntity.getStatus()) {
+            case IN_MOTION:
+                layout = inflater.inflate(R.layout.monitoring_activity_map_marker_extended, null);
 
-        TextView informationTextView = (TextView) layout
-                .findViewById(R.id.monitoring_activity_map_marker_extended_information_text_view);
-        informationTextView.setText(String.format(
-                "%s %s",
-                monitoringEntity.getModel(),
-                monitoringEntity.getStateNumber()));
+                arrow = (ImageView) layout
+                        .findViewById(R.id.monitoring_activity_map_marker_extended_arrow_image_view);
+                if (android.os.Build.VERSION.SDK_INT >= 11)
+                    arrow.setRotation((float) monitoringEntity.getDirection());
+
+                informationTextView = (TextView) layout
+                        .findViewById(R.id.monitoring_activity_map_marker_extended_information_text_view);
+                informationTextView.setText(String.format(
+                        "%s %s",
+                        monitoringEntity.getModel(),
+                        monitoringEntity.getStateNumber()));
+
+                break;
+            case STOPPED:
+                layout = inflater.inflate(R.layout.monitoring_activity_map_marker_extended, null);
+
+                arrow = (ImageView) layout
+                        .findViewById(R.id.monitoring_activity_map_marker_extended_arrow_image_view);
+                arrow.setVisibility(View.GONE);
+
+                informationTextView = (TextView) layout
+                        .findViewById(R.id.monitoring_activity_map_marker_extended_information_text_view);
+                informationTextView.setText(String.format(
+                        "%s %s",
+                        monitoringEntity.getModel(),
+                        monitoringEntity.getStateNumber()));
+
+                break;
+            case OFFLINE:
+                layout = inflater.inflate(R.layout.monitoring_activity_map_marker_offline_extended, null);
+
+                informationTextView = (TextView) layout
+                        .findViewById(R.id.monitoring_activity_map_marker_offline_extended_information_text_view);
+                informationTextView.setText(String.format(
+                        "%s %s",
+                        monitoringEntity.getModel(),
+                        monitoringEntity.getStateNumber()));
+
+                break;
+            default: layout = inflater.inflate(R.layout.map_custom_marker_point_offline, null);
+        }
 
         int width = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,

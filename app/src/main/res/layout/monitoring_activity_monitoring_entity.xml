@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Mark:"
+                android:text="@string/monitoring_entity_screen_mark"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Model:"
+                android:text="@string/monitoring_entity_screen_model"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="State number:"
+                android:text="@string/monitoring_entity_screen_state_number"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="ID:"
+                android:text="@string/monitoring_entity_screen_id"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -102,7 +102,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
         android:textStyle="bold"
-        android:text="Current state"
+        android:text="@string/monitoring_entity_screen_current_state"
         style="@style/MonitoringStandardString" />
 
     <TableLayout
@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Status:"
+                android:text="@string/monitoring_entity_screen_status"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Speed:"
+                android:text="@string/monitoring_entity_screen_speed"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -154,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Last Update:"
+                android:text="@string/monitoring_entity_screen_last_update"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -174,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="GSM:"
+                android:text="@string/monitoring_entity_screen_gsm"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -193,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Satellites:"
+                android:text="@string/monitoring_entity_screen_satellites"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -212,7 +212,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Ignition:"
+                android:text="@string/monitoring_entity_screen_ignition"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -232,7 +232,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_gravity="center_horizontal"
-        android:text="Route Report"
+        android:text="@string/monitoring_entity_screen_route_report_button_label"
         android:id="@+id/monitoring_activity_monitoring_entity_route_report_button"
         style="@style/MonitoringMenuGeneralButton" />
 

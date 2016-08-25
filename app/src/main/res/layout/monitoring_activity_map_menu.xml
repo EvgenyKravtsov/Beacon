@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
-            android:text="KGK"
+            android:text="@string/monitoring_kgk_map_label"
             android:id="@+id/monitoring_activity_menu_kgk_map_button"
             style="@style/MonitoringMenuGeneralButton" />
 
@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
-            android:text="Yandex"
+            android:text="@string/monitoring_yandex_map_label"
             android:id="@+id/monitoring_activity_menu_yandex_map_button"
             style="@style/MonitoringMenuGeneralButton" />
 
@@ -46,14 +46,14 @@
             android:layout_weight="1"
             android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
-            android:text="Google"
+            android:text="@string/monitoring_google_map_type"
             android:id="@+id/monitoring_activity_menu_google_map_button"
             style="@style/MonitoringMenuGeneralButton" />
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="Satellite"
+            android:text="@string/monitoring_satellite_map_type"
             android:id="@+id/monitoring_activity_menu_satellite_map_button"
             style="@style/MonitoringMenuGeneralButton" />
 
@@ -72,49 +72,49 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Choose Vehicle"
+                android:text="@string/monitoring_choose_vehicle"
                 android:layout_marginBottom="4dp"
                 android:id="@+id/monitoring_activity_menu_choose_vehicle_button"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Choose Vehicle Group"
+                android:text="@string/monitoring_choose_vehicle_group"
                 android:layout_marginBottom="4dp"
                 android:id="@+id/monitoring_activity_menu_choose_vehicle_group_button"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Route Report Settings"
+                android:text="@string/monitoring_route_report_settings"
                 android:layout_marginBottom="4dp"
                 android:id="@+id/monitoring_activity_menu_route_report_settings_button"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Profile"
+                android:text="@string/monitoring_profile"
                 android:layout_marginBottom="4dp"
                 android:id="@+id/monitoring_activity_menu_profile_button"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Settings"
+                android:text="@string/monitoring_settings"
                 android:layout_marginBottom="4dp"
                 android:id="@+id/monitoring_activity_menu_settings_button"
                 style="@style/MonitoringMenuGeneralButton"/>
 
             <Button
                 android:layout_width="match_parent"
-                android:text="Help"
+                android:text="@string/monitoring_help"
                 android:layout_marginBottom="4dp"
                 android:id="@+id/monitoring_activity_menu_help_button"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button
                 android:layout_width="match_parent"
-                android:text="About"
+                android:text="@string/monitoring_about"
                 android:id="@+id/monitoring_activity_menu_about_button"
                 style="@style/MonitoringMenuGeneralButton" />
 

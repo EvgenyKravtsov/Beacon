@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Start:"
+                android:text="@string/monitoring_route_report_start"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="End:"
+                android:text="@string/monitoring_route_report_end"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -85,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Duration:"
+                android:text="@string/monitoring_route_report_duration"
                 style="@style/MonitoringStandardString" />
 
             <TextView

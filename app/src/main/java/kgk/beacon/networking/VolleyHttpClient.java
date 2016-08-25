@@ -285,13 +285,20 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                                         monitoringEntity.setLastUpdateTimestamp(
                                                 Calendar.getInstance().getTimeInMillis());
 
-                                        // TODO Write status logic
-                                        // IN_MOTION - if speed > 0
-                                        // PARKING - if speed == 0
-                                        // OFFLINE - if current_date - packet_date > 10 min
+                                        long packetDate = dataJson.getLong("packet_date");
+                                        double speed = dataJson.getDouble("speed");
+                                        MonitoringEntityStatus status = MonitoringEntityStatus.IN_MOTION;
 
-                                        monitoringEntity.setStatus(MonitoringEntityStatus.IN_MOTION);
-                                        monitoringEntity.setSpeed(dataJson.getDouble("speed"));
+                                        if (speed < 0.1) status = MonitoringEntityStatus.STOPPED;
+
+                                        if ((Calendar.getInstance().getTimeInMillis() / 1000) -
+                                                packetDate > (10 * 60)) {
+
+                                            status = MonitoringEntityStatus.OFFLINE;
+                                        }
+
+                                        monitoringEntity.setStatus(status);
+                                        monitoringEntity.setSpeed(speed);
                                         monitoringEntity.setGsm("OK");
                                         monitoringEntity.setSatellites(dataJson.getInt("sat"));
                                         monitoringEntity.setDirection(dataJson.getInt("az"));
@@ -360,6 +367,8 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // TODO Notify user
+
+                            Log.d("debug", "Json error");
                         }
                     }
                 },
@@ -367,6 +376,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Notify user
+                        Log.d("debug", "Server error");
                         Log.d("debug", error.toString());
                     }
                 });

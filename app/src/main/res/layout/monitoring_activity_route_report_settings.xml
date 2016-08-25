@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="From:"
+                android:text="@string/monitoring_route_report_settings_screen_from"
                 style="@style/MonitoringStandardString" />
 
             <Button
@@ -37,7 +37,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Date"
                 android:id="@+id/monitoring_activity_route_report_settings_from_date_button"
                 style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
@@ -48,7 +47,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="Time"
                 android:id="@+id/monitoring_activity_route_report_settings_from_time_button"
                 style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
@@ -62,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="To:"
+                android:text="@string/monitoring_route_report_settings_screen_to"
                 style="@style/MonitoringStandardString" />
 
             <Button
@@ -71,7 +69,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Date"
                 android:id="@+id/monitoring_activity_route_report_settings_to_date_button"
                 style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
@@ -82,7 +79,6 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="Time"
                 android:id="@+id/monitoring_activity_route_report_settings_to_time_button"
                 style="@style/MonitoringMenuGeneralButton"
                 tools:ignore="NestedWeights,UnusedAttribute" />
@@ -95,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Extended Settings"
+        android:text="@string/monitoring_route_report_settings_screen_extended_settings"
         android:id="@+id/monitoring_activity_route_report_extended_settings_button"
         style="@style/MonitoringMenuGeneralButton" />
 
@@ -115,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Stop time:"
+                android:text="@string/monitoring_route_report_settings_screen_stop_time"
                 style="@style/MonitoringStandardString" />
 
             <EditText
@@ -124,7 +120,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:inputType="number"
-                android:hint="Seconds"
+                android:hint="@string/monitoring_route_report_settings_screen_stop_time_hint"
                 android:textSize="15sp"
                 android:id="@+id/monitoring_activity_route_report_stop_time_edit_text" />
 
@@ -137,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="No data:"
+                android:text="@string/monitoring_route_report_settings_screen_no_data"
                 style="@style/MonitoringStandardString" />
 
             <CheckBox
@@ -154,7 +150,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Make Report"
+        android:text="@string/monitoring_route_report_settings_screen_make_report_button_label"
         android:id="@+id/monitoring_activity_route_report_make_report_button"
         style="@style/MonitoringMenuGeneralButton" />
 

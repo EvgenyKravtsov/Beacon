@@ -190,7 +190,10 @@ public class MapViewPresenter implements
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (view != null) view.navigateToRouteReportView(routeReport);
+                if (view != null) {
+                    if (routeReport.getDays().size() > 0 ) view.navigateToRouteReportView(routeReport);
+                    else view.notifyNoDataForRouteReport();
+                }
             }
         });
     }

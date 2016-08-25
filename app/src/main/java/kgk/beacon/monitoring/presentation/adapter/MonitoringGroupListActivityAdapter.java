@@ -71,7 +71,7 @@ public class MonitoringGroupListActivityAdapter extends
                 String.format(
                         Locale.ROOT, "%d %s",
                         group.getMonitoringEntities().size(),
-                        "devices"
+                        activity.getString(R.string.monitoring_choose_vehicle_group_screen_devices)
                 )
         );
     }

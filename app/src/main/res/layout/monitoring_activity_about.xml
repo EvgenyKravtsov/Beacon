@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Version:"
+                android:text="@string/monitoring_about_screen_version"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Last update:"
+                android:text="@string/monitoring_about_screen_last_update"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Developer:"
+                android:text="@string/monitoring_about_screen_developer"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_weight="2"
-                android:text="KGK"
+                android:text="@string/monitoring_about_screen_developer_name"
                 style="@style/MonitoringStandardString" />
 
         </TableRow>

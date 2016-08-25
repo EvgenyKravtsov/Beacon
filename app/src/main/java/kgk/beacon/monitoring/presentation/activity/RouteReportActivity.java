@@ -166,11 +166,11 @@ public class RouteReportActivity extends AppCompatActivity
 
     @Override
     public void clearEventDetails() {
-        currentEventTextView.setText("Event type");
-        currentEventDateTextView.setText("--");
-        currentEventSpeedTextView.setText("--");
-        currentEventGsmTextView.setText("--");
-        currenrEventSatellitesTextView.setText("--");
+        currentEventTextView.setText(getString(R.string.monitoring_route_report_event_type));
+        currentEventDateTextView.setText(getString(R.string.monitoring_route_report_empty_field));
+        currentEventSpeedTextView.setText(getString(R.string.monitoring_route_report_empty_field));
+        currentEventGsmTextView.setText(getString(R.string.monitoring_route_report_empty_field));
+        currenrEventSatellitesTextView.setText(getString(R.string.monitoring_route_report_empty_field));
     }
 
     ////

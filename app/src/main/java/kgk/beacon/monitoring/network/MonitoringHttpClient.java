@@ -9,8 +9,6 @@ import kgk.beacon.monitoring.domain.model.User;
 
 public interface MonitoringHttpClient {
 
-    // TODO Write logic for entity status (Moving, Parking, etc.)
-
     interface Listener {
 
         void onUserRetreived(User user);

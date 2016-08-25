@@ -3,6 +3,7 @@ package kgk.beacon.monitoring.presentation.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -176,6 +177,18 @@ public class MapActivity extends AppCompatActivity implements
                         R.drawable.monitoring_menu_map_button_activated_background_selector));
 
         hackedMethod();
+    }
+
+    @Override
+    public void notifyNoDataForRouteReport() {
+        if (progressDialog != null) progressDialog.dismiss();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setMessage(R.string.monitoring_no_data_for_device)
+                .setPositiveButton(android.R.string.ok, null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     ////
@@ -436,7 +449,7 @@ public class MapActivity extends AppCompatActivity implements
     private void toggleProgressDialog(boolean status) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Downloading data");
+            progressDialog.setMessage(getString(R.string.monitoring_downloading_data));
             progressDialog.setIndeterminate(true);
             progressDialog.setCanceledOnTouchOutside(false);
         }

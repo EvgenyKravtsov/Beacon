@@ -85,7 +85,7 @@ public class MonitoringGroupListActivity extends AppCompatActivity
     private void initViews() {
         backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
         actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
-        actionBarTitleTextView.setText("Choose device group");
+        actionBarTitleTextView.setText(R.string.monitoring_choose_vehicle_group_screen_title);
 
         recyclerView = (RecyclerView)
                 findViewById(R.id.monitoring_activity_group_list_recycler_view);

@@ -172,26 +172,6 @@ public class MonitoringListActivityAdapter extends
 
     ////
 
-    private String makeStatusString(MonitoringEntityStatus status) {
-        String statusString;
-
-        switch (status) {
-            case IN_MOTION:
-                statusString = "M";
-                break;
-            case STOPPED:
-                statusString = "S";
-                break;
-            case OFFLINE:
-                statusString = "O";
-                break;
-            default:
-                statusString = "O";
-        }
-
-        return statusString;
-    }
-
     private int makeBackground(boolean active) {
         if (active) return R.drawable.monitoring_menu_map_button_activated_background_selector;
         else return R.drawable.monitoring_general_background_selector;
@@ -215,22 +195,42 @@ public class MonitoringListActivityAdapter extends
 
         String statusString = "";
         switch (status) {
-            case IN_MOTION: statusString = "moving"; break;
-            case STOPPED: statusString = "parking"; break;
-            case OFFLINE: statusString = "offline"; break;
+            case IN_MOTION:
+                statusString = activity
+                        .getString(R.string.monitoring_choose_vehicle_screen_moving_status);
+                break;
+            case STOPPED:
+                statusString = activity
+                    .getString(R.string.monitoring_choose_vehicle_screen_parking_status);
+                break;
+            case OFFLINE:
+                statusString = activity
+                    .getString(R.string.monitoring_choose_vehicle_screen_offline_status);
+                break;
         }
 
         Date date = new Date(lastUpdateTimestamp);
 
-        return String.format("%s, updated %s at %s",
+        return String.format("%s, %s %s %s %s",
                 statusString,
+                activity.getString(R.string.monitoring_choose_vehicle_screen_updated),
                 new SimpleDateFormat("dd.MM").format(date),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_at),
                 new SimpleDateFormat("HH:mm").format(date));
     }
 
     @SuppressLint("NewApi")
     private void prepareDirectionLayout(ViewHolder holder, int direction) {
-        String[] directionLabes = {"NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+        String[] directionLabes = {
+                activity.getString(R.string.monitoring_choose_vehicle_screen_north_east),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_east),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_south_east),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_south),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_south_west),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_west),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_north_west),
+                activity.getString(R.string.monitoring_choose_vehicle_screen_north)};
+
         int degrees = 22;
         if (direction >= 0 && direction < 22) direction += 360;
 

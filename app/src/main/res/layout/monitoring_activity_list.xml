@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sorting"
+                android:text="@string/monitoring_choose_vehicle_screen_sorting"
                 android:textColor="@android:color/black" />
 
             <ImageView
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:text="On map"
+            android:text="@string/monitoring_choose_vehicle_screen_on_map"
             android:textColor="@android:color/black" />
 
     </RelativeLayout>

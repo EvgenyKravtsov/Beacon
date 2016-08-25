@@ -80,13 +80,16 @@ public class MonitoringEntityActivity extends AppCompatActivity implements Monit
         speedTextView.setText(String.format(Locale.ROOT, "%.2f", monitoringEntity.getSpeed()));
 
         Date date = new Date(monitoringEntity.getLastUpdateTimestamp());
-        lastUpdateTextView.setText(String.format("%s at %s",
+        lastUpdateTextView.setText(String.format("%s %s %s",
+                getString(R.string.monitoring_entity_screen_at),
                 new SimpleDateFormat("dd.MM").format(date),
                 new SimpleDateFormat("HH:mm").format(date)));
 
         gsmTextView.setText(monitoringEntity.getGsm());
         satellitesTextView.setText(String.format(Locale.ROOT, "%d", monitoringEntity.getSatellites()));
-        ignitionTextView.setText(monitoringEntity.isEngineIgnited() ? "ON" : "OFF");
+        ignitionTextView.setText(monitoringEntity.isEngineIgnited() ?
+                getString(R.string.monitoring_entity_screen_ignition_on) :
+                getString(R.string.monitoring_entity_screen_ignition_off));
     }
 
     ////
@@ -94,7 +97,7 @@ public class MonitoringEntityActivity extends AppCompatActivity implements Monit
     private void initViews() {
         backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
         actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
-        actionBarTitleTextView.setText("Information");
+        actionBarTitleTextView.setText(R.string.monitoring_entity_screen_title);
 
         markTextView = (TextView)
                 findViewById(R.id.monitoring_activity_monitoring_entity_mark_text_view);
@@ -147,19 +150,21 @@ public class MonitoringEntityActivity extends AppCompatActivity implements Monit
 
     private String makeStatusString(MonitoringEntityStatus status) {
         String statusString;
+
         switch (status) {
             case IN_MOTION:
-                statusString = "Moving";
+                statusString = getString(R.string.monitoring_entity_screen_moving_status);
                 break;
             case STOPPED:
-                statusString = "Parking";
+                statusString = getString(R.string.monitoring_entity_screen_parking_status);
                 break;
             case OFFLINE:
-                statusString = "Offline";
+                statusString = getString(R.string.monitoring_entity_screen_offline_status);
                 break;
             default:
-                statusString = "Offline";
+                statusString = getString(R.string.monitoring_entity_screen_offline_status);
         }
+
         return statusString;
     }
 

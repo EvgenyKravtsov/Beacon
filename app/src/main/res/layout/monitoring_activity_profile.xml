@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Login:"
+                android:text="@string/monitoring_profile_screen_login"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Contacts:"
+                android:text="@string/monitoring_profile_screen_contacts"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Balance:"
+                android:text="@string/monitoring_profile_screen_balance"
                 style="@style/MonitoringStandardString" />
 
             <TextView
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_gravity="center_horizontal"
-        android:text="Sign Out"
+        android:text="@string/monitoring_profile_screen_sign_out_button_label"
         android:id="@+id/monitoring_activity_profile_sign_out_button"
         style="@style/MonitoringMenuGeneralButton" />
 

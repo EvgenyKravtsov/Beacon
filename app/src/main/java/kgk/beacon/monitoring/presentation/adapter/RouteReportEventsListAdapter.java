@@ -1,6 +1,7 @@
 package kgk.beacon.monitoring.presentation.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,12 @@ import kgk.beacon.monitoring.domain.model.routereport.MovingEventSignal;
 import kgk.beacon.monitoring.domain.model.routereport.ParkingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.presentation.view.RouteReportView;
+import kgk.beacon.util.AppController;
 
 public class RouteReportEventsListAdapter
         extends RecyclerView.Adapter<RouteReportEventsListAdapter.ViewHolder> {
 
+    private Context context;
     private RouteReportView view;
     private List<RouteReportEvent> events;
     private boolean isAlreadyLaunched;
@@ -32,6 +35,7 @@ public class RouteReportEventsListAdapter
     public RouteReportEventsListAdapter(
             RouteReportView view,
             List<RouteReportEvent> events) {
+        this.context = AppController.getInstance();
         this.view = view;
         this.events = events;
     }
@@ -56,6 +60,7 @@ public class RouteReportEventsListAdapter
         );
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final RouteReportEvent event = (RouteReportEvent) events.get(position);
@@ -63,17 +68,30 @@ public class RouteReportEventsListAdapter
         holder.startTextView.setText(timestampToTimeString(event.getStartTime()));
         holder.endTextView.setText(timestampToTimeString(event.getEndTime()));
 
+        int hours = (int) event.getDuration() / 3600;
+        String hoursString = hours > 9 ? Integer.toString(hours) : "0" + Integer.toString(hours);
+        int minutes = (int) (event.getDuration() - hours * 3600) / 60;
+        String minutesString = minutes > 9 ? Integer.toString(minutes) : "0" + Integer.toString(minutes);
+        int seconds = (int) (event.getDuration() - hours * 3600 - minutes * 60);
+        String secondsString = seconds > 9 ? Integer.toString(seconds) : "0" + Integer.toString(seconds);
         holder.durationTextView.setText(
-                String.format(Locale.ROOT, "%d seconds", event.getDuration())
+                String.format(Locale.ROOT,
+                        "%s:%s:%s", hoursString, minutesString, secondsString)
         );
 
         if (event instanceof ParkingEvent) {
-            holder.typeTextView.setText("Parking:");
+            holder.typeTextView.setText(String.format(
+                    "%s%s",
+                    context.getString(R.string.monitoring_route_report_parking),
+                    ":"));
             holder.informationTextView.setText(((ParkingEvent) event).getAddress());
         }
 
         if (event instanceof MovingEvent) {
-            holder.typeTextView.setText("Moving:");
+            holder.typeTextView.setText(String.format(
+                    "%s%s",
+                    context.getString(R.string.monitoring_route_report_moving),
+                    ":"));
             holder.informationTextView.setText(((MovingEvent) event).getDetails());
         }
 
@@ -86,7 +104,7 @@ public class RouteReportEventsListAdapter
 
             if (event instanceof ParkingEvent) {
                 view.showEventDetails(
-                        "Parking",
+                        context.getString(R.string.monitoring_route_report_parking),
                         timeStartString + " - " + timeEndString,
                         0,
                         ((ParkingEvent) event).getCsq(),
@@ -94,11 +112,10 @@ public class RouteReportEventsListAdapter
                 );
             }
 
-
             if (event instanceof MovingEvent) {
                 MovingEventSignal signal = ((MovingEvent) event).getSignals().get(0);
                 view.showEventDetails(
-                        "Moving",
+                        context.getString(R.string.monitoring_route_report_moving),
                         timeStartString + " - " + timeEndString,
                         signal.getSpeed(),
                         signal.getCsq(),
@@ -139,7 +156,7 @@ public class RouteReportEventsListAdapter
 
         if (selectedEvent instanceof ParkingEvent) {
             view.showEventDetails(
-                    "Parking",
+                    context.getString(R.string.monitoring_route_report_parking),
                     timeStartString + " - " + timeEndString,
                     0,
                     ((ParkingEvent) selectedEvent).getCsq(),
@@ -151,7 +168,7 @@ public class RouteReportEventsListAdapter
         if (selectedEvent instanceof MovingEvent) {
             MovingEventSignal signal = ((MovingEvent) selectedEvent).getSignals().get(0);
             view.showEventDetails(
-                    "Moving",
+                    context.getString(R.string.monitoring_route_report_moving),
                     timeStartString + " - " + timeEndString,
                     signal.getSpeed(),
                     signal.getCsq(),
@@ -221,7 +238,7 @@ public class RouteReportEventsListAdapter
         if (event instanceof ParkingEvent) {
             view.centerOnParkingEvent((ParkingEvent) event);
             view.showEventDetails(
-                    "Parking",
+                    context.getString(R.string.monitoring_route_report_parking),
                     timeStartString + " - " + timeEndString,
                     0,
                     ((ParkingEvent) event).getCsq(),
@@ -235,7 +252,7 @@ public class RouteReportEventsListAdapter
 
             view.centerOnMovingEvent((MovingEvent) event);
             view.showEventDetails(
-                    "Moving",
+                    context.getString(R.string.monitoring_route_report_moving),
                     timeStartString + " - " + timeEndString,
                     signal.getSpeed(),
                     signal.getCsq(),

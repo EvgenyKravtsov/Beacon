@@ -22,4 +22,6 @@ public interface MapView {
     void navigateToRouteReportView(RouteReport routeReport);
 
     void mapReadyForUse();
+
+    void notifyNoDataForRouteReport();
 }

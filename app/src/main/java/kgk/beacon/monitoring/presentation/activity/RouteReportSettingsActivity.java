@@ -95,6 +95,19 @@ public class RouteReportSettingsActivity extends AppCompatActivity
         if (routeReport != null) startActivity(intent);
     }
 
+    @Override
+    public void notifyNoDataForRouteReport() {
+        if (progressDialog != null) progressDialog.dismiss();
+
+        android.support.v7.app.AlertDialog.Builder builder =
+                new android.support.v7.app.AlertDialog.Builder(this)
+                .setMessage(getString(R.string.monitoring_no_data_for_device))
+                .setPositiveButton(android.R.string.ok, null);
+
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     ////
 
     private void initViews() {
@@ -103,7 +116,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
 
         backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
         actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
-        actionBarTitleTextView.setText("Route report settings");
+        actionBarTitleTextView.setText(R.string.monitoring_route_report_settings_screen_title);
 
         fromDateButton = (Button)
                 findViewById(R.id.monitoring_activity_route_report_settings_from_date_button);
@@ -254,7 +267,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     private void toggleProgressDialog(boolean status) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Downloading data");
+            progressDialog.setMessage(getString(R.string.monitoring_downloading_data));
             progressDialog.setIndeterminate(true);
             progressDialog.setCanceledOnTouchOutside(false);
         }
@@ -282,7 +295,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
 
         new AlertDialog.Builder(this)
                 .setView(datePicketView)
-                .setTitle("From Date")
+                .setTitle(getString(R.string.date_picker_dialog_title))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -327,7 +340,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
 
         new AlertDialog.Builder(this)
                 .setView(datePicketView)
-                .setTitle("To Date")
+                .setTitle(R.string.date_picker_dialog_title)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -373,7 +386,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     private void onMakeReportButtonClick() {
 
         if (!isDatesValid()) {
-            showSnackbar("Dates not valid");
+            showSnackbar(getString(R.string.monitoring_route_report_settings_screen_dates_not_valid));
             return;
         }
 

@@ -226,4 +226,151 @@
     <string name="activity_generator_main_oil_indicator_label">OIL LEVEL</string>
     <string name="activity_generator_history_hours_label">hours</string>
     <string name="activity_generator_history_minutes_label">minutes</string>
+
+    <!-- MONITORING MODULE -->
+
+    <!-- Map screen -->
+    <string name="monitoring_downloading_data">Downloading data</string>
+    <string name="monitoring_kgk_map_label">KGK</string>
+    <string name="monitoring_yandex_map_label">Yandex</string>
+    <string name="monitoring_google_map_type">Google</string>
+    <string name="monitoring_satellite_map_type">Satellite</string>
+    <string name="monitoring_choose_vehicle">Choose Vehicle</string>
+    <string name="monitoring_choose_vehicle_group">Choose Vehicle Group</string>
+    <string name="monitoring_route_report_settings">Route Report Settings</string>
+    <string name="monitoring_profile">Profile</string>
+    <string name="monitoring_settings">Settings</string>
+    <string name="monitoring_help">Help</string>
+    <string name="monitoring_about">About</string>
+    <string name="monitoring_no_data_for_device">No data for device</string>
+
+    <!-- Route report screen -->
+    <string name="monitoring_route_report_event_type">Event type</string>
+    <string name="monitoring_route_report_speed">Speed</string>
+    <string name="monitoring_route_report_satellites">Satellites</string>
+    <string name="monitoring_route_report_gsm">GSM</string>
+    <string name="monitoring_route_report_empty_field">--</string>
+    <string name="monitoring_route_report_default_seekbar_time">00:00</string>
+    <string name="monitoring_route_report_start">Start:</string>
+    <string name="monitoring_route_report_end">End:</string>
+    <string name="monitoring_route_report_duration">Duration:</string>
+    <string name="monitoring_route_report_parking">Parking</string>
+    <string name="monitoring_route_report_moving">Moving</string>
+
+    <!-- Monitoring entity screen -->
+    <string name="monitoring_entity_screen_mark">Mark:</string>
+    <string name="monitoring_entity_screen_model">Model:</string>
+    <string name="monitoring_entity_screen_state_number">State number:</string>
+    <string name="monitoring_entity_screen_id">ID:</string>
+    <string name="monitoring_entity_screen_current_state">Current state</string>
+    <string name="monitoring_entity_screen_status">Status:</string>
+    <string name="monitoring_entity_screen_speed">Speed:</string>
+    <string name="monitoring_entity_screen_last_update">Last Update:</string>
+    <string name="monitoring_entity_screen_gsm">GSM:</string>
+    <string name="monitoring_entity_screen_satellites">Satellites:</string>
+    <string name="monitoring_entity_screen_ignition">Ignition:</string>
+    <string name="monitoring_entity_screen_route_report_button_label">Route Report</string>
+    <string name="monitoring_entity_screen_at">at</string>
+    <string name="monitoring_entity_screen_ignition_on">ON</string>
+    <string name="monitoring_entity_screen_ignition_off">OFF</string>
+    <string name="monitoring_entity_screen_title">Information</string>
+    <string name="monitoring_entity_screen_moving_status">Moving</string>
+    <string name="monitoring_entity_screen_parking_status">Parking</string>
+    <string name="monitoring_entity_screen_offline_status">Offline</string>
+
+    <!-- Choose vehicle screen -->
+    <string name="monitoring_choose_vehicle_screen_sorting">Sorting</string>
+    <string name="monitoring_choose_vehicle_screen_on_map">On map</string>
+    <string name="monitoring_choose_vehicle_screen_title">Choose device</string>
+    <string name="monitoring_choose_vehicle_screen_moving_status">moving</string>
+    <string name="monitoring_choose_vehicle_screen_parking_status">parking</string>
+    <string name="monitoring_choose_vehicle_screen_offline_status">offline</string>
+    <string name="monitoring_choose_vehicle_screen_updated">updated</string>
+    <string name="monitoring_choose_vehicle_screen_at">at</string>
+    <string name="monitoring_choose_vehicle_screen_north_east">NE</string>
+    <string name="monitoring_choose_vehicle_screen_east">E</string>
+    <string name="monitoring_choose_vehicle_screen_south_east">SE</string>
+    <string name="monitoring_choose_vehicle_screen_south">S</string>
+    <string name="monitoring_choose_vehicle_screen_south_west">SW</string>
+    <string name="monitoring_choose_vehicle_screen_west">W</string>
+    <string name="monitoring_choose_vehicle_screen_north_west">NW</string>
+    <string name="monitoring_choose_vehicle_screen_north">N</string>
+    <string name="monitoring_choose_vehicle_screen_alphabet">Alphabet</string>
+    <string name="monitoring_choose_vehicle_screen_status">Status</string>
+
+    <!-- Choose vehicle group screen -->
+    <string name="monitoring_choose_vehicle_group_screen_devices">devices</string>
+    <string name="monitoring_choose_vehicle_group_screen_title">Choose device group</string>
+    <string name="monitoring_choose_vehicle_group_screen_show_all_devices_button_label">Show all devices</string>
+
+    <!-- Route report settings screen -->
+    <string name="monitoring_route_report_settings_screen_from">From:</string>
+    <string name="monitoring_route_report_settings_screen_to">To:</string>
+    <string name="monitoring_route_report_settings_screen_extended_settings">Extended Settings</string>
+    <string name="monitoring_route_report_settings_screen_stop_time">Stop time:</string>
+    <string name="monitoring_route_report_settings_screen_stop_time_hint">Seconds</string>
+    <string name="monitoring_route_report_settings_screen_no_data">No data:</string>
+    <string name="monitoring_route_report_settings_screen_make_report_button_label">Make Report</string>
+    <string name="monitoring_route_report_settings_screen_title">Route report settings</string>
+    <string name="monitoring_route_report_settings_screen_dates_not_valid">Dates not valid</string>
+
+    <!-- Profile screen -->
+    <string name="monitoring_profile_screen_rub">rub.</string>
+    <string name="monitoring_profile_screen_title">Profile</string>
+    <string name="monitoring_profile_screen_login">Login:</string>
+    <string name="monitoring_profile_screen_contacts">Contacts:</string>
+    <string name="monitoring_profile_screen_balance">Balance:</string>
+    <string name="monitoring_profile_screen_sign_out_button_label">Sign Out</string>
+
+    <!-- Settings screen -->
+    <string name="monitoring_settings_screen_map">Map:</string>
+    <string name="monitoring_settings_screen_kgk">KGK</string>
+    <string name="monitoring_settings_screen_yandex">Yandex</string>
+    <string name="monitoring_settings_screen_google">Google</string>
+    <string name="monitoring_settings_screen_satellite">Satellite</string>
+    <string name="monitoring_settings_screen_additional_marker_info">Additional\nmarker info:</string>
+    <string name="monitoring_settings_screen_title">Settings</string>
+
+    <!-- Help screen -->
+    <string name="monitoring_help_screen_title">Help</string>
+
+    <!-- About screen -->
+    <string name="monitoring_about_screen_title">About</string>
+    <string name="monitoring_about_screen_app_version_not_found">----</string>
+    <string name="monitoring_about_screen_version">Version:</string>
+    <string name="monitoring_about_screen_last_update">Last update:</string>
+    <string name="monitoring_about_screen_developer">Developer:</string>
+    <string name="monitoring_about_screen_developer_name">KGK</string>
+
 </resources>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

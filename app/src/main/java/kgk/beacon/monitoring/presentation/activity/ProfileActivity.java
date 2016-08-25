@@ -70,7 +70,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
                 "tincidunt nisl at leo facilisis euismod. Maecenas bibendum aliquam scelerisque. " +
                 "Cras pharetra eros a aliquam volutpat. Ut nec suscipit augue, vitae ullamcorper mi.");
         //contactsTextView.setText(user.getContacts());
-        balanceTextView.setText(String.format(Locale.ROOT, "%.2f rub.", user.getBalance()));
+        balanceTextView.setText(String.format(Locale.ROOT,
+                "%.2f %s",
+                user.getBalance(),
+                getString(R.string.monitoring_profile_screen_rub)));
     }
 
     ////
@@ -78,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
     private void initViews() {
         backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
         actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
-        actionBarTitleTextView.setText("Profile");
+        actionBarTitleTextView.setText(R.string.monitoring_profile_screen_title);
 
         loginTextView = (TextView)
                 findViewById(R.id.monitoring_activity_profile_login_text_view);

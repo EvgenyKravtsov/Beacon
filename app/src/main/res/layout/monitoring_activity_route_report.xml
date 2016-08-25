@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Event type"
+                        android:text="@string/monitoring_route_report_event_type"
                         android:id="@+id/monitoring_activity_route_report_current_event_text_view"
                         style="@style/MonitoringStandardString"
                         tools:text="Moving" />
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Speed"
+                        android:text="@string/monitoring_route_report_speed"
                         style="@style/MonitoringStandardString" />
 
                     <TextView
@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Satellites"
+                        android:text="@string/monitoring_route_report_satellites"
                         style="@style/MonitoringStandardString" />
 
                     <TextView
@@ -128,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="GSM"
+                        android:text="@string/monitoring_route_report_gsm"
                         android:visibility="gone"
                         style="@style/MonitoringStandardString" />
 
@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="--"
+                        android:text="@string/monitoring_route_report_empty_field"
                         android:id="@+id/monitoring_activity_route_report_current_event_date_text_view"
                         style="@style/MonitoringStandardString"
                         tools:text="01:45 - 19:45" />
@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="--"
+                        android:text="@string/monitoring_route_report_empty_field"
                         android:id="@+id/monitoring_activity_route_report_current_event_speed_text_view"
                         style="@style/MonitoringStandardString"
                         tools:text="156 km/h" />
@@ -162,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="--"
+                        android:text="@string/monitoring_route_report_empty_field"
                         android:id="@+id/monitoring_activity_route_report_current_event_satellites_text_view"
                         style="@style/MonitoringStandardString"
                         tools:text="8" />
@@ -173,7 +173,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:visibility="gone"
-                        android:text="--"
+                        android:text="@string/monitoring_route_report_empty_field"
                         android:id="@+id/monitoring_activity_route_report_current_event_gsm_text_view"
                         style="@style/MonitoringStandardString"
                         tools:text="75" />
@@ -200,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:gravity="center_horizontal"
-                    android:text="00:00"
+                    android:text="@string/monitoring_route_report_default_seekbar_time"
                     android:id="@+id/onitoring_activity_route_report_date_seek_bar_title"
                     style="@style/ListItemSubString"
                     tools:text="22:22"

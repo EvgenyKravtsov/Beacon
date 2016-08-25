@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Alphabet"
+        android:title="@string/monitoring_choose_vehicle_screen_alphabet"
         android:id="@+id/monitoring_sorting_mode_alphabet" />
 
     <item
-        android:title="Status"
+        android:title="@string/monitoring_choose_vehicle_screen_status"
         android:id="@+id/monitoring_sorting_mode_status" />
 
 </menu>

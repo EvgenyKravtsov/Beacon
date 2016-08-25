@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/map_custom_marker_point_offline_background" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:gravity="center_vertical"
+        android:padding="2dp"
+        android:textSize="17sp"
+        android:textColor="#80000000"
+        android:background="#80FFFFFF"
+        android:id="@+id/monitoring_activity_map_marker_offline_extended_information_text_view"
+        tools:text="Logan 1rpr34552" />
+
+</LinearLayout>

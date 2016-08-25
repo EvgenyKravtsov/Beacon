@@ -33,7 +33,7 @@ public class AboutActivity extends AppCompatActivity {
     private void initViews() {
         backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
         actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
-        actionBarTitleTextView.setText("About");
+        actionBarTitleTextView.setText(R.string.monitoring_about_screen_title);
 
         versionTextView = (TextView) findViewById(R.id.monitoring_activity_about_version_text_view);
         versionTextView.setText(getAppVersion());
@@ -56,7 +56,7 @@ public class AboutActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        return "----";
+        return getString(R.string.monitoring_about_screen_app_version_not_found);
     }
 
     //// Control callbacks

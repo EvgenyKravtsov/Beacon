@@ -223,4 +223,120 @@
     <string name="activity_generator_main_oil_indicator_label">УРОВЕНЬ МАСЛА</string>
     <string name="activity_generator_history_hours_label">часов</string>
     <string name="activity_generator_history_minutes_label">минут</string>
+
+    <!-- MONITORING MODULE -->
+
+    <!-- Map screen -->
+    <string name="monitoring_downloading_data">Загрузка данных</string>
+    <string name="monitoring_kgk_map_label">КГК</string>
+    <string name="monitoring_yandex_map_label">Яндекс</string>
+    <string name="monitoring_google_map_type">Google</string>
+    <string name="monitoring_satellite_map_type">Спутник</string>
+    <string name="monitoring_choose_vehicle">Выбор ТС</string>
+    <string name="monitoring_choose_vehicle_group">Выбор группы ТС</string>
+    <string name="monitoring_route_report_settings">Настройки детального отчета</string>
+    <string name="monitoring_profile">Профиль</string>
+    <string name="monitoring_settings">Настройки</string>
+    <string name="monitoring_help">Помощь</string>
+    <string name="monitoring_about">О приложении</string>
+    <string name="monitoring_no_data_for_device">Нет данных по устройству</string>
+
+    <!-- Route report screen -->
+    <string name="monitoring_route_report_event_type">Событие</string>
+    <string name="monitoring_route_report_speed">Скорость</string>
+    <string name="monitoring_route_report_satellites">Спутники</string>
+    <string name="monitoring_route_report_gsm">GSM</string>
+    <string name="monitoring_route_report_empty_field">--</string>
+    <string name="monitoring_route_report_default_seekbar_time">00:00</string>
+    <string name="monitoring_route_report_start">Начало:</string>
+    <string name="monitoring_route_report_end">Конец:</string>
+    <string name="monitoring_route_report_duration">Длительность:</string>
+    <string name="monitoring_route_report_parking">Стоянка</string>
+    <string name="monitoring_route_report_moving">Движение</string>
+
+    <!-- Monitoring entity screen -->
+    <string name="monitoring_entity_screen_mark">Марка:</string>
+    <string name="monitoring_entity_screen_model">Модель:</string>
+    <string name="monitoring_entity_screen_state_number">Гос. номер:</string>
+    <string name="monitoring_entity_screen_id">ID:</string>
+    <string name="monitoring_entity_screen_current_state">Текущее состояние</string>
+    <string name="monitoring_entity_screen_status">Статус:</string>
+    <string name="monitoring_entity_screen_speed">Скорость:</string>
+    <string name="monitoring_entity_screen_last_update">Последнее обновление:</string>
+    <string name="monitoring_entity_screen_gsm">GSM:</string>
+    <string name="monitoring_entity_screen_satellites">Спутники:</string>
+    <string name="monitoring_entity_screen_ignition">Зажигание:</string>
+    <string name="monitoring_entity_screen_route_report_button_label">Детальный отчет</string>
+    <string name="monitoring_entity_screen_at">в</string>
+    <string name="monitoring_entity_screen_ignition_on">ВКЛ</string>
+    <string name="monitoring_entity_screen_ignition_off">ВЫКЛ</string>
+    <string name="monitoring_entity_screen_title">Информация</string>
+    <string name="monitoring_entity_screen_moving_status">Движение</string>
+    <string name="monitoring_entity_screen_parking_status">Стоянка</string>
+    <string name="monitoring_entity_screen_offline_status">Не в сети</string>
+
+    <!-- Choose vehicle screen -->
+    <string name="monitoring_choose_vehicle_screen_sorting">Сортировка</string>
+    <string name="monitoring_choose_vehicle_screen_on_map">На карте</string>
+    <string name="monitoring_choose_vehicle_screen_title">Выбор ТС</string>
+    <string name="monitoring_choose_vehicle_screen_moving_status">движение</string>
+    <string name="monitoring_choose_vehicle_screen_parking_status">стоянка</string>
+    <string name="monitoring_choose_vehicle_screen_offline_status">не в сети</string>
+    <string name="monitoring_choose_vehicle_screen_updated">обновлено</string>
+    <string name="monitoring_choose_vehicle_screen_at">в</string>
+    <string name="monitoring_choose_vehicle_screen_north_east">СВ</string>
+    <string name="monitoring_choose_vehicle_screen_east">В</string>
+    <string name="monitoring_choose_vehicle_screen_south_east">ЮВ</string>
+    <string name="monitoring_choose_vehicle_screen_south">Ю</string>
+    <string name="monitoring_choose_vehicle_screen_south_west">ЮЗ</string>
+    <string name="monitoring_choose_vehicle_screen_west">З</string>
+    <string name="monitoring_choose_vehicle_screen_north_west">СЗ</string>
+    <string name="monitoring_choose_vehicle_screen_north">С</string>
+    <string name="monitoring_choose_vehicle_screen_alphabet">По алфавиту</string>
+    <string name="monitoring_choose_vehicle_screen_status">По состоянию</string>
+
+    <!-- Choose vehicle group screen -->
+    <string name="monitoring_choose_vehicle_group_screen_devices">устройства</string>
+    <string name="monitoring_choose_vehicle_group_screen_title">Выбор группы ТС</string>
+    <string name="monitoring_choose_vehicle_group_screen_show_all_devices_button_label">Показать все устройства</string>
+
+    <!-- Route report settings screen -->
+    <string name="monitoring_route_report_settings_screen_from">С:</string>
+    <string name="monitoring_route_report_settings_screen_to">По:</string>
+    <string name="monitoring_route_report_settings_screen_extended_settings">Дополнительные настройки</string>
+    <string name="monitoring_route_report_settings_screen_stop_time">Длительность стоянки:</string>
+    <string name="monitoring_route_report_settings_screen_stop_time_hint">Секунды</string>
+    <string name="monitoring_route_report_settings_screen_no_data">Нет данных:</string>
+    <string name="monitoring_route_report_settings_screen_make_report_button_label">Построить отчет</string>
+    <string name="monitoring_route_report_settings_screen_title">Настройки детального отчета</string>
+    <string name="monitoring_route_report_settings_screen_dates_not_valid">Неверно указаны даты</string>
+
+    <!-- Profile screen -->
+    <string name="monitoring_profile_screen_rub">руб.</string>
+    <string name="monitoring_profile_screen_title">Профиль</string>
+    <string name="monitoring_profile_screen_login">Имя пользователя:</string>
+    <string name="monitoring_profile_screen_contacts">Контакты:</string>
+    <string name="monitoring_profile_screen_balance">Баланс:</string>
+    <string name="monitoring_profile_screen_sign_out_button_label">Выйти из аккаунта</string>
+
+    <!-- Settings screen -->
+    <string name="monitoring_settings_screen_map">Карта:</string>
+    <string name="monitoring_settings_screen_kgk">КГК</string>
+    <string name="monitoring_settings_screen_yandex">Яндекс</string>
+    <string name="monitoring_settings_screen_google">Google</string>
+    <string name="monitoring_settings_screen_satellite">Спутник</string>
+    <string name="monitoring_settings_screen_additional_marker_info">Отображать маркеры\nс дополнительной\nинформацией:</string>
+    <string name="monitoring_settings_screen_title">Настройки</string>
+
+    <!-- Help screen -->
+    <string name="monitoring_help_screen_title">Помощь</string>
+
+    <!-- About screen -->
+    <string name="monitoring_about_screen_title">О приложении</string>
+    <string name="monitoring_about_screen_app_version_not_found">----</string>
+    <string name="monitoring_about_screen_version">Версия:</string>
+    <string name="monitoring_about_screen_last_update">Последнее обновление:</string>
+    <string name="monitoring_about_screen_developer">Разработчик:</string>
+    <string name="monitoring_about_screen_developer_name">КГК</string>
+
 </resources>

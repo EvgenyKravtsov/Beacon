@@ -95,7 +95,7 @@ public class MonitoringListActivity extends AppCompatActivity implements Monitor
     private void initViews() {
         backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
         actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
-        actionBarTitleTextView.setText("Choose device");
+        actionBarTitleTextView.setText(R.string.monitoring_choose_vehicle_screen_title);
 
         recyclerView = (RecyclerView) findViewById(R.id.monitoring_activity_list_recycler_view);
         searchView = (SearchView) findViewById(R.id.monitoring_activity_list_search_view);

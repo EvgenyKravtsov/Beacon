@@ -30,7 +30,7 @@ public class HelpActivity extends AppCompatActivity {
     private void initViews() {
         backButton = (FrameLayout) findViewById(R.id.monitoring_action_bar_back_button);
         actionBarTitleTextView = (TextView) findViewById(R.id.monitoring_action_bar_title_text_view);
-        actionBarTitleTextView.setText("Help");
+        actionBarTitleTextView.setText(R.string.monitoring_help_screen_title);
     }
 
     private void initListeners() {

@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Map:"
+                android:text="@string/monitoring_settings_screen_map"
                 style="@style/MonitoringStandardString" />
 
             <RadioGroup
@@ -35,25 +35,25 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="KGK"
+                    android:text="@string/monitoring_settings_screen_kgk"
                     android:id="@+id/monitoring_activity_settings_marker_kgk_radio_button"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yandex"
+                    android:text="@string/monitoring_settings_screen_yandex"
                     android:id="@+id/monitoring_activity_settings_marker_yandex_radio_button"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Google"
+                    android:text="@string/monitoring_settings_screen_google"
                     android:id="@+id/monitoring_activity_settings_marker_google_radio_button"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Satellite"
+                    android:text="@string/monitoring_settings_screen_satellite"
                     android:id="@+id/monitoring_activity_settings_marker_satellite_radio_button"/>
 
             </RadioGroup>
@@ -66,8 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Additional\nmarker info:"
-                android:maxLines="2"
+                android:text="@string/monitoring_settings_screen_additional_marker_info"
+                android:maxLines="3"
                 style="@style/MonitoringStandardString" />
 
             <CheckBox
