@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:id="@+id/monitoring_activity_route_report_slider"
+    sothree:umanoPanelHeight="180dp"
+    sothree:umanoFadeColor="@android:color/transparent"
+    sothree:umanoDragView="@+id/monitoring_activity_route_report_slider_drag_area">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/monitoring_activity_route_report_google_map" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:src="@drawable/monitoring_zoom_in_button_icon"
+                android:id="@+id/monitoring_activity_route_report_zoom_in_button"
+                style="@style/MonitoringMapButton" />
+
+            <ImageButton
+                android:src="@drawable/monitoring_zoom_out_button_icon"
+                android:id="@+id/monitoring_activity_route_report_zoom_out_button"
+                style="@style/MonitoringMapButton" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/monitoring_map_back_button_icon"
+            android:id="@+id/monitoring_activity_route_report_back_button"
+            style="@style/MonitoringMapButton" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/monitoring_light_gray"
+            android:id="@+id/monitoring_activity_route_report_days_recycler_view_container">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:overScrollMode="never"
+                android:id="@+id/monitoring_activity_route_report_days_recycler_view" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/standard_horizontal_padding"
+            android:paddingStart="@dimen/standard_horizontal_padding"
+            android:paddingRight="@dimen/standard_horizontal_padding"
+            android:paddingEnd="@dimen/standard_horizontal_padding"
+            android:id="@+id/monitoring_activity_route_report_detailed_menu_layout">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:shrinkColumns="1"
+                android:id="@+id/monitoring_activity_route_report_slider_drag_area">
+
+
+                <TableRow android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/monitoring_route_report_event_type"
+                        android:id="@+id/monitoring_activity_route_report_current_event_text_view"
+                        style="@style/MonitoringStandardString"
+                        tools:text="Moving" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/monitoring_route_report_speed"
+                        style="@style/MonitoringStandardString" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/monitoring_route_report_satellites"
+                        style="@style/MonitoringStandardString" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/monitoring_route_report_gsm"
+                        android:visibility="gone"
+                        style="@style/MonitoringStandardString" />
+
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/monitoring_route_report_empty_field"
+                        android:id="@+id/monitoring_activity_route_report_current_event_date_text_view"
+                        style="@style/MonitoringStandardString"
+                        tools:text="01:45 - 19:45" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/monitoring_route_report_empty_field"
+                        android:id="@+id/monitoring_activity_route_report_current_event_speed_text_view"
+                        style="@style/MonitoringStandardString"
+                        tools:text="156 km/h" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/monitoring_route_report_empty_field"
+                        android:id="@+id/monitoring_activity_route_report_current_event_satellites_text_view"
+                        style="@style/MonitoringStandardString"
+                        tools:text="8" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="@string/monitoring_route_report_empty_field"
+                        android:id="@+id/monitoring_activity_route_report_current_event_gsm_text_view"
+                        style="@style/MonitoringStandardString"
+                        tools:text="75" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="86399000"
+                    android:id="@+id/monitoring_activity_route_report_date_seek_bar" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="center_horizontal"
+                    android:text="@string/monitoring_route_report_default_seekbar_time"
+                    android:id="@+id/onitoring_activity_route_report_date_seek_bar_title"
+                    style="@style/ListItemSubString"
+                    tools:text="22:22"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:id="@+id/monitoring_activity_route_report_events_list_view" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

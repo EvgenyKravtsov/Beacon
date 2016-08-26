@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,6 +150,8 @@ public class MonitoringListActivityAdapter extends
                         monitoringEntity.isDisplayEnabled() ?
                                 R.drawable.monitoring_list_item_active_background_selector :
                                 R.drawable.monitoring_general_background_selector);
+
+                holder.informationLayout.setPadding(8, 8, 8, 8);
             }
         });
 
@@ -163,6 +166,7 @@ public class MonitoringListActivityAdapter extends
                 monitoringEntity.isDisplayEnabled() ?
                 R.drawable.monitoring_list_item_active_background_selector :
                 R.drawable.monitoring_general_background_selector);
+        holder.informationLayout.setPadding(8, 8, 8, 8);
     }
 
     @Override
@@ -219,7 +223,6 @@ public class MonitoringListActivityAdapter extends
                 new SimpleDateFormat("HH:mm").format(date));
     }
 
-    @SuppressLint("NewApi")
     private void prepareDirectionLayout(ViewHolder holder, int direction) {
         String[] directionLabes = {
                 activity.getString(R.string.monitoring_choose_vehicle_screen_north_east),
@@ -239,7 +242,9 @@ public class MonitoringListActivityAdapter extends
 
             if (direction >= degrees && direction < degreesLimit) {
                 holder.directionTextView.setText(directionLabes[i]);
-                holder.directionImageView.setRotation(degreesLimit - (45 / 2));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                    holder.directionImageView.setRotation(degreesLimit - (45 / 2));
+                else holder.directionImageView.setVisibility(View.GONE);
             }
 
             degrees += 45;

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginEnd="2dp"
+    android:layout_marginBottom="4dp"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:id="@+id/monitoring_activity_route_report_days_list_item_layout">
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/monitoring_activity_route_report_days_list_item_day_enabled_check_box"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
+        android:textSize="15sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/monitoring_activity_route_report_days_list_item_date_text_view"
+        tools:text="4 July" />
+
+</LinearLayout>

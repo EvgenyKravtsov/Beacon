@@ -66,6 +66,7 @@ public class RouteReportDaysListAdapter
                     ((Activity) view).getResources().getDrawable(
                             R.drawable.monitoring_general_background_selector));
         }
+        holder.itemLayout.setPadding(8, 8, 8, 8);
 
         holder.dayEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -137,6 +138,8 @@ public class RouteReportDaysListAdapter
                 ((Activity) view).getResources().getDrawable(
                         R.drawable.monitoring_menu_map_button_activated_background_selector)
         );
+
+        holder.itemLayout.setPadding(8, 8, 8, 8);
 
         view.selectDay(date);
     }

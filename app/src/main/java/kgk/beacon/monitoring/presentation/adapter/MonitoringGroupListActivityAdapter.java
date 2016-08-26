@@ -65,6 +65,7 @@ public class MonitoringGroupListActivityAdapter extends
                 activeGroup != null &&
                         activeGroup.getName().equals(group.getName())
         ));
+        holder.layout.setPadding(8, 8, 8, 8);
 
         holder.nameTextView.setText(group.getName());
         holder.countTextView.setText(

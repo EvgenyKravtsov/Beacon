@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="63dp"
+    android:layout_margin="2dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/monitoring_activity_list_item_hide_button"
+        android:layout_toStartOf="@+id/monitoring_activity_list_item_hide_button"
+        android:padding="8dp"
+        android:background="@drawable/monitoring_general_background_selector"
+        android:id="@+id/monitoring_activity_list_item_linear_information_layout"
+        tools:ignore="RelativeOverlap">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/monitoring_activity_list_item_name_text_view"
+                style="@style/MonitoringStandardString"
+                tools:text="Model Name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/monitoring_activity_list_item_date_text_view"
+                style="@style/ListItemSubString"
+                tools:text="15/23/2067 15:56:45" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/monitoring_entity_direction_icon"
+                android:id="@+id/monitoring_activity_list_item_direction_image_view" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="15sp"
+                android:textColor="@color/actis_app_text_color_hint"
+                android:id="@+id/monitoring_activity_list_item_direction_text_view"
+                tools:text="NE" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/monitoring_general_background_selector"
+        android:id="@+id/monitoring_activity_list_item_hide_button" />
+
+</RelativeLayout>
