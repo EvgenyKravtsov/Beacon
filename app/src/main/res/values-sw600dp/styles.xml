@@ -8,27 +8,11 @@
     </style>
 
     <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-
         <item name="colorAccent">@color/actis_app_green_accent</item>
-
-        <item name="android:dialogTheme"
-            tools:ignore="NewApi">@style/NoActionBarTheme.Dialog</item>
-        <item name="dialogTheme">@style/NoActionBarTheme.Dialog</item>
-        <item name="android:alertDialogTheme"
-            tools:ignore="NewApi">@style/NoActionBarTheme.Dialog</item>
-        <item name="alertDialogTheme">@style/NoActionBarTheme.Dialog</item>
     </style>
 
     <style name="MonitoringModuleTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">#FF666666</item>
-
-        <item name="android:dialogTheme"
-            tools:ignore="NewApi">@style/MonitoringModuleTheme.Dialog</item>
-        <item name="dialogTheme">@style/MonitoringModuleTheme.Dialog</item>
-        <item name="android:alertDialogTheme"
-            tools:ignore="NewApi">@style/MonitoringModuleTheme.Dialog</item>
-        <item name="alertDialogTheme">@style/MonitoringModuleTheme.Dialog</item>
     </style>
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
@@ -85,10 +69,6 @@
         <item name="android:dayOfWeekBackground">@color/actis_app_green_accent</item>
     </style>
 
-    <style name="NoActionBarTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/actis_app_green_accent</item>
-    </style>
-
     <!-- MONITORING MODULE -->
 
     <style name="MonitoringMapButton">
@@ -102,10 +82,6 @@
         <item name="android:textAllCaps" tools:ignore="NewApi">false</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="MonitoringModuleTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/monitoring_dark_gray</item>
     </style>
 
     <style name="MonitoringStandardString">

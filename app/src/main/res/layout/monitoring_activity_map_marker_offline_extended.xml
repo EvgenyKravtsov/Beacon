@@ -8,8 +8,8 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
         android:src="@drawable/map_custom_marker_point_offline_background" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_marginStart="4dp"
         android:gravity="center_vertical"
         android:padding="2dp"
-        android:textSize="17sp"
+        android:textSize="7sp"
         android:textColor="#80000000"
         android:background="#80FFFFFF"
         android:id="@+id/monitoring_activity_map_marker_offline_extended_information_text_view"

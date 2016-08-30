@@ -458,6 +458,15 @@ public class MapActivity extends AppCompatActivity implements
         else progressDialog.dismiss();
     }
 
+    private void notifyNoInternetAvailable() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setMessage(R.string.no_internet_connection_message)
+                .setPositiveButton(android.R.string.ok, null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     //// Control callbacks
 
     private void onTrafficButtonClick() {
@@ -551,6 +560,11 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void onQuickReportButtonClick() {
+        if (!presenter.isInternetAvailable()) {
+            notifyNoInternetAvailable();
+            return;
+        }
+
         toggleProgressDialog(true);
         presenter.requestQuickReport();
     }

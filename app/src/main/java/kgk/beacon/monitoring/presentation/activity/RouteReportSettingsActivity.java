@@ -281,6 +281,10 @@ public class RouteReportSettingsActivity extends AppCompatActivity
         snackbar.show();
     }
 
+    private void notifyNoInternetAvailable() {
+        showSnackbar(getString(R.string.no_internet_connection_message));
+    }
+
     //// Control callbacks
 
     private void onBackButtonClick() {
@@ -384,9 +388,13 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     }
 
     private void onMakeReportButtonClick() {
-
         if (!isDatesValid()) {
             showSnackbar(getString(R.string.monitoring_route_report_settings_screen_dates_not_valid));
+            return;
+        }
+
+        if (!presenter.isInternetAvailable()) {
+            notifyNoInternetAvailable();
             return;
         }
 

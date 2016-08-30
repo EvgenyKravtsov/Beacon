@@ -47,6 +47,8 @@ public class GoogleMapAdapter implements
         GoogleMap.OnCameraChangeListener,
         GoogleMap.OnMarkerClickListener {
 
+    private static final int MARKER_SIZE = 13;
+
     private final kgk.beacon.monitoring.presentation.view.MapView mapView;
     private final MapView googleMapView;
 
@@ -90,6 +92,7 @@ public class GoogleMapAdapter implements
         long id = monitoringEntity.getId();
 
         MarkerOptions markerOptions;
+
         if (markersExtended) markerOptions = generateCustomMarkerExtended(monitoringEntity);
         else markerOptions = generateCustomMarker(monitoringEntity);
 
@@ -308,11 +311,11 @@ public class GoogleMapAdapter implements
 
         int width = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                25,
+                MARKER_SIZE,
                 context.getResources().getDisplayMetrics());
         int height = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                25,
+                MARKER_SIZE,
                 context.getResources().getDisplayMetrics());
 
         Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);
@@ -327,6 +330,7 @@ public class GoogleMapAdapter implements
         View layout;
         ImageView arrow;
         TextView informationTextView;
+
         switch (monitoringEntity.getStatus()) {
             case IN_MOTION:
                 layout = inflater.inflate(R.layout.monitoring_activity_map_marker_extended, null);
@@ -379,7 +383,7 @@ public class GoogleMapAdapter implements
                 context.getResources().getDisplayMetrics());
         int height = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                25,
+                MARKER_SIZE,
                 context.getResources().getDisplayMetrics());
 
         Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);

@@ -9,4 +9,6 @@ public interface MonitoringGroupListView {
     void showMonitoringEntityGroups(
             List<MonitoringEntityGroup> groups,
             MonitoringEntityGroup activeGroup);
+
+    void toggleDownloadDataProgressDialog(boolean status);
 }

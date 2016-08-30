@@ -1,5 +1,6 @@
 package kgk.beacon.monitoring.presentation.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -29,6 +30,8 @@ public class MonitoringGroupListActivity extends AppCompatActivity
     private TextView actionBarTitleTextView;
     private RecyclerView recyclerView;
     private Button allButton;
+
+    ProgressDialog progressDialog;
 
     private MonitoringGroupListViewPresenter presenter;
     private MonitoringGroupListActivityAdapter adapter;
@@ -74,10 +77,23 @@ public class MonitoringGroupListActivity extends AppCompatActivity
         this.monitoringEntityGroups = groups;
         this.activeMonitoringEntityGroup = activeGroup;
 
-        adapter = new MonitoringGroupListActivityAdapter(this);
+        adapter = new MonitoringGroupListActivityAdapter(this, this);
         adapter.setGroups(this.monitoringEntityGroups);
         adapter.setActiveGroup(this.activeMonitoringEntityGroup);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void toggleDownloadDataProgressDialog(boolean status) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.monitoring_downloading_data));
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+
+        if (status) progressDialog.show();
+        else progressDialog.dismiss();
     }
 
     ////

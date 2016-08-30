@@ -14,9 +14,14 @@ import java.util.List;
 import java.util.Locale;
 
 import kgk.beacon.R;
+import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
+import kgk.beacon.monitoring.domain.interactor.SetActiveMonitoringEntity;
 import kgk.beacon.monitoring.domain.interactor.SetActiveMonitoringEntityGroup;
+import kgk.beacon.monitoring.domain.interactor.UpdateMonitoringEntities;
+import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.presentation.activity.MonitoringListActivity;
+import kgk.beacon.monitoring.presentation.view.MonitoringGroupListView;
 
 public class MonitoringGroupListActivityAdapter extends
         RecyclerView.Adapter<MonitoringGroupListActivityAdapter.ViewHolder> {
@@ -24,11 +29,13 @@ public class MonitoringGroupListActivityAdapter extends
     private List<MonitoringEntityGroup> groups;
     private MonitoringEntityGroup activeGroup;
     private Activity activity;
+    private MonitoringGroupListView view;
 
     ////
 
-    public MonitoringGroupListActivityAdapter(Activity activity) {
+    public MonitoringGroupListActivityAdapter(MonitoringGroupListView view, Activity activity) {
         this.activity = activity;
+        this.view = view;
     }
 
     ////
@@ -84,15 +91,36 @@ public class MonitoringGroupListActivityAdapter extends
 
     ////
 
-    private void onListItemClick(MonitoringEntityGroup group) {
+    private void onListItemClick(final MonitoringEntityGroup group) {
         // Making changes in model in UI thread is nessesary here, because
         // i need to guarantee, that active entity have been chaned before going
         // to monitoring entity list activity
         SetActiveMonitoringEntityGroup interactor =
                 new SetActiveMonitoringEntityGroup(group);
         interactor.execute();
-        Intent intent = new Intent(activity, MonitoringListActivity.class);
-        activity.startActivity(intent);
+
+        view.toggleDownloadDataProgressDialog(true);
+        UpdateMonitoringEntities updateInteractor =
+                new UpdateMonitoringEntities(group.getMonitoringEntities());
+        updateInteractor.setListener(new UpdateMonitoringEntities.Listener() {
+            @Override
+            public void onMonitoringEntitiesUpdated(List<MonitoringEntity> monitoringEntities) {
+                view.toggleDownloadDataProgressDialog(false);
+
+                for (MonitoringEntity entity : group.getMonitoringEntities())
+                    if (entity.isDisplayEnabled()) {
+                        SetActiveMonitoringEntity activeInteractor =
+                                new SetActiveMonitoringEntity(group.getMonitoringEntities().get(0));
+                        activeInteractor.execute();
+                        break;
+                    }
+
+                Intent intent = new Intent(activity, MonitoringListActivity.class);
+                activity.startActivity(intent);
+            }
+        });
+
+        InteractorThreadPool.getInstance().execute(updateInteractor);
     }
 
     private Drawable makeBackground(boolean active) {

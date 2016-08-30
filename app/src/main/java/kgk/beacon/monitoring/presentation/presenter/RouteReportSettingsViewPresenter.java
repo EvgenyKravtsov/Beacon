@@ -1,5 +1,9 @@
 package kgk.beacon.monitoring.presentation.presenter;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import kgk.beacon.monitoring.domain.interactor.GetRouteReport;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
@@ -28,6 +32,13 @@ public class RouteReportSettingsViewPresenter
         GetRouteReport interactor = new GetRouteReport(parameters);
         interactor.setListener(this);
         InteractorThreadPool.getInstance().execute(interactor);
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                AppController.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     ////

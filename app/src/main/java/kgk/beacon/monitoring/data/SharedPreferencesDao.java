@@ -22,7 +22,7 @@ public class SharedPreferencesDao implements Configuration {
     private static final int GOOGLE_MAP_CODE = 3;
     private static final int SATELLITE_MAP_CODE = 4;
     private static final String MARKER_INFORMATION_ENABLED_KEY = "marker_information_enabled";
-    private static final boolean DEFAULT_MARKER_INFORMATION_ENABLED = true;
+    private static final boolean DEFAULT_MARKER_INFORMATION_ENABLED = false;
     private static final String ACTIVE_MONITORING_ENTITY_GROUP_KEY = "active_monitoring_entrity_group";
     private static final String ACTIVE_MONITORING_ENTITY_GROUP_DEFAILT = null;
     private static final String ACTIVE_MONITORING_ENTITY_KEY = "active_monitoring_entity";

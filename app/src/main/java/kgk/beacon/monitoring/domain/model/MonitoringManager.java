@@ -30,11 +30,8 @@ public class MonitoringManager {
 
     public void init(User user, List<MonitoringEntity> monitoringEntities) {
         this.user = user;
-
-        monitoringEntityGroups = sortMonitoringEntitiesByGroup(monitoringEntities);
-
         this.monitoringEntities = monitoringEntities;
-        activeMonitoringEntity = this.monitoringEntities.get(this.monitoringEntities.size() - 1);
+        this.monitoringEntityGroups = sortMonitoringEntitiesByGroup(monitoringEntities);
     }
 
     public User getUser() {

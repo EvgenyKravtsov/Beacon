@@ -1,5 +1,9 @@
 package kgk.beacon.monitoring.presentation.presenter;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -132,6 +136,13 @@ public class MapViewPresenter implements
     public void saveDefaultMapType(MapType mapType) {
         SetDefaultMapTypeSetting interactor = new SetDefaultMapTypeSetting(mapType);
         InteractorThreadPool.getInstance().execute(interactor);
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                AppController.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     ////

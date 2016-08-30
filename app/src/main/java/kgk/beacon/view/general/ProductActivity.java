@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,32 +18,18 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 import kgk.beacon.R;
-import kgk.beacon.dispatcher.Dispatcher;
-import kgk.beacon.model.Device;
 import kgk.beacon.model.product.Product;
 import kgk.beacon.model.product.ProductFactory;
 import kgk.beacon.model.product.ProductType;
-import kgk.beacon.monitoring.DependencyInjection;
-import kgk.beacon.monitoring.data.Configuration;
-import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
-import kgk.beacon.monitoring.domain.interactor.UpdateMonitoringEntities;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
-import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
-import kgk.beacon.monitoring.domain.model.MonitoringManager;
-import kgk.beacon.monitoring.domain.model.User;
-import kgk.beacon.monitoring.network.MonitoringHttpClient;
+import kgk.beacon.monitoring.network.MonitoringManagerInitializer;
 import kgk.beacon.monitoring.presentation.activity.MapActivity;
-import kgk.beacon.networking.VolleyHttpClient;
-import kgk.beacon.stores.DeviceStore;
 import kgk.beacon.util.AppController;
 import kgk.beacon.view.general.adapter.ProductListAdapter;
 
 public class ProductActivity extends AppCompatActivity {
-
-    // TODO Do not reupdate monitoring entities on relaunch module during one session
 
     @Bind(R.id.actisAppToolbar) Toolbar toolbar;
     @Bind(R.id.toolbarTitle) TextView toolbarTitle;
@@ -59,8 +44,6 @@ public class ProductActivity extends AppCompatActivity {
     public static final String KEY_PRODUCT_TYPE = "product_type";
 
     private static final String TAG = ProductActivity.class.getSimpleName();
-
-    private MonitoringManager monitoringManager;
 
     ////
 
@@ -146,99 +129,23 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void prepareMonitoringManager() {
-        if (monitoringModuleInitialized) {
-            toggleProgressDialog(false);
-            Intent intent = new Intent(this, MapActivity.class);
-            startActivity(intent);
-            return;
-        }
-
-        final Configuration configuration = DependencyInjection.provideConfiguration();
-
-        DeviceStore deviceStore = DeviceStore.getInstance(
-                Dispatcher.getInstance(EventBus.getDefault()));
-        List<Device> devices = deviceStore.getDevices();
-
-        final List<MonitoringEntity> monitoringEntities = new ArrayList<>();
-        for (Device device : devices) {
-            if (device.getType().equals(AppController.T5_DEVICE_TYPE) ||
-                    device.getType().equals(AppController.T6_DEVICE_TYPE)) {
-
-                MonitoringEntity monitoringEntity = new MonitoringEntity(
-                        Long.parseLong(device.getId()),
-                        device.getMark(),
-                        device.getCivilModel(),
-                        device.getStateNumber(),
-                        device.getGroups());
-
-                monitoringEntity.setDisplayEnabled(
-                        configuration.loadDisplayEnabled(monitoringEntity.getId()));
-                monitoringEntities.add(monitoringEntity);
-            }
-        }
-
-        MonitoringHttpClient monitoringHttpClient = VolleyHttpClient.getInstance(this);
-        monitoringHttpClient.setListener(new MonitoringHttpClient.Listener() {
+        final MonitoringManagerInitializer initializer = new MonitoringManagerInitializer();
+        initializer.setListener(new MonitoringManagerInitializer.Listener() {
             @Override
-            public void onUserRetreived(User user) {
-
-                monitoringManager = MonitoringManager.getInstance();
-                monitoringManager.init(user, monitoringEntities);
-
-                if (monitoringManager != null) {
-
-                    UpdateMonitoringEntities interactor = new UpdateMonitoringEntities(
-                            monitoringManager.getMonitoringEntities());
-
-                    interactor.setListener(new UpdateMonitoringEntities.Listener() {
-                        @Override
-                        public void onMonitoringEntitiesUpdated(List<MonitoringEntity> monitoringEntities) {
-                            for (MonitoringEntityGroup group : monitoringManager.getMonitoringEntityGroups()) {
-                                if (group.getName().equals(configuration.loadActiveMonitoringEntityGroup()))
-                                    monitoringManager.setActiveMonitoringEntityGroup(group);
-                            }
-
-                            long activeMonitoringEntityId = configuration.loadActiveMonitoringEntity();
-
-                            if (activeMonitoringEntityId == 0) {
-                                if (monitoringManager.getActiveMonitoringEntityGroup() == null) {
-                                    monitoringManager.setActiveMonitoringEntity(
-                                            monitoringManager.getMonitoringEntities().get(0)
-                                    );
-                                } else {
-                                    monitoringManager.setActiveMonitoringEntity(
-                                            monitoringManager.getMonitoringEntityGroups().get(0)
-                                                    .getMonitoringEntities().get(0)
-                                    );
-                                }
-                            } else {
-                                for (MonitoringEntity monitoringEntity : monitoringManager.getMonitoringEntities()) {
-                                    if (monitoringEntity.getId() == activeMonitoringEntityId) {
-                                        monitoringManager.setActiveMonitoringEntity(monitoringEntity);
-                                    }
-                                }
-                            }
-
-                            monitoringModuleInitialized = true;
-                            toggleProgressDialog(false);
-                            Intent intent = new Intent(ProductActivity.this, MapActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-
-                    InteractorThreadPool.getInstance().execute(interactor);
-
-                } else {
-                    // TODO Notify user
-                    Log.d("debug", "Monitoring manager is not properly initialized");
-                }
+            public void onMonitoringManagerInitialized() {
+                toggleProgressDialog(false);
+                Intent intent = new Intent(ProductActivity.this, MapActivity.class);
+                startActivity(intent);
             }
-
-            @Override
-            public void onMonitoringEntitiesUpdated() {}
         });
 
-        monitoringHttpClient.requestUser();
+        toggleProgressDialog(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initializer.init();
+            }
+        }).start();
     }
 
     private void toggleProgressDialog(boolean status) {

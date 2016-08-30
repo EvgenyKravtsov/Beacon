@@ -1,0 +1,116 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+    </style>
+
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+
+        <item name="android:dialogTheme">@style/NoActionBarTheme.Dialog</item>
+        <item name="dialogTheme">@style/NoActionBarTheme.Dialog</item>
+        <item name="android:alertDialogTheme">@style/NoActionBarTheme.Dialog</item>
+        <item name="alertDialogTheme">@style/NoActionBarTheme.Dialog</item>
+    </style>
+
+    <style name="MonitoringModuleTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">#FF666666</item>
+
+        <item name="android:dialogTheme">@style/MonitoringModuleTheme.Dialog</item>
+        <item name="dialogTheme">@style/MonitoringModuleTheme.Dialog</item>
+        <item name="android:alertDialogTheme">@style/MonitoringModuleTheme.Dialog</item>
+        <item name="alertDialogTheme">@style/MonitoringModuleTheme.Dialog</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/actis_app_toolbar_title_text</item>
+    </style>
+
+    <style name="LoginScreenEditText">
+        <item name="android:background">@drawable/text_field_background</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColorHint">@color/actis_app_text_color_hint</item>
+    </style>
+
+    <style name="DetailReportScreenEditText">
+        <item name="android:background">@drawable/detail_report_edit_text_background</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColorHint">@color/actis_app_text_color_hint</item>
+    </style>
+
+    <style name="LoginScreenCheckBox">
+        <item name="android:textColor">@color/actis_app_text_color_hint</item>
+        <item name="android:button">@drawable/login_screen_checkbox_selector</item>
+    </style>
+
+    <style name="LoginScreenButton">
+        <item name="android:background">@drawable/login_button_selector</item>
+        <item name="android:textColor">@drawable/login_button_text_selector</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ActisAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">#ff000000</item>
+        <!-- Used for the background -->
+        <item name="android:background">#ffffffff</item>
+    </style>
+
+    <style name="ActisProgressDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+    </style>
+
+    <style name="SearchSwitchTextAppearance" parent="TextAppearance.AppCompat.Widget.Switch">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="DatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:datePickerStyle">@style/DatePickerStyle</item>
+    </style>
+
+    <style name="DatePickerStyle" parent="android:Widget.DatePicker" tools:ignore="NewApi">
+        <item name="android:dayOfWeekBackground">@color/actis_app_green_accent</item>
+    </style>
+
+    <style name="NoActionBarTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/actis_app_green_accent</item>
+    </style>
+
+    <!-- MONITORING MODULE -->
+
+    <style name="MonitoringMapButton">
+        <item name="android:layout_width">65dp</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:background">@drawable/monitoring_map_button_background_selector</item>
+    </style>
+
+    <style name="MonitoringMenuGeneralButton">
+        <item name="android:background">@drawable/monitoring_general_background_selector</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MonitoringModuleTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/monitoring_dark_gray</item>
+    </style>
+
+    <style name="MonitoringStandardString">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ListItemSubString">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/actis_app_text_color_hint</item>
+    </style>
+
+</resources>

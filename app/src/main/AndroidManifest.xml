@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="kgk.beacon"
-    android:versionCode="42"
-    android:versionName="1.6.9.10" >
+    android:versionCode="44"
+    android:versionName="1.7.0.1" >
 
     <permission
         android:name="kgk.beacon.permission.MAPS_RECEIVE"
@@ -108,26 +108,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.actis.InformationActivity" />
-        </activity>
-
-        <activity
-            android:name=".view.devices.activity.MonitoringActivity"
-            android:label="@string/monitoring_activity_toolbar_title"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.general.LoginActivity" />
-        </activity>
-
-        <activity
-            android:name=".view.devices.activity.DetailReportActivity"
-            android:label="@string/detail_report_activity_toolbar_title"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.devices.activity.MonitoringActivity" />
         </activity>
 
         <activity
