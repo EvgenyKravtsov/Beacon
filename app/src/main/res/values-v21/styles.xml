@@ -19,7 +19,7 @@
     </style>
 
     <style name="MonitoringModuleTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">#FF666666</item>
+        <item name="colorAccent">@color/main_brand_blue</item>
 
         <item name="android:dialogTheme">@style/MonitoringModuleTheme.Dialog</item>
         <item name="dialogTheme">@style/MonitoringModuleTheme.Dialog</item>
@@ -111,6 +111,13 @@
     <style name="ListItemSubString">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/actis_app_text_color_hint</item>
+    </style>
+
+    <style name="MonitoringRadiobutton">
+        <item name="android:drawableLeft">@drawable/monitoring_radiobutton_background_selector</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

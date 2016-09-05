@@ -11,22 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Map -->
         <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/monitoring_activity_map_google_map" />
 
-        <ImageButton
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:src="@drawable/monitoring_traffic_button_icon"
-            android:id="@+id/monitoring_activity_map_traffic_button"
-            style="@style/MonitoringMapButton" />
-
+        <!-- Zoom and target buttons -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,6 +49,139 @@
 
         </LinearLayout>
 
+        <!-- Traffic button -->
+        <ImageButton
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="104dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/monitoring_traffic_button_icon"
+            android:id="@+id/monitoring_activity_map_traffic_button"
+            style="@style/MonitoringMapButton"
+            tools:ignore="ContentDescription" />
+
+        <!-- Top slider information -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/monitoring_light_gray"
+            android:id="@+id/monitoring_activity_map_information">
+
+            <!-- Information bar upper -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/monitoring_information_bar_title" />
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="6dp"
+                    android:src="@drawable/monitoring_back_button_icon"
+                    android:id="@+id/monitoring_activity_map_information_bar_back_button"
+                    tools:ignore="ContentDescription" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="15sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/monitoring_activity_map_information_bar_device"
+                tools:text="Huyndai Solaris b784kc199" />
+
+            <!-- Extended device information -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="18dp"
+                android:paddingLeft="36dp"
+                android:paddingStart="36dp"
+                android:paddingRight="36dp"
+                android:paddingEnd="36dp"
+                android:visibility="gone"
+                android:id="@+id/information_bar_extended_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/device_state"
+                    style="@style/MonitoringStandardString"
+                    tools:text="Status: In motion" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/device_ignition"
+                    style="@style/MonitoringStandardString"
+                    tools:text="Ignition: ON" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/device_speed"
+                    style="@style/MonitoringStandardString"
+                    tools:text="Spped: 63 km/h" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/device_satellites"
+                    style="@style/MonitoringStandardString"
+                    tools:text="Satellites: 7" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/device_gsm"
+                    style="@style/MonitoringStandardString"
+                    tools:text="GSM: 3/5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/device_updated"
+                    style="@style/MonitoringStandardString"
+                    tools:text="Updated: 18.08 at 15.34" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/monitoring_entity_screen_route_report_button_label"
+                    style="@style/MonitoringMenuGeneralButton" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_gravity="bottom"
+                android:src="@drawable/hide_menu_button_icon"
+                android:background="@color/monitoring_light_gray"
+                android:id="@+id/monitoring_activity_map_information_bar_hide_button"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <!-- Quick report and menu buttons -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="65dp"
@@ -75,24 +199,6 @@
                 android:id="@+id/monitoring_activity_quick_report_button"
                 style="@style/MonitoringMapButton" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/monitoring_activity_quick_report_button"
-                android:layout_toEndOf="@+id/monitoring_activity_quick_report_button"
-                android:layout_toLeftOf="@+id/monitoring_activity_menu_button"
-                android:layout_toStartOf="@+id/monitoring_activity_menu_button"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:background="@drawable/monitoring_map_active_text_view_background_selector"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:id="@+id/monitoring_activity_active_text_view"
-                tools:text="State Number" />
-
             <ImageButton
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -104,11 +210,12 @@
 
     </RelativeLayout>
 
+    <!-- Bottom slider menu -->
     <include
         layout="@layout/monitoring_activity_map_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:id="@+id/monitoring_activity_menu_layout" />
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -16,7 +17,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import kgk.beacon.R;
+import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.domain.interactor.SetActiveMonitoringEntityGroup;
+import kgk.beacon.monitoring.domain.interactor.UpdateMonitoringEntities;
+import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.presentation.adapter.MonitoringGroupListActivityAdapter;
 import kgk.beacon.monitoring.presentation.presenter.MonitoringGroupListViewPresenter;
@@ -147,13 +151,25 @@ public class MonitoringGroupListActivity extends AppCompatActivity
     }
 
     private void onClickAllButton() {
-        // Making changes in model in UI thread is nessesary here, because
-        // i need to guarantee, that active entity have been chaned before going
-        // to monitoring entity list activity
-        SetActiveMonitoringEntityGroup interactor =
-                new SetActiveMonitoringEntityGroup(null);
-        interactor.execute();
-        Intent intent = new Intent(this, MonitoringListActivity.class);
-        startActivity(intent);
+        toggleDownloadDataProgressDialog(true);
+
+        // TODO Delete test code
+        for (MonitoringEntity entity : DependencyInjection.provideMonitoringManager().getMonitoringEntities())
+            Log.d("debug", entity.toString());
+
+        UpdateMonitoringEntities updateInteractor =
+                new UpdateMonitoringEntities(DependencyInjection.provideMonitoringManager().getMonitoringEntities());
+        updateInteractor.setListener(new UpdateMonitoringEntities.Listener() {
+            @Override
+            public void onMonitoringEntitiesUpdated(List<MonitoringEntity> monitoringEntities) {
+                SetActiveMonitoringEntityGroup interactor =
+                        new SetActiveMonitoringEntityGroup(null);
+                interactor.execute();
+                toggleDownloadDataProgressDialog(false);
+                Intent intent = new Intent(MonitoringGroupListActivity.this, MonitoringListActivity.class);
+                startActivity(intent);
+            }
+        });
+        updateInteractor.execute();
     }
 }

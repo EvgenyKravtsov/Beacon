@@ -198,20 +198,22 @@ public class MonitoringListActivityAdapter extends
             MonitoringEntityStatus status) {
 
         String statusString = "";
-        switch (status) {
-            case IN_MOTION:
-                statusString = activity
-                        .getString(R.string.monitoring_choose_vehicle_screen_moving_status);
-                break;
-            case STOPPED:
-                statusString = activity
-                    .getString(R.string.monitoring_choose_vehicle_screen_parking_status);
-                break;
-            case OFFLINE:
-                statusString = activity
-                    .getString(R.string.monitoring_choose_vehicle_screen_offline_status);
-                break;
-        }
+
+        if (status != null)
+            switch (status) {
+                case IN_MOTION:
+                    statusString = activity
+                            .getString(R.string.monitoring_choose_vehicle_screen_moving_status);
+                    break;
+                case STOPPED:
+                    statusString = activity
+                        .getString(R.string.monitoring_choose_vehicle_screen_parking_status);
+                    break;
+                case OFFLINE:
+                    statusString = activity
+                        .getString(R.string.monitoring_choose_vehicle_screen_offline_status);
+                    break;
+            }
 
         Date date = new Date(lastUpdateTimestamp);
 

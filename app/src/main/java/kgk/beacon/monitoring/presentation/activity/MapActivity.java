@@ -1,36 +1,61 @@
 package kgk.beacon.monitoring.presentation.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
+import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.presentation.adapter.GoogleMapAdapter;
 import kgk.beacon.monitoring.presentation.adapter.MapAdapter;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.presenter.MapViewPresenter;
+import kgk.beacon.monitoring.presentation.utils.SimpleGestureFilter;
 
 public class MapActivity extends AppCompatActivity implements
         kgk.beacon.monitoring.presentation.view.MapView {
 
     // Views
+
+        // Information bar
+        private ImageView informationBarBackButtonImageView;
+        private TextView informationBarDeviceTextView;
+        private LinearLayout deviceInformationExpandedLayout;
+        private TextView deviceStateTextView;
+        private TextView deviceIgnitionTextView;
+        private TextView deviceSpeedTextView;
+        private TextView deviceSatellitesTextView;
+        private TextView deviceGsmTextView;
+        private TextView deviceUpdatedTextView;
+        private ImageButton expandInformationButton;
+
+        private boolean informationExpanded;
+
     private SlidingUpPanelLayout slider;
     private MapView googleMapView;
     private ImageButton trafficButton;
@@ -50,7 +75,6 @@ public class MapActivity extends AppCompatActivity implements
     private Button helpMenuButton;
     private Button aboutMenuButton;
     private Button settingsMenuButton;
-    private TextView activeTextView;
     private ScrollView menuButtonsLayout;
     private ImageButton quickReportButton;
 
@@ -112,6 +136,7 @@ public class MapActivity extends AppCompatActivity implements
         return activeMonitoringEntity;
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void setActiveMonitoringEntity(MonitoringEntity monitoringEntity) {
         activeMonitoringEntity = monitoringEntity;
@@ -120,7 +145,43 @@ public class MapActivity extends AppCompatActivity implements
                 activeMonitoringEntity.getLongitude()
         );
 
-        activeTextView.setText(activeMonitoringEntity.getStateNumber());
+        informationBarDeviceTextView.setText(String.format(
+                "%s %s %s",
+                activeMonitoringEntity.getMark(),
+                activeMonitoringEntity.getModel(),
+                activeMonitoringEntity.getStateNumber()
+        ));
+
+        deviceStateTextView.setText(String.format(
+                "%s %s",
+                getString(R.string.monitoring_entity_screen_status),
+                makeStatusString(monitoringEntity.getStatus())));
+        deviceIgnitionTextView.setText(String.format(
+                "%s %s",
+                getString(R.string.monitoring_entity_screen_ignition),
+                activeMonitoringEntity.isEngineIgnited() ?
+                        getString(R.string.monitoring_entity_screen_ignition_on) :
+                        getString(R.string.monitoring_entity_screen_ignition_off)));
+        deviceSpeedTextView.setText(String.format(
+                "%s %s",
+                getString(R.string.monitoring_entity_screen_speed),
+                String.format(Locale.ROOT, "%.2f", monitoringEntity.getSpeed())));
+        deviceSatellitesTextView.setText(String.format(
+                Locale.ROOT,
+                "%s %d",
+                getString(R.string.monitoring_entity_screen_satellites),
+                activeMonitoringEntity.getSatellites()));
+        deviceGsmTextView.setText(String.format(
+                "%s: %s",
+                getString(R.string.monitoring_device_gsm),
+        activeMonitoringEntity.getGsm()));
+        deviceUpdatedTextView.setText(String.format(
+                "%s %s",
+                getString(R.string.monitoring_entity_screen_last_update),
+                String.format("%s %s %s",
+                        new SimpleDateFormat("dd.MM").format(activeMonitoringEntity.getLastUpdateTimestamp()),
+                        getString(R.string.monitoring_entity_screen_at),
+                        new SimpleDateFormat("HH:mm").format(activeMonitoringEntity.getLastUpdateTimestamp()))));
     }
 
     @Override
@@ -194,6 +255,21 @@ public class MapActivity extends AppCompatActivity implements
     ////
 
     private void initViews(Bundle savedInstanceState) {
+        informationBarBackButtonImageView = (ImageView)
+                findViewById(R.id.monitoring_activity_map_information_bar_back_button);
+        informationBarDeviceTextView = (TextView)
+                findViewById(R.id.monitoring_activity_map_information_bar_device);
+
+        deviceInformationExpandedLayout = (LinearLayout) findViewById(R.id.information_bar_extended_layout);
+        deviceStateTextView = (TextView) findViewById(R.id.device_state);
+        deviceIgnitionTextView = (TextView) findViewById(R.id.device_ignition);
+        deviceSpeedTextView = (TextView) findViewById(R.id.device_speed);
+        deviceSatellitesTextView = (TextView) findViewById(R.id.device_satellites);
+        deviceGsmTextView = (TextView) findViewById(R.id.device_gsm);
+        deviceUpdatedTextView = (TextView) findViewById(R.id.device_updated);
+        expandInformationButton = (ImageButton)
+                findViewById(R.id.monitoring_activity_map_information_bar_hide_button);
+
         menuButtonsLayout = (ScrollView)
                 findViewById(R.id.monitoring_activity_menu_buttons_layout);
 
@@ -244,13 +320,84 @@ public class MapActivity extends AppCompatActivity implements
         centerOnActiveButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_center_on_active_button);
 
-        activeTextView = (TextView) findViewById(R.id.monitoring_activity_active_text_view);
-
         quickReportButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_quick_report_button);
     }
 
     private void initListeners() {
+        informationBarBackButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        informationBarDeviceTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (informationExpanded) collapseInformation();
+                else expandInformation();
+            }
+        });
+
+        final SimpleGestureFilter simpleGestureFilter = new SimpleGestureFilter(
+                this,
+                new SimpleGestureFilter.SimpleGestureListener() {
+
+                    @Override
+                    public void onSwipe(int direction) {
+                        switch (direction) {
+                            case SimpleGestureFilter.SWIPE_UP: collapseInformation(); break;
+                        }
+                    }
+
+                    @Override
+                    public void onDoubleTap() {
+
+                    }
+                });
+
+        deviceInformationExpandedLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                simpleGestureFilter.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
+
+        expandInformationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onExpandInfrormationButtonClick();
+            }
+        });
+
+        final SimpleGestureFilter simpleGestureFilter1 = new SimpleGestureFilter(
+                this,
+                new SimpleGestureFilter.SimpleGestureListener() {
+
+                    @Override
+                    public void onSwipe(int direction) {
+                        switch (direction) {
+                            case SimpleGestureFilter.SWIPE_UP: collapseInformation(); break;
+                            case SimpleGestureFilter.SWIPE_DOWN: expandInformation(); break;
+                        }
+                    }
+
+                    @Override
+                    public void onDoubleTap() {
+
+                    }
+                });
+
+        expandInformationButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                simpleGestureFilter1.onTouchEvent(motionEvent);
+                return false;
+            }
+        });
+
         slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -291,13 +438,6 @@ public class MapActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 onCenterOnActiveButtonClick();
-            }
-        });
-
-        activeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onActiveTextViewClick();
             }
         });
 
@@ -467,6 +607,84 @@ public class MapActivity extends AppCompatActivity implements
         dialog.show();
     }
 
+    private String makeStatusString(MonitoringEntityStatus status) {
+        String statusString;
+
+        switch (status) {
+            case IN_MOTION:
+                statusString = getString(R.string.monitoring_entity_screen_moving_status);
+                break;
+            case STOPPED:
+                statusString = getString(R.string.monitoring_entity_screen_parking_status);
+                break;
+            case OFFLINE:
+                statusString = getString(R.string.monitoring_entity_screen_offline_status);
+                break;
+            default:
+                statusString = getString(R.string.monitoring_entity_screen_offline_status);
+        }
+
+        return statusString;
+    }
+
+    private void expandInformation() {
+        deviceInformationExpandedLayout.measure(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        final int targetHeight = deviceInformationExpandedLayout.getMeasuredHeight();
+
+        deviceInformationExpandedLayout.getLayoutParams().height = 1;
+        deviceInformationExpandedLayout.setVisibility(View.VISIBLE);
+
+        Animation animation = new Animation() {
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                deviceInformationExpandedLayout.getLayoutParams().height = interpolatedTime == 1
+                        ? LinearLayout.LayoutParams.WRAP_CONTENT
+                        : (int) (targetHeight * interpolatedTime);
+                deviceInformationExpandedLayout.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        animation.setDuration(400);
+        deviceInformationExpandedLayout.startAnimation(animation);
+
+        informationExpanded = true;
+    }
+
+    private void collapseInformation() {
+        final int initialHeight = deviceInformationExpandedLayout.getMeasuredHeight();
+
+        Animation animation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if (interpolatedTime == 1) deviceInformationExpandedLayout.setVisibility(View.GONE);
+                else {
+                    deviceInformationExpandedLayout.getLayoutParams().height =
+                            initialHeight - (int) (initialHeight * interpolatedTime);
+                    deviceInformationExpandedLayout.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        animation.setDuration(400);
+        deviceInformationExpandedLayout.startAnimation(animation);
+
+        informationExpanded = false;
+    }
+
     //// Control callbacks
 
     private void onTrafficButtonClick() {
@@ -554,11 +772,6 @@ public class MapActivity extends AppCompatActivity implements
         slider.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
-    private void onActiveTextViewClick() {
-        Intent intent = new Intent(this, MonitoringEntityActivity.class);
-        startActivity(intent);
-    }
-
     private void onQuickReportButtonClick() {
         if (!presenter.isInternetAvailable()) {
             notifyNoInternetAvailable();
@@ -567,6 +780,11 @@ public class MapActivity extends AppCompatActivity implements
 
         toggleProgressDialog(true);
         presenter.requestQuickReport();
+    }
+
+    private void onExpandInfrormationButtonClick() {
+        if (informationExpanded) collapseInformation();
+        else expandInformation();
     }
 }
 

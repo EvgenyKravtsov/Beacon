@@ -94,4 +94,11 @@
         <item name="android:textColor">@color/actis_app_text_color_hint</item>
     </style>
 
+    <style name="MonitoringRadiobutton">
+        <item name="android:drawableLeft">@drawable/monitoring_radiobutton_background_selector</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
 </resources>

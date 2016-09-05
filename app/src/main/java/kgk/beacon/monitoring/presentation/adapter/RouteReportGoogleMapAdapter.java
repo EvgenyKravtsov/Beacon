@@ -51,6 +51,8 @@ public class RouteReportGoogleMapAdapter implements
         OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener {
 
+    private static final int MARKER_SIZE = 13;
+
     private RouteReportView view;
     private MapView mapView;
     private GoogleMap map;
@@ -295,11 +297,11 @@ public class RouteReportGoogleMapAdapter implements
 
         int width = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                25,
+                MARKER_SIZE,
                 context.getResources().getDisplayMetrics());
         int height = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                25,
+                MARKER_SIZE,
                 context.getResources().getDisplayMetrics());
 
         Bitmap markerBitmap = ImageProcessor.bitmapFromView(layout, width, height);

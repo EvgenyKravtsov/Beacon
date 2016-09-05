@@ -39,7 +39,7 @@
 
         </TableRow>
 
-        <TableRow android:layout_marginBottom="2dp">
+        <TableRow android:layout_marginBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,33 +60,44 @@
 
         </TableRow>
 
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/monitoring_profile_screen_balance"
-                style="@style/MonitoringStandardString" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_weight="2"
-                android:id="@+id/monitoring_activity_profile_balance_text_view"
-                style="@style/MonitoringStandardString"
-                tools:text="123.45" />
-
-        </TableRow>
-
     </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monitoring_profile_screen_balance"
+            style="@style/MonitoringStandardString" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:id="@+id/monitoring_activity_profile_balance_text_view"
+            style="@style/MonitoringStandardString"
+            tools:text="123.45" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/main_brand_blue"
+            android:text="@string/monitoring_profile_screen_replenish_balance"
+            android:id="@+id/monitoring_activity_profile_replenish_balance_text_view"
+            style="@style/MonitoringStandardString" />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="36dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/monitoring_profile_screen_sign_out_button_label"
         android:id="@+id/monitoring_activity_profile_sign_out_button"

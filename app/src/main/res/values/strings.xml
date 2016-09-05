@@ -230,6 +230,8 @@
     <!-- MONITORING MODULE -->
 
     <!-- Map screen -->
+    <string name="monitoring_device_gsm">GSM</string>
+    <string name="monitoring_information_bar_title">Chosen vehicle</string>
     <string name="monitoring_downloading_data">Downloading data</string>
     <string name="monitoring_kgk_map_label">KGK</string>
     <string name="monitoring_yandex_map_label">Yandex</string>
@@ -315,6 +317,7 @@
     <string name="monitoring_route_report_settings_screen_dates_not_valid">Dates not valid</string>
 
     <!-- Profile screen -->
+    <string name="monitoring_profile_screen_replenish_balance"><u>Replenish</u></string>
     <string name="monitoring_profile_screen_rub">rub.</string>
     <string name="monitoring_profile_screen_title">Profile</string>
     <string name="monitoring_profile_screen_login">Login:</string>
@@ -323,12 +326,13 @@
     <string name="monitoring_profile_screen_sign_out_button_label">Sign Out</string>
 
     <!-- Settings screen -->
+    <string name="monitoring_settings_screen_map_layout">Map layout</string>
     <string name="monitoring_settings_screen_map">Map:</string>
     <string name="monitoring_settings_screen_kgk">KGK</string>
     <string name="monitoring_settings_screen_yandex">Yandex</string>
     <string name="monitoring_settings_screen_google">Google</string>
     <string name="monitoring_settings_screen_satellite">Satellite</string>
-    <string name="monitoring_settings_screen_additional_marker_info">Additional\nmarker info:</string>
+    <string name="monitoring_settings_screen_additional_marker_info">Additional\nmarker info</string>
     <string name="monitoring_settings_screen_title">Settings</string>
 
     <!-- Help screen -->
