@@ -62,6 +62,14 @@
         android:layout_weight="0.5"
         android:orientation="vertical">
 
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:src="@drawable/hide_menu_button_icon"
+            android:background="@color/monitoring_light_gray"
+            android:id="@+id/monitoring_activity_route_report_details_button"
+            tools:ignore="ContentDescription" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

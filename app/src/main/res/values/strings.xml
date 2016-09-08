@@ -306,15 +306,18 @@
     <string name="monitoring_choose_vehicle_group_screen_show_all_devices_button_label">Show all devices</string>
 
     <!-- Route report settings screen -->
+    <string name="monitoring_route_report_settings_screen_report_start">Report start date</string>
+    <string name="monitoring_route_report_settings_screen_report_end">Report end date</string>
     <string name="monitoring_route_report_settings_screen_from">From:</string>
     <string name="monitoring_route_report_settings_screen_to">To:</string>
     <string name="monitoring_route_report_settings_screen_extended_settings">Extended Settings</string>
-    <string name="monitoring_route_report_settings_screen_stop_time">Stop time:</string>
+    <string name="monitoring_route_report_settings_screen_stop_time">Max parking time</string>
     <string name="monitoring_route_report_settings_screen_stop_time_hint">Seconds</string>
-    <string name="monitoring_route_report_settings_screen_no_data">No data:</string>
+    <string name="monitoring_route_report_settings_screen_no_data">No data areas</string>
     <string name="monitoring_route_report_settings_screen_make_report_button_label">Make Report</string>
     <string name="monitoring_route_report_settings_screen_title">Route report settings</string>
     <string name="monitoring_route_report_settings_screen_dates_not_valid">Dates not valid</string>
+    <string name="monitoring_route_report_settings_screen_dates_limit">Max report period - 30 days</string>
 
     <!-- Profile screen -->
     <string name="monitoring_profile_screen_replenish_balance"><u>Replenish</u></string>

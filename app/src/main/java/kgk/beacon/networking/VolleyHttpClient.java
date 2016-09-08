@@ -77,6 +77,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettingssms";
     // private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettings";
     private static final String DETAIL_REPORT_URL = "http://api.trezub.ru/api2/reports/getroute/";
+    private static final String DETAIL_REPORT_URL_POST = "http://monitor.kgk-global.com/monitoring/reports/getdata"; //"http://requestb.in/yex4p2ye";
     private static final String ACTIS_CONFIG_URL = "http://api.trezub.ru/api2/beacon/getactisconfig";
     private static final String GET_USER_INFO_URL = "http://api.trezub.ru/api2/beacon/getuserinfo";
 
@@ -351,14 +352,139 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 + "&offsetUTC=" + parameters.getOffsetUtc()
                 + "&deviceID=" + parameters.getId();
 
-        // TODO Delete test code
-        Log.d("debug", DETAIL_REPORT_URL + requestUrlParameters);
+//        StringRequest request = new StringRequest(
+//                Request.Method.POST,
+//                DETAIL_REPORT_URL_POST,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("debug", "RESPONSE - " + response);
+//
+//                        try {
+//                            RouteReport routeReport =
+//                                    new RouteReportJsonParser(parameters.getId()).parse(response);
+//                            if (listener != null)
+//                                routeReportListener.onRouteReportReceived(routeReport);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//
+//                            // TODO Notify user
+//                            Log.d("debug", "Json error");
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                        // TODO Notify user
+//                        Log.d("debug", "Server error");
+//                        Log.d("debug", error.toString());
+//                    }
+//                }
+//        ) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> headers = new HashMap<>();
+//                headers.put("Cookie", phpSessId);
+//                headers.put("X-Requested-With", "XMLHttpRequest");
+//                headers.put("Host", "monitor.kgk-global.com");
+//                headers.put("Origin", "http://monitor.kgk-global.com");
+//                headers.put("Referer", "http://monitor.kgk-global.com/monitoring");
+//                return headers;
+//            }
+//
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> postParams = new HashMap<>();
+//                postParams.put("device_mode", "group");
+//                postParams.put("type", "Detailed");
+//                postParams.put("dateFrom", "07-09-2016");
+//                postParams.put("timeFrom", "00:00");
+//                postParams.put("dateTo", "07-09-2016");
+//                postParams.put("timeTo", "23:59");
+//                postParams.put("parkings", "on");
+//                postParams.put("delta", "180");
+//                postParams.put("speedTrackLimit", "100");
+//                postParams.put("moving", "on");
+//                postParams.put("timeout", "on");
+//                postParams.put("prizmaType2", "day");
+//                postParams.put("NASTdelta", "10");
+//                postParams.put("speed", "120");
+//                postParams.put("fuel_hour", "0");
+//                postParams.put("fuel_type", "1");
+//                postParams.put("minTerm", "");
+//                postParams.put("maxTerm", "");
+//                postParams.put("zoneRaceType", "full");
+//                postParams.put("startstopoption", "1");
+//                postParams.put("time_delta", "10");
+//                postParams.put("advancedreportoption", "1");
+//                postParams.put("waybill_timeout", "");
+//                postParams.put("waybill_timeon", "");
+//                postParams.put("waybill_startkm", "");
+//                postParams.put("waybill_stopkm", "");
+//                postParams.put("waybill_fuel", "");
+//                postParams.put("name", "");
+//                postParams.put("report_interval", "lastWeek");
+//                postParams.put("comboboxselect-1059-inputEl", "");
+//                postParams.put("report_format", "pdf");
+//                postParams.put("OffsetUTC", "-180");
+//                postParams.put("groupId", "3117");
+//                postParams.put("deviceId", "5040682918");
+//                postParams.put("infoWindow", "не установлен");
+//                postParams.put("infoWindow", "не установлен");
+//                postParams.put("infoWindow", "не установлен");
+//                postParams.put("infoWindow", "не установлен");
+//                postParams.put("infoWindow", "не установлен");
+//                postParams.put("infoWindow", "не установлен");
+//                postParams.put("infoWindow", "false");
+//                postParams.put("page", "1");
+//                postParams.put("start", "0");
+//                postParams.put("limit", "25");
+//                return postParams;
+//            }
+//        };
 
-        DetailReportRequest request = new DetailReportRequest(Request.Method.GET,
+//        RouteReportRequest request = new RouteReportRequest(
+//                Request.Method.POST,
+//                DETAIL_REPORT_URL_POST,
+//                postParams,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        Log.d("debug", "RESPONSE - " + response);
+//
+////                        try {
+////                            RouteReport routeReport =
+////                                    new RouteReportJsonParser(parameters.getId()).parse(response);
+////                            if (listener != null)
+////                                routeReportListener.onRouteReportReceived(routeReport);
+////                        } catch (JSONException e) {
+////                            e.printStackTrace();
+////                            // TODO Notify user
+////
+////                            Log.d("debug", "Json error");
+////                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // TODO Notify user
+//                        Log.d("debug", "Server error");
+//                        Log.d("debug", error.toString());
+//                    }
+//                }
+//        );
+
+        DetailReportRequest request = new DetailReportRequest(
+                Request.Method.POST,
                 DETAIL_REPORT_URL + requestUrlParameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("debug", "RESPONSE - " + response);
+
                         try {
                             RouteReport routeReport =
                                     new RouteReportJsonParser(parameters.getId()).parse(response);
@@ -379,10 +505,43 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                         Log.d("debug", "Server error");
                         Log.d("debug", error.toString());
                     }
-                });
+                }
+        );
+
+//        DetailReportRequestPost request = new DetailReportRequestPost(
+//                Request.Method.POST,
+//                DETAIL_REPORT_URL_POST,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("debug", "RESPONSE - " + response);
+//
+//                        try {
+//                            RouteReport routeReport =
+//                                    new RouteReportJsonParser(parameters.getId()).parse(response);
+//                            if (listener != null)
+//                                routeReportListener.onRouteReportReceived(routeReport);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            // TODO Notify user
+//
+//                            Log.d("debug", "Json error");
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // TODO Notify user
+//                        Log.d("debug", "Server error");
+//                        Log.d("debug", error.toString());
+//                    }
+//                }
+//        );
 
         setRetryPolicy(request);
         request.setPhpSessId(phpSessId);
+        //request.setParameters(parameters);
         requestQueue.add(request);
     }
 

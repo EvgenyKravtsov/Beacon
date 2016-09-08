@@ -81,7 +81,7 @@ public class RouteReportDaysListAdapter
         }
 
         holder.dateTextView.setText(
-                new SimpleDateFormat("dd MMMM")
+                new SimpleDateFormat("dd.MM")
                         .format(day.getTime()));
 
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {

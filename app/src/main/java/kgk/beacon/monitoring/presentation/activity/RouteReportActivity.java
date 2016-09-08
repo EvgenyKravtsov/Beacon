@@ -44,6 +44,8 @@ public class RouteReportActivity extends AppCompatActivity
 
     // Views
     private SlidingUpPanelLayout slider;
+    private boolean sliderExpanded;
+
     private ImageButton backButton;
     private MapView googleMapView;
     private ImageButton zoomInButton;
@@ -57,6 +59,7 @@ public class RouteReportActivity extends AppCompatActivity
     private TextView dateSeekBarTitle;
     private SeekBar dateSeekBar;
     private RecyclerView eventsListView;
+    private ImageButton detailsButton;
 
     private RouteReport routeReport;
     private RouteReportEventsListAdapter adapter;
@@ -211,6 +214,9 @@ public class RouteReportActivity extends AppCompatActivity
                 findViewById(R.id.monitoring_activity_route_report_date_seek_bar);
         eventsListView = (RecyclerView)
                 findViewById(R.id.monitoring_activity_route_report_events_list_view);
+
+        detailsButton = (ImageButton)
+                findViewById(R.id.monitoring_activity_route_report_details_button);
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -277,6 +283,19 @@ public class RouteReportActivity extends AppCompatActivity
                             }
                         }
                     }
+                }
+            }
+        });
+
+        detailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sliderExpanded) {
+                    sliderExpanded = false;
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                } else {
+                    sliderExpanded = true;
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
             }
         });

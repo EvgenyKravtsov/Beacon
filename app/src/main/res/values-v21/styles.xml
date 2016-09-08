@@ -120,4 +120,11 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="MonitoringCheckbox">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:button">@drawable/monitoring_checkbox_button_selector</item>
+        <item name="android:background">@drawable/monitoring_general_background_selector</item>
+    </style>
+
 </resources>

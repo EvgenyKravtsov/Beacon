@@ -70,12 +70,9 @@
         android:orientation="horizontal">
 
         <CheckBox
-            android:layout_width="24dp"
-            android:layout_height="24dp"
             android:layout_gravity="center_vertical"
-            android:button="@drawable/monitoring_checkbox_button_selector"
-            android:background="@drawable/monitoring_general_background_selector"
-            android:id="@+id/monitoring_activity_settings_marker_information_checkbox" />
+            android:id="@+id/monitoring_activity_settings_marker_information_checkbox"
+            style="@style/MonitoringCheckbox" />
 
         <TextView
             android:layout_width="wrap_content"

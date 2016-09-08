@@ -303,15 +303,19 @@
     <string name="monitoring_choose_vehicle_group_screen_show_all_devices_button_label">Показать все устройства</string>
 
     <!-- Route report settings screen -->
+    <string name="monitoring_route_report_settings_screen_report_start">Начало отчета</string>
+    <string name="monitoring_route_report_settings_screen_report_end">Конец отчета</string>
     <string name="monitoring_route_report_settings_screen_from">С:</string>
     <string name="monitoring_route_report_settings_screen_to">По:</string>
     <string name="monitoring_route_report_settings_screen_extended_settings">Дополнительные настройки</string>
-    <string name="monitoring_route_report_settings_screen_stop_time">Длительность стоянки:</string>
+    <string name="monitoring_route_report_settings_screen_stop_time">Максимальная длительность стоянки</string>
     <string name="monitoring_route_report_settings_screen_stop_time_hint">Секунды</string>
-    <string name="monitoring_route_report_settings_screen_no_data">Нет данных:</string>
+    <string name="monitoring_route_report_settings_screen_no_data">Показывать участки без данных</string>
     <string name="monitoring_route_report_settings_screen_make_report_button_label">Построить отчет</string>
     <string name="monitoring_route_report_settings_screen_title">Настройки детального отчета</string>
     <string name="monitoring_route_report_settings_screen_dates_not_valid">Неверно указаны даты</string>
+    <string name="monitoring_route_report_settings_screen_dates_limit">Максимальный период отчета -
+        30 дней</string>
 
     <!-- Profile screen -->
     <string name="monitoring_profile_screen_replenish_balance"><u>Пополнить</u></string>

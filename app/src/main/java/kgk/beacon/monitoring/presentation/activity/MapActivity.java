@@ -40,6 +40,8 @@ import kgk.beacon.monitoring.presentation.utils.SimpleGestureFilter;
 public class MapActivity extends AppCompatActivity implements
         kgk.beacon.monitoring.presentation.view.MapView {
 
+    // TODO Check ignition status
+
     // Views
 
         // Information bar
@@ -469,7 +471,7 @@ public class MapActivity extends AppCompatActivity implements
         satelliteMapMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCLickSatelliteMapMenuButton();
+                onClickSatelliteMapMenuButton();
             }
         });
         chooseVehicleMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -727,7 +729,7 @@ public class MapActivity extends AppCompatActivity implements
         changeActiveMenuMapButton(googleMapMenuButton);
     }
 
-    private void onCLickSatelliteMapMenuButton() {
+    private void onClickSatelliteMapMenuButton() {
         mapAdapter.setMapType(MapType.SATELLITE);
         presenter.saveDefaultMapType(MapType.SATELLITE);
         changeActiveMenuMapButton(satelliteMapMenuButton);
