@@ -388,7 +388,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 //                Map<String, String> headers = new HashMap<>();
 //                headers.put("Cookie", phpSessId);
 //                headers.put("X-Requested-With", "XMLHttpRequest");
-//                headers.put("Host", "monitor.kgk-global.com");
+//                //headers.put("Host", "monitor.kgk-global.com");
 //                headers.put("Origin", "http://monitor.kgk-global.com");
 //                headers.put("Referer", "http://monitor.kgk-global.com/monitoring");
 //                return headers;
@@ -445,38 +445,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 //            }
 //        };
 
-//        RouteReportRequest request = new RouteReportRequest(
-//                Request.Method.POST,
-//                DETAIL_REPORT_URL_POST,
-//                postParams,
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.d("debug", "RESPONSE - " + response);
-//
-////                        try {
-////                            RouteReport routeReport =
-////                                    new RouteReportJsonParser(parameters.getId()).parse(response);
-////                            if (listener != null)
-////                                routeReportListener.onRouteReportReceived(routeReport);
-////                        } catch (JSONException e) {
-////                            e.printStackTrace();
-////                            // TODO Notify user
-////
-////                            Log.d("debug", "Json error");
-////                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO Notify user
-//                        Log.d("debug", "Server error");
-//                        Log.d("debug", error.toString());
-//                    }
-//                }
-//        );
-
         DetailReportRequest request = new DetailReportRequest(
                 Request.Method.POST,
                 DETAIL_REPORT_URL + requestUrlParameters,
@@ -507,37 +475,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                     }
                 }
         );
-
-//        DetailReportRequestPost request = new DetailReportRequestPost(
-//                Request.Method.POST,
-//                DETAIL_REPORT_URL_POST,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("debug", "RESPONSE - " + response);
-//
-//                        try {
-//                            RouteReport routeReport =
-//                                    new RouteReportJsonParser(parameters.getId()).parse(response);
-//                            if (listener != null)
-//                                routeReportListener.onRouteReportReceived(routeReport);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            // TODO Notify user
-//
-//                            Log.d("debug", "Json error");
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO Notify user
-//                        Log.d("debug", "Server error");
-//                        Log.d("debug", error.toString());
-//                    }
-//                }
-//        );
 
         setRetryPolicy(request);
         request.setPhpSessId(phpSessId);

@@ -209,7 +209,10 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public void navigateToRouteReportView(RouteReport routeReport) {
         toggleProgressDialog(false);
-        Intent intent = new Intent(this, RouteReportActivity.class);
+        Intent intent = new Intent(
+                this,
+                kgk.beacon.monitoring.presentation.routereport.RouteReportActivity.class);
+
         intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
         if (routeReport != null) startActivity(intent);
     }

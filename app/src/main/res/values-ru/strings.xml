@@ -244,9 +244,10 @@
     <string name="monitoring_no_data_for_device">Нет данных по устройству</string>
 
     <!-- Route report screen -->
+    <string name="monitoring_route_report_speed_measure">км/ч</string>
     <string name="monitoring_route_report_event_type">Событие</string>
     <string name="monitoring_route_report_speed">Скорость</string>
-    <string name="monitoring_route_report_satellites">Спутники</string>
+    <string name="monitoring_route_report_satellites">спутники</string>
     <string name="monitoring_route_report_gsm">GSM</string>
     <string name="monitoring_route_report_empty_field">--</string>
     <string name="monitoring_route_report_default_seekbar_time">00:00</string>

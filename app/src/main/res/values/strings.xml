@@ -247,9 +247,10 @@
     <string name="monitoring_no_data_for_device">No data for device</string>
 
     <!-- Route report screen -->
+    <string name="monitoring_route_report_speed_measure">km/h</string>
     <string name="monitoring_route_report_event_type">Event type</string>
     <string name="monitoring_route_report_speed">Speed</string>
-    <string name="monitoring_route_report_satellites">Satellites</string>
+    <string name="monitoring_route_report_satellites">satellites</string>
     <string name="monitoring_route_report_gsm">GSM</string>
     <string name="monitoring_route_report_empty_field">--</string>
     <string name="monitoring_route_report_default_seekbar_time">00:00</string>
