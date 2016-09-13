@@ -7,8 +7,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEventType;
 import kgk.beacon.util.ImageProcessor;
 
+import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.*;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Map;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Presenter;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.View;
@@ -38,6 +43,8 @@ public class RouteReportActivity extends AppCompatActivity
 
     @Bind(R.id.route_report_google_map_view)
     MapView googleMapView;
+    @Bind(R.id.route_report_days_list)
+    RecyclerView daysListRecyclerView;
     @Bind(R.id.route_report_mark)
     TextView markTextView;
     @Bind(R.id.route_report_speed)
@@ -127,6 +134,11 @@ public class RouteReportActivity extends AppCompatActivity
         eventDescriptionTextView.setText(String.format("%s  %s", eventTypeString, eventTime));
     }
 
+    @Override
+    public void resetTimeline() {
+        timelineSeekBar.setProgress(0);
+    }
+
     ////
 
     private void prepareGoogleMap(Bundle savedInstanceState) {
@@ -134,12 +146,28 @@ public class RouteReportActivity extends AppCompatActivity
         googleMapView.onResume();
     }
 
+    private DaysView prepareDaysListRecycler() {
+        daysListRecyclerView.setHasFixedSize(true);
+        daysListRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        );
+
+        RouteReportDaysAdapter adapter = new RouteReportDaysAdapter();
+        daysListRecyclerView.setAdapter(adapter);
+        daysListRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        return adapter;
+    }
+
     private void prepareTimeline() {
         timelineSeekBar.setThumbOffset(36);
-        timelineSeekBar.setThumb(prepareTimelineThumbDrawable());
+        timelineSeekBar.setThumb(prepareTimelineThumbDrawable(millisecondsToTimeString(0)));
         timelineSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {}
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                Log.d("debug", "time - " + progress);
+                timelineSeekBar.setThumb(prepareTimelineThumbDrawable(millisecondsToTimeString(progress)));
+            }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -148,27 +176,32 @@ public class RouteReportActivity extends AppCompatActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                presenter.onTimeChosenFromTimeline(seekBar.getProgress());
             }
         });
     }
 
     private void attachPresenter() {
         Map map = new RouteReportGoogleMap(googleMapView);
+        DaysView daysView = prepareDaysListRecycler();
 
         Intent startingIntent = getIntent();
         RouteReport routeReport = (RouteReport) startingIntent.getSerializableExtra(EXTRA_ROUTE_REPORT);
 
-        presenter = new RouteReportPresenter(map, routeReport);
+        presenter = new RouteReportPresenter(map, daysView, routeReport);
         presenter.attachView(this);
 
         map.setPresenter(presenter);
+        daysView.setPresenter(presenter);
     }
 
-    private Drawable prepareTimelineThumbDrawable() {
+    private Drawable prepareTimelineThumbDrawable(String timeString) {
         @SuppressLint("InflateParams")
         android.view.View thumbLayout = LayoutInflater.from(this)
                 .inflate(R.layout.layout_monitoring_custom_seekbar, null);
+
+        TextView timeTextView = (TextView) thumbLayout.findViewById(R.id.route_report_timeline_time);
+        timeTextView.setText(timeString);
 
         int width = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -181,5 +214,16 @@ public class RouteReportActivity extends AppCompatActivity
 
         Bitmap thumbBitmap = ImageProcessor.bitmapFromView(thumbLayout, width, height);
         return new BitmapDrawable(thumbBitmap);
+    }
+
+    private String millisecondsToTimeString(int milliseconds) {
+        int seconds = milliseconds / 1000;
+        int hours = seconds / 3600;
+        int minutes = (seconds - (hours * 3600)) / 60;
+
+        String hoursString = hours > 9 ? Integer.toString(hours) : "0" + hours;
+        String minutesString = minutes > 9 ? Integer.toString(minutes) : "0" + minutes;
+
+        return String.format("%s:%s", hoursString, minutesString);
     }
 }

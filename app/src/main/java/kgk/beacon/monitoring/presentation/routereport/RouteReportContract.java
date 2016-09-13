@@ -22,6 +22,8 @@ public interface RouteReportContract {
         void displayGsmLevel(int gsmLevel);
 
         void displayEventDescription(RouteReportEventType eventType, String eventTime);
+
+        void resetTimeline();
     }
 
     interface Map {
@@ -39,6 +41,15 @@ public interface RouteReportContract {
         void centerOnMovingEventSignal(MovingEventSignal event);
     }
 
+    interface DaysView {
+
+        void setPresenter(Presenter presenter);
+
+        void setTimestamps(List<Long> timestamps);
+
+        void setActiveDay(long timestamp);
+    }
+
     interface Presenter {
 
         void attachView(View view);
@@ -48,5 +59,9 @@ public interface RouteReportContract {
         void onCreateView();
 
         void onMapReady();
+
+        void onTimeChosenFromTimeline(int timeInMilleseconds);
+
+        void onDayChosen(long dayTimestamp);
     }
 }

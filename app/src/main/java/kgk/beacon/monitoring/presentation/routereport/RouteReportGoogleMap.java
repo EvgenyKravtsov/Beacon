@@ -84,6 +84,8 @@ public class RouteReportGoogleMap implements Map, OnMapReadyCallback {
         if (mapEvents == null) mapEvents = new ArrayList<>();
         else mapEvents.clear();
 
+        googleMap.clear();
+
         for (RouteReportEvent event : events) {
             if (event instanceof ParkingEvent) {
                 RouteReportMapObject mapObject = new ParkingEventMapObject(googleMap, event);
