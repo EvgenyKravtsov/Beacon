@@ -10,6 +10,10 @@ public class MovingEvent extends RouteReportEvent {
     private final String details;
     private final double latitude;
     private final double longitude;
+    private final double averageSpeed;
+    private final double maxSpeed;
+    private final double mileage;
+    private final double maxMileage;
     private final List<MovingEventSignal> signals;
 
     ////
@@ -20,11 +24,20 @@ public class MovingEvent extends RouteReportEvent {
                        String details,
                        double latitude,
                        double longitude,
+                       double averageSpeed,
+                       double maxSpeed,
+                       double mileage,
+                       double maxMileage,
                        List<MovingEventSignal> signals) {
+
         super(startTime, endTime, duration);
         this.details = details;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.averageSpeed = averageSpeed;
+        this.maxSpeed = maxSpeed;
+        this.mileage = mileage;
+        this.maxMileage = maxMileage;
         this.signals = signals;
     }
 
@@ -40,6 +53,22 @@ public class MovingEvent extends RouteReportEvent {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public double getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public double getMileage() {
+        return mileage;
+    }
+
+    public double getMaxMileage() {
+        return maxMileage;
     }
 
     public List<MovingEventSignal> getSignals() {

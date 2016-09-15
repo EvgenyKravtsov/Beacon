@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -19,7 +20,8 @@ import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEventType;
 
-import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.*;
+import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.DaysView;
+import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.EventsView;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Map;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Presenter;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.View;
@@ -30,6 +32,7 @@ public class RouteReportPresenter implements Presenter {
 
     private Map map;
     private DaysView daysView;
+    private EventsView eventsView;
     private RouteReport routeReport;
     private long activeDayTimestamp;
 
@@ -37,9 +40,15 @@ public class RouteReportPresenter implements Presenter {
 
     ////
 
-    public RouteReportPresenter(Map map, DaysView daysView, RouteReport routeReport) {
+    public RouteReportPresenter(
+            Map map,
+            DaysView daysView,
+            EventsView eventsView,
+            RouteReport routeReport) {
+
         this.map = map;
         this.daysView = daysView;
+        this.eventsView = eventsView;
         this.routeReport = routeReport;
 
         // Inner dependencies
@@ -68,6 +77,7 @@ public class RouteReportPresenter implements Presenter {
     public void onCreateView() {
         map.init(configuration.loadDefaultMapType(), configuration.loadZoomLevel());
         daysView.setTimestamps(routeReport.getTimestamps());
+        eventsView.setEvents(routeReport.getDays().get(routeReport.getDays().lastKey()));
     }
 
     @Override
@@ -163,6 +173,29 @@ public class RouteReportPresenter implements Presenter {
                         timestampToTimeString(event.getEndTime())));
 
         daysView.setActiveDay(dayTimestamp);
+        eventsView.setEvents(events);
+        view.scrollEventsListToPosition(0);
+    }
+
+    @Override
+    public void onEventChosen(RouteReportEvent event) {
+        centerMapOnEvent(event);
+        view.moveTimeline(timestampOfDaytime(event.getStartTime()));
+    }
+
+    @Override
+    public void onMapZoomInButtonClick() {
+        map.zoomIn();
+    }
+
+    @Override
+    public void onMapZoomOutButtonClick() {
+        map.zoomOut();
+    }
+
+    @Override
+    public void onMapZoomLevelChanged(float currentZoom) {
+        configuration.saveZoomLevel(currentZoom);
     }
 
     ////
@@ -213,5 +246,18 @@ public class RouteReportPresenter implements Presenter {
         }
 
         return lastTimestamp;
+    }
+
+    private int timestampOfDaytime(long timestamp) {
+        Date date = new Date(timestamp);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int seconds = calendar.get(Calendar.SECOND);
+        int milliseconds = calendar.get(Calendar.MILLISECOND);
+
+        return milliseconds + 1000 * seconds + 60000 * minutes + 3600000 * hours;
     }
 }

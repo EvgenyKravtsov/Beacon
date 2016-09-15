@@ -55,7 +55,7 @@ public class RouteReportJsonParser {
         JSONArray eventList = dataById.getJSONArray("rows");
 
         // TODO Delete test code
-        for (int i = 0; i < eventList.length(); i++) Log.d("debug", eventList.getJSONObject(i).toString());
+        for (int i = 0; i < eventList.length(); i++) Log.d("network", eventList.getJSONObject(i).toString());
 
         List<RouteReportEvent> events = new ArrayList<>();
 
@@ -194,6 +194,10 @@ public class RouteReportJsonParser {
                 json.getString("data1"),
                 track.getJSONObject(0).getDouble("lat"),
                 track.getJSONObject(0).getDouble("lng"),
+                json.getDouble("speed"),
+                json.getDouble("maxSpeed"),
+                json.getDouble("race"),
+                json.getDouble("sumRace"),
                 signals
         );
     }

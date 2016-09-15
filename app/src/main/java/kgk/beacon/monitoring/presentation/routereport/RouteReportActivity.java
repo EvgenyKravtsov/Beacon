@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -22,12 +22,14 @@ import com.google.android.gms.maps.MapView;
 import butterknife.Bind;
 import butterknife.BindDrawable;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEventType;
 import kgk.beacon.util.ImageProcessor;
 
-import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.*;
+import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.DaysView;
+import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.EventsView;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Map;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Presenter;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.View;
@@ -57,6 +59,8 @@ public class RouteReportActivity extends AppCompatActivity
     TextView eventDescriptionTextView;
     @Bind(R.id.route_report_timeline)
     SeekBar timelineSeekBar;
+    @Bind(R.id.route_report_events_list)
+    ExpandableListView eventsListExpandableListView;
 
     @BindDrawable(R.drawable.monitoring_gsm_level_0)
     Drawable gsmLevel0Drawable;
@@ -70,6 +74,18 @@ public class RouteReportActivity extends AppCompatActivity
     Drawable gsmLevel4Drawable;
     @BindDrawable(R.drawable.monitoring_gsm_level_5)
     Drawable gsmLevel5Drawable;
+
+    ////
+
+    @OnClick(R.id.route_report_zoom_in_button)
+    public void onClickZoomInButton() {
+        presenter.onMapZoomInButtonClick();
+    }
+
+    @OnClick(R.id.route_report_zoom_out_button)
+    public void onClickZoomOutButton() {
+        presenter.onMapZoomOutButtonClick();
+    }
 
     ////
 
@@ -135,8 +151,18 @@ public class RouteReportActivity extends AppCompatActivity
     }
 
     @Override
+    public void moveTimeline(long timestamp) {
+        timelineSeekBar.setProgress((int) timestamp);
+    }
+
+    @Override
     public void resetTimeline() {
         timelineSeekBar.setProgress(0);
+    }
+
+    @Override
+    public void scrollEventsListToPosition(int position) {
+        eventsListExpandableListView.scrollTo(0, 0);
     }
 
     ////
@@ -159,13 +185,19 @@ public class RouteReportActivity extends AppCompatActivity
         return adapter;
     }
 
+    private EventsView prepareEventsListRecycler() {
+        RouteReportEventsAdapter adapter = new RouteReportEventsAdapter(getLayoutInflater());
+        eventsListExpandableListView.setAdapter(adapter);
+        eventsListExpandableListView.setOnGroupExpandListener(adapter);
+        return adapter;
+    }
+
     private void prepareTimeline() {
         timelineSeekBar.setThumbOffset(36);
         timelineSeekBar.setThumb(prepareTimelineThumbDrawable(millisecondsToTimeString(0)));
         timelineSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                Log.d("debug", "time - " + progress);
                 timelineSeekBar.setThumb(prepareTimelineThumbDrawable(millisecondsToTimeString(progress)));
             }
 
@@ -184,15 +216,17 @@ public class RouteReportActivity extends AppCompatActivity
     private void attachPresenter() {
         Map map = new RouteReportGoogleMap(googleMapView);
         DaysView daysView = prepareDaysListRecycler();
+        EventsView eventsView = prepareEventsListRecycler();
 
         Intent startingIntent = getIntent();
         RouteReport routeReport = (RouteReport) startingIntent.getSerializableExtra(EXTRA_ROUTE_REPORT);
 
-        presenter = new RouteReportPresenter(map, daysView, routeReport);
+        presenter = new RouteReportPresenter(map, daysView, eventsView, routeReport);
         presenter.attachView(this);
 
         map.setPresenter(presenter);
         daysView.setPresenter(presenter);
+        eventsView.setPresenter(presenter);
     }
 
     private Drawable prepareTimelineThumbDrawable(String timeString) {
@@ -227,3 +261,32 @@ public class RouteReportActivity extends AppCompatActivity
         return String.format("%s:%s", hoursString, minutesString);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

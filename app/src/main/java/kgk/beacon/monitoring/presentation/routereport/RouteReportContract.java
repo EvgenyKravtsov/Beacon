@@ -23,7 +23,11 @@ public interface RouteReportContract {
 
         void displayEventDescription(RouteReportEventType eventType, String eventTime);
 
+        void moveTimeline(long timestamp);
+
         void resetTimeline();
+
+        void scrollEventsListToPosition(int position);
     }
 
     interface Map {
@@ -39,6 +43,10 @@ public interface RouteReportContract {
         void centerOnMovingEvent(MovingEvent event);
 
         void centerOnMovingEventSignal(MovingEventSignal event);
+
+        void zoomIn();
+
+        void zoomOut();
     }
 
     interface DaysView {
@@ -48,6 +56,13 @@ public interface RouteReportContract {
         void setTimestamps(List<Long> timestamps);
 
         void setActiveDay(long timestamp);
+    }
+
+    interface EventsView {
+
+        void setPresenter(Presenter presenter);
+
+        void setEvents(List<RouteReportEvent> events);
     }
 
     interface Presenter {
@@ -63,5 +78,13 @@ public interface RouteReportContract {
         void onTimeChosenFromTimeline(int timeInMilleseconds);
 
         void onDayChosen(long dayTimestamp);
+
+        void onEventChosen(RouteReportEvent event);
+
+        void onMapZoomInButtonClick();
+
+        void onMapZoomOutButtonClick();
+
+        void onMapZoomLevelChanged(float currentZoom);
     }
 }

@@ -15,6 +15,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -25,7 +26,9 @@ import com.google.android.gms.maps.model.UrlTileProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.MovingEvent;
@@ -42,7 +45,9 @@ import kgk.beacon.util.ImageProcessor;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Map;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Presenter;
 
-public class RouteReportGoogleMap implements Map, OnMapReadyCallback {
+public class RouteReportGoogleMap implements Map,
+        OnMapReadyCallback,
+        GoogleMap.OnCameraChangeListener {
 
     private static final int MARKER_SIZE = 13;
 
@@ -152,13 +157,31 @@ public class RouteReportGoogleMap implements Map, OnMapReadyCallback {
         ));
     }
 
+    @Override
+    public void zoomIn() {
+        googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+    }
+
+    @Override
+    public void zoomOut() {
+        googleMap.animateCamera(CameraUpdateFactory.zoomOut());
+    }
+
     ////
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        googleMap.setOnCameraChangeListener(this);
         setMapType(mapType);
         presenter.onMapReady();
+    }
+
+    ////
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        presenter.onMapZoomLevelChanged(cameraPosition.zoom);
     }
 
     ////
@@ -175,7 +198,7 @@ public class RouteReportGoogleMap implements Map, OnMapReadyCallback {
                 break;
 
             case YANDEX: // TODO Change Yandex map to OSM standard map break;
-            case GOOGLE: googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);break;
+            case GOOGLE: googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); break;
             case SATELLITE: googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE); break;
             default: setMapType(MapType.GOOGLE);
         }
@@ -185,7 +208,6 @@ public class RouteReportGoogleMap implements Map, OnMapReadyCallback {
         TileProvider tileProvider = new UrlTileProvider(256, 256) {
             @Override
             public URL getTileUrl(int x, int y, int zoom) {
-
                 String urlString = String.format(
                         Locale.ROOT,
                         "http://map2.kgk-global.com/tiles/tile.py/get?z=%d&x=%d&y=%d",

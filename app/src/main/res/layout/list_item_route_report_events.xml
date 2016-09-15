@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="28dp"
+    android:padding="8dp"
+    android:background="@drawable/monitoring_general_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/description"
+        style="@style/MonitoringStandardString"
+        tools:text="Parking 15:34 - 17:08"
+        tools:ignore="RelativeOverlap" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/monitoring_event_list_expand_button_icon"
+        android:background="@android:color/transparent"
+        android:id="@+id/expand"
+        tools:ignore="ContentDescription" />
+
+</RelativeLayout>
