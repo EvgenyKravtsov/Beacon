@@ -8,8 +8,7 @@
     android:gravity="bottom"
     android:id="@+id/route_report_slider"
     app:umanoFadeColor="@android:color/transparent"
-    app:umanoParallaxOffset="128dp"
-    app:umanoPanelHeight="136dp"
+    app:umanoPanelHeight="156dp"
     app:umanoDragView="@+id/route_report_slider_button">
 
     <RelativeLayout
@@ -93,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="15sp"
+                android:textSize="20sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/monitoring_action_bar_title_text_view"
                 tools:text="Choose device"
@@ -137,16 +136,16 @@
             android:layout_marginStart="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical"
-            android:paddingBottom="8dp"
+            android:paddingBottom="16dp"
             android:background="@drawable/monitoring_general_background">
 
             <!-- Days list -->
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:overScrollMode="never"
                 android:id="@+id/route_report_days_list" />
 
@@ -222,9 +221,9 @@
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:minHeight="48dp"
-                android:maxHeight="12dp"
-                android:layout_marginTop="6dp"
+                android:minHeight="96dp"
+                android:maxHeight="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"
@@ -247,10 +246,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
-                android:paddingLeft="40dp"
-                android:paddingStart="40dp"
-                android:paddingRight="40dp"
-                android:paddingEnd="40dp"
+                android:paddingLeft="50dp"
+                android:paddingStart="50dp"
+                android:paddingRight="50dp"
+                android:paddingEnd="50dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -351,7 +350,7 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"

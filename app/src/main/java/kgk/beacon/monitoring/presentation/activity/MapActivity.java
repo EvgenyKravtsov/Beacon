@@ -35,6 +35,7 @@ import kgk.beacon.monitoring.presentation.adapter.GoogleMapAdapter;
 import kgk.beacon.monitoring.presentation.adapter.MapAdapter;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.presenter.MapViewPresenter;
+import kgk.beacon.monitoring.presentation.routereport.RouteReportActivity;
 import kgk.beacon.monitoring.presentation.utils.SimpleGestureFilter;
 
 public class MapActivity extends AppCompatActivity implements

@@ -19,6 +19,7 @@ import kgk.beacon.monitoring.domain.model.routereport.ParkingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEventType;
+import kgk.beacon.monitoring.presentation.model.MapType;
 
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.DaysView;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.EventsView;
@@ -196,6 +197,12 @@ public class RouteReportPresenter implements Presenter {
     @Override
     public void onMapZoomLevelChanged(float currentZoom) {
         configuration.saveZoomLevel(currentZoom);
+    }
+
+    @Override
+    public void onMapLayerSelected(MapType mapType) {
+        configuration.saveDefaultMapType(mapType);
+        map.setMapLayer(mapType);
     }
 
     ////

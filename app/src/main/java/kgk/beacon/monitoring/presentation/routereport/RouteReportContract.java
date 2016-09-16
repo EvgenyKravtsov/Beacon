@@ -47,6 +47,8 @@ public interface RouteReportContract {
         void zoomIn();
 
         void zoomOut();
+
+        void setMapLayer(MapType mapType);
     }
 
     interface DaysView {
@@ -86,5 +88,7 @@ public interface RouteReportContract {
         void onMapZoomOutButtonClick();
 
         void onMapZoomLevelChanged(float currentZoom);
+
+        void onMapLayerSelected(MapType mapType);
     }
 }

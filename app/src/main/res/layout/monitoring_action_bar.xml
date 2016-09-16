@@ -6,7 +6,8 @@
     android:layout_height="?attr/actionBarSize"
     android:paddingRight="@dimen/standard_horizontal_padding"
     android:paddingEnd="@dimen/standard_horizontal_padding"
-    android:background="@color/monitoring_light_gray">
+    android:background="@color/monitoring_light_gray"
+    tools:ignore="RtlSymmetry">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -18,12 +19,14 @@
         android:paddingRight="12dp"
         android:paddingEnd="12dp"
         android:paddingBottom="12dp"
-        android:id="@+id/monitoring_action_bar_back_button">
+        android:id="@+id/monitoring_action_bar_back_button"
+        tools:ignore="RtlSymmetry">
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/monitoring_back_button_icon" />
+            android:src="@drawable/monitoring_back_button_icon"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 

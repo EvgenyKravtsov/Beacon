@@ -139,6 +139,7 @@ public class RouteReportEventsAdapter extends BaseExpandableListAdapter implemen
             expandImageView.setImageDrawable(expandDrawable);
         }
 
+        if (AppController.isBelowLollopop()) view.setPadding(8, 8, 8, 8);
         return view;
     }
 

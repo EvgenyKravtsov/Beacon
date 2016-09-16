@@ -236,14 +236,6 @@
                 android:value=".monitoring.presentation.activity.MapActivity" />
         </activity>
 
-        <activity android:name=".monitoring.presentation.activity.RouteReportActivity"
-            android:theme="@style/MonitoringModuleTheme"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".monitoring.presentation.activity.MapActivity" />
-        </activity>
-
         <activity android:name=".monitoring.presentation.routereport.RouteReportActivity"
             android:theme="@style/MonitoringModuleTheme"
             android:screenOrientation="portrait">

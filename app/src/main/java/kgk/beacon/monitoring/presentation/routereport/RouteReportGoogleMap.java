@@ -49,7 +49,7 @@ public class RouteReportGoogleMap implements Map,
         OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener {
 
-    private static final int MARKER_SIZE = 13;
+    private static final int MARKER_SIZE = AppController.isTablet() ? 25 : 13;
 
     private Presenter presenter;
     private MapView googleMapView;
@@ -167,6 +167,11 @@ public class RouteReportGoogleMap implements Map,
         googleMap.animateCamera(CameraUpdateFactory.zoomOut());
     }
 
+    @Override
+    public void setMapLayer(MapType mapType) {
+        setMapType(mapType);
+    }
+
     ////
 
     @Override
@@ -181,7 +186,9 @@ public class RouteReportGoogleMap implements Map,
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        presenter.onMapZoomLevelChanged(cameraPosition.zoom);
+        float zoomLevel = cameraPosition.zoom;
+        this.zoomLevel = zoomLevel;
+        presenter.onMapZoomLevelChanged(zoomLevel);
     }
 
     ////

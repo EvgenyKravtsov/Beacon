@@ -29,6 +29,7 @@ import kgk.beacon.monitoring.domain.model.MonitoringManager;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.presentation.presenter.RouteReportSettingsViewPresenter;
+import kgk.beacon.monitoring.presentation.routereport.RouteReportActivity;
 import kgk.beacon.monitoring.presentation.view.RouteReportSettingsView;
 
 public class RouteReportSettingsActivity extends AppCompatActivity

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -236,6 +237,14 @@ public class AppController extends Application {
         }
         return device.getCivilModel() + " " + device.getStateNumber() +
                 " " + device.getId();
+    }
+
+    public static boolean isBelowLollopop() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static boolean isTablet() {
+        return instance.getResources().getBoolean(R.bool.isTablet);
     }
 
     ////

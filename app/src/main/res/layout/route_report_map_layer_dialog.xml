@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/monitoring_general_background"
+        android:text="@string/monitoring_kgk_map_label"
+        android:id="@+id/kgk_layer" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/monitoring_general_background"
+        android:text="@string/monitoring_yandex_map_label"
+        android:id="@+id/osm_layer" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/monitoring_general_background"
+        android:text="@string/monitoring_google_map_type"
+        android:id="@+id/google_layer" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/monitoring_general_background"
+        android:text="@string/monitoring_satellite_map_type"
+        android:id="@+id/satellite_layer" />
+
+</LinearLayout>

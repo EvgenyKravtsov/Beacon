@@ -6,14 +6,18 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -26,23 +30,27 @@ import butterknife.OnClick;
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEventType;
+import kgk.beacon.monitoring.presentation.activity.RouteReportSettingsActivity;
+import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.util.ImageProcessor;
 
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.DaysView;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.EventsView;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Map;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Presenter;
-import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.View;
 
 public class RouteReportActivity extends AppCompatActivity
-        implements View {
+        implements RouteReportContract.View {
 
-    private static final String EXTRA_ROUTE_REPORT = "extra_route_report";
+    public static final String EXTRA_ROUTE_REPORT = "extra_route_report";
 
     private Presenter presenter;
+    private AlertDialog mapLayerDialog;
 
     ////
 
+    @Bind(R.id.monitoring_action_bar_title_text_view)
+    TextView titleTextView;
     @Bind(R.id.route_report_google_map_view)
     MapView googleMapView;
     @Bind(R.id.route_report_days_list)
@@ -77,6 +85,67 @@ public class RouteReportActivity extends AppCompatActivity
 
     ////
 
+    @OnClick(R.id.monitoring_action_bar_back_button)
+    public void onClickBackButton() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
+
+    @OnClick(R.id.route_report_go_to_settings)
+    public void onClickGoToSettingsButton() {
+        Intent intent = new Intent(this, RouteReportSettingsActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.route_report_layers_button)
+    public void onClickLayersButton() {
+        if (mapLayerDialog == null) {
+            android.view.View dialogLayout = getLayoutInflater()
+                    .inflate(R.layout.route_report_map_layer_dialog, null);
+
+            Button kgkLayerButton = (Button) dialogLayout.findViewById(R.id.kgk_layer);
+            kgkLayerButton.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View view) {
+                    presenter.onMapLayerSelected(MapType.KGK);
+                    if (mapLayerDialog != null) mapLayerDialog.dismiss();
+                }
+            });
+
+            Button osmLayerButton = (Button) dialogLayout.findViewById(R.id.osm_layer);
+            osmLayerButton.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View view) {
+                    presenter.onMapLayerSelected(MapType.YANDEX);
+                    if (mapLayerDialog != null) mapLayerDialog.dismiss();
+                }
+            });
+
+            Button googleLayerButton = (Button) dialogLayout.findViewById(R.id.google_layer);
+            googleLayerButton.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View view) {
+                    presenter.onMapLayerSelected(MapType.GOOGLE);
+                    if (mapLayerDialog != null) mapLayerDialog.dismiss();
+                }
+            });
+
+            Button satelliteLayerButton = (Button) dialogLayout.findViewById(R.id.satellite_layer);
+            satelliteLayerButton.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View view) {
+                    presenter.onMapLayerSelected(MapType.SATELLITE);
+                    if (mapLayerDialog != null) mapLayerDialog.dismiss();
+                }
+            });
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(dialogLayout);
+            mapLayerDialog = builder.create();
+        }
+
+        mapLayerDialog.show();
+        mapLayerDialog.getWindow().setLayout(512, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
     @OnClick(R.id.route_report_zoom_in_button)
     public void onClickZoomInButton() {
         presenter.onMapZoomInButtonClick();
@@ -94,6 +163,7 @@ public class RouteReportActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_report_mvp);
         ButterKnife.bind(this);
+        titleTextView.setText(getString(R.string.monitoring_route_report_screen_title));
         prepareGoogleMap(savedInstanceState);
         prepareTimeline();
         attachPresenter();
@@ -237,13 +307,15 @@ public class RouteReportActivity extends AppCompatActivity
         TextView timeTextView = (TextView) thumbLayout.findViewById(R.id.route_report_timeline_time);
         timeTextView.setText(timeString);
 
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+
         int width = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                96,
+                isTablet ? 48 : 96,
                 getResources().getDisplayMetrics());
         int height = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                72,
+                isTablet ? 36 : 72,
                 getResources().getDisplayMetrics());
 
         Bitmap thumbBitmap = ImageProcessor.bitmapFromView(thumbLayout, width, height);

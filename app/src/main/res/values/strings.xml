@@ -307,6 +307,7 @@
     <string name="monitoring_choose_vehicle_group_screen_show_all_devices_button_label">Show all devices</string>
 
     <!-- Route report settings screen -->
+    <string name="monitoring_route_report_screen_title">Route report</string>
     <string name="monitoring_route_report_settings_screen_report_start">Report start date</string>
     <string name="monitoring_route_report_settings_screen_report_end">Report end date</string>
     <string name="monitoring_route_report_settings_screen_from">From:</string>

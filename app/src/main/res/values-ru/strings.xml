@@ -244,6 +244,7 @@
     <string name="monitoring_no_data_for_device">Нет данных по устройству</string>
 
     <!-- Route report screen -->
+    <string name="monitoring_route_report_screen_title">Детальный отчет</string>
     <string name="monitoring_route_report_speed_measure">км/ч</string>
     <string name="monitoring_route_report_event_type">Событие</string>
     <string name="monitoring_route_report_speed">Скорость</string>
