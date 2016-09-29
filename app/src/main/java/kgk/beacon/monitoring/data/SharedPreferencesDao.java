@@ -50,7 +50,7 @@ public class SharedPreferencesDao implements Configuration {
             case KGK_MAP_CODE:
                 return MapType.KGK;
             case YANDEX_MAP_CODE:
-                return MapType.YANDEX;
+                return MapType.OSM;
             case GOOGLE_MAP_CODE:
                 return MapType.GOOGLE;
             case SATELLITE_MAP_CODE:
@@ -67,7 +67,7 @@ public class SharedPreferencesDao implements Configuration {
             case KGK:
                 mapCode = KGK_MAP_CODE;
                 break;
-            case YANDEX:
+            case OSM:
                 mapCode = YANDEX_MAP_CODE;
                 break;
             case GOOGLE:

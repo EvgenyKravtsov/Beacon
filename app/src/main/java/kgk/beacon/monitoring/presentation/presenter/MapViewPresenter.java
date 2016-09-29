@@ -22,6 +22,7 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
+import kgk.beacon.monitoring.network.WebSocket;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.view.MapView;
 import kgk.beacon.util.AppController;
@@ -103,7 +104,6 @@ public class MapViewPresenter implements
 
     public void requestQuickReport() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -150,6 +150,10 @@ public class MapViewPresenter implements
     @Override
     public void onMonitoringEntitiesRetreived(final List<MonitoringEntity> monitoringEntities) {
         requestActiveMonitoringEntity();
+
+        // TODO Delete test code
+        WebSocket webSocket = WebSocket.getInstance();
+        webSocket.connect();
     }
 
     @Override
@@ -202,6 +206,11 @@ public class MapViewPresenter implements
             @Override
             public void run() {
                 if (view != null) {
+                    if (routeReport == RouteReport.emptyRouteReport) {
+                        view.notifyNoDataForRouteReport();
+                        return;
+                    }
+
                     if (routeReport.getDays().size() > 0 ) view.navigateToRouteReportView(routeReport);
                     else view.notifyNoDataForRouteReport();
                 }

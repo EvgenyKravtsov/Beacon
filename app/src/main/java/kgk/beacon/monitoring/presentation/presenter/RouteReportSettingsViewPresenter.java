@@ -49,6 +49,11 @@ public class RouteReportSettingsViewPresenter
             @Override
             public void run() {
                 if (view != null) {
+                    if (routeReport == RouteReport.emptyRouteReport) {
+                        view.notifyNoDataForRouteReport();
+                        return;
+                    }
+
                     if (routeReport.getDays().size() > 0 ) view.navigateToRouteReportView(routeReport);
                     else view.notifyNoDataForRouteReport();
                 }

@@ -41,8 +41,6 @@ import kgk.beacon.monitoring.presentation.utils.SimpleGestureFilter;
 public class MapActivity extends AppCompatActivity implements
         kgk.beacon.monitoring.presentation.view.MapView {
 
-    // TODO Check ignition status
-
     // Views
 
         // Information bar
@@ -53,9 +51,11 @@ public class MapActivity extends AppCompatActivity implements
         private TextView deviceIgnitionTextView;
         private TextView deviceSpeedTextView;
         private TextView deviceSatellitesTextView;
+        private TextView deviceDirectionTextView;
         private TextView deviceGsmTextView;
         private TextView deviceUpdatedTextView;
-        private ImageButton expandInformationButton;
+        private Button routeReportButton;
+        // private ImageButton expandInformationButton;
 
         private boolean informationExpanded;
 
@@ -88,6 +88,8 @@ public class MapActivity extends AppCompatActivity implements
     private MapAdapter mapAdapter;
     private MonitoringEntity activeMonitoringEntity;
     private Button activeMenuMapButton;
+
+    private boolean trafficActivated;
 
     ////
 
@@ -149,7 +151,7 @@ public class MapActivity extends AppCompatActivity implements
         );
 
         informationBarDeviceTextView.setText(String.format(
-                "%s %s %s",
+                "%s %s\n%s",
                 activeMonitoringEntity.getMark(),
                 activeMonitoringEntity.getModel(),
                 activeMonitoringEntity.getStateNumber()
@@ -174,6 +176,10 @@ public class MapActivity extends AppCompatActivity implements
                 "%s %d",
                 getString(R.string.monitoring_entity_screen_satellites),
                 activeMonitoringEntity.getSatellites()));
+        deviceDirectionTextView.setText(String.format(
+                "%s %s",
+                getString(R.string.monitoring_entity_screen_direction),
+                prepareDirectionString(monitoringEntity.getDirection())));
         deviceGsmTextView.setText(String.format(
                 "%s: %s",
                 getString(R.string.monitoring_device_gsm),
@@ -228,7 +234,7 @@ public class MapActivity extends AppCompatActivity implements
             case KGK:
                 activeMenuMapButton = kgkMapMenuButton;
                 break;
-            case YANDEX:
+            case OSM:
                 activeMenuMapButton = yandexMapMenuButton;
                 break;
             case GOOGLE:
@@ -258,6 +264,12 @@ public class MapActivity extends AppCompatActivity implements
         dialog.show();
     }
 
+    @Override
+    public void onMapClick() {
+        collapseInformation();
+        slider.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    }
+
     ////
 
     private void initViews(Bundle savedInstanceState) {
@@ -265,16 +277,19 @@ public class MapActivity extends AppCompatActivity implements
                 findViewById(R.id.monitoring_activity_map_information_bar_back_button);
         informationBarDeviceTextView = (TextView)
                 findViewById(R.id.monitoring_activity_map_information_bar_device);
+        routeReportButton = (Button)
+                findViewById(R.id.information_bar_route_report);
 
         deviceInformationExpandedLayout = (LinearLayout) findViewById(R.id.information_bar_extended_layout);
         deviceStateTextView = (TextView) findViewById(R.id.device_state);
         deviceIgnitionTextView = (TextView) findViewById(R.id.device_ignition);
         deviceSpeedTextView = (TextView) findViewById(R.id.device_speed);
         deviceSatellitesTextView = (TextView) findViewById(R.id.device_satellites);
+        deviceDirectionTextView = (TextView) findViewById(R.id.device_direcion);
         deviceGsmTextView = (TextView) findViewById(R.id.device_gsm);
         deviceUpdatedTextView = (TextView) findViewById(R.id.device_updated);
-        expandInformationButton = (ImageButton)
-                findViewById(R.id.monitoring_activity_map_information_bar_hide_button);
+//        expandInformationButton = (ImageButton)
+//                findViewById(R.id.monitoring_activity_map_information_bar_hide_button);
 
         menuButtonsLayout = (ScrollView)
                 findViewById(R.id.monitoring_activity_menu_buttons_layout);
@@ -346,6 +361,14 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
 
+        routeReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapActivity.this, RouteReportSettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         final SimpleGestureFilter simpleGestureFilter = new SimpleGestureFilter(
                 this,
                 new SimpleGestureFilter.SimpleGestureListener() {
@@ -371,12 +394,12 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
 
-        expandInformationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onExpandInfrormationButtonClick();
-            }
-        });
+//        expandInformationButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onExpandInfrormationButtonClick();
+//            }
+//        });
 
         final SimpleGestureFilter simpleGestureFilter1 = new SimpleGestureFilter(
                 this,
@@ -396,13 +419,13 @@ public class MapActivity extends AppCompatActivity implements
                     }
                 });
 
-        expandInformationButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                simpleGestureFilter1.onTouchEvent(motionEvent);
-                return false;
-            }
-        });
+//        expandInformationButton.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                simpleGestureFilter1.onTouchEvent(motionEvent);
+//                return false;
+//            }
+//        });
 
         slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -691,9 +714,41 @@ public class MapActivity extends AppCompatActivity implements
         informationExpanded = false;
     }
 
+    private String prepareDirectionString(int direction) {
+        String[] directionLabes = {
+                getString(R.string.monitoring_choose_vehicle_screen_north_east),
+                getString(R.string.monitoring_choose_vehicle_screen_east),
+                getString(R.string.monitoring_choose_vehicle_screen_south_east),
+                getString(R.string.monitoring_choose_vehicle_screen_south),
+                getString(R.string.monitoring_choose_vehicle_screen_south_west),
+                getString(R.string.monitoring_choose_vehicle_screen_west),
+                getString(R.string.monitoring_choose_vehicle_screen_north_west),
+                getString(R.string.monitoring_choose_vehicle_screen_north)};
+
+        int degrees = 22;
+        if (direction >= 0 && direction < 22) direction += 360;
+
+        for (int i = 0; degrees <= 337; i++) {
+            int degreesLimit = degrees + 45;
+
+            if (direction >= degrees && direction < degreesLimit) {
+                return directionLabes[i];
+            }
+
+            degrees += 45;
+        }
+
+        return "";
+    }
+
     //// Control callbacks
 
     private void onTrafficButtonClick() {
+        trafficActivated = !trafficActivated;
+        if (trafficActivated) trafficButton.setBackgroundDrawable(
+                getResources().getDrawable(R.drawable.moniroting_map_button_yellow_background));
+        else trafficButton.setBackgroundDrawable(
+                getResources().getDrawable(R.drawable.moniroting_map_button_background));
         mapAdapter.toggleTraffic();
     }
 
@@ -722,8 +777,8 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     private void onClickYandexMapMenuButton() {
-        mapAdapter.setMapType(MapType.YANDEX);
-        presenter.saveDefaultMapType(MapType.YANDEX);
+        mapAdapter.setMapType(MapType.OSM);
+        presenter.saveDefaultMapType(MapType.OSM);
         changeActiveMenuMapButton(yandexMapMenuButton);
     }
 

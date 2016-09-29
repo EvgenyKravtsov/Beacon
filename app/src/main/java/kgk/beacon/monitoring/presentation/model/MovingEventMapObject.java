@@ -12,6 +12,7 @@ import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.model.routereport.MovingEvent;
 import kgk.beacon.monitoring.domain.model.routereport.MovingEventSignal;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEvent;
+import kgk.beacon.util.AppController;
 
 public class MovingEventMapObject extends RouteReportMapObject {
 
@@ -42,8 +43,9 @@ public class MovingEventMapObject extends RouteReportMapObject {
             coordinates.add(new LatLng(signal.getLatitude(), signal.getLongitude()));
 
         movingPolyline = map.addPolyline(new PolylineOptions()
-                .color(R.color.monitoring_track_color)
+                .color(AppController.getInstance().getResources().getColor(R.color.monitoring_track_color))
                 .addAll(coordinates));
+        movingPolyline.setWidth(6);
         movingPolyline.setZIndex(1000);
     }
 

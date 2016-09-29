@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class RouteReport implements Serializable {
+
+    public static final RouteReport emptyRouteReport = new RouteReport(new TreeMap<Long, List<RouteReportEvent>>());
 
     private final SortedMap<Long, List<RouteReportEvent>> days;
     private final List<Long> timestamps;

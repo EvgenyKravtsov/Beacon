@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="kgk.beacon"
-    android:versionCode="46"
-    android:versionName="1.7.0.3" >
+    android:versionCode="51"
+    android:versionName="1.7.0.8" >
 
     <permission
         android:name="kgk.beacon.permission.MAPS_RECEIVE"
@@ -164,7 +164,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCOu4_JJCmkUeTw52GEazS419ARsq4HNxQ" />
+            android:value="AIzaSyD9sGjGWK5n6YcJQ5adw9eR2v8y_tnQbVk" />
 
         <!-- MONITORING MODULE -->
 

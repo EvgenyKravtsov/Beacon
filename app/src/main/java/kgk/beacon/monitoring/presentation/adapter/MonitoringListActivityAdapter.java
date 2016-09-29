@@ -20,13 +20,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import kgk.beacon.R;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.interactor.SetActiveMonitoringEntity;
 import kgk.beacon.monitoring.domain.interactor.SetDisplayEnabled;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
-import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.presentation.activity.MapActivity;
 
 public class MonitoringListActivityAdapter extends
@@ -115,14 +115,36 @@ public class MonitoringListActivityAdapter extends
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final MonitoringEntity monitoringEntity = monitoringEntities.get(position);
 
+        switch (monitoringEntity.getStatus()) {
+            case IN_MOTION:
+                holder.directionImageView.setImageDrawable(
+                    activity.getResources().getDrawable(R.drawable.monitoring_entity_direction_icon_moving)
+                );
+                holder.speedTextView.setText(String.format(
+                        Locale.ROOT,
+                        "%.1f %s",
+                        monitoringEntity.getSpeed(),
+                        activity.getString(R.string.list_item_speed_sign)));
+                break;
+            case STOPPED:
+                holder.speedTextView.setVisibility(View.GONE);
+                break;
+            case OFFLINE:
+                holder.directionImageView.setImageDrawable(
+                        activity.getResources().getDrawable(R.drawable.monitoring_entity_direction_icon_offline)
+                );
+                holder.speedTextView.setVisibility(View.GONE);
+                break;
+        }
+
         holder.nameTextView.setText(
                 String.format("%s %s",
                         monitoringEntity.getMark(),
                         monitoringEntity.getStateNumber()));
         holder.dateTextView.setText(
                 generateSubStringForListItem(
-                        monitoringEntity.getLastUpdateTimestamp(),
-                        monitoringEntity.getStatus()));
+                        monitoringEntity.getLastUpdateTimestamp()
+                ));
 
         prepareDirectionLayout(holder, monitoringEntity.getDirection());
 
@@ -148,7 +170,7 @@ public class MonitoringListActivityAdapter extends
 
                 holder.informationLayout.setBackgroundResource(
                         monitoringEntity.isDisplayEnabled() ?
-                                R.drawable.monitoring_list_item_active_background_selector :
+                                R.drawable.monitoring_general_background_selector :
                                 R.drawable.monitoring_general_background_selector);
 
                 holder.informationLayout.setPadding(8, 8, 8, 8);
@@ -164,7 +186,7 @@ public class MonitoringListActivityAdapter extends
 
         holder.informationLayout.setBackgroundResource(
                 monitoringEntity.isDisplayEnabled() ?
-                R.drawable.monitoring_list_item_active_background_selector :
+                R.drawable.monitoring_general_background_selector :
                 R.drawable.monitoring_general_background_selector);
         holder.informationLayout.setPadding(8, 8, 8, 8);
     }
@@ -193,36 +215,11 @@ public class MonitoringListActivityAdapter extends
     }
 
     @SuppressLint("SimpleDateFormat")
-    private String generateSubStringForListItem(
-            long lastUpdateTimestamp,
-            MonitoringEntityStatus status) {
-
-        String statusString = "";
-
-        if (status != null)
-            switch (status) {
-                case IN_MOTION:
-                    statusString = activity
-                            .getString(R.string.monitoring_choose_vehicle_screen_moving_status);
-                    break;
-                case STOPPED:
-                    statusString = activity
-                        .getString(R.string.monitoring_choose_vehicle_screen_parking_status);
-                    break;
-                case OFFLINE:
-                    statusString = activity
-                        .getString(R.string.monitoring_choose_vehicle_screen_offline_status);
-                    break;
-            }
-
+    private String generateSubStringForListItem(long lastUpdateTimestamp) {
         Date date = new Date(lastUpdateTimestamp);
-
-        return String.format("%s, %s %s %s %s",
-                statusString,
-                activity.getString(R.string.monitoring_choose_vehicle_screen_updated),
-                new SimpleDateFormat("dd.MM").format(date),
-                activity.getString(R.string.monitoring_choose_vehicle_screen_at),
-                new SimpleDateFormat("HH:mm").format(date));
+        return String.format("%s %s",
+                new SimpleDateFormat("HH:mm:ss").format(date),
+                new SimpleDateFormat("dd.MM").format(date));
     }
 
     private void prepareDirectionLayout(ViewHolder holder, int direction) {
@@ -263,6 +260,7 @@ public class MonitoringListActivityAdapter extends
         ImageView directionImageView;
         TextView directionTextView;
         ImageButton hideButton;
+        TextView speedTextView;
 
         ////
 
@@ -281,6 +279,8 @@ public class MonitoringListActivityAdapter extends
                     .findViewById(R.id.monitoring_activity_list_item_direction_text_view);
             hideButton = (ImageButton) itemView
                     .findViewById(R.id.monitoring_activity_list_item_hide_button);
+            speedTextView = (TextView) itemView
+                    .findViewById(R.id.monitoring_activity_list_item_speed);
         }
     }
 }

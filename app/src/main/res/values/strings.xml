@@ -234,7 +234,7 @@
     <string name="monitoring_information_bar_title">Chosen vehicle</string>
     <string name="monitoring_downloading_data">Downloading data</string>
     <string name="monitoring_kgk_map_label">KGK</string>
-    <string name="monitoring_yandex_map_label">Yandex</string>
+    <string name="monitoring_osm_map_label">OSM</string>
     <string name="monitoring_google_map_type">Google</string>
     <string name="monitoring_satellite_map_type">Satellite</string>
     <string name="monitoring_choose_vehicle">Choose Vehicle</string>
@@ -271,6 +271,7 @@
     <string name="monitoring_entity_screen_last_update">Last Update:</string>
     <string name="monitoring_entity_screen_gsm">GSM:</string>
     <string name="monitoring_entity_screen_satellites">Satellites:</string>
+    <string name="monitoring_entity_screen_direction">Direction:</string>
     <string name="monitoring_entity_screen_ignition">Ignition:</string>
     <string name="monitoring_entity_screen_route_report_button_label">Route Report</string>
     <string name="monitoring_entity_screen_at">at</string>

@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             case KGK:
                 mapRadioGroup.check(R.id.monitoring_activity_settings_marker_kgk_radio_button);
                 break;
-            case YANDEX:
+            case OSM:
                 mapRadioGroup.check(R.id.monitoring_activity_settings_marker_yandex_radio_button);
                 break;
             case GOOGLE:
@@ -141,7 +141,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
                 presenter.saveDefaultMapType(MapType.KGK);
                 break;
             case R.id.monitoring_activity_settings_marker_yandex_radio_button:
-                presenter.saveDefaultMapType(MapType.YANDEX);
+                presenter.saveDefaultMapType(MapType.OSM);
                 break;
             case R.id.monitoring_activity_settings_marker_google_radio_button:
                 presenter.saveDefaultMapType(MapType.GOOGLE);

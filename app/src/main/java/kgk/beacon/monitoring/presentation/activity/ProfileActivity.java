@@ -66,9 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
         loginTextView.setText(user.getLogin());
 
         // TODO Delete test code
-        contactsTextView.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam " +
-                "tincidunt nisl at leo facilisis euismod. Maecenas bibendum aliquam scelerisque. " +
-                "Cras pharetra eros a aliquam volutpat. Ut nec suscipit augue, vitae ullamcorper mi.");
+        contactsTextView.setText("");
         //contactsTextView.setText(user.getContacts());
         balanceTextView.setText(String.format(Locale.ROOT,
                 "%.2f %s",

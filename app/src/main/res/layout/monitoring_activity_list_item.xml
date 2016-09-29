@@ -34,6 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:id="@+id/monitoring_activity_list_item_date_text_view"
                 style="@style/ListItemSubString"
                 tools:text="15/23/2067 15:56:45" />
@@ -45,14 +46,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
+            android:id="@+id/direction"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:src="@drawable/monitoring_entity_direction_icon"
-                android:id="@+id/monitoring_activity_list_item_direction_image_view" />
+                android:id="@+id/monitoring_activity_list_item_direction_image_view"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -60,10 +64,23 @@
                 android:gravity="center_horizontal"
                 android:textSize="12sp"
                 android:textColor="@color/actis_app_text_color_hint"
+                android:visibility="gone"
                 android:id="@+id/monitoring_activity_list_item_direction_text_view"
                 tools:text="NE" />
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/direction"
+            android:layout_toStartOf="@+id/direction"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_alignBottom="@+id/direction"
+            android:id="@+id/monitoring_activity_list_item_speed"
+            style="@style/ListItemSubString"
+            tools:text="56 km/h"/>
 
     </RelativeLayout>
 
@@ -76,6 +93,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/monitoring_general_background_selector"
-        android:id="@+id/monitoring_activity_list_item_hide_button" />
+        android:id="@+id/monitoring_activity_list_item_hide_button"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

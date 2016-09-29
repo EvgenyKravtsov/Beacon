@@ -139,11 +139,12 @@
             android:layout_marginBottom="16dp"
             android:orientation="vertical"
             android:paddingBottom="16dp"
-            android:background="@drawable/monitoring_general_background">
+            android:background="@drawable/monitoring_general_background"
+            android:id="@+id/slider_inner_area">
 
             <!-- Days list -->
             <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:overScrollMode="never"

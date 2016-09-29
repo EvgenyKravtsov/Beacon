@@ -28,6 +28,8 @@ public interface RouteReportContract {
         void resetTimeline();
 
         void scrollEventsListToPosition(int position);
+
+        void collapseSlider();
     }
 
     interface Map {
@@ -90,5 +92,7 @@ public interface RouteReportContract {
         void onMapZoomLevelChanged(float currentZoom);
 
         void onMapLayerSelected(MapType mapType);
+
+        void onMapClick();
     }
 }

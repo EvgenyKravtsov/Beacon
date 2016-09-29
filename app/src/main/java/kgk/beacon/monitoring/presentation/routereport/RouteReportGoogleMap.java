@@ -47,9 +47,10 @@ import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract
 
 public class RouteReportGoogleMap implements Map,
         OnMapReadyCallback,
-        GoogleMap.OnCameraChangeListener {
+        GoogleMap.OnCameraChangeListener,
+        GoogleMap.OnMapClickListener {
 
-    private static final int MARKER_SIZE = AppController.isTablet() ? 25 : 13;
+    private static final int MARKER_SIZE = AppController.isTablet() ? 25 : 18;
 
     private Presenter presenter;
     private MapView googleMapView;
@@ -57,7 +58,7 @@ public class RouteReportGoogleMap implements Map,
     private MapType mapType;
     private float zoomLevel;
     private TileOverlay kgkTileOverlay;
-    private TileOverlay yandexTileOverlay;
+    private TileOverlay osmTileOverlay;
     private List<RouteReportMapObject> mapEvents;
     private Marker centeredEventMarker;
     private ParkingEventMapObject activeParkingEventMapObject;
@@ -90,6 +91,7 @@ public class RouteReportGoogleMap implements Map,
         else mapEvents.clear();
 
         googleMap.clear();
+        setMapType(mapType);
 
         for (RouteReportEvent event : events) {
             if (event instanceof ParkingEvent) {
@@ -169,6 +171,7 @@ public class RouteReportGoogleMap implements Map,
 
     @Override
     public void setMapLayer(MapType mapType) {
+        this.mapType = mapType;
         setMapType(mapType);
     }
 
@@ -178,7 +181,7 @@ public class RouteReportGoogleMap implements Map,
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.setOnCameraChangeListener(this);
-        setMapType(mapType);
+        googleMap.setOnMapClickListener(this);
         presenter.onMapReady();
     }
 
@@ -193,18 +196,27 @@ public class RouteReportGoogleMap implements Map,
 
     ////
 
+    @Override
+    public void onMapClick(LatLng latLng) {
+        presenter.onMapClick();
+    }
+
+    ////
+
     private void setMapType(MapType mapType) {
         if (googleMap == null) return;
         if (kgkTileOverlay != null) kgkTileOverlay.remove();
-        if (yandexTileOverlay != null) yandexTileOverlay.remove();
+        if (osmTileOverlay != null) osmTileOverlay.remove();
 
         switch (mapType) {
             case KGK:
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
                 kgkTileOverlay = googleMap.addTileOverlay(prepareKgkMapType());
                 break;
-
-            case YANDEX: // TODO Change Yandex map to OSM standard map break;
+            case OSM:
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+                osmTileOverlay = googleMap.addTileOverlay(prepapreOsmMap());
+                break;
             case GOOGLE: googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); break;
             case SATELLITE: googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE); break;
             default: setMapType(MapType.GOOGLE);
@@ -226,6 +238,29 @@ public class RouteReportGoogleMap implements Map,
 
                 try { return new URL(urlString); }
                 catch (MalformedURLException e) { throw new AssertionError(e); }
+            }
+        };
+
+        TileOverlayOptions tileOverlayOptions = new TileOverlayOptions().tileProvider(tileProvider);
+        tileOverlayOptions.fadeIn(false);
+        return tileOverlayOptions;
+    }
+
+    private TileOverlayOptions prepapreOsmMap() {
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public URL getTileUrl(int x, int y, int zoom) {
+
+                String urlString = String.format(
+                        Locale.ROOT,
+                        "http://a.tile.openstreetmap.org/%s/%s/%s.png",
+                        zoom, x, y);
+
+                try {
+                    return new URL(urlString);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
             }
         };
 

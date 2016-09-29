@@ -24,4 +24,6 @@ public interface MapView {
     void mapReadyForUse();
 
     void notifyNoDataForRouteReport();
+
+    void onMapClick();
 }

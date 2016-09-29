@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import butterknife.Bind;
 import butterknife.BindDrawable;
@@ -69,6 +70,8 @@ public class RouteReportActivity extends AppCompatActivity
     SeekBar timelineSeekBar;
     @Bind(R.id.route_report_events_list)
     ExpandableListView eventsListExpandableListView;
+    @Bind(R.id.route_report_slider)
+    SlidingUpPanelLayout routeReportSlider;
 
     @BindDrawable(R.drawable.monitoring_gsm_level_0)
     Drawable gsmLevel0Drawable;
@@ -115,7 +118,7 @@ public class RouteReportActivity extends AppCompatActivity
             osmLayerButton.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                    presenter.onMapLayerSelected(MapType.YANDEX);
+                    presenter.onMapLayerSelected(MapType.OSM);
                     if (mapLayerDialog != null) mapLayerDialog.dismiss();
                 }
             });
@@ -154,6 +157,19 @@ public class RouteReportActivity extends AppCompatActivity
     @OnClick(R.id.route_report_zoom_out_button)
     public void onClickZoomOutButton() {
         presenter.onMapZoomOutButtonClick();
+    }
+
+    @OnClick(R.id.slider_inner_area)
+    public void onClickSliderInnerAreaLinearLayout() {
+        SlidingUpPanelLayout.PanelState sliderState = routeReportSlider.getPanelState();
+        switch (sliderState) {
+            case COLLAPSED:
+                routeReportSlider.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                break;
+            case EXPANDED:
+                routeReportSlider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                break;
+        }
     }
 
     ////
@@ -233,6 +249,11 @@ public class RouteReportActivity extends AppCompatActivity
     @Override
     public void scrollEventsListToPosition(int position) {
         eventsListExpandableListView.scrollTo(0, 0);
+    }
+
+    @Override
+    public void collapseSlider() {
+        routeReportSlider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
     ////

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -152,11 +151,6 @@ public class MonitoringGroupListActivity extends AppCompatActivity
 
     private void onClickAllButton() {
         toggleDownloadDataProgressDialog(true);
-
-        // TODO Delete test code
-        for (MonitoringEntity entity : DependencyInjection.provideMonitoringManager().getMonitoringEntities())
-            Log.d("debug", entity.toString());
-
         UpdateMonitoringEntities updateInteractor =
                 new UpdateMonitoringEntities(DependencyInjection.provideMonitoringManager().getMonitoringEntities());
         updateInteractor.setListener(new UpdateMonitoringEntities.Listener() {

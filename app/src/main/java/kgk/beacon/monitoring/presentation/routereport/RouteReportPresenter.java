@@ -205,6 +205,11 @@ public class RouteReportPresenter implements Presenter {
         map.setMapLayer(mapType);
     }
 
+    @Override
+    public void onMapClick() {
+        view.collapseSlider();
+    }
+
     ////
 
     private void centerMapOnEvent(RouteReportEvent event) {

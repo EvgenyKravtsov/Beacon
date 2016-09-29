@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,18 +109,6 @@ public class DeviceListFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onListItemClick(String deviceInfo, Device chosenDevice) {
-//        String[] modelNameSplitted = deviceInfo.split("  ");
-//        String deviceIdAsString = modelNameSplitted[modelNameSplitted.length - 1];
-//        Device activeDevice = new Device();
-//        for (Device device : deviceStore.getDevices()) {
-//            if (device.getId().equals(deviceIdAsString)) {
-//                activeDevice = device;
-//            }
-//        }
-
-        // TODO Delete test code
-        Log.d(TAG, chosenDevice.toString());
-
         AppController.getInstance().setActiveDevice(chosenDevice);
         AppController.getInstance().setActiveDeviceId(Long.parseLong(chosenDevice.getId()));
         AppController.getInstance().setActiveDeviceType(chosenDevice.getType());

@@ -239,7 +239,7 @@
     <string name="monitoring_information_bar_title">Транспортное средство</string>
     <string name="monitoring_downloading_data">Загрузка данных</string>
     <string name="monitoring_kgk_map_label">КГК</string>
-    <string name="monitoring_yandex_map_label">Яндекс</string>
+    <string name="monitoring_osm_map_label">OSM</string>
     <string name="monitoring_google_map_type">Google</string>
     <string name="monitoring_satellite_map_type">Спутник</string>
     <string name="monitoring_choose_vehicle">Выбор ТС</string>
@@ -277,6 +277,7 @@
     <string name="monitoring_entity_screen_last_update">Последнее обновление:</string>
     <string name="monitoring_entity_screen_gsm">GSM:</string>
     <string name="monitoring_entity_screen_satellites">Спутники:</string>
+    <string name="monitoring_entity_screen_direction">Направление:</string>
     <string name="monitoring_entity_screen_ignition">Зажигание:</string>
     <string name="monitoring_entity_screen_route_report_button_label">Детальный отчет</string>
     <string name="monitoring_entity_screen_at">в</string>
@@ -343,7 +344,8 @@
     <string name="monitoring_settings_screen_yandex">Яндекс</string>
     <string name="monitoring_settings_screen_google">Google</string>
     <string name="monitoring_settings_screen_satellite">Спутник</string>
-    <string name="monitoring_settings_screen_additional_marker_info">Отображать маркеры\nс дополнительной\nинформацией</string>
+    <string name="monitoring_settings_screen_additional_marker_info">Отображать дополнительную
+        информацию рядом со значком ТС на карте</string>
     <string name="monitoring_settings_screen_title">Настройки</string>
 
     <!-- Help screen -->

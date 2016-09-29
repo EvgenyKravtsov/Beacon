@@ -7,9 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kgk.beacon.R;
 import kgk.beacon.model.product.Product;
 import kgk.beacon.model.product.ProductFactory;
@@ -31,13 +29,18 @@ import kgk.beacon.view.general.adapter.ProductListAdapter;
 
 public class ProductActivity extends AppCompatActivity {
 
-    @Bind(R.id.actisAppToolbar) Toolbar toolbar;
-    @Bind(R.id.toolbarTitle) TextView toolbarTitle;
     @Bind(R.id.productList) RecyclerView productListRecyclerView;
 
     private static boolean monitoringModuleInitialized;
 
     private ProgressDialog progressDialog;
+
+    ////
+
+    @OnClick(R.id.back)
+    public void onBackImageButtonClick() {
+        finish();
+    }
 
     ////
 
@@ -52,31 +55,10 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         ButterKnife.bind(this);
-
-        prepareToolbar();
         prepareProductList();
     }
 
     ////
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    ////
-
-    private void prepareToolbar() {
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.actis_navigation_menu_icon));
-        toolbarTitle.setText(getString(R.string.product_activity_title));
-    }
 
     private void prepareProductList() {
         productListRecyclerView.setHasFixedSize(true);
@@ -159,6 +141,8 @@ public class ProductActivity extends AppCompatActivity {
         if (status) progressDialog.show();
         else progressDialog.dismiss();
     }
+
+    ////
 
     // TODO Delete test method
     private List<MonitoringEntity> prepareMockListMonitoringEntities5() {

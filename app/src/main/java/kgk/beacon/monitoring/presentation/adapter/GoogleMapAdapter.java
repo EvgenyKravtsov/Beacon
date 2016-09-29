@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
@@ -26,6 +25,8 @@ import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,15 +40,15 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.util.AppController;
 import kgk.beacon.util.ImageProcessor;
-import kgk.beacon.util.YandexMapUtils;
 
 public class GoogleMapAdapter implements
         OnMapReadyCallback,
         MapAdapter,
         GoogleMap.OnCameraChangeListener,
-        GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnMapClickListener {
 
-    private static final int MARKER_SIZE = 13;
+    private static final int MARKER_SIZE = 18;
 
     private final kgk.beacon.monitoring.presentation.view.MapView mapView;
     private final MapView googleMapView;
@@ -56,6 +57,7 @@ public class GoogleMapAdapter implements
     private GoogleMap map;
     private TileOverlay kgkTileOverlay;
     private TileOverlay yandexTileOverlay;
+    private TileOverlay osmTileOverlay;
     private boolean trafficEnabled;
     private List<MonitoringEntityGoogleMarker> markers;
     private boolean markersExtended;
@@ -82,6 +84,7 @@ public class GoogleMapAdapter implements
         map = googleMap;
         map.setOnCameraChangeListener(this);
         map.setOnMarkerClickListener(this);
+        map.setOnMapClickListener(this);
         mapView.mapReadyForUse();
     }
 
@@ -145,37 +148,28 @@ public class GoogleMapAdapter implements
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(configuration.loadZoomLevel());
         map.moveCamera(zoom);
         map.animateCamera(center);
+        mapView.toggleCenterOnActiveControl(false);
+
+        // TODO Delete test code
+        Log.d("view", "center");
     }
+
+    ////
 
     @Override
     public void setMapType(MapType mapType) {
         if (map == null) return;
         if (kgkTileOverlay != null) kgkTileOverlay.remove();
-        if (yandexTileOverlay != null) yandexTileOverlay.remove();
+        if (osmTileOverlay != null) osmTileOverlay.remove();
 
         switch (mapType) {
             case KGK:
                 map.setMapType(GoogleMap.MAP_TYPE_NONE);
                 kgkTileOverlay = map.addTileOverlay(prepareKgkMap());
                 break;
-            case YANDEX:
+            case OSM:
                 map.setMapType(GoogleMap.MAP_TYPE_NONE);
-
-                // TODO Delete test code
-                map.clear();
-
-                yandexTileOverlay = map.addTileOverlay(prepareYandexMap());
-
-                // TODO Delete test code
-                for (MonitoringEntityGoogleMarker googleMarker : markers) {
-                    LatLng latLng = googleMarker.getMarker().getPosition();
-                    double[] geoCoordinates = new double[] {latLng.latitude, latLng.longitude};
-                    double[] mercCoordinates = YandexMapUtils.mercatorToGeo(geoCoordinates);
-                    LatLng mercLatLng = new LatLng(mercCoordinates[0], mercCoordinates[1]);
-                    Log.d("debug", "lat = " + mercLatLng.latitude + " | long = " + mercLatLng.longitude);
-                    Marker marker = map.addMarker(new MarkerOptions().position(mercLatLng));
-                }
-
+                osmTileOverlay = map.addTileOverlay(prepapreOsmMap());
                 break;
             case GOOGLE:
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -209,13 +203,19 @@ public class GoogleMapAdapter implements
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-        LatLng latLng = new LatLng(
+        LatLng center = cameraPosition.target;
+        LatLng monitoringEntityPosition = new LatLng(
                 mapView.getActiveMonitoringEntity().getLatitude(),
                 mapView.getActiveMonitoringEntity().getLongitude()
         );
 
-        if (bounds.contains(latLng)) mapView.toggleCenterOnActiveControl(false);
+        double centerLatitude = roundCoordinate(center.latitude, 5);
+        double centerLongitude = roundCoordinate(center.longitude, 5);
+        double pointLatitude = roundCoordinate(monitoringEntityPosition.latitude, 5);
+        double pointLongitude = roundCoordinate(monitoringEntityPosition.longitude, 5);
+
+        if (centerLatitude == pointLatitude && centerLongitude == pointLongitude)
+            mapView.toggleCenterOnActiveControl(false);
         else mapView.toggleCenterOnActiveControl(true);
 
         configuration.saveZoomLevel(cameraPosition.zoom);
@@ -231,6 +231,13 @@ public class GoogleMapAdapter implements
             }
         }
         return true;
+    }
+
+    ////
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        mapView.onMapClick();
     }
 
     ////
@@ -280,6 +287,29 @@ public class GoogleMapAdapter implements
         return tileOverlayOptions;
     }
 
+    private TileOverlayOptions prepapreOsmMap() {
+        TileProvider tileProvider = new UrlTileProvider(256, 256) {
+            @Override
+            public URL getTileUrl(int x, int y, int zoom) {
+
+                String urlString = String.format(
+                        Locale.ROOT,
+                        "http://a.tile.openstreetmap.org/%s/%s/%s.png",
+                        zoom, x, y);
+
+                try {
+                    return new URL(urlString);
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+            }
+        };
+
+        TileOverlayOptions tileOverlayOptions = new TileOverlayOptions().tileProvider(tileProvider);
+        tileOverlayOptions.fadeIn(false);
+        return tileOverlayOptions;
+    }
+
     private BitmapDescriptor generateMarkerIcon(MonitoringEntity monitoringEntity) {
         Context context = AppController.getInstance();
         LayoutInflater inflater = (LayoutInflater) context
@@ -287,6 +317,7 @@ public class GoogleMapAdapter implements
 
         View layout;
         ImageView arrow;
+
         switch (monitoringEntity.getStatus()) {
             case IN_MOTION:
                 layout = inflater.inflate(R.layout.map_custom_marker_point, null);
@@ -406,6 +437,12 @@ public class GoogleMapAdapter implements
                         monitoringEntity.getLongitude()))
                 .icon(generateMarkerExtendedIcon(monitoringEntity))
                 .anchor(0.05f, 0.5f);
+    }
+
+    private double roundCoordinate(double coordinate, int decimalPoints) {
+        BigDecimal bigDecimal = new BigDecimal(coordinate);
+        bigDecimal = bigDecimal.setScale(decimalPoints, RoundingMode.HALF_UP);
+        return bigDecimal.doubleValue();
     }
 
     ////

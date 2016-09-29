@@ -1,7 +1,5 @@
 package kgk.beacon.networking;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -59,10 +57,6 @@ public class RouteReportRequest extends Request<JSONObject> {
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> headers = new HashMap<>();
         headers.put("Cookie", phpSessId + "; kgklang=ru;");
-
-        // TODO Delete test code
-        Log.d("debug", phpSessId);
-
         headers.put("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
         headers.put("X-Requested-With", "XMLHttpRequest");
         headers.put("Origin", "http://monitor.kgk-global.com");

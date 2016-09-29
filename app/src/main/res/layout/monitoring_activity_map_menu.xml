@@ -35,7 +35,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="@string/monitoring_yandex_map_label"
+            android:text="@string/monitoring_osm_map_label"
             android:id="@+id/monitoring_activity_menu_yandex_map_button"
             style="@style/MonitoringMenuGeneralButton" />
 
