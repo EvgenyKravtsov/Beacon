@@ -2,7 +2,6 @@ package kgk.beacon.monitoring.presentation.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,9 +148,18 @@ public class GoogleMapAdapter implements
         map.moveCamera(zoom);
         map.animateCamera(center);
         mapView.toggleCenterOnActiveControl(false);
+    }
 
-        // TODO Delete test code
-        Log.d("view", "center");
+    @Override
+    public void centerCameraBearing() {
+        CameraPosition cameraPosition = map.getCameraPosition();
+        map.animateCamera(CameraUpdateFactory
+                .newCameraPosition(new CameraPosition.Builder()
+                        .target(cameraPosition.target)
+                        .zoom(cameraPosition.zoom)
+                        .bearing(0.0f)
+                        .build()));
+        mapView.toggleCompassButton(false);
     }
 
     ////
@@ -217,6 +225,8 @@ public class GoogleMapAdapter implements
         if (centerLatitude == pointLatitude && centerLongitude == pointLongitude)
             mapView.toggleCenterOnActiveControl(false);
         else mapView.toggleCenterOnActiveControl(true);
+
+        if (cameraPosition.bearing != 0) mapView.toggleCompassButton(true);
 
         configuration.saveZoomLevel(cameraPosition.zoom);
     }

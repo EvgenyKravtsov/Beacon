@@ -7,7 +7,7 @@
     android:paddingLeft="30dp"
     android:paddingTop="30dp"
     android:paddingRight="30dp"
-    android:paddingBottom="60dp"
+
     android:background="@color/main_background_color">
 
     <RelativeLayout
@@ -113,5 +113,14 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom"
+        android:textSize="14sp"
+        android:id="@+id/app_version"
+        tools:text="1.7.0.8" />
 
 </FrameLayout>

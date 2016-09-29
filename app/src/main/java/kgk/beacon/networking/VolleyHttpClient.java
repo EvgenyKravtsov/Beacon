@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -46,8 +45,10 @@ import kgk.beacon.model.T6Packet;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.domain.model.User;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.network.MonitoringHttpClient;
+import kgk.beacon.monitoring.network.RouteReportFromMonitoringJsonParser;
 import kgk.beacon.networking.event.BalanceResponseReceived;
 import kgk.beacon.networking.event.DownloadDataInProgressEvent;
 import kgk.beacon.networking.event.QueryRequestSuccessfulEvent;
@@ -392,33 +393,17 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
     @Override
     public void requestRouteReport(final RouteReportParameters parameters) {
+        final RouteReportHttpRequestBuilder builder = new RouteReportHttpRequestBuilder(parameters);
+        final RouteReportFromMonitoringJsonParser parser = new RouteReportFromMonitoringJsonParser();
 
-        // TODO Delete test code
-        Log.d("RouteReport", "Sending route report request");
-        Log.d("RouteReport", "From - " + parameters.getFromDateTimestamp());
-        Log.d("RouteReport", "To - " + parameters.getToDateTimestamp());
-        Log.d("RouteReport", "Offset - " + parameters.getOffsetUtc());
-        Log.d("RouteReport", "ID = " + parameters.getId());
-
-//        String requestUrlParameters = "?"
-//                + "apikey=uadev11"
-//                + "&rtype=json"
-//                + "&datefrom=" + parameters.getFromDateTimestamp()
-//                + "&dateto=" + parameters.getToDateTimestamp()
-//                + "&delta=" + parameters.getStopTime()
-//                + "&offsetUTC=" + parameters.getOffsetUtc()
-//                + "&deviceID=" + parameters.getId();
-
-        final RouteReportHttpRequestBuilder builder = new RouteReportHttpRequestBuilder();
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 DETAIL_REPORT_URL_POST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        // TODO Delete test code
-                        Log.d("RouteReport", "RESPONSE - " + response);
+                        RouteReport routeReport = parser.parse(response);
+                        routeReportListener.onRouteReportReceived(routeReport);
                     }
                 },
                 new Response.ErrorListener() {
@@ -438,93 +423,11 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> postParams = new HashMap<>();
-                postParams.put("device_mode", "group");
-                postParams.put("type", "Detailed");
-                postParams.put("dateFrom", "29-09-2016"); //
-                postParams.put("timeFrom", "00:00"); //
-                postParams.put("dateTo", "29-09-2016"); //
-                postParams.put("timeTo", "23:59"); //
-                postParams.put("parkings", "on");
-                postParams.put("delta", "180"); //
-                postParams.put("speedTrackLimit", "100");
-                postParams.put("moving", "on");
-                postParams.put("timeout", "on");
-                postParams.put("prizmaType2", "day");
-                postParams.put("NASTdelta", "10");
-                postParams.put("speed", "120");
-                postParams.put("fuel_hour", "0");
-                postParams.put("fuel_type", "1");
-                postParams.put("minTerm", "");
-                postParams.put("maxTerm", "");
-                postParams.put("zoneRaceType", "full");
-                postParams.put("startstopoption", "1");
-                postParams.put("time_delta", "10");
-                postParams.put("advancedreportoption", "1");
-                postParams.put("waybill_timeout", "");
-                postParams.put("waybill_timeon", "");
-                postParams.put("waybill_startkm", "");
-                postParams.put("waybill_stopkm", "");
-                postParams.put("waybill_fuel", "");
-                postParams.put("name", "");
-                postParams.put("report_interval", "lastWeek");
-                postParams.put("comboboxselect-1059-inputEl", "");
-                postParams.put("report_format", "pdf");
-                postParams.put("OffsetUTC", "-180"); //
-                postParams.put("groupId", "3117");
-                postParams.put("deviceId", "5040682918"); //
-                postParams.put("infoWindow", "не установлен");
-                postParams.put("infoWindow", "не установлен");
-                postParams.put("infoWindow", "не установлен");
-                postParams.put("infoWindow", "не установлен");
-                postParams.put("infoWindow", "не установлен");
-                postParams.put("infoWindow", "не установлен");
-                postParams.put("infoWindow", "false");
-                postParams.put("page", "1");
-                postParams.put("start", "0");
-                postParams.put("limit", "25");
-                return postParams;
+                return builder.prepareBody();
             }
         };
 
-//        DetailReportRequest request = new DetailReportRequest(
-//                Request.Method.GET,
-//                DETAIL_REPORT_URL + requestUrlParameters,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("debug", "RESPONSE - " + response);
-//
-//                        try {
-//                            RouteReport routeReport =
-//                                    new RouteReportJsonParser(parameters.getId()).parse(response);
-//                            if (routeReportListener != null)
-//                                routeReportListener.onRouteReportReceived(routeReport);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//
-//                            if (routeReportListener != null)
-//                                routeReportListener.onRouteReportReceived(RouteReport.emptyRouteReport);
-//
-//                            Log.d("debug", "Json error");
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        if (routeReportListener != null)
-//                            routeReportListener.onRouteReportReceived(RouteReport.emptyRouteReport);
-//
-//                        Log.d("debug", "Server error");
-//                        Log.d("debug", error.toString());
-//                    }
-//                }
-//        );
-
         setRetryPolicy(request);
-        //request.setPhpSessId(phpSessId);
-        //request.setParameters(parameters);
         requestQueue.add(request);
     }
 

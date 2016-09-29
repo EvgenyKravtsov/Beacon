@@ -19,6 +19,8 @@ public interface MapView {
 
     void toggleChooseGroupMenuButton(boolean enabled);
 
+    void toggleCompassButton(boolean enabled);
+
     void navigateToRouteReportView(RouteReport routeReport);
 
     void mapReadyForUse();

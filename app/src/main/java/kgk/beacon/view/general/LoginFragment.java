@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.Bind;
@@ -45,6 +47,9 @@ public class LoginFragment extends Fragment {
     @Bind(R.id.fragmentLogin_loginField) EditText loginField;
     @Bind(R.id.fragmentLogin_passwordField) EditText passwordField;
     @Bind(R.id.fragmentLogin_rememberMeCheckBox) CheckBox rememberMeCheckBox;
+    @Bind(R.id.app_version) TextView appVersionTextView;
+
+    ////
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -53,6 +58,11 @@ public class LoginFragment extends Fragment {
         ButterKnife.bind(this, view);
         initFluxDependencies();
         loadLoginParametersFromSharedPreferences();
+
+        try {
+            appVersionTextView.setText(getActivity()
+                    .getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) { e.printStackTrace(); }
 
         return view;
     }

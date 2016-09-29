@@ -39,13 +39,26 @@
                 android:id="@+id/monitoring_activity_map_zoom_out_button"
                 style="@style/MonitoringMapButton" />
 
-            <ImageButton
-                android:layout_marginTop="50dp"
-                android:visibility="invisible"
-                android:clickable="false"
-                android:src="@drawable/monitoring_target_button_icon"
-                android:id="@+id/monitoring_activity_center_on_active_button"
-                style="@style/MonitoringMapButton" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp">
+
+                <ImageButton
+                    android:visibility="invisible"
+                    android:clickable="false"
+                    android:src="@drawable/monitoring_target_button_icon"
+                    android:id="@+id/monitoring_activity_center_on_active_button"
+                    style="@style/MonitoringMapButton" />
+
+                <ImageButton
+                    android:visibility="invisible"
+                    android:clickable="false"
+                    android:src="@drawable/monitoring_compass_button_icon"
+                    android:id="@+id/monitoring_activity_compass_button"
+                    style="@style/MonitoringMapButton" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

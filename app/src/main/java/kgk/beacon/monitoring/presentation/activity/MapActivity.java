@@ -65,6 +65,7 @@ public class MapActivity extends AppCompatActivity implements
     private ImageButton zoomInButton;
     private ImageButton zoomOutButton;
     private ImageButton centerOnActiveButton;
+    private ImageButton compassButton;
     private ImageButton menuButton;
     private Button kgkMapMenuButton;
     private Button yandexMapMenuButton;
@@ -134,6 +135,10 @@ public class MapActivity extends AppCompatActivity implements
                 if (monitoringEntity.isDisplayEnabled()) mapAdapter.showMapEntity(monitoringEntity);
             }
         }
+
+        mapAdapter.centerOnCoordinatesAnimated(
+                activeMonitoringEntity.getLatitude(),
+                activeMonitoringEntity.getLongitude());
     }
 
     @Override
@@ -270,6 +275,12 @@ public class MapActivity extends AppCompatActivity implements
         slider.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
+    @Override
+    public void toggleCompassButton(boolean enabled) {
+        int visibility = enabled ? View.VISIBLE : View.INVISIBLE;
+        compassButton.setVisibility(visibility);
+    }
+
     ////
 
     private void initViews(Bundle savedInstanceState) {
@@ -340,6 +351,8 @@ public class MapActivity extends AppCompatActivity implements
 
         centerOnActiveButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_center_on_active_button);
+        compassButton = (ImageButton)
+                findViewById(R.id.monitoring_activity_compass_button);
 
         quickReportButton = (ImageButton)
                 findViewById(R.id.monitoring_activity_quick_report_button);
@@ -467,6 +480,12 @@ public class MapActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 onCenterOnActiveButtonClick();
+            }
+        });
+        compassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCompassButtonClick();
             }
         });
 
@@ -764,6 +783,10 @@ public class MapActivity extends AppCompatActivity implements
         mapAdapter.centerOnCoordinatesAnimated(
                 activeMonitoringEntity.getLatitude(),
                 activeMonitoringEntity.getLongitude());
+    }
+
+    private void onCompassButtonClick() {
+        mapAdapter.centerCameraBearing();
     }
 
     private void onMenuButtonClick() {

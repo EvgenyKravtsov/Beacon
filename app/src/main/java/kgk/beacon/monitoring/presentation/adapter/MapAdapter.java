@@ -22,4 +22,6 @@ public interface MapAdapter {
     void clearMap();
 
     void clearMarkers();
+
+    void centerCameraBearing();
 }

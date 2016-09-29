@@ -81,6 +81,7 @@ public class LoginActivity extends SingleFragmentActivity {
         toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.actis_login_menu_icon));
         helpToolbarButton.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.app_name));
+        toolbar.setVisibility(View.GONE);
     }
 
     private void showLanguagePickerDialog() {

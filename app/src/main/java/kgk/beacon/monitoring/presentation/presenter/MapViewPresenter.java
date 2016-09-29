@@ -22,7 +22,6 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
-import kgk.beacon.monitoring.network.WebSocket;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.view.MapView;
 import kgk.beacon.util.AppController;
@@ -152,8 +151,8 @@ public class MapViewPresenter implements
         requestActiveMonitoringEntity();
 
         // TODO Delete test code
-        WebSocket webSocket = WebSocket.getInstance();
-        webSocket.connect();
+//        WebSocket webSocket = WebSocket.getInstance();
+//        webSocket.connect();
     }
 
     @Override
