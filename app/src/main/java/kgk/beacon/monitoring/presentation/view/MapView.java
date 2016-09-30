@@ -3,7 +3,6 @@ package kgk.beacon.monitoring.presentation.view;
 import java.util.List;
 
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 
 public interface MapView {
 
@@ -21,7 +20,7 @@ public interface MapView {
 
     void toggleCompassButton(boolean enabled);
 
-    void navigateToRouteReportView(RouteReport routeReport);
+    void navigateToRouteReportView();
 
     void mapReadyForUse();
 

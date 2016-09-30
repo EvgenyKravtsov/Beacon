@@ -1,7 +1,6 @@
 package kgk.beacon.view.general.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +59,6 @@ public class DeviceListAdapter extends BaseExpandableListAdapter
         TextView deviceTextView = (TextView) convertView
                 .findViewById(R.id.listItemDevices_deviceTextView);
         TextView idTextView = (TextView) convertView.findViewById(R.id.listItemDevices_id);
-
-        // TODO Delete test code
-        Log.d(TAG, getChild(groupPosition, childPosition).toString());
 
         String[] deviceInfo = ((String) getChild(groupPosition, childPosition)).split(" ");
         String info = "";

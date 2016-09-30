@@ -16,7 +16,6 @@ public class RouteReportParameters {
             int stopTime,
             int offsetUtc,
             long id) {
-
         this.fromDateTimestamp = fromDateTimestamp;
         this.toDateTimestamp = toDateTimestamp;
         this.stopTime = stopTime;

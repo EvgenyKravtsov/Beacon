@@ -21,7 +21,7 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityGroup;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParametersPeriodSeparated;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.view.MapView;
 import kgk.beacon.util.AppController;
@@ -116,7 +116,7 @@ public class MapViewPresenter implements
 
         long toDateTimestamp = calendar.getTimeInMillis() / 1000;
 
-        RouteReportParameters parameters = new RouteReportParameters(
+        RouteReportParametersPeriodSeparated parameters = new RouteReportParametersPeriodSeparated(
                 fromDateTimestamp,
                 toDateTimestamp,
                 30,
@@ -204,15 +204,8 @@ public class MapViewPresenter implements
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (view != null) {
-                    if (routeReport == RouteReport.emptyRouteReport) {
-                        view.notifyNoDataForRouteReport();
-                        return;
-                    }
-
-                    if (routeReport.getDays().size() > 0 ) view.navigateToRouteReportView(routeReport);
-                    else view.notifyNoDataForRouteReport();
-                }
+                RouteReport.RouteReportInstance = routeReport;
+                view.navigateToRouteReportView();
             }
         });
     }

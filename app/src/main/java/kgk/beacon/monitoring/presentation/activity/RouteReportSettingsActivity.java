@@ -26,8 +26,7 @@ import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 import kgk.beacon.R;
 import kgk.beacon.monitoring.DependencyInjection;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParametersPeriodSeparated;
 import kgk.beacon.monitoring.presentation.presenter.RouteReportSettingsViewPresenter;
 import kgk.beacon.monitoring.presentation.routereport.RouteReportActivity;
 import kgk.beacon.monitoring.presentation.view.RouteReportSettingsView;
@@ -98,11 +97,10 @@ public class RouteReportSettingsActivity extends AppCompatActivity
     ////
 
     @Override
-    public void navigateToRouteReportView(RouteReport routeReport) {
+    public void navigateToRouteReportView() {
         toggleProgressDialog(false);
         Intent intent = new Intent(this, RouteReportActivity.class);
-        intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
-        if (routeReport != null) startActivity(intent);
+        startActivity(intent);
     }
 
     @Override
@@ -447,7 +445,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
         }
 
         int parkingTime = parkingHours * 3600 + parkingMinutes * 60 + parkingSeconds;
-        RouteReportParameters parameters = new RouteReportParameters(
+        RouteReportParametersPeriodSeparated parameters = new RouteReportParametersPeriodSeparated(
                 fromDate.getTime() / 1000,
                 toDate.getTime() / 1000,
                 parkingTime,

@@ -100,6 +100,7 @@
                 android:layout_width="match_parent"
                 android:text="@string/monitoring_help"
                 android:id="@+id/monitoring_activity_menu_help_button"
+                android:visibility="gone"
                 style="@style/MonitoringMenuGeneralButton" />
 
             <Button

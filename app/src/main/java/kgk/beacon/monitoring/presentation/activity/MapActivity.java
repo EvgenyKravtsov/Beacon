@@ -30,12 +30,10 @@ import kgk.beacon.monitoring.data.Configuration;
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.domain.model.MonitoringManager;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.presentation.adapter.GoogleMapAdapter;
 import kgk.beacon.monitoring.presentation.adapter.MapAdapter;
 import kgk.beacon.monitoring.presentation.model.MapType;
 import kgk.beacon.monitoring.presentation.presenter.MapViewPresenter;
-import kgk.beacon.monitoring.presentation.routereport.RouteReportActivity;
 import kgk.beacon.monitoring.presentation.utils.SimpleGestureFilter;
 
 public class MapActivity extends AppCompatActivity implements
@@ -219,14 +217,12 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void navigateToRouteReportView(RouteReport routeReport) {
+    public void navigateToRouteReportView() {
         toggleProgressDialog(false);
         Intent intent = new Intent(
                 this,
                 kgk.beacon.monitoring.presentation.routereport.RouteReportActivity.class);
-
-        intent.putExtra(RouteReportActivity.EXTRA_ROUTE_REPORT, routeReport);
-        if (routeReport != null) startActivity(intent);
+        startActivity(intent);
     }
 
     @Override

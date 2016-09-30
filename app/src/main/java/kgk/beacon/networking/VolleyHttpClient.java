@@ -46,7 +46,7 @@ import kgk.beacon.monitoring.domain.model.MonitoringEntity;
 import kgk.beacon.monitoring.domain.model.MonitoringEntityStatus;
 import kgk.beacon.monitoring.domain.model.User;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParametersPeriodSeparated;
 import kgk.beacon.monitoring.network.MonitoringHttpClient;
 import kgk.beacon.monitoring.network.RouteReportFromMonitoringJsonParser;
 import kgk.beacon.networking.event.BalanceResponseReceived;
@@ -107,6 +107,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
     private Listener listener;
     private RouteReportListener routeReportListener;
+    private int routeReportResponseCounter;
     private WebSocketKeyRequestListener webSocketKeyRequestListener;
 
     private String phpSessId;
@@ -209,19 +210,11 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 "http://www.kgk-global.com/ru/pay?user_name=ru.dev17&user_password=123098",
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {
-
-                        // TODO Delete test code
-                        Log.d(TAG, response);
-                    }
+                    public void onResponse(String response) {}
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        // TODO Delete test code
-                        Log.d(TAG, error.toString());
-                    }
+                    public void onErrorResponse(VolleyError error) {}
                 });
 
         request.setPhpSessId(phpSessId);
@@ -251,12 +244,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-
-
-                        // TODO Delete test code
-                        Log.d("debug", "Web Socket Key Request Error:  " + error.toString());
-                    }
+                    public void onErrorResponse(VolleyError error) {}
                 }
         );
 
@@ -325,10 +313,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-
-                                    // TODO Delete test code
-                                    Log.d("debug", response);
-
                                     try {
                                         JSONObject responseJson = new JSONObject(response);
                                         JSONObject dataJson = responseJson.getJSONObject("data");
@@ -359,9 +343,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-
-                                        // TODO Delete test code
-                                        Log.d("network", "error parse update response");
                                     }
 
                                     counter.increment();
@@ -374,9 +355,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     counter.increment();
-
-                                    // TODO Delete test code
-                                    Log.d("network", "error update request");
                                 }
                             });
 
@@ -392,43 +370,77 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     }
 
     @Override
-    public void requestRouteReport(final RouteReportParameters parameters) {
-        final RouteReportHttpRequestBuilder builder = new RouteReportHttpRequestBuilder(parameters);
+    public void requestRouteReport(RouteReportParametersPeriodSeparated parameters) {
         final RouteReportFromMonitoringJsonParser parser = new RouteReportFromMonitoringJsonParser();
+        final List<RouteReportHttpRequestBuilder> requestBuilders = new ArrayList<>();
+        for (RouteReportParametersPeriodSeparated.RouteReportPeriod period : parameters.periods) {
+            RouteReportHttpRequestBuilder builder = new RouteReportHttpRequestBuilder(
+                    period.fromDateTimestamp,
+                    period.toDateTimestamp,
+                    parameters.stopTime,
+                    parameters.offsetUtc,
+                    parameters.id
+            );
 
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                DETAIL_REPORT_URL_POST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        RouteReport routeReport = parser.parse(response);
-                        routeReportListener.onRouteReportReceived(routeReport);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+            requestBuilders.add(builder);
+        }
 
-                        // TODO Notify user
-                        Log.d("RouteReport", "Server error");
-                        Log.d("RouteReport", error.toString());
+        final List<StringRequest> requests = new ArrayList<>();
+        final JSONArray routeReportEventsTotal = new JSONArray();
+        routeReportResponseCounter = 0;
+
+        for (final RouteReportHttpRequestBuilder builder : requestBuilders) {
+            StringRequest request = new StringRequest(
+                    Request.Method.POST,
+                    DETAIL_REPORT_URL_POST,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            routeReportResponseCounter++;
+
+                            try {
+                                JSONObject responseJson = new JSONObject(response);
+                                JSONArray routeReportEvents = responseJson.getJSONArray("rows");
+
+                                for (int i = 0; i < routeReportEvents.length(); i++)
+                                    routeReportEventsTotal.put(routeReportEvents.get(i));
+
+                                if (routeReportResponseCounter == requests.size()) {
+                                    RouteReport routeReport = parser.parse(routeReportEventsTotal);
+                                    routeReportListener.onRouteReportReceived(routeReport);
+                                }
+
+                            } catch (JSONException e) { e.printStackTrace(); }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                            // TODO Notify user
+                            Log.d("RouteReport", "Server error");
+                            Log.d("RouteReport", error.toString());
+                        }
                     }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    return builder.prepareHeaders(phpSessId);
                 }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return builder.prepareHeaders(phpSessId);
-            }
 
-            @Override
-            protected Map<String, String> getParams() {
-                return builder.prepareBody();
-            }
-        };
+                @Override
+                protected Map<String, String> getParams() {
+                    return builder.prepareBody();
+                }
+            };
 
-        setRetryPolicy(request);
-        requestQueue.add(request);
+            requests.add(request);
+        }
+
+        for (StringRequest request : requests) {
+            setRetryPolicy(request);
+            requestQueue.add(request);
+        }
     }
 
     ////
@@ -496,10 +508,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        // TODO Delete test code
-                        Log.d("debug", response);
-
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             if (responseJson.getBoolean("status")) {
@@ -542,10 +550,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
         request.setPhpSessId(phpSessId);
         setRetryPolicy(request);
-
-        // TODO Delete test code
-        Log.d(TAG, "Last State Request Sent");
-
         requestQueue.add(request);
     }
 
@@ -706,9 +710,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 + "&offsetUTC=" + data.getDataMap().get(DataForDetailReportRequest.DATAKEY_OFFSET_UTC)
                 + "&deviceID=" + AppController.getInstance().getActiveDeviceId();
 
-        // TODO Delete test code
-        Log.d(TAG, DETAIL_REPORT_URL + requestUrlParameters);
-
         DetailReportRequest request = new DetailReportRequest(Request.Method.POST,
                 DETAIL_REPORT_URL + requestUrlParameters,
                 new Response.Listener<String>() {
@@ -733,29 +734,17 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     }
 
     private void getUserInfoRequest() {
-
-        // TODO Delete test code
-        Log.d("BALANCE", GET_USER_INFO_URL);
-
         GetUserInfoRequest request = new GetUserInfoRequest(GET_USER_INFO_URL,
                 new JSONObject(),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
-                        // TODO Delete test code
-                        Log.d("BALANCE", response.toString());
-
                         processGetUserInfoResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        // TODO Delete test code
-                        Log.d("BALANCE", error.toString());
-                    }
+                    public void onErrorResponse(VolleyError error) {}
                 });
 
         request.setPhpSessId(phpSessId);
@@ -783,10 +772,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
     /** Обработка результатов запроса на получение списка устройств пользователя */
     private void processDeviceListResponseJson(JSONObject responseJson) throws JSONException {
-
-        // TODO Delete test code
-        Log.d(TAG, responseJson.toString(4));
-
         if (responseJson.getBoolean("status")) {
             try {
                 JSONArray devices = responseJson.getJSONArray("data");
@@ -987,28 +972,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
                 EventBus.getDefault().post(new SearchModeStatusEvent(
                         settingsJson.getInt("track") == 1));
-
-                // TODO Settings confirmation mechanism temporary disabled
-//                if (AppController.loadBooleanValueFromSharedPreferences(SettingsFragment.KEY_IS_AWAITING_SETTINGS_CONFIRMATION)) {
-//                    if (settingsJson.getLong("tm") > AppController.loadLongValueFromSharedPreferences(
-//                            SettingsFragment.KEY_SETTINGS_CONFIRMATION_CONTROL_DATE)) {
-//                        AppController.saveBooleanValueToSharedPreferences(
-//                                SettingsFragment.KEY_IS_AWAITING_SETTINGS_CONFIRMATION, false);
-//                        SharedPreferences settings = AppController.getInstance().getSharedPreferences(SettingsFragment.APPLICATION_PREFERENCES,
-//                                Context.MODE_PRIVATE);
-//                        String deviceId = String.valueOf(AppController.getInstance().getActiveDeviceId());
-//                        SharedPreferences.Editor editor = settings.edit();
-//                        editor.putInt(deviceId + SettingsFragment.KEY_CONNECTION_PERIOD, settingsJson.getInt("t1"));
-//                        editor.apply();
-//                    }
-//                } else {
-//                    SharedPreferences settings = AppController.getInstance().getSharedPreferences(SettingsFragment.APPLICATION_PREFERENCES,
-//                            Context.MODE_PRIVATE);
-//                    String deviceId = String.valueOf(AppController.getInstance().getActiveDeviceId());
-//                    SharedPreferences.Editor editor = settings.edit();
-//                    editor.putInt(deviceId + SettingsFragment.KEY_CONNECTION_PERIOD, settingsJson.getInt("t1"));
-//                    editor.apply();
-//                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1016,10 +979,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     }
 
     private void processGetUserInfoResponse(JSONObject response) {
-
-        // TODO Delete test code
-        Log.d("BALANCE", response.toString());
-
         try {
             JSONObject data = response.getJSONObject("data");
             double balance = data.getDouble("balance");
@@ -1064,10 +1023,6 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 });
 
         setRetryPolicy(request);
-
-        // TODO Delete test code
-        Log.d(TAG, "OpenCellId request send successful");
-
         requestQueue.add(request);
     }
 
@@ -1111,19 +1066,11 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
                 });
 
         setRetryPolicy(request);
-
-        // TODO Delete test code
-        Log.d(TAG, "Yandex cell request send successful");
-
         requestQueue.add(request);
     }
 
     /** Парсинг результатов запроса в Yandex на определение координат по базовым станциям */
     private void parseYnadexLbsResponse(final long serverDate, final String response) {
-
-        // TODO Delete test code
-        Log.d(TAG, response);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1141,26 +1088,15 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
 
                     int xmlEvent = parser.getEventType();
 
-                    // TODO Delete test code
-                    Log.d(TAG, "XML Event - " + xmlEvent);
-
                     while (xmlEvent != XmlPullParser.END_DOCUMENT) {
                         String name = parser.getName();
 
                         switch (xmlEvent) {
-                            case XmlPullParser.START_TAG:
-
-                                // TODO Delete test code
-                                Log.d(TAG, "Yandex START_TAG");
-
-                                break;
+                            case XmlPullParser.START_TAG: break;
                             case XmlPullParser.END_TAG:
                                 if (name.equals("coordinates")) {
                                     latitude = Double.parseDouble(parser.getAttributeValue(null, "latitude"));
                                     longitude = Double.parseDouble(parser.getAttributeValue(null, "longitude"));
-
-                                    // TODO Delete test code
-                                    Log.d(TAG, "From yandex - " + latitude + "  " + longitude);
                                 }
                         }
 

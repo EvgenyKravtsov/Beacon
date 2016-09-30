@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="kgk.beacon"
-    android:versionCode="52"
-    android:versionName="1.7.0.9" >
+    android:versionCode="53"
+    android:versionName="1.8.0.0" >
 
     <permission
         android:name="kgk.beacon.permission.MAPS_RECEIVE"

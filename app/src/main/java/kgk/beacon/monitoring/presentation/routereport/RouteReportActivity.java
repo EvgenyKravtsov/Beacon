@@ -310,9 +310,9 @@ public class RouteReportActivity extends AppCompatActivity
         EventsView eventsView = prepareEventsListRecycler();
 
         Intent startingIntent = getIntent();
-        RouteReport routeReport = (RouteReport) startingIntent.getSerializableExtra(EXTRA_ROUTE_REPORT);
+        //RouteReport routeReport = (RouteReport) startingIntent.getSerializableExtra(EXTRA_ROUTE_REPORT);
 
-        presenter = new RouteReportPresenter(map, daysView, eventsView, routeReport);
+        presenter = new RouteReportPresenter(map, daysView, eventsView, RouteReport.RouteReportInstance);
         presenter.attachView(this);
 
         map.setPresenter(presenter);

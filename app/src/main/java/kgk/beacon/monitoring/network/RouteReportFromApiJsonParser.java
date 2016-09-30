@@ -1,7 +1,5 @@
 package kgk.beacon.monitoring.network;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,9 +51,6 @@ public class RouteReportFromApiJsonParser {
         );
 
         JSONArray eventList = dataById.getJSONArray("rows");
-
-        // TODO Delete test code
-        for (int i = 0; i < eventList.length(); i++) Log.d("network", eventList.getJSONObject(i).toString());
 
         List<RouteReportEvent> events = new ArrayList<>();
 

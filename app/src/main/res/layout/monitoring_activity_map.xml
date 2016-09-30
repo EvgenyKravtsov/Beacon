@@ -76,8 +76,8 @@
 
             <!-- Traffic button -->
             <ImageButton
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:src="@drawable/monitoring_back_button_icon"
                 android:background="@drawable/moniroting_map_button_background"
                 android:id="@+id/monitoring_activity_map_information_bar_back_button"
@@ -85,8 +85,8 @@
 
             <!-- Traffic button -->
             <ImageButton
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:src="@drawable/monitoring_traffic_button_icon"
                 android:background="@drawable/moniroting_map_button_background"
                 android:id="@+id/monitoring_activity_map_traffic_button"
@@ -181,7 +181,7 @@
         <!-- Quick report and menu buttons -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="55dp"
             android:layout_marginBottom="32dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"

@@ -3,9 +3,9 @@ package kgk.beacon.monitoring.network;
 import java.util.List;
 
 import kgk.beacon.monitoring.domain.model.MonitoringEntity;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
 import kgk.beacon.monitoring.domain.model.User;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParametersPeriodSeparated;
 
 public interface MonitoringHttpClient {
 
@@ -31,5 +31,5 @@ public interface MonitoringHttpClient {
 
     void updateMonitoringEntities(List<MonitoringEntity> monitoringEntities);
 
-    void requestRouteReport(RouteReportParameters parameters);
+    void requestRouteReport(RouteReportParametersPeriodSeparated parameters);
 }

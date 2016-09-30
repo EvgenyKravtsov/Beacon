@@ -1,8 +1,6 @@
 package kgk.beacon.monitoring.network;
 
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,25 +39,16 @@ public class RouteReportFromMonitoringJsonParser {
 
     ////
 
-    public RouteReport parse(String rawResponse) {
+    public RouteReport parse(JSONArray routeReportEvents) {
         try {
-
-            // TODO Delete test code
-            Log.d("RouteReport", new JSONObject(rawResponse).toString(4));
-
             List<RouteReportEvent> events = new ArrayList<>();
-            JSONObject responseJson = new JSONObject(rawResponse);
-            JSONArray routeReportEntities = responseJson.getJSONArray("rows");
-
-            for (int i = 0; i < routeReportEntities.length(); i++) {
-                RouteReportEvent event = parseRouteReportEntity(routeReportEntities.getJSONObject(i));
+            for (int i = 0; i < routeReportEvents.length(); i++) {
+                RouteReportEvent event = parseRouteReportEntity(routeReportEvents.getJSONObject(i));
                 if (event != null) events.add(event);
             }
 
-            // TODO Delete test code
-            Log.d("RouteReport", new RouteReport(composeRouteReportDays(events)).toString());
-
             return new RouteReport(composeRouteReportDays(events));
+
         } catch (JSONException | ParseException e) { e.printStackTrace(); }
 
         return null;

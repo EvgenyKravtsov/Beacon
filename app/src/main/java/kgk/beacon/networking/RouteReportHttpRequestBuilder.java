@@ -7,16 +7,27 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
-
 public class RouteReportHttpRequestBuilder {
 
-    private RouteReportParameters parameters;
+    public final long fromDateTimestamp;
+    public final long toDateTimestamp;
+    public final int stopTime;
+    public final int offsetUtc;
+    public final long id;
 
     ////
 
-    public RouteReportHttpRequestBuilder(RouteReportParameters parameters) {
-        this.parameters = parameters;
+    public RouteReportHttpRequestBuilder(
+            long fromDateTimestamp,
+            long toDateTimestamp,
+            int stopTime,
+            int offsetUtc,
+            long id) {
+        this.fromDateTimestamp = fromDateTimestamp;
+        this.toDateTimestamp = toDateTimestamp;
+        this.stopTime = stopTime;
+        this.offsetUtc = offsetUtc;
+        this.id = id;
     }
 
     ////
@@ -82,39 +93,39 @@ public class RouteReportHttpRequestBuilder {
     ////
 
     private String prepareFromDateString() {
-        Date date = new Date(parameters.getFromDateTimestamp() * 1000);
+        Date date = new Date(fromDateTimestamp * 1000);
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return dateFormat.format(date);
     }
 
     private String prepareFromTimeString() {
-        Date date = new Date(parameters.getFromDateTimestamp() * 1000);
+        Date date = new Date(fromDateTimestamp * 1000);
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(date);
     }
 
     private String prepareToDateString() {
-        Date date = new Date(parameters.getToDateTimestamp() * 1000);
+        Date date = new Date(toDateTimestamp * 1000);
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return dateFormat.format(date);
     }
 
     private String prepareToTimeString() {
-        Date date = new Date(parameters.getToDateTimestamp() * 1000);
+        Date date = new Date(toDateTimestamp * 1000);
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(date);
     }
 
     private String prepareDelta() {
-        return Integer.toString(parameters.getStopTime());
+        return Integer.toString(stopTime);
     }
 
     private String prepareOffsetUtc() {
-        return Integer.toString(parameters.getOffsetUtc());
+        return Integer.toString(offsetUtc);
     }
 
     private String prepareId() {
-        return Long.toString(parameters.getId());
+        return Long.toString(id);
     }
 }
 

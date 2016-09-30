@@ -11,6 +11,8 @@ public class RouteReport implements Serializable {
 
     public static final RouteReport emptyRouteReport = new RouteReport(new TreeMap<Long, List<RouteReportEvent>>());
 
+    public static RouteReport RouteReportInstance;
+
     private final SortedMap<Long, List<RouteReportEvent>> days;
     private final List<Long> timestamps;
 

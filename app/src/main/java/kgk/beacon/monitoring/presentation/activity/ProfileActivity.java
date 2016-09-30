@@ -64,10 +64,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView {
     @Override
     public void showUser(User user) {
         loginTextView.setText(user.getLogin());
-
-        // TODO Delete test code
         contactsTextView.setText("");
-        //contactsTextView.setText(user.getContacts());
         balanceTextView.setText(String.format(Locale.ROOT,
                 "%.2f %s",
                 user.getBalance(),

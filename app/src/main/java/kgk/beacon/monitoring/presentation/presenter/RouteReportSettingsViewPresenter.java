@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import kgk.beacon.monitoring.domain.interactor.GetRouteReport;
 import kgk.beacon.monitoring.domain.interactor.InteractorThreadPool;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
-import kgk.beacon.monitoring.domain.model.routereport.RouteReportParameters;
+import kgk.beacon.monitoring.domain.model.routereport.RouteReportParametersPeriodSeparated;
 import kgk.beacon.monitoring.presentation.view.RouteReportSettingsView;
 import kgk.beacon.util.AppController;
 
@@ -28,7 +28,7 @@ public class RouteReportSettingsViewPresenter
         view = null;
     }
 
-    public void sendRouteReportRequest(RouteReportParameters parameters) {
+    public void sendRouteReportRequest(RouteReportParametersPeriodSeparated parameters) {
         GetRouteReport interactor = new GetRouteReport(parameters);
         interactor.setListener(this);
         InteractorThreadPool.getInstance().execute(interactor);
@@ -48,15 +48,8 @@ public class RouteReportSettingsViewPresenter
         AppController.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (view != null) {
-                    if (routeReport == RouteReport.emptyRouteReport) {
-                        view.notifyNoDataForRouteReport();
-                        return;
-                    }
-
-                    if (routeReport.getDays().size() > 0 ) view.navigateToRouteReportView(routeReport);
-                    else view.notifyNoDataForRouteReport();
-                }
+                RouteReport.RouteReportInstance = routeReport;
+                view.navigateToRouteReportView();
             }
         });
     }
