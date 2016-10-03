@@ -277,6 +277,11 @@ public class MapActivity extends AppCompatActivity implements
         compassButton.setVisibility(visibility);
     }
 
+    @Override
+    public void rotateCompass(float degrees) {
+        compassButton.setRotation(degrees);
+    }
+
     ////
 
     private void initViews(Bundle savedInstanceState) {

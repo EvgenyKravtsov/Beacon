@@ -52,7 +52,8 @@
             android:layout_marginStart="8dp"
             android:src="@drawable/monitoring_map_back_button_icon"
             android:id="@+id/monitoring_activity_route_report_back_button"
-            style="@style/MonitoringMapButton" />
+            style="@style/MonitoringMapButton"
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
 
@@ -102,7 +103,6 @@
                 android:shrinkColumns="1"
                 android:id="@+id/monitoring_activity_route_report_slider_drag_area">
 
-
                 <TableRow android:layout_marginBottom="8dp">
 
                     <TextView
@@ -139,7 +139,6 @@
                         android:text="@string/monitoring_route_report_gsm"
                         android:visibility="gone"
                         style="@style/MonitoringStandardString" />
-
 
                 </TableRow>
 

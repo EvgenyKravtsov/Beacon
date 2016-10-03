@@ -27,4 +27,6 @@ public interface MapView {
     void notifyNoDataForRouteReport();
 
     void onMapClick();
+
+    void rotateCompass(float degrees);
 }

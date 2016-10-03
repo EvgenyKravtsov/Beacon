@@ -87,7 +87,7 @@ public class VolleyHttpClient implements Response.ErrorListener, MonitoringHttpC
     private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettingssms";
     // private static final String SETTINGS_REQUEST_URL = "http://api.trezub.ru/api2/beacon/cmdsetsettings";
     private static final String DETAIL_REPORT_URL = "http://api.trezub.ru/api2/reports/getroute/";
-    private static final String DETAIL_REPORT_URL_POST = "http://dev12.trezub.ru/api2/beacon/detailedreport"; //"http://monitor.kgk-global.com/monitoring/reports/getdata";
+    private static final String DETAIL_REPORT_URL_POST = "http://api.trezub.ru/api2/beacon/detailedreport"; //"http://monitor.kgk-global.com/monitoring/reports/getdata";
     private static final String ACTIS_CONFIG_URL = "http://api.trezub.ru/api2/beacon/getactisconfig";
     private static final String GET_USER_INFO_URL = "http://api.trezub.ru/api2/beacon/getuserinfo";
     private static final String WEB_SOCKET_KEY_URL = "http://api.trezub.ru/api2/beacon/getwebsocketkey"; //"http://requestb.in/1gmkqvu1";

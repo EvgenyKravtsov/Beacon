@@ -264,7 +264,6 @@ public class RouteReportActivity extends AppCompatActivity
     }
 
     private DaysView prepareDaysListRecycler() {
-        daysListRecyclerView.setHasFixedSize(true);
         daysListRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         );

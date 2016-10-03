@@ -85,8 +85,8 @@
 
             <!-- Traffic button -->
             <ImageButton
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:src="@drawable/monitoring_traffic_button_icon"
                 android:background="@drawable/moniroting_map_button_background"
                 android:id="@+id/monitoring_activity_map_traffic_button"

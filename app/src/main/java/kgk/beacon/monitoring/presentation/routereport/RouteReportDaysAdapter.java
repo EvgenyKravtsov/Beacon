@@ -18,8 +18,8 @@ import butterknife.ButterKnife;
 import kgk.beacon.R;
 import kgk.beacon.util.AppController;
 
-import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.*;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.DaysView;
+import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.Presenter;
 
 public class RouteReportDaysAdapter
         extends RecyclerView.Adapter<RouteReportDaysAdapter.ViewHolder>
@@ -71,7 +71,7 @@ public class RouteReportDaysAdapter
         if (timestamp == activeDayTimestamp)
             holder.containerFrameLayout.setBackgroundDrawable(holder.backgroundPressedDrawable);
         else holder.containerFrameLayout.setBackgroundDrawable(holder.backgroundDrawable);
-        if (AppController.isBelowLollopop()) holder.containerFrameLayout.setPadding(6, 12, 6, 12);
+        if (AppController.isBelowLollopop()) holder.containerFrameLayout.setPadding(6, 6, 6, 6);
 
         holder.containerFrameLayout.setOnClickListener(new View.OnClickListener() {
             @Override

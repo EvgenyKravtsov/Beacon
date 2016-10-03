@@ -45,7 +45,7 @@ public class MovingEventMapObject extends RouteReportMapObject {
         movingPolyline = map.addPolyline(new PolylineOptions()
                 .color(AppController.getInstance().getResources().getColor(R.color.monitoring_track_color))
                 .addAll(coordinates));
-        movingPolyline.setWidth(6);
+        movingPolyline.setWidth(AppController.isTablet() ? 10 : 18);
         movingPolyline.setZIndex(1000);
     }
 

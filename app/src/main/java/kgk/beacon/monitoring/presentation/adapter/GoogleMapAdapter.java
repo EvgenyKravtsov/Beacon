@@ -45,7 +45,8 @@ public class GoogleMapAdapter implements
         MapAdapter,
         GoogleMap.OnCameraChangeListener,
         GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMapClickListener {
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnCameraMoveListener {
 
     private static final int MARKER_SIZE = 18;
 
@@ -84,6 +85,8 @@ public class GoogleMapAdapter implements
         map.setOnCameraChangeListener(this);
         map.setOnMarkerClickListener(this);
         map.setOnMapClickListener(this);
+        map.setOnCameraMoveListener(this);
+        map.getUiSettings().setCompassEnabled(false);
         mapView.mapReadyForUse();
     }
 
@@ -229,6 +232,13 @@ public class GoogleMapAdapter implements
         if (cameraPosition.bearing != 0) mapView.toggleCompassButton(true);
 
         configuration.saveZoomLevel(cameraPosition.zoom);
+    }
+
+    ////
+
+    @Override
+    public void onCameraMove() {
+        mapView.rotateCompass(map.getCameraPosition().bearing);
     }
 
     ////

@@ -30,6 +30,6 @@
     <!-- MONITORING MODULE -->
     <item name="monitoring_light_gray" type="color">#EBECEC</item>
     <item name="monitoring_dark_gray" type="color">#B8B8B8</item>
-    <item name="monitoring_track_color" type="color">#804031D0</item>
+    <item name="monitoring_track_color" type="color">#800000FF</item> <!-- #800000FF #804031D0 -->
 
 </resources>
