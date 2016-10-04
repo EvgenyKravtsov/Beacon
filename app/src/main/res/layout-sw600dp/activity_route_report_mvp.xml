@@ -8,7 +8,8 @@
     android:gravity="bottom"
     android:id="@+id/route_report_slider"
     app:umanoFadeColor="@android:color/transparent"
-    app:umanoPanelHeight="156dp"
+    app:umanoParallaxOffset="128dp"
+    app:umanoPanelHeight="136dp"
     app:umanoDragView="@+id/route_report_slider_button">
 
     <RelativeLayout
@@ -92,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/monitoring_action_bar_title_text_view"
                 tools:text="Choose device"
@@ -136,9 +137,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:orientation="vertical"
-            android:paddingBottom="16dp"
+            android:paddingBottom="8dp"
             android:background="@drawable/monitoring_general_background"
             android:id="@+id/slider_inner_area">
 
@@ -146,7 +147,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:overScrollMode="never"
                 android:id="@+id/route_report_days_list" />
 
@@ -210,29 +211,33 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:id="@+id/route_report_event_description"
                 style="@style/MonitoringStandardString"
                 tools:text="Moving 15:34-17-08"/>
 
-            <SeekBar
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="4dp"
+                android:textSize="17sp"
+                android:text="00:00"
+                android:background="@drawable/monitoring_custom_seekbar"
+                android:id="@+id/route_report_timeline_time" />
+
+            <kgk.beacon.monitoring.presentation.routereport.RouteReportSeekBar
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:minHeight="96dp"
-                android:maxHeight="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
-                android:paddingLeft="24dp"
-                android:paddingStart="24dp"
-                android:paddingRight="24dp"
-                android:paddingEnd="24dp"
                 android:max="86399000"
                 android:splitTrack="false"
                 android:id="@+id/route_report_timeline"
@@ -242,15 +247,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-30dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
-                android:paddingLeft="50dp"
-                android:paddingStart="50dp"
-                android:paddingRight="50dp"
-                android:paddingEnd="50dp"
+                android:paddingLeft="40dp"
+                android:paddingStart="40dp"
+                android:paddingRight="40dp"
+                android:paddingEnd="40dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -351,7 +355,7 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"

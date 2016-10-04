@@ -5,4 +5,5 @@
 
     <!-- MONITORING MODULE -->
     <dimen name="standard_horizontal_padding">24dp</dimen>
+    <dimen name="route_report_timeline_icon_bottom_margin">0dp</dimen>
 </resources>

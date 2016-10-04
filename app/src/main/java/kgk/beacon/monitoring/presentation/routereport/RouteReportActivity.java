@@ -1,9 +1,7 @@
 package kgk.beacon.monitoring.presentation.routereport;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -12,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -33,7 +29,6 @@ import kgk.beacon.monitoring.domain.model.routereport.RouteReport;
 import kgk.beacon.monitoring.domain.model.routereport.RouteReportEventType;
 import kgk.beacon.monitoring.presentation.activity.RouteReportSettingsActivity;
 import kgk.beacon.monitoring.presentation.model.MapType;
-import kgk.beacon.util.ImageProcessor;
 
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.DaysView;
 import static kgk.beacon.monitoring.presentation.routereport.RouteReportContract.EventsView;
@@ -66,8 +61,10 @@ public class RouteReportActivity extends AppCompatActivity
     ImageView gsmLevelImageView;
     @Bind(R.id.route_report_event_description)
     TextView eventDescriptionTextView;
+    @Bind(R.id.route_report_timeline_time)
+    TextView timelineTimeTextView;
     @Bind(R.id.route_report_timeline)
-    SeekBar timelineSeekBar;
+    RouteReportSeekBar timelineSeekBar;
     @Bind(R.id.route_report_events_list)
     ExpandableListView eventsListExpandableListView;
     @Bind(R.id.route_report_slider)
@@ -283,12 +280,14 @@ public class RouteReportActivity extends AppCompatActivity
     }
 
     private void prepareTimeline() {
-        timelineSeekBar.setThumbOffset(36);
-        timelineSeekBar.setThumb(prepareTimelineThumbDrawable(millisecondsToTimeString(0)));
+        timelineSeekBar.setThumb(
+                getResources().getDrawable(R.drawable.monitoring_route_report_seekbar_thumb));
+        updateTimelineIcon(0);
+
         timelineSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                timelineSeekBar.setThumb(prepareTimelineThumbDrawable(millisecondsToTimeString(progress)));
+                updateTimelineIcon(progress);
             }
 
             @Override
@@ -319,27 +318,22 @@ public class RouteReportActivity extends AppCompatActivity
         eventsView.setPresenter(presenter);
     }
 
-    private Drawable prepareTimelineThumbDrawable(String timeString) {
-        @SuppressLint("InflateParams")
-        android.view.View thumbLayout = LayoutInflater.from(this)
-                .inflate(R.layout.layout_monitoring_custom_seekbar, null);
+    private void updateTimelineIcon(int progress) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
 
-        TextView timeTextView = (TextView) thumbLayout.findViewById(R.id.route_report_timeline_time);
-        timeTextView.setText(timeString);
+        Rect thumbRect = timelineSeekBar.getSeekBarThumb().getBounds();
 
-        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        layoutParams.setMargins(
+                thumbRect.centerX() + 8,
+                0,
+                0,
+                (int) getResources().getDimension(R.dimen.route_report_timeline_icon_bottom_margin));
 
-        int width = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                isTablet ? 48 : 96,
-                getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                isTablet ? 36 : 72,
-                getResources().getDisplayMetrics());
-
-        Bitmap thumbBitmap = ImageProcessor.bitmapFromView(thumbLayout, width, height);
-        return new BitmapDrawable(thumbBitmap);
+        timelineTimeTextView.setLayoutParams(layoutParams);
+        timelineTimeTextView.setText(millisecondsToTimeString(progress));
     }
 
     private String millisecondsToTimeString(int milliseconds) {
