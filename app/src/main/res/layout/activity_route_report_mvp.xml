@@ -140,93 +140,105 @@
             android:layout_marginBottom="4dp"
             android:orientation="vertical"
             android:paddingBottom="8dp"
-            android:background="@drawable/monitoring_general_background"
-            android:id="@+id/slider_inner_area">
+            android:background="@drawable/monitoring_general_background">
 
-            <!-- Days list -->
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:overScrollMode="never"
-                android:id="@+id/route_report_days_list" />
-
-            <!-- Information -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:id="@+id/slider_inner_area">
 
-                <LinearLayout
+                <!-- Days list -->
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="8dp"
+                    android:overScrollMode="never"
+                    android:id="@+id/route_report_days_list" />
+
+                <!-- Information -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:id="@+id/route_report_mark"
-                        style="@style/MonitoringStandardString"
-                        tools:text="Mazda" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:id="@+id/route_report_speed"
-                        style="@style/MonitoringStandardString"
-                        tools:text="63 km/h" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:layout_gravity="bottom"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:id="@+id/route_report_satellites"
-                        style="@style/MonitoringStandardString"
-                        tools:text="4 satellites" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:id="@+id/route_report_mark"
+                            style="@style/MonitoringStandardString"
+                            tools:text="Mazda" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:id="@+id/route_report_speed"
+                            style="@style/MonitoringStandardString"
+                            tools:text="63 km/h" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:id="@+id/route_report_satellites"
+                            style="@style/MonitoringStandardString"
+                            tools:text="4 satellites" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/route_report_gsm_level"
+                        tools:src="@drawable/monitoring_gsm_level_3"
+                        tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/route_report_gsm_level"
-                    tools:src="@drawable/monitoring_gsm_level_3"
-                    tools:ignore="ContentDescription" />
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:id="@+id/route_report_event_description"
+                    style="@style/MonitoringStandardString"
+                    tools:text="Moving 15:34-17-08"/>
 
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:id="@+id/route_report_event_description"
-                style="@style/MonitoringStandardString"
-                tools:text="Moving 15:34-17-08"/>
-
-            <TextView
                 android:layout_width="24dp"
                 android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:paddingLeft="2dp"
+                android:paddingStart="2dp"
+                android:paddingRight="2dp"
+                android:paddingEnd="2dp"
+                android:paddingBottom="8dp"
                 android:gravity="center_horizontal"
                 android:textSize="14sp"
-                android:text="00:00"
                 android:background="@drawable/monitoring_custom_seekbar"
                 android:id="@+id/route_report_timeline_time" />
 
@@ -237,6 +249,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:max="86399000"
                 android:splitTrack="false"
                 android:id="@+id/route_report_timeline"

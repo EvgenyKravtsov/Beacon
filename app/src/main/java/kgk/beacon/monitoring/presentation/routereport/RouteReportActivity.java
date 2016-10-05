@@ -288,15 +288,17 @@ public class RouteReportActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 updateTimelineIcon(progress);
+                presenter.onTimeChosenFromTimeline(seekBar.getProgress());
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                timelineTimeTextView.setTextSize(20);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                timelineTimeTextView.setTextSize(14);
                 presenter.onTimeChosenFromTimeline(seekBar.getProgress());
             }
         });
@@ -327,7 +329,7 @@ public class RouteReportActivity extends AppCompatActivity
         Rect thumbRect = timelineSeekBar.getSeekBarThumb().getBounds();
 
         layoutParams.setMargins(
-                thumbRect.centerX() + 8,
+                thumbRect.centerX(),
                 0,
                 0,
                 (int) getResources().getDimension(R.dimen.route_report_timeline_icon_bottom_margin));

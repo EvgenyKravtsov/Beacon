@@ -244,6 +244,7 @@ public class RouteReportSettingsActivity extends AppCompatActivity
             @Override
             public String format(int i) {
                 if (i < 2) return "0" + (i * 5);
+                else if (i == 11) return Integer.toString(59);
                 else return Integer.toString(i * 5);
             }
         });

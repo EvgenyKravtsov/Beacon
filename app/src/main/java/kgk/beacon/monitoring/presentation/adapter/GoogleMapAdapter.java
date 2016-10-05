@@ -229,8 +229,6 @@ public class GoogleMapAdapter implements
             mapView.toggleCenterOnActiveControl(false);
         else mapView.toggleCenterOnActiveControl(true);
 
-        if (cameraPosition.bearing != 0) mapView.toggleCompassButton(true);
-
         configuration.saveZoomLevel(cameraPosition.zoom);
     }
 
@@ -238,6 +236,9 @@ public class GoogleMapAdapter implements
 
     @Override
     public void onCameraMove() {
+        float bearing = map.getCameraPosition().bearing;
+        if (bearing != 0) mapView.toggleCompassButton(true);
+        else mapView.toggleCompassButton(false);
         mapView.rotateCompass(map.getCameraPosition().bearing);
     }
 

@@ -273,13 +273,13 @@ public class MapActivity extends AppCompatActivity implements
 
     @Override
     public void toggleCompassButton(boolean enabled) {
-        int visibility = enabled ? View.VISIBLE : View.INVISIBLE;
+        int visibility = enabled ? View.VISIBLE : View.GONE;
         compassButton.setVisibility(visibility);
     }
 
     @Override
     public void rotateCompass(float degrees) {
-        compassButton.setRotation(degrees);
+        compassButton.setRotation(-degrees);
     }
 
     ////
